@@ -1,0 +1,91 @@
+
+#page_Header{width:100%; background:red;height:50px;    position:absolute;z-index:1;}
+#content{top:5px; left:20px;position:absolute;height:fit-content;
+outline:15px solid #4bbaed; border-radius: 10px;text-align: -webkit-center;background: rgba(255,255,255,1);padding: 10px 10px;border-top: 30px solid #27a5df;border-bottom: 30px solid #27a5df;box-shadow: -1px 1px 20px rgba(0, 0, 0,0.5);Border:none;outline:none;animation:  animatebottom 1s cubic-bezier(1, -0.06, 0.26, 1.06);}
+#user {position:relative;display:inline-block;margin:10px 10px 0px 10px;width:300px;height:150px;background:yellow;}
+.user_header {
+    height: 30px;width:92%;
+    background:#95B0B2;
+margin: 5px 10px 0px 10px;
+border-radius:10px 10px 0px 0px; border: 2px solid black;text-align:center;font-size:20px;
+    display:inline-block;
+}
+#form_Box{ height: 100px;width:92%;
+    background:#95B0BD;
+margin: 5px 40px 0px 10px;
+border-radius:0px 0px 10px 10px; border: 2px solid black;text-align:center;font-size:20px;
+    display:inline-block;}
+.form-register{
+        display:inline-block; margin-top:2px;
+}
+#main{position:absolute;left:0px;top:0px;height:100%;width:100%;}
+.head{position:absolute;top:39px;height:75px;width:100%;}
+.main-navbar{position:absolute;top:115px;height:30px;background:black;width:100%;color:white;font-size:12px;}
+#ConsignIn{float:right;margin-right:0px;background:yellow;width:100px;}
+.signIn_text{position:absolute;margin-top:5px;font-size:20px;color:black;}
+li img{height:15px;width:15px;}
+select{position:relative;display:inline-block;font-size:12px;height:18px;top:0px;}
+
+#grieva-exit:hover{position:absolute;right:9px;background:white;color:red;height:16px;width:16px;font-weight:bold;font-size:13px;border-radius:50px;border:1px solid black;}
+#grieva-exit{position:absolute;top:5px;right:10px;background:white;color:red;height:14px;width:14px;border-radius:50px;border:1px solid black;font-size:12px;font-margin:auto;}
+.activate_grieva{position: absolute;display: inline;margin-top:300px;left:345px; height: 60px;width: 60px;border-radius:50px;border:3px solid blue;}
+#activate_grieva{position: absolute; height:55px;width:55px;border-radius:50px;}
+.activate_grieva:hover{border:3px solid red;}
+#activate_grieva:hover{ height:52px;width:52px;}
+#chatbot{position: absolute;display: none;padding-top: 0px; margin: -5px 0 0 50px; height: 540px;width: 320px;border-radius:10px 10px 10px 10px;border:1px solid black;opacity:100%;z-index:1;}
+
+.header-chatbot{position: absolute;display: inline;border-radius:10px 10px 0px 0px;border:1px solid black;background:red;top:0px;height:37px;width :316px; left: 0px; cursor: pointer; padding-right: 4px;}
+.grieva{left:20px;height:35px;width:35px;border-radius:50px;border:1px solid black;}
+.grieva-name{position: absolute;display: inline;font-size:20px;top:10px;left:80px;}
+
+#botcontent{position: absolute;margin-top:37px;height:415px;width:320px;background:#afd59a;color:black;}
+#msg-username{position: absolute;display:contents;width:295;top:0px;}
+#msg-bot{position: absolute;display:grid;width:295;top:15px;}
+#chatbot-intro{position:absolute;top:5px;left:10px;height:48px;width:300px;background:white;border-radius:5px;font-family: Lato,sans-serif;}
+.chatbot-intro-msg{position:absolute;font-size:10px;top:0px;left:2px;height:45px;width:300px;}
+#chatbot-msg-content{position:absolute;top:50px;left:10px;height:360px;width:300px;border-radius:5px;font-family: Lato,sans-serif;}
+#IssueTag{position:absolute;top:5px;left:5px;}
+.label{position:relative;display:inline;font-size:12px;font-weight:600;}
+.list{position:relative;display:inline;}
+.ui-datalist-data {height:150px;overflow:auto;color:red;}
+
+#container{position:absolute;top:35px;width:300px;height:320px;font-size:13px;background:white/*#a5f5f5*/;border-radius:10px;overflow-x:hidden;overflow-y:auto; /*THIS IS WHAT WE ADDED */}
+#flex-scroller{position: absolute;margin-top:450px;height:50px;width:320px;text-align:center;font-size:12px;background:lightgrey;color:white;overflow:hidden;}
+#keyword{position:relative;display:block;top:0;left:0;float:left;height:18px;}
+.keyword{position:relative;display:block;top:0px;color:blue;font-size:12px;text-align:left;float:right;}
+#ShowKey{position:absolute;display:none;margin:0px 2px 0px 2px;height:50px;width:316px;font-size:12px;text-align:center;}
+#wrapper {position:absolute;margin:0px 0px 0px 32px;height:50px;width:260px;display:block;text-align:center;color:black;}
+.tube {height:50px;width:fit-content;background: #673ab7;display: inline-block;margin:0px 10px 0px 0px;box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5); border-radius: 2px;}
+.subtube{font-size: 10px;color: white;font-family: monospace;text-decoration: none;padding:2px;text-align:justify;}
+
+#backnext{position:relative;display:block;font-size:12px;top:10px;left:0;}
+.back{height:30px;margin-left:2px;float:left;border-radius: 0 40px 40px 0;font-weight:700;color:#673ab7}
+.next{height:30px;margin-right:2px;float:right;border-radius: 40px 0 0 40px;font-weight:700;color:#673ab7}
+
+.text-chatbot{position: absolute;margin-top:470px;height:60px;width:318px;text-align:center;font-size:20px;border-radius: 0px 0px 0px 15px;background:#f5f5f5;color:black;}
+.controls{position:absolute;}
+#textbox{position:absolute;top:2px;left:5px;resize:none;height:50px;width:250px;font-size:12px;overflow-x:hidden;overflow-y:auto;border-radius: 2px;box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);}
+
+#send{position:absolute;top:35px;left:265px;width:50px;font-size:14px;text-align:center;}
+#enter{position:absolute;top:30px;left:265px;}
+
+#feedback{position:absolute;top:02px;left:265px;width:50px;font-size:14px;text-align:center;}
+.feedback{height:30px;width:50px;}
+#feedbackForm{position:absolute;display:none;margin:150px 20px 0px 50px;height:70px;width:220px;background:yellow;border-radius:5px;border:0.5px solid black;}
+.rating{position:absolute;margin:2px 0 0 2px;height:20px;width:40px;font-size:14px;text-align:left;font-weight:700;}
+#rateList{position:absolute;margin-left:50px;height:20px;width:100px;font-size:14px;text-align:left;font-weight:600;color:red;}
+#fdbkExit{position:absolute;margin:3px 0 0 200px;height:14px;width:14px;color:red;font-size:12px;font-weight:700;float:right;}
+#fdbkExit:hover{background:white;height:13px;width:13px;font-size:11px;border-radius:50px;border:1px solid black;}
+.feedbackCmt{position:absolute;resize:none;margin:20px 0px 0px 0px;height:50px;width:220px;font-size:12px;text-align:left;font-weight:500;background:lightblue;overflow-x:hidden;overflow-y:auto;}
+#fdbksend{position:relative;margin:50px 0 0 180px;color:blue;font-weight:700;float:right;border:0.5px solid black;}
+
+#bot_container{position:relative;display:inline-block;height:fit-content;max-width:220px;color:black;left:5px;margin-top:5px;text-align:left;background:white;border-radius:10px;border:1px solid grey;padding:5px;overflow:hidden;}
+.botText{position:relative;display:inline;padding:auto;left:0px;}
+
+#user_container{position:relative;display:inline-block;height:fit-content;max-width:220px;margin:5px 5px 0px 0px;float:right;background:#3578E5;color:white;text-align:right;border-radius:10px;padding:5px;overflow:hidden;}
+.userText{position:relative;display:inline;text-align:justify;float:left;}
+#Utime{position:relative;margin : 0 0 -2px 90px;font-weight:600;font-size:10px;color:red;}
+#Btime{position:relative;margin : 0 0 -2px 90px;font-weight:600;font-size:10px;color:blue;}
+a:link{color:blue;}
+a:visited{color:red;}
+a:hover{color:#afd59a;}
