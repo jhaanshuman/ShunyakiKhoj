@@ -3,25 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Portal Phase 1.1</title>
+    <title>Test Portal - Bank of India Theme</title>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; scroll-behavior: smooth; }
-        header, footer { text-align: center; padding: 20px; background-color: #333; color: white; }
-        nav { background-color: #555; padding: 10px; text-align: center; }
-        nav a { color: white; margin: 0 10px; text-decoration: none; }
-        section { padding: 40px 20px; border-bottom: 1px solid #ccc; }
-        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
-        #test-form { display: none; margin-top: 20px; }
-        input, select { padding: 5px; margin: 5px 0; width: 200px; }
-        #log { background: #f4f4f4; padding: 15px; max-height: 300px; overflow-y: auto; border: 1px solid #ccc; margin-top: 20px; }
+        /* ------------------- Colors & Fonts ------------------- */
+        :root {
+            --primary-color: #ff6600; /* Bank of India Orange */
+            --secondary-color: #001f4d; /* Navy Blue */
+            --bg-color: #f9f9f9;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            scroll-behavior: smooth;
+        }
+
+        /* ------------------- Header ------------------- */
+        header {
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 1rem;
+        }
+
+        /* ------------------- Navigation ------------------- */
+        nav {
+            background-color: var(--secondary-color);
+            display: flex;
+            justify-content: center;
+            padding: 12px 0;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        /* ------------------- Sections ------------------- */
+        section {
+            padding: 50px 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        section h2 {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--primary-color);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        section p, section ul {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        ul li {
+            margin: 8px 0;
+        }
+
+        /* ------------------- Buttons ------------------- */
+        button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px 0;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #e65c00;
+        }
+
+        /* ------------------- Form ------------------- */
+        #test-form {
+            display: none;
+            background: var(--card-bg);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        input, select {
+            padding: 8px;
+            margin: 5px 0 15px;
+            width: 100%;
+            max-width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        label {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        /* ------------------- Logs ------------------- */
+        #log {
+            background: #f4f4f4;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        /* ------------------- Footer ------------------- */
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        /* ------------------- Cards for Sections (optional for toolkit/test buttons) ------------------- */
+        .card {
+            background: var(--card-bg);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            display: inline-block;
+        }
+
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Test Portal Phase 1.1</h1>
-    <p>Interactive test portal with toolkits and test inputs.</p>
+    <h1>Test Portal</h1>
+    <p>Interactive portal with Bank of India theme and test features</p>
 </header>
 
 <nav>
@@ -36,33 +176,37 @@
     <ul>
         <li>Select a toolkit before running a test.</li>
         <li>Click a test to fill in parameters.</li>
-        <li>Submit the test form to see results in Logs.</li>
+        <li>Submit the test form to see results in the Logs section.</li>
     </ul>
 </section>
 
 <section id="toolkits">
     <h2>Toolkits</h2>
-    <button class="toolkit-btn" data-tool="A">Toolkit A</button>
-    <button class="toolkit-btn" data-tool="B">Toolkit B</button>
-    <p id="selected-tool">Selected Toolkit: None</p>
+    <div class="card">
+        <button class="toolkit-btn" data-tool="A">Toolkit A</button>
+        <button class="toolkit-btn" data-tool="B">Toolkit B</button>
+        <p id="selected-tool">Selected Toolkit: None</p>
+    </div>
 </section>
 
 <section id="testsets">
     <h2>Test Sets</h2>
-    <button class="test-btn" data-test="1">Test 1</button>
-    <button class="test-btn" data-test="2">Test 2</button>
-    <button class="test-btn" data-test="3">Test 3</button>
+    <div class="card">
+        <button class="test-btn" data-test="1">Test 1</button>
+        <button class="test-btn" data-test="2">Test 2</button>
+        <button class="test-btn" data-test="3">Test 3</button>
 
-    <!-- Dynamic Test Form -->
-    <div id="test-form">
-        <h3>Enter Test Parameters</h3>
-        <form id="form">
-            <label for="param1">Parameter 1:</label><br>
-            <input type="text" id="param1" required><br>
-            <label for="param2">Parameter 2:</label><br>
-            <input type="number" id="param2" required><br>
-            <button type="submit">Submit Test</button>
-        </form>
+        <!-- Dynamic Test Form -->
+        <div id="test-form">
+            <h3>Enter Test Parameters</h3>
+            <form id="form">
+                <label for="param1">Parameter 1:</label><br>
+                <input type="text" id="param1" required><br>
+                <label for="param2">Parameter 2:</label><br>
+                <input type="number" id="param2" required><br>
+                <button type="submit">Submit Test</button>
+            </form>
+        </div>
     </div>
 </section>
 
@@ -72,7 +216,7 @@
 </section>
 
 <footer>
-    &copy; 2025 Test Portal
+    &copy; 2025 Test Portal | Bank of India Theme
 </footer>
 
 <script>
@@ -118,7 +262,7 @@ $(document).ready(function() {
     $('nav a').click(function(event) {
         event.preventDefault();
         $('html, body').animate({
-            scrollTop: $($(this).attr('href')).offset().top
+            scrollTop: $($(this).attr('href')).offset().top - 20
         }, 500);
     });
 });
