@@ -3,97 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Portal</title>
+    <title>Test Portal Phase 1.1</title>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; scroll-behavior: smooth; }
+        header, footer { text-align: center; padding: 20px; background-color: #333; color: white; }
+        nav { background-color: #555; padding: 10px; text-align: center; }
+        nav a { color: white; margin: 0 10px; text-decoration: none; }
+        section { padding: 40px 20px; border-bottom: 1px solid #ccc; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        #test-form { display: none; margin-top: 20px; }
+        input, select { padding: 5px; margin: 5px 0; width: 200px; }
+        #log { background: #f4f4f4; padding: 15px; max-height: 300px; overflow-y: auto; border: 1px solid #ccc; margin-top: 20px; }
+    </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <h1>Test Portal</h1>
-        <p>Welcome! Use this portal to run tests, access toolkits, and view results.</p>
-    </header>
+<header>
+    <h1>Test Portal Phase 1.1</h1>
+    <p>Interactive test portal with toolkits and test inputs.</p>
+</header>
 
-    <!-- Navigation -->
-    <nav>
-        <a href="#instructions">Instructions</a> |
-        <a href="#toolkits">Toolkits</a> |
-        <a href="#testsets">Test Sets</a> |
-        <a href="#results">Results</a>
-    </nav>
+<nav>
+    <a href="#instructions">Instructions</a>
+    <a href="#toolkits">Toolkits</a>
+    <a href="#testsets">Test Sets</a>
+    <a href="#results">Results</a>
+</nav>
 
-    <!-- Instructions Section -->
-    <section id="instructions">
-        <h2>Instructions</h2>
-        <ul>
-            <li>Read the instructions carefully before starting a test.</li>
-            <li>Select the appropriate toolkit for the task.</li>
-            <li>Run tests and check results in the Results section.</li>
-        </ul>
-    </section>
+<section id="instructions">
+    <h2>Instructions</h2>
+    <ul>
+        <li>Select a toolkit before running a test.</li>
+        <li>Click a test to fill in parameters.</li>
+        <li>Submit the test form to see results in Logs.</li>
+    </ul>
+</section>
 
-    <!-- Toolkits Section -->
-    <section id="toolkits">
-        <h2>Toolkits</h2>
-        <button class="toolkit-btn" data-tool="A">Toolkit A</button>
-        <button class="toolkit-btn" data-tool="B">Toolkit B</button>
-        <p id="selected-tool">Selected Toolkit: None</p>
-    </section>
+<section id="toolkits">
+    <h2>Toolkits</h2>
+    <button class="toolkit-btn" data-tool="A">Toolkit A</button>
+    <button class="toolkit-btn" data-tool="B">Toolkit B</button>
+    <p id="selected-tool">Selected Toolkit: None</p>
+</section>
 
-    <!-- Test Sets Section -->
-    <section id="testsets">
-        <h2>Test Sets</h2>
-        <button class="test-btn" data-test="1">Run Test 1</button>
-        <button class="test-btn" data-test="2">Run Test 2</button>
-        <button class="test-btn" data-test="3">Run Test 3</button>
-    </section>
+<section id="testsets">
+    <h2>Test Sets</h2>
+    <button class="test-btn" data-test="1">Test 1</button>
+    <button class="test-btn" data-test="2">Test 2</button>
+    <button class="test-btn" data-test="3">Test 3</button>
 
-    <!-- Results Section -->
-    <section id="results">
-        <h2>Results / Logs</h2>
-        <div id="log"></div>
-    </section>
+    <!-- Dynamic Test Form -->
+    <div id="test-form">
+        <h3>Enter Test Parameters</h3>
+        <form id="form">
+            <label for="param1">Parameter 1:</label><br>
+            <input type="text" id="param1" required><br>
+            <label for="param2">Parameter 2:</label><br>
+            <input type="number" id="param2" required><br>
+            <button type="submit">Submit Test</button>
+        </form>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer>
-        &copy; 2025 Test Portal
-    </footer>
+<section id="results">
+    <h2>Results / Logs</h2>
+    <div id="log"></div>
+</section>
 
-    <!-- jQuery Functionality -->
-    <script>
-        $(document).ready(function() {
-            // Select toolkit
-            $(".toolkit-btn").click(function() {
-                let tool = $(this).data("tool");
-                $("#selected-tool").text("Selected Toolkit: " + tool);
-                $("#log").append("<p>Toolkit " + tool + " selected.</p>");
-            });
+<footer>
+    &copy; 2025 Test Portal
+</footer>
 
-            // Run test
-            $(".test-btn").click(function() {
-                let testId = $(this).data("test");
-                let selectedTool = $("#selected-tool").text().replace("Selected Toolkit: ", "");
-                if (selectedTool === "None") {
-                    alert("Please select a toolkit before running a test.");
-                    return;
-                }
-                $("#log").append("<p>Running Test " + testId + " using Toolkit " + selectedTool + "...</p>");
-                // Simulate test result
-                setTimeout(function() {
-                    $("#log").append("<p>Test " + testId + " completed. Result: SUCCESS</p>");
-                }, 1000);
-            });
+<script>
+$(document).ready(function() {
+    let currentTest = null;
 
-            // Smooth scroll for nav links
-            $('nav a').click(function(event) {
-                event.preventDefault();
-                var target = $(this.hash);
-                $('html, body').animate({
-                    scrollTop: target.offset().top
-                }, 500);
-            });
-        });
-    </script>
+    // Select toolkit
+    $(".toolkit-btn").click(function() {
+        let tool = $(this).data("tool");
+        $("#selected-tool").text("Selected Toolkit: " + tool);
+        $("#log").append("<p>Toolkit " + tool + " selected.</p>");
+    });
+
+    // Show test form when a test is selected
+    $(".test-btn").click(function() {
+        currentTest = $(this).data("test");
+        let selectedTool = $("#selected-tool").text().replace("Selected Toolkit: ", "");
+        if(selectedTool === "None") {
+            alert("Please select a toolkit first!");
+            return;
+        }
+        $("#test-form").slideDown();
+        $("#form")[0].reset();
+        $("#test-form h3").text("Enter Parameters for Test " + currentTest);
+    });
+
+    // Submit test form
+    $("#form").submit(function(e) {
+        e.preventDefault();
+        let param1 = $("#param1").val();
+        let param2 = $("#param2").val();
+        let selectedTool = $("#selected-tool").text().replace("Selected Toolkit: ", "");
+        $("#log").append("<p>Running Test " + currentTest + " using Toolkit " + selectedTool + 
+            " with parameters: " + param1 + ", " + param2 + "...</p>");
+        setTimeout(function() {
+            $("#log").append("<p>Test " + currentTest + " completed. Result: SUCCESS</p>");
+            $("#log").scrollTop($("#log")[0].scrollHeight);
+        }, 1000);
+        $("#test-form").slideUp();
+    });
+
+    // Smooth scroll
+    $('nav a').click(function(event) {
+        event.preventDefault();
+        $('html, body').animate({
+            scrollTop: $($(this).attr('href')).offset().top
+        }, 500);
+    });
+});
+</script>
 
 </body>
 </html>
