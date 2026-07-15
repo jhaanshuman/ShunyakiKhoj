@@ -1644,7 +1644,8 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
         let segs = [];
         let curStart = "05:00";
         list.forEach(item => {
-            let endTime = item.end_time ? item.end_time.split(' ')[0] : "06:00";
+            let val = item.time || item.end_time;
+            let endTime = val ? val.split(' ')[0] : "06:00";
             segs.push({
                 start: curStart,
                 end: endTime,

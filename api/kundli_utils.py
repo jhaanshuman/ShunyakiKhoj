@@ -1282,31 +1282,67 @@ def get_divisional_chart_sign(planet_lon: float, division: int) -> str:
 
 
 def calculate_sunrise_sunset_approx(birth_date: date, lat: float, lon: float, timezone_offset: float) -> Tuple[str, str]:
-    """Calculates sunrise and sunset times using physical solar declination equations."""
-    import math
-    n = birth_date.timetuple().tm_yday
-    decl = 23.45 * math.sin(math.radians(360/365 * (284 + n)))
-    
+    """Calculates sunrise and sunset times precisely using Swiss Ephemeris, falling back to declination equations on error."""
+    import swisseph as swe
     try:
-        cos_h = -math.tan(math.radians(lat)) * math.tan(math.radians(decl))
-        if cos_h < -1:
-            h = 180
-        elif cos_h > 1:
-            h = 0
-        else:
-            h = math.degrees(math.acos(cos_h))
-    except Exception:
-        h = 90
+        # 1. Convert local midnight of the birth date to UT Julian Day
+        jd_local_midnight = swe.julday(birth_date.year, birth_date.month, birth_date.day, 0.0)
+        jd_ut_start = jd_local_midnight - (timezone_offset / 24.0)
         
-    b = 360/364 * (n - 81)
-    eot = 9.87 * math.sin(math.radians(2*b)) - 7.53 * math.cos(math.radians(b)) - 1.5 * math.sin(math.radians(b))
-    meridian = timezone_offset * 15.0
-    lon_offset = (lon - meridian) * 4.0
-    solar_noon = 12.0 - (eot / 60.0) - (lon_offset / 60.0)
-    sunrise_hours = solar_noon - (h / 15.0)
-    sunset_hours = solar_noon + (h / 15.0)
-    
-    return format_float_hours(sunrise_hours), format_float_hours(sunset_hours)
+        # 2. Precise Sunrise (CALC_RISE = 1)
+        status_rise, rise_jd = swe.rise_trans(
+            jd_ut_start,
+            swe.SUN,
+            None,
+            swe.FLG_SWIEPH,
+            1,  # swe.CALC_RISE
+            (lon, lat, 0.0),
+            1013.25,
+            15.0
+        )
+        
+        # 3. Precise Sunset (CALC_SET = 2)
+        status_set, set_jd = swe.rise_trans(
+            jd_ut_start,
+            swe.SUN,
+            None,
+            swe.FLG_SWIEPH,
+            2,  # swe.CALC_SET
+            (lon, lat, 0.0),
+            1013.25,
+            15.0
+        )
+        
+        # Convert UT Julian Days to local hours from local midnight
+        rise_hours = ((rise_jd + (timezone_offset / 24.0)) - jd_local_midnight) * 24.0
+        set_hours = ((set_jd + (timezone_offset / 24.0)) - jd_local_midnight) * 24.0
+        
+        return format_float_hours(rise_hours % 24.0), format_float_hours(set_hours % 24.0)
+    except Exception:
+        # Fallback to simple physical approximation
+        import math
+        n = birth_date.timetuple().tm_yday
+        decl = 23.45 * math.sin(math.radians(360/365 * (284 + n)))
+        try:
+            cos_h = -math.tan(math.radians(lat)) * math.tan(math.radians(decl))
+            if cos_h < -1:
+                h = 180
+            elif cos_h > 1:
+                h = 0
+            else:
+                h = math.degrees(math.acos(cos_h))
+        except Exception:
+            h = 90
+            
+        b = 360/364 * (n - 81)
+        eot = 9.87 * math.sin(math.radians(2*b)) - 7.53 * math.cos(math.radians(b)) - 1.5 * math.sin(math.radians(b))
+        meridian = timezone_offset * 15.0
+        lon_offset = (lon - meridian) * 4.0
+        solar_noon = 12.0 - (eot / 60.0) - (lon_offset / 60.0)
+        sunrise_hours = solar_noon - (h / 15.0)
+        sunset_hours = solar_noon + (h / 15.0)
+        
+        return format_float_hours(sunrise_hours % 24.0), format_float_hours(sunset_hours % 24.0)
 
 
 def format_float_hours(h_val) -> str:
