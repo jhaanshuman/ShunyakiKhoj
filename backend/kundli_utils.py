@@ -10,7 +10,7 @@ It utilizes typed dataclasses and type hinting for strict API definitions.
 from dataclasses import dataclass, field
 from datetime import datetime, date, timedelta
 import logging
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from geopy.geocoders import Nominatim
 import pytz
 import swisseph as swe
