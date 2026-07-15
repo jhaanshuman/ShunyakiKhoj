@@ -6,7 +6,7 @@ import json
 import os
 
 PORT = 8000
-API_TARGET = "http://13.233.37.237/api/calculate"
+API_TARGET = "https://sanskritai.vercel.app/api/calculate"
 
 class LocalProxyHandler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
