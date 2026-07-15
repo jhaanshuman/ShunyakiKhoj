@@ -1629,7 +1629,7 @@ async function initDefaultVedicData() {
     
     const HOST_API = window.location.protocol.startsWith('http') ? "" : "https://sanskritai.vercel.app";
     const payload = {
-        date: dateStr,
+        date: dateStr.replace(/-/g, '/'),
         time: timeStr,
         place: currentPlace,
         tab: "panchang"

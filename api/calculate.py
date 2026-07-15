@@ -29,6 +29,7 @@ class BirthDetails(BaseModel):
 @app.post("/")
 def calculate_chart(details: BirthDetails):
     try:
+        details.date = details.date.replace('-', '/')
         # 1. Compute Chart
         chart = kundli_utils.get_chart(
             date_str=details.date,

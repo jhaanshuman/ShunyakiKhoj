@@ -441,7 +441,7 @@ async function triggerCalculation() {
     if (!resultsEl) return;
     resultsEl.innerHTML = "<div class='jw-spinner'>🕉️ Generating Calculations…</div>";
 
-    const HOST_API = "http://13.233.37.237";
+    const HOST_API = window.location.protocol.startsWith('http') ? "" : "https://sanskritai.vercel.app";
 
     if (_tab === 'milan') {
         const payload = {

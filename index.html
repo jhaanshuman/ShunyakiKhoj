@@ -520,6 +520,7 @@ gtag('config','G-DZ2CM1SBWW');
             </div>
         </div>
     </div> <!-- Closing homeWelcomeSection -->
+</div> <!-- Closing main-portal-container -->
 
     <!-- MINIMAL FOOTER (NO CLASS="FOOTER") -->
     <div style="text-align: center; padding: 25px 20px; font-size: 0.82rem; color: var(--text-muted); border-top: var(--card-border); margin-top: 3rem; font-weight: 600; letter-spacing: 0.5px;">
@@ -662,8 +663,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             output.innerHTML = "Fetching dynamic calculation from API...";
-            const apiUrl = window.location.hostname.includes('github.io')
-                ? 'http://13.233.37.237/api/calculate'
+            const apiUrl = (window.location.hostname.includes('github.io') || window.location.protocol.startsWith('file'))
+                ? 'https://sanskritai.vercel.app/api/calculate'
                 : '/api/calculate';
             try {
                 const res = await fetch(apiUrl, {

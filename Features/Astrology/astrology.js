@@ -44,6 +44,21 @@ const API_URL = (window.location.hostname.includes('github.io') || window.locati
     ? 'https://sanskritai.vercel.app/api/calculate'
     : '/api/calculate';
 
+function parseAstrologyTimeStr(tStr) {
+    if (!tStr) return 0;
+    const clean = tStr.trim().toUpperCase();
+    const parts = clean.split(':');
+    let h = parseInt(parts[0], 10);
+    let m = parseInt(parts[1], 10) || 0;
+    
+    if (clean.includes('PM')) {
+        if (h < 12) h += 12;
+    } else if (clean.includes('AM')) {
+        if (h === 12) h = 0;
+    }
+    return h * 60 + m;
+}
+
 // Initialize dates and parse URL Parameters for direct heading navigation
 window.addEventListener('DOMContentLoaded', () => {
     const today = new Date().toISOString().split('T')[0];
@@ -221,6 +236,11 @@ window.addEventListener('DOMContentLoaded', () => {
             const routerHeader = document.querySelector('.panchang-unified-header');
             if (controlsCard) controlsCard.style.display = 'none';
             if (routerHeader) routerHeader.style.display = 'none';
+
+            // Still fetch today's basic panchang to populate the status-header-card
+            const pDateInput = document.getElementById('panchangDateInput');
+            const place = pPlaceInput ? pPlaceInput.value : savedPlace;
+            loadDainikPanchang(pDateInput ? pDateInput.value : curToday, place);
         }
     };
 
@@ -804,9 +824,7 @@ function calculatePanchakaList(sunriseStr, sunsetStr, ascSign, ascDeg, tithisLis
     };
 
     function parseTimeStr(tStr) {
-        if (!tStr) return 0;
-        const parts = tStr.split(':');
-        return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+        return parseAstrologyTimeStr(tStr);
     }
     
     function formatTime(minutes) {
@@ -941,9 +959,7 @@ function calculateUdayaLagnas(sunriseStr, ascSign, ascDeg) {
     };
 
     function parseTimeStr(tStr) {
-        if (!tStr) return 0;
-        const parts = tStr.split(':');
-        return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+        return parseAstrologyTimeStr(tStr);
     }
     
     function formatTime(minutes) {
@@ -1526,13 +1542,11 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
         let val = mins;
         if (val < 300) val += 1440;
         const pct = (val - 300) / totalMins;
-        return 80 + pct * 880;
+        return 130 + pct * 830;
     }
     
     function parseTimeStr(tStr) {
-        if (!tStr) return 0;
-        const parts = tStr.split(':');
-        return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+        return parseAstrologyTimeStr(tStr);
     }
     
     let srMins = parseTimeStr(sunriseStr);
@@ -1546,12 +1560,12 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     
     svg += `
         <!-- Day Shading -->
-        <rect x="${srX}" y="40" width="${ssX - srX}" height="220" fill="#fcf6dd" />
+        <rect x="${srX}" y="40" width="${ssX - srX}" height="260" fill="#fcf6dd" />
         <!-- Night Shading -->
-        <rect x="${ssX}" y="40" width="${srNextX - ssX}" height="220" fill="#ded5b8" />
+        <rect x="${ssX}" y="40" width="${srNextX - ssX}" height="260" fill="#ded5b8" />
     `;
     
-    svg += `<line x1="80" y1="40" x2="960" y2="40" stroke="#7c2d12" stroke-width="2" />`;
+    svg += `<line x1="130" y1="40" x2="960" y2="40" stroke="#7c2d12" stroke-width="2" />`;
     
     for (let h = 5; h <= 30; h++) {
         let mins = h * 60;
@@ -1594,7 +1608,7 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     
     function drawTrack(title, y, segments) {
         svg += `<text x="15" y="${y + 18}" font-size="12" font-weight="700" fill="#7c2d12">${title}</text>`;
-        svg += `<line x1="80" y1="${y}" x2="960" y2="${y}" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
+        svg += `<line x1="130" y1="${y}" x2="960" y2="${y}" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
         
         segments.forEach(seg => {
             let startX = getX(parseTimeStr(seg.start) || 300);
@@ -1665,7 +1679,7 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     }
 
     svg += `<text x="15" y="238" font-size="12" font-weight="700" fill="#7c2d12">Choghadiya</text>`;
-    svg += `<line x1="80" y1="220" x2="960" y2="220" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
+    svg += `<line x1="130" y1="220" x2="960" y2="220" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
     
     let choghadiyaParts = [];
     if (choghadiya && choghadiya.day && choghadiya.night) {
@@ -1699,10 +1713,10 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
 
     // New Weekday / Vaar track
     svg += `<text x="15" y="278" font-size="12" font-weight="700" fill="#7c2d12">Vaar</text>`;
-    svg += `<line x1="80" y1="260" x2="960" y2="260" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
+    svg += `<line x1="130" y1="260" x2="960" y2="260" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
     let wdName = panchang.vara || "Mangalawara";
     svg += `<text x="520" y="278" font-size="11" font-weight="700" fill="#7c2d12" text-anchor="middle">${wdName}</text>`;
-    svg += `<line x1="80" y1="300" x2="960" y2="300" stroke="#7c2d12" stroke-width="1.5" />`;
+    svg += `<line x1="130" y1="300" x2="960" y2="300" stroke="#7c2d12" stroke-width="1.5" />`;
 
     let uniqueBoundaries = [...new Set(boundaries)].sort((a,b) => a-b);
     uniqueBoundaries.forEach(min => {
@@ -1717,7 +1731,7 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     panchakaList.forEach((p, idx) => {
         let pMins = parseTimeStr(p.start);
         let pX = getX(pMins);
-        if (pX > 80 && pX < 960) {
+        if (pX > 130 && pX < 960) {
             svg += `
                 <circle cx="${pX}" cy="32" r="7" fill="#b33922" />
                 <text x="${pX}" y="35" font-size="9" font-weight="700" fill="white" text-anchor="middle">${idx + 1}</text>
