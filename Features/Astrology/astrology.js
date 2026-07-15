@@ -37,9 +37,11 @@ const PLANET_POSITIONS = {
 
 let lastCalculatedData = null;
 let lastGocharData = null;
+let maasikCalendarData = {}; // Cache: key = 'YYYY-MM-DD' => API response
+let maasikLoadingMonth = null;
 
-const API_URL = window.location.hostname.includes('github.io')
-    ? 'http://13.233.37.237/api/calculate'
+const API_URL = (window.location.hostname.includes('github.io') || window.location.protocol.startsWith('file'))
+    ? 'https://sanskritai.vercel.app/api/calculate'
     : '/api/calculate';
 
 // Initialize dates and parse URL Parameters for direct heading navigation
@@ -301,50 +303,53 @@ function switchTab(evt, tabId) {
 }
 
 // 1. Personalized Kundli Calculation
-document.getElementById('btnCalculate').addEventListener('click', async () => {
-    const dateInput = document.getElementById('birthDate').value;
-    const timeInput = document.getElementById('birthTime').value;
-    const placeInput = document.getElementById('birthPlace').value;
+const btnCalculate = document.getElementById('btnCalculate');
+if (btnCalculate) {
+    btnCalculate.addEventListener('click', async () => {
+        const dateInput = document.getElementById('birthDate').value;
+        const timeInput = document.getElementById('birthTime').value;
+        const placeInput = document.getElementById('birthPlace').value;
 
-    if (!dateInput || !timeInput || !placeInput) {
-        alert("Please enter all details.");
-        return;
-    }
-
-    const formattedDate = dateInput.replace(/-/g, '/');
-    const payload = { date: formattedDate, time: timeInput, place: placeInput };
-
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        const data = await response.json();
-        if (data.status === 'success') {
-            lastCalculatedData = data;
-            document.getElementById('outputCard').style.display = 'block';
-            
-            // Sync values back to saffron header controls
-            const pDateInput = document.getElementById('panchangDateInput');
-            const pPlaceInput = document.getElementById('panchangPlaceInput');
-            if (pDateInput) pDateInput.value = dateInput;
-            if (pPlaceInput) pPlaceInput.value = placeInput;
-
-            updateVargaCharts();
-            
-            renderPlacementsGrid('d1Planets', data.d1_chart);
-            renderPanchang('panchangBody', data.panchang, data.regional);
-            renderMuhurtas('choghadiyaBody', 'horaBody', data.choghadiya, data.hora);
-            loadDasha(payload);
-        } else {
-            alert("Calculation failed: " + data.detail);
+        if (!dateInput || !timeInput || !placeInput) {
+            alert("Please enter all details.");
+            return;
         }
-    } catch (e) {
-        console.error(e);
-        alert("Error executing calculation API.");
-    }
-});
+
+        const formattedDate = dateInput.replace(/-/g, '/');
+        const payload = { date: formattedDate, time: timeInput, place: placeInput };
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await response.json();
+            if (data.status === 'success') {
+                lastCalculatedData = data;
+                document.getElementById('outputCard').style.display = 'block';
+                
+                // Sync values back to saffron header controls
+                const pDateInput = document.getElementById('panchangDateInput');
+                const pPlaceInput = document.getElementById('panchangPlaceInput');
+                if (pDateInput) pDateInput.value = dateInput;
+                if (pPlaceInput) pPlaceInput.value = placeInput;
+
+                updateVargaCharts();
+                
+                renderPlacementsGrid('d1Planets', data.d1_chart);
+                renderPanchang('panchangBody', data.panchang, data.regional);
+                renderMuhurtas('choghadiyaBody', 'horaBody', data.choghadiya, data.hora);
+                loadDasha(payload);
+            } else {
+                alert("Calculation failed: " + data.detail);
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Error executing calculation API.");
+        }
+    });
+}
 
 // Update Divisional Charts dynamically based on dropdown
 function updateVargaCharts() {
@@ -362,43 +367,46 @@ function updateVargaCharts() {
 }
 
 // 2. Gochar Transit Calculation
-document.getElementById('btnGochar').addEventListener('click', async () => {
-    const dateInput = document.getElementById('gocharDate').value;
-    const timeInput = document.getElementById('gocharTime').value;
-    const placeInput = document.getElementById('gocharPlace').value;
+const btnGochar = document.getElementById('btnGochar');
+if (btnGochar) {
+    btnGochar.addEventListener('click', async () => {
+        const dateInput = document.getElementById('gocharDate').value;
+        const timeInput = document.getElementById('gocharTime').value;
+        const placeInput = document.getElementById('gocharPlace').value;
 
-    if (!dateInput || !timeInput || !placeInput) {
-        alert("Please enter all details.");
-        return;
-    }
-
-    const formattedDate = dateInput.replace(/-/g, '/');
-    const payload = { date: formattedDate, time: timeInput, place: placeInput };
-
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        const data = await response.json();
-        if (data.status === 'success') {
-            lastGocharData = data;
-            document.getElementById('gocharOutputCard').style.display = 'block';
-            
-            updateGocharVargaCharts();
-            
-            renderPlacementsGrid('gocharPlanets', data.d1_chart);
-            renderPanchang('gocharPanchangBody', data.panchang, data.regional);
-            renderTransitChoghadiya(data.choghadiya);
-        } else {
-            alert("Gochar failed: " + data.detail);
+        if (!dateInput || !timeInput || !placeInput) {
+            alert("Please enter all details.");
+            return;
         }
-    } catch (e) {
-        console.error(e);
-        alert("Error executing Gochar API.");
-    }
-});
+
+        const formattedDate = dateInput.replace(/-/g, '/');
+        const payload = { date: formattedDate, time: timeInput, place: placeInput };
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await response.json();
+            if (data.status === 'success') {
+                lastGocharData = data;
+                document.getElementById('gocharOutputCard').style.display = 'block';
+                
+                updateGocharVargaCharts();
+                
+                renderPlacementsGrid('gocharPlanets', data.d1_chart);
+                renderPanchang('gocharPanchangBody', data.panchang, data.regional);
+                renderTransitChoghadiya(data.choghadiya);
+            } else {
+                alert("Gochar failed: " + data.detail);
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Error executing Gochar API.");
+        }
+    });
+}
 
 function updateGocharVargaCharts() {
     if (!lastGocharData) return;
@@ -415,54 +423,57 @@ function updateGocharVargaCharts() {
 }
 
 // 3. Match Making Guna Milan
-document.getElementById('btnMatch').addEventListener('click', async () => {
-    const payload = {
-        boy_date: document.getElementById('boyDate').value.replace(/-/g, '/'),
-        boy_time: document.getElementById('boyTime').value,
-        boy_place: document.getElementById('boyPlace').value,
-        girl_date: document.getElementById('girlDate').value.replace(/-/g, '/'),
-        girl_time: document.getElementById('girlTime').value,
-        girl_place: document.getElementById('girlPlace').value
-    };
+const btnMatch = document.getElementById('btnMatch');
+if (btnMatch) {
+    btnMatch.addEventListener('click', async () => {
+        const payload = {
+            boy_date: document.getElementById('boyDate').value.replace(/-/g, '/'),
+            boy_time: document.getElementById('boyTime').value,
+            boy_place: document.getElementById('boyPlace').value,
+            girl_date: document.getElementById('girlDate').value.replace(/-/g, '/'),
+            girl_time: document.getElementById('girlTime').value,
+            girl_place: document.getElementById('girlPlace').value
+        };
 
-    try {
-        const response = await fetch('/api/match', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        const data = await response.json();
-        if (data.status === 'success') {
-            document.getElementById('milanOutputCard').style.display = 'block';
-            
-            document.getElementById('boyResultInfo').innerText = `${data.boy.nakshatra} (${data.boy.rashi})`;
-            document.getElementById('girlResultInfo').innerText = `${data.girl.nakshatra} (${data.girl.rashi})`;
-            
-            const badge = document.getElementById('milanScoreBadge');
-            badge.innerText = `${data.milan.total} / 36 Gunas - ${data.milan.recommendation}`;
-            badge.className = `result-badge ${data.milan.total >= 18.0 ? 'success' : 'fail'}`;
-            
-            const body = document.getElementById('milanTableBody');
-            body.innerHTML = "";
-            const koots = ['varna', 'vashya', 'tara', 'yoni', 'graha_maitri', 'gana', 'bhakoot', 'nadi'];
-            koots.forEach(k => {
-                const info = data.milan[k];
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="text-transform: capitalize; padding: 0.75rem 1rem;">${k.replace('_', ' ')}</td>
-                    <td style="padding: 0.75rem 1rem;">${info.max}</td>
-                    <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--accent-gold);">${info.obtained}</td>
-                `;
-                body.appendChild(tr);
+        try {
+            const response = await fetch('/api/match', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
             });
-        } else {
-            alert("Match Making failed: " + data.detail);
+            const data = await response.json();
+            if (data.status === 'success') {
+                document.getElementById('milanOutputCard').style.display = 'block';
+                
+                document.getElementById('boyResultInfo').innerText = `${data.boy.nakshatra} (${data.boy.rashi})`;
+                document.getElementById('girlResultInfo').innerText = `${data.girl.nakshatra} (${data.girl.rashi})`;
+                
+                const badge = document.getElementById('milanScoreBadge');
+                badge.innerText = `${data.milan.total} / 36 Gunas - ${data.milan.recommendation}`;
+                badge.className = `result-badge ${data.milan.total >= 18.0 ? 'success' : 'fail'}`;
+                
+                const body = document.getElementById('milanTableBody');
+                body.innerHTML = "";
+                const koots = ['varna', 'vashya', 'tara', 'yoni', 'graha_maitri', 'gana', 'bhakoot', 'nadi'];
+                koots.forEach(k => {
+                    const info = data.milan[k];
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="text-transform: capitalize; padding: 0.75rem 1rem;">${k.replace('_', ' ')}</td>
+                        <td style="padding: 0.75rem 1rem;">${info.max}</td>
+                        <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--accent-gold);">${info.obtained}</td>
+                    `;
+                    body.appendChild(tr);
+                });
+            } else {
+                alert("Match Making failed: " + data.detail);
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Error executing Match Making API.");
         }
-    } catch (e) {
-        console.error(e);
-        alert("Error executing Match Making API.");
-    }
-});
+    });
+}
 
 function renderPlacementsGrid(containerId, chart) {
     const container = document.getElementById(containerId);
@@ -1863,8 +1874,6 @@ function switchPancView(view) {
 }
 
 // ── Monthly Calendar Loader ────────────────────────────────────────────────
-let maasikCalendarData = {}; // Cache: key = 'YYYY-MM-DD' => API response
-let maasikLoadingMonth = null;
 
 async function loadMaasikCalendar() {
     const maasikMonthInput = document.getElementById('maasikMonthInput');

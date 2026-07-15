@@ -139,7 +139,7 @@ async function triggerModalCalculation() {
     resultsContainer.innerHTML = "<div style='text-align:center; padding: 3rem; color: #6366f1; font-weight:700;'>🕉️ Generating Calculations...</div>";
     
     // Use absolute backend server routes to resolve local file:/// protocol blocks
-    const HOST_API = "http://13.233.37.237";
+    const HOST_API = window.location.protocol.startsWith('http') ? "" : "https://sanskritai.vercel.app";
     
     if (currentModalTab === 'milan') {
         const payload = {
@@ -1627,7 +1627,7 @@ async function initDefaultVedicData() {
     // Read the current city from the input (default is Patna set in HTML)
     const currentPlace = (mPlaceEl && mPlaceEl.value.trim()) ? mPlaceEl.value.trim() : 'Patna, Bihar, India';
     
-    const HOST_API = "http://13.233.37.237";
+    const HOST_API = window.location.protocol.startsWith('http') ? "" : "https://sanskritai.vercel.app";
     const payload = {
         date: dateStr,
         time: timeStr,

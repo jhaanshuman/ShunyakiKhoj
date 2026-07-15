@@ -298,17 +298,8 @@ function adjustUrlPath(url) {
 // BREADCRUMBS GENERATION
 // ==========================================
 function setupBreadcrumbs(menuItems) {
-    // Find breadcrumb container or create one
-    let container = document.getElementById('breadcrumbs');
-    if (!container) {
-        const bodyContent = document.querySelector('.hero') || document.querySelector('.jyotish-directory') || document.body.firstElementChild;
-        if (bodyContent) {
-            container = document.createElement('div');
-            container.id = 'breadcrumbs';
-            container.className = 'breadcrumbs-container';
-            bodyContent.parentNode.insertBefore(container, bodyContent);
-        }
-    }
+    // Target the header breadcrumb element
+    let container = document.getElementById('header-breadcrumb');
     if (!container) return;
 
     const currentUrl = window.location.href;
@@ -350,8 +341,8 @@ function setupBreadcrumbs(menuItems) {
     // Render breadcrumbs
     container.innerHTML = crumbs.map((c, idx) => {
         const isLast = idx === crumbs.length - 1;
-        if (isLast) return `<span class="crumb-active" aria-current="page">${c.label}</span>`;
-        return `<a href="${c.url}" class="crumb-link">${c.label}</a> <span class="crumb-sep">/</span>`;
+        if (isLast) return `<span class="crumb-active" aria-current="page" style="color: var(--accent-color); font-weight: 700;">${c.label}</span>`;
+        return `<a href="${c.url}" class="crumb-link" style="color: var(--text-muted); text-decoration: none;">${c.label}</a> <span class="crumb-sep" style="margin: 0 4px; color: var(--text-muted);">/</span>`;
     }).join(' ');
 }
 
