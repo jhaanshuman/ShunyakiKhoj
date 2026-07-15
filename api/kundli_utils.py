@@ -1290,34 +1290,36 @@ def calculate_sunrise_sunset_approx(birth_date: date, lat: float, lon: float, ti
         jd_ut_start = jd_local_midnight - (timezone_offset / 24.0)
         
         # 2. Precise Sunrise (CALC_RISE = 1)
-        status_rise, rise_jd = swe.rise_trans(
+        status_rise, tret_rise = swe.rise_trans(
             jd_ut_start,
             swe.SUN,
-            None,
-            swe.FLG_SWIEPH,
             1,  # swe.CALC_RISE
             (lon, lat, 0.0),
             1013.25,
-            15.0
+            15.0,
+            swe.FLG_SWIEPH
         )
         
         # 3. Precise Sunset (CALC_SET = 2)
-        status_set, set_jd = swe.rise_trans(
+        status_set, tret_set = swe.rise_trans(
             jd_ut_start,
             swe.SUN,
-            None,
-            swe.FLG_SWIEPH,
             2,  # swe.CALC_SET
             (lon, lat, 0.0),
             1013.25,
-            15.0
+            15.0,
+            swe.FLG_SWIEPH
         )
         
-        # Convert UT Julian Days to local hours from local midnight
-        rise_hours = ((rise_jd + (timezone_offset / 24.0)) - jd_local_midnight) * 24.0
-        set_hours = ((set_jd + (timezone_offset / 24.0)) - jd_local_midnight) * 24.0
-        
-        return format_float_hours(rise_hours % 24.0), format_float_hours(set_hours % 24.0)
+        if status_rise == 0 and status_set == 0:
+            rise_jd = tret_rise[0]
+            set_jd = tret_set[0]
+            # Convert UT Julian Days to local hours from local midnight
+            rise_hours = ((rise_jd + (timezone_offset / 24.0)) - jd_local_midnight) * 24.0
+            set_hours = ((set_jd + (timezone_offset / 24.0)) - jd_local_midnight) * 24.0
+            return format_float_hours(rise_hours % 24.0), format_float_hours(set_hours % 24.0)
+        else:
+            raise Exception("circumpolar or rise_set event not found")
     except Exception:
         # Fallback to simple physical approximation
         import math

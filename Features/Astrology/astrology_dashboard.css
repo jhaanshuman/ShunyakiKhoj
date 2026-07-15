@@ -451,3 +451,23 @@
     color: var(--text-muted);
     margin-bottom: 12px;
 }
+
+#drikTimelineContainer {
+    width: 100%;
+    margin: 0 auto 1.5rem auto;
+    overflow-x: auto;
+    box-sizing: border-box;
+}
+
+#drikTimelineContainer svg {
+    min-width: 960px;
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media (min-width: 1024px) {
+    #drikTimelineContainer {
+        width: 80%;
+    }
+}
