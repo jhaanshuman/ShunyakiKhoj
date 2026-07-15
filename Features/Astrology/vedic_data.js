@@ -235,7 +235,16 @@ window.VEDIC_DATA = {
         "rudhirodgari": "Rudhirodgari (57th): Red energy; focus on blood donations and defense health.",
         "raktaksha": "Raktaksha (58th): Alert eyes; rise of cybersecurity and defense watch.",
         "krodhana": "Krodhana (59th): Intense arguments; good for court litigations.",
-        "kshaya": "Kshaya (60th): Draining cycle; ending of old cycles, preparing for renewal."
+        "kshaya": "Kshaya (60th): Draining cycle; ending of old cycles, preparing for renewal.",
+        
+        // Choghadiya
+        "amrit": "Amrit (Moon-ruled): The most auspicious period, ideal for all important activities, rituals, and new beginnings.",
+        "shubh": "Shubh (Jupiter-ruled): Highly auspicious, best suited for ceremonies, weddings, and religious events.",
+        "labh": "Labh (Mercury-ruled): Auspicious for business, trade, learning, and signing contracts.",
+        "chal": "Chal (Venus-ruled): A neutral period specifically recommended for travel and movement.",
+        "rog": "Rog (Mars-ruled): Inauspicious, associated with conflict and illness; avoid for new ventures.",
+        "kaal": "Kaal (Saturn-ruled): Inauspicious, associated with delays and loss; unsuitable for auspicious work.",
+        "udveg": "Udveg (Sun-ruled): Inauspicious, associated with anxiety and obstacles; best avoided for personal tasks."
     },
 
     // ── FESTIVALS DATABASE & RULES ──────────────────────────────────────────

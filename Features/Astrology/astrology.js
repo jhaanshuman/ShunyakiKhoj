@@ -51,33 +51,12 @@ window.addEventListener('DOMContentLoaded', () => {
     if (gocharDateEl) gocharDateEl.value = today;
 
     const params = new URLSearchParams(window.location.search);
-    const tab = params.get('tab') || 'panchang';
+    const tab = params.get('tab') || '';
     
     // Hide the top-tab navigation buttons bar completely
     const topNavTabs = document.querySelector('.top-nav-tabs');
     if (topNavTabs) {
         topNavTabs.style.display = 'none';
-    }
-
-    // Toggle day/month view containers for homepage
-    const dayView = document.getElementById('dayViewContainer');
-    const maasikView = document.getElementById('maasikViewContainer');
-    if (dayView && maasikView) {
-        if (tab === 'maasik') {
-            dayView.style.display = 'none';
-            maasikView.style.display = 'block';
-            const monthBtn = document.getElementById('phViewMonthBtn');
-            if (monthBtn) monthBtn.classList.add('active');
-            const dayBtn = document.getElementById('phViewDayBtn');
-            if (dayBtn) dayBtn.classList.remove('active');
-        } else {
-            dayView.style.display = 'block';
-            maasikView.style.display = 'none';
-            const dayBtn = document.getElementById('phViewDayBtn');
-            if (dayBtn) dayBtn.classList.add('active');
-            const monthBtn = document.getElementById('phViewMonthBtn');
-            if (monthBtn) monthBtn.classList.remove('active');
-        }
     }
 
     // Standard tab routing for standalone page
@@ -180,22 +159,118 @@ window.addEventListener('DOMContentLoaded', () => {
     // Initialize saffron controls bar for Panchang tab
     initSaffronControls();
 
-    // If loading directly into panchang tab, auto-fetch for today
-    if (tab === 'panchang') {
-        const pDateInput = document.getElementById('panchangDateInput');
-        if (pDateInput) pDateInput.value = today;
+    // Define routePageByTab inside or globally
+    window.routePageByTab = function() {
+        const prms = new URLSearchParams(window.location.search);
+        const activeTab = prms.get('tab') || '';
+        const curToday = new Date().toISOString().split('T')[0];
+
+        const welcomeSection = document.getElementById('homeWelcomeSection');
+        const dayViewHome = document.getElementById('dayViewContainer') || document.getElementById('panchangDaySection');
+        const maasikViewHome = document.getElementById('maasikViewContainer') || document.getElementById('maasikSection');
+
+        // Sync input values to session storage on load
+        const savedPlace = sessionStorage.getItem('savedPanchangPlace') || 'New Delhi, India';
         const pPlaceInput = document.getElementById('panchangPlaceInput');
-        const place = (pPlaceInput && pPlaceInput.value) ? pPlaceInput.value : 'New Delhi, India';
-        loadDainikPanchang(today, place);
+        if (pPlaceInput && !pPlaceInput.value) pPlaceInput.value = savedPlace;
+        const mPlaceInput = document.getElementById('maasikPlaceInput');
+        if (mPlaceInput && !mPlaceInput.value) mPlaceInput.value = savedPlace;
+
+        if (activeTab === 'panchang') {
+            if (welcomeSection) welcomeSection.style.display = 'none';
+            if (dayViewHome) dayViewHome.style.display = 'block';
+            if (maasikViewHome) maasikViewHome.style.display = 'none';
+
+            const controlsCard = document.querySelector('.controls-card');
+            const routerHeader = document.querySelector('.panchang-unified-header');
+            if (controlsCard) controlsCard.style.display = 'flex';
+            if (routerHeader) routerHeader.style.display = 'flex';
+
+            const pDateInput = document.getElementById('panchangDateInput');
+            if (pDateInput && !pDateInput.value) pDateInput.value = curToday;
+
+            loadDainikPanchang(pDateInput ? pDateInput.value : curToday, pPlaceInput ? pPlaceInput.value : savedPlace);
+
+            ['phViewDayBtn','phViewDayBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.add('active'); });
+            ['phViewMonthBtn','phViewMonthBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
+        } else if (activeTab === 'maasik') {
+            if (welcomeSection) welcomeSection.style.display = 'none';
+            if (dayViewHome) dayViewHome.style.display = 'none';
+            if (maasikViewHome) maasikViewHome.style.display = 'block';
+
+            const controlsCard = document.querySelector('.controls-card');
+            const routerHeader = document.querySelector('.panchang-unified-header');
+            if (controlsCard) controlsCard.style.display = 'flex';
+            if (routerHeader) routerHeader.style.display = 'flex';
+
+            const maasikMonthInput = document.getElementById('maasikMonthInput');
+            if (maasikMonthInput && !maasikMonthInput.value) {
+                maasikMonthInput.value = `${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}`;
+            }
+
+            loadMaasikCalendar();
+
+            ['phViewMonthBtn','phViewMonthBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.add('active'); });
+            ['phViewDayBtn','phViewDayBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
+        } else {
+            if (welcomeSection) welcomeSection.style.display = 'block';
+            if (dayViewHome) dayViewHome.style.display = 'none';
+            if (maasikViewHome) maasikViewHome.style.display = 'none';
+
+            const controlsCard = document.querySelector('.controls-card');
+            const routerHeader = document.querySelector('.panchang-unified-header');
+            if (controlsCard) controlsCard.style.display = 'none';
+            if (routerHeader) routerHeader.style.display = 'none';
+        }
+    };
+
+    // Run router on load
+    window.routePageByTab();
+
+    // Popstate listener
+    window.addEventListener('popstate', () => {
+        window.routePageByTab();
+    });
+
+    // Save location session event listeners
+    const btnSavePanchangPlace = document.getElementById('btnSavePanchangPlace');
+    const pPlaceInput = document.getElementById('panchangPlaceInput');
+    const mPlaceInput = document.getElementById('maasikPlaceInput');
+
+    if (btnSavePanchangPlace) {
+        btnSavePanchangPlace.addEventListener('click', () => {
+            const val = pPlaceInput ? pPlaceInput.value : '';
+            if (val) {
+                sessionStorage.setItem('savedPanchangPlace', val);
+                if (mPlaceInput) mPlaceInput.value = val;
+                btnSavePanchangPlace.textContent = '✅';
+                setTimeout(() => { btnSavePanchangPlace.textContent = '💾'; }, 1500);
+            }
+        });
     }
 
-    // If loading maasik tab, initialize month and load calendar
-    if (tab === 'maasik') {
-        const maasikMonthInput = document.getElementById('maasikMonthInput');
-        if (maasikMonthInput) {
-            maasikMonthInput.value = `${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}`;
-        }
-        loadMaasikCalendar();
+    const btnSaveMaasikPlace = document.getElementById('btnSaveMaasikPlace');
+    if (btnSaveMaasikPlace) {
+        btnSaveMaasikPlace.addEventListener('click', () => {
+            const val = mPlaceInput ? mPlaceInput.value : '';
+            if (val) {
+                sessionStorage.setItem('savedPanchangPlace', val);
+                if (pPlaceInput) pPlaceInput.value = val;
+                btnSaveMaasikPlace.textContent = '✅';
+                setTimeout(() => { btnSaveMaasikPlace.textContent = '💾'; }, 1500);
+            }
+        });
+    }
+
+    // Redirect click from btnThemeSelectorTrigger to themeToggleBtn
+    const themeTrigger = document.getElementById('btnThemeSelectorTrigger');
+    if (themeTrigger) {
+        themeTrigger.addEventListener('click', () => {
+            const toggleBtn = document.getElementById('themeToggleBtn');
+            if (toggleBtn) {
+                toggleBtn.click();
+            }
+        });
     }
 });
 
@@ -1576,7 +1651,20 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     drawTrack("Yoga", 140, yogaSegs);
     drawTrack("Karana", 180, karanaSegs);
 
-    svg += `<text x="15" y="238" font-size="12" font-weight="700" fill="#7c2d12">Weekday</text>`;
+    function getChoghadiyaDesc(name) {
+        const descs = {
+            'amrit': 'Amrit (Moon-ruled): The most auspicious period, ideal for all important activities, rituals, and new beginnings.',
+            'shubh': 'Shubh (Jupiter-ruled): Highly auspicious, best suited for ceremonies, weddings, and religious events.',
+            'labh': 'Labh (Mercury-ruled): Auspicious for business, trade, learning, and signing contracts.',
+            'chal': 'Chal (Venus-ruled): A neutral period specifically recommended for travel and movement.',
+            'rog': 'Rog (Mars-ruled): Inauspicious, associated with conflict and illness; avoid for new ventures.',
+            'kaal': 'Kaal (Saturn-ruled): Inauspicious, associated with delays and loss; unsuitable for auspicious work.',
+            'udveg': 'Udveg (Sun-ruled): Inauspicious, associated with anxiety and obstacles; best avoided for personal tasks.'
+        };
+        return descs[name.toLowerCase()] || '';
+    }
+
+    svg += `<text x="15" y="238" font-size="12" font-weight="700" fill="#7c2d12">Choghadiya</text>`;
     svg += `<line x1="80" y1="220" x2="960" y2="220" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
     
     let choghadiyaParts = [];
@@ -1596,21 +1684,30 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
             let w = endX - startX;
             if (w > 0) {
                 let color = p.quality === 'Good' ? '#15803d' : '#b91c1c';
+                const desc = getChoghadiyaDesc(p.name);
                 svg += `
-                    <line x1="${startX}" y1="220" x2="${startX}" y2="242" stroke="rgba(124,45,18,0.2)" stroke-width="1" />
-                    <text x="${startX + w/2}" y="234" font-size="9" font-weight="700" fill="${color}" text-anchor="middle">${p.name}</text>
+                    <g style="cursor: help;" class="glossary-term" data-term="${p.name.toLowerCase()}">
+                        <title>${desc}</title>
+                        <rect x="${startX}" y="224" width="${w}" height="22" fill="none" stroke="rgba(124,45,18,0.1)" />
+                        <line x1="${startX}" y1="220" x2="${startX}" y2="246" stroke="rgba(124,45,18,0.2)" stroke-width="1" />
+                        <text x="${startX + w/2}" y="238" font-size="9" font-weight="700" fill="${color}" text-anchor="middle">${p.name}</text>
+                    </g>
                 `;
             }
         });
     }
+
+    // New Weekday / Vaar track
+    svg += `<text x="15" y="278" font-size="12" font-weight="700" fill="#7c2d12">Vaar</text>`;
+    svg += `<line x1="80" y1="260" x2="960" y2="260" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
     let wdName = panchang.vara || "Mangalawara";
-    svg += `<text x="520" y="254" font-size="11" font-weight="700" fill="#7c2d12" text-anchor="middle">${wdName}</text>`;
-    svg += `<line x1="80" y1="260" x2="960" y2="260" stroke="#7c2d12" stroke-width="1.5" />`;
+    svg += `<text x="520" y="278" font-size="11" font-weight="700" fill="#7c2d12" text-anchor="middle">${wdName}</text>`;
+    svg += `<line x1="80" y1="300" x2="960" y2="300" stroke="#7c2d12" stroke-width="1.5" />`;
 
     let uniqueBoundaries = [...new Set(boundaries)].sort((a,b) => a-b);
     uniqueBoundaries.forEach(min => {
         let x = getX(min);
-        svg += `<line x1="${x}" y1="40" x2="${x}" y2="260" stroke="#b33922" stroke-width="1" stroke-dasharray="3,3" />`;
+        svg += `<line x1="${x}" y1="40" x2="${x}" y2="300" stroke="#b33922" stroke-width="1" stroke-dasharray="3,3" />`;
     });
 
     let dateStr = (document.getElementById('panchangDateInput') || document.getElementById('birthDate') || {}).value || new Date().toISOString().split('T')[0];
@@ -1837,28 +1934,73 @@ function switchPancView(view) {
     const personalSection = document.getElementById('personalKundliSection');
     const maasikSection = document.getElementById('maasikSection');
     
+    const dayViewHome = document.getElementById('dayViewContainer');
+    const maasikViewHome = document.getElementById('maasikViewContainer');
+    
+    // Update URL query parameter without page reload
+    const url = new URL(window.location);
+    url.searchParams.set('tab', view === 'day' ? 'panchang' : 'maasik');
+    window.history.pushState({}, '', url);
+
     if (view === 'day') {
         if (personalSection) { personalSection.classList.add('active'); personalSection.style.display = 'block'; }
         if (maasikSection) { maasikSection.classList.remove('active'); maasikSection.style.display = 'none'; }
+        
+        if (dayViewHome) dayViewHome.style.display = 'block';
+        if (maasikViewHome) maasikViewHome.style.display = 'none';
+
+        // Update Title & Subtitle in Red Header
+        const phTitle = document.getElementById('phTitleDaik') || document.querySelector('.ph-title');
+        const phSub = document.getElementById('phSubDaik') || document.querySelector('.ph-subtitle');
+        if (phTitle) phTitle.textContent = "Dainik Panchang";
+        if (phSub) phSub.textContent = "Detailed daily astrological timing windows";
+
         // Sync state buttons
         ['phViewDayBtn','phViewDayBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.add('active'); });
         ['phViewMonthBtn','phViewMonthBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
-        // Apply panchang layout
-        applyLayoutStyles('panchang');
-        // Make tabPanchang active
-        document.querySelectorAll('#outputCard .tab-content').forEach(tc => tc.classList.remove('active'));
-        const tabPanchang = document.getElementById('tabPanchang');
-        if (tabPanchang) tabPanchang.classList.add('active');
+        
+        // Hide welcome section if on index.html
+        const welcome = document.getElementById('homeWelcomeSection');
+        if (welcome) welcome.style.display = 'none';
+        const controlsCard = document.querySelector('.controls-card');
+        const routerHeader = document.querySelector('.panchang-unified-header');
+        if (controlsCard) controlsCard.style.display = 'flex';
+        if (routerHeader) routerHeader.style.display = 'flex';
+
         // Load if needed
         const pDateInput = document.getElementById('panchangDateInput');
         const pPlaceInput = document.getElementById('panchangPlaceInput');
-        if (pDateInput) loadDainikPanchang(pDateInput.value, pPlaceInput ? pPlaceInput.value : 'New Delhi, India');
+        const place = (pPlaceInput && pPlaceInput.value) ? pPlaceInput.value : sessionStorage.getItem('savedPanchangPlace') || 'New Delhi, India';
+        const today = new Date().toISOString().split('T')[0];
+        if (pDateInput) {
+            if (!pDateInput.value) pDateInput.value = today;
+            loadDainikPanchang(pDateInput.value, place);
+        }
     } else {
         if (personalSection) { personalSection.classList.remove('active'); personalSection.style.display = 'none'; }
         if (maasikSection) { maasikSection.classList.add('active'); maasikSection.style.display = 'block'; }
+        
+        if (dayViewHome) dayViewHome.style.display = 'none';
+        if (maasikViewHome) maasikViewHome.style.display = 'block';
+
+        // Update Title & Subtitle in Red Header
+        const phTitle = document.getElementById('phTitleDaik') || document.querySelector('.ph-title');
+        const phSub = document.getElementById('phSubDaik') || document.querySelector('.ph-subtitle');
+        if (phTitle) phTitle.textContent = "Maasik Panchang";
+        if (phSub) phSub.textContent = "Monthly Hindu Calendar & auspicious fasts";
+
         // Sync state buttons
         ['phViewMonthBtn','phViewMonthBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.add('active'); });
         ['phViewDayBtn','phViewDayBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
+        
+        // Hide welcome section if on index.html
+        const welcome = document.getElementById('homeWelcomeSection');
+        if (welcome) welcome.style.display = 'none';
+        const controlsCard = document.querySelector('.controls-card');
+        const routerHeader = document.querySelector('.panchang-unified-header');
+        if (controlsCard) controlsCard.style.display = 'flex';
+        if (routerHeader) routerHeader.style.display = 'flex';
+
         // Initialize month input to today if empty
         const maasikMonthInput = document.getElementById('maasikMonthInput');
         if (maasikMonthInput && !maasikMonthInput.value) {
@@ -1868,7 +2010,10 @@ function switchPancView(view) {
         // Sync place input
         const pPlaceInput = document.getElementById('panchangPlaceInput');
         const maasikPlaceInput = document.getElementById('maasikPlaceInput');
-        if (pPlaceInput && maasikPlaceInput && !maasikPlaceInput.value) maasikPlaceInput.value = pPlaceInput.value;
+        const saved = sessionStorage.getItem('savedPanchangPlace') || 'New Delhi, India';
+        if (pPlaceInput && maasikPlaceInput) {
+            if (!maasikPlaceInput.value) maasikPlaceInput.value = pPlaceInput.value || saved;
+        }
         loadMaasikCalendar();
     }
 }

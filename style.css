@@ -11,6 +11,9 @@
     --header-bg: rgba(13, 17, 23, 0.9);
     --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     --title-color: #f0883e;
+    --tile-bg: rgba(22, 27, 34, 0.95);
+    --sidebar-bg: rgba(13, 17, 23, 0.85);
+    --minicard-bg: rgba(30, 41, 59, 0.8);
 }
 
 body.theme-manuscript {
@@ -25,6 +28,9 @@ body.theme-manuscript {
     --header-bg: rgba(253, 251, 247, 0.95);
     --shadow: 0 4px 15px rgba(154, 52, 18, 0.12);
     --title-color: #9a3412;
+    --tile-bg: #f5f2e9;
+    --sidebar-bg: #eadcb9;
+    --minicard-bg: #faedd2;
 }
 
 body.theme-bright {
@@ -39,6 +45,9 @@ body.theme-bright {
     --header-bg: rgba(255, 255, 255, 0.95);
     --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     --title-color: #0f766e;
+    --tile-bg: #ffffff;
+    --sidebar-bg: #f1f5f9;
+    --minicard-bg: #e2e8f0;
 }
 
 body.theme-focus {
@@ -53,6 +62,9 @@ body.theme-focus {
     --header-bg: rgba(9, 9, 11, 0.95);
     --shadow: 0 0 0 1px #27272a;
     --title-color: #fafafa;
+    --tile-bg: #18181b;
+    --sidebar-bg: #09090b;
+    --minicard-bg: #27272a;
 }
 
 body.theme-pale {
@@ -67,6 +79,9 @@ body.theme-pale {
     --header-bg: rgba(255, 255, 255, 0.95);
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     --title-color: #4d7c0f;
+    --tile-bg: #ffffff;
+    --sidebar-bg: #f4f4f5;
+    --minicard-bg: #e4e4e7;
 }
 
 body.theme-indigo {
@@ -81,6 +96,9 @@ body.theme-indigo {
     --header-bg: rgba(3, 7, 18, 0.95);
     --shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
     --title-color: #c084fc;
+    --tile-bg: #1e1b4b;
+    --sidebar-bg: #0f0c2a;
+    --minicard-bg: #312e81;
 }
 
 body {
@@ -99,7 +117,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 12px 28px;
-    background: rgba(253, 251, 247, 0.9);
+    background: var(--header-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     position: sticky;
