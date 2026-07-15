@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Vedic Jyotishi Dashboard | Sanskrit AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Noto+Serif:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css?v=20260715">
+<script src="../../nav.js?v=20260715" defer></script>
+<style>
+    :root {
+        --bg-color: #08090f;
+        --card-bg: rgba(255, 255, 255, 0.02);
+        --border-color: rgba(255, 255, 255, 0.05);
+        --primary-glow: rgba(99, 102, 241, 0.15);
+        --text-color: #e2e8f0;
+        --muted-text: #94a3b8;
+        --accent-purple: #818cf8;
+        --accent-gold: #fbbf24;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        padding: 2rem;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #a5b4fc 0%, #c084fc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+    }
+
+    header p {
+        color: var(--muted-text);
+        font-size: 1.1rem;
+    }
+
+    .top-nav-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .top-tab-btn {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border-color);
+        color: var(--muted-text);
+        font-size: 1.1rem;
+        font-weight: 600;
+        padding: 0.75rem 2rem;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .top-tab-btn.active, .top-tab-btn:hover {
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        color: #fff;
+        border-color: transparent;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    .main-section {
+        display: none;
+    }
+
+    .main-section.active {
+        display: block;
+    }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 2fr;
+        gap: 2rem;
+        align-items: start;
+    }
+
+    @media (max-width: 950px) {
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .glass-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2rem;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-card:hover {
+        border-color: rgba(129, 140, 248, 0.3);
+        box-shadow: 0 10px 35px var(--primary-glow);
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--muted-text);
+        margin-bottom: 0.5rem;
+    }
+
+    .form-group input, .form-group select {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        color: #fff;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: border-color 0.3s;
+    }
+
+    .form-group select option {
+        background-color: var(--bg-color);
+        color: #fff;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+        outline: none;
+        border-color: var(--accent-purple);
+    }
+
+    .btn-submit {
+        width: 100%;
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 0.8rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 25px rgba(99, 102, 241, 0.6);
+    }
+
+    .tabs {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .tab-btn {
+        background: none;
+        border: none;
+        color: var(--muted-text);
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        transition: color 0.3s;
+        position: relative;
+    }
+
+    .tab-btn.active {
+        color: var(--accent-purple);
+    }
+
+    .tab-btn.active::after {
+        content: '';
+        position: absolute;
+        bottom: -0.6rem;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--accent-purple);
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .charts-row {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .chart-box {
+        text-align: center;
+    }
+
+    .chart-box h4 {
+        margin-bottom: 1rem;
+        color: var(--accent-purple);
+        font-size: 1.1rem;
+    }
+
+    .planet-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .planet-box {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .planet-name {
+        font-weight: 700;
+        color: var(--accent-purple);
+    }
+
+    .panchang-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    .panchang-table td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .panchang-table td:first-child {
+        font-weight: 600;
+        color: var(--muted-text);
+        width: 35%;
+    }
+
+    .dasha-list {
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 1rem;
+        font-family: monospace;
+    }
+
+    .dasha-item {
+        margin-left: 1.5rem;
+        border-left: 1px dashed rgba(255, 255, 255, 0.1);
+        padding-left: 1rem;
+        margin-top: 0.25rem;
+    }
+
+    .dasha-title {
+        font-weight: 700;
+        color: var(--accent-gold);
+    }
+
+    .milan-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    @media (max-width: 800px) {
+        .milan-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .result-badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        font-size: 1.2rem;
+        font-weight: 700;
+        border-radius: 8px;
+        margin-top: 1rem;
+    }
+
+    .result-badge.success {
+        background-color: rgba(34, 197, 94, 0.15);
+        color: #4ade80;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .result-badge.fail {
+        background-color: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .muhurta-section-title {
+        color: var(--accent-gold);
+        margin: 1.5rem 0 0.5rem 0;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.25rem;
+    }
+
+    /* ── Unified Panchang Navigation Header ── */
+    .panchang-unified-header {
+        background: linear-gradient(135deg, #a23922 0%, #7c1a08 100%);
+        border-radius: 10px 10px 0 0;
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 1rem;
+    }
+    .panchang-unified-header .ph-title { font-size: 1.15rem; font-weight: 800; color: #fff; }
+    .panchang-unified-header .ph-subtitle { font-size: 0.78rem; color: rgba(255,255,255,0.75); }
+    .panchang-unified-header .ph-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .ph-nav-btn {
+        background: rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.25);
+        color: #fff; width: 32px; height: 32px; border-radius: 50%;
+        font-size: 1.1rem; font-weight: 700; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; transition: background 0.2s;
+    }
+    .ph-nav-btn:hover { background: rgba(0,0,0,0.5); }
+    .ph-date-input {
+        background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.3);
+        border-radius: 6px; color: #fff; padding: 5px 10px; font-weight: 700; font-size: 0.9rem; min-width: 130px;
+    }
+    .ph-date-input::-webkit-calendar-picker-indicator { filter: invert(1); }
+    .ph-today-btn {
+        background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.2);
+        color: #fbbf24; padding: 5px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.85rem; transition: all 0.2s;
+    }
+    .ph-today-btn:hover { background: rgba(251,191,36,0.15); }
+    .ph-view-toggle { display: flex; background: rgba(0,0,0,0.25); border-radius: 6px; overflow: hidden; border: 1.5px solid rgba(255,255,255,0.15); }
+    .ph-view-btn { padding: 5px 12px; border: none; background: transparent; color: rgba(255,255,255,0.7); font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
+    .ph-view-btn.active { background: rgba(255,255,255,0.2); color: #fff; }
+    .ph-place-input {
+        background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.2);
+        border-radius: 6px; color: #fff; padding: 5px 10px; font-size: 0.85rem; min-width: 160px;
+    }
+    .ph-place-input::placeholder { color: rgba(255,255,255,0.5); }
+
+    /* ── Monthly Calendar Grid ── */
+    #maasikSection { display: none; }
+    #maasikSection.active { display: block; }
+    .monthly-panchang-wrapper {
+        display: flex; gap: 0; border: 2px solid #a23922; border-top: none;
+        border-radius: 0 0 10px 10px; background: var(--card-bg); overflow: hidden;
+    }
+    .monthly-cal-main { flex: 1; padding: 1.25rem; overflow-x: auto; }
+    .monthly-cal-sidebar {
+        width: 310px; min-width: 260px; border-left: 2px solid rgba(162,57,34,0.3);
+        background: rgba(0,0,0,0.22); padding: 1rem; overflow-y: auto; max-height: 75vh;
+    }
+    .monthly-cal-sidebar .sidebar-title { font-size: 0.95rem; font-weight: 800; color: var(--accent-gold); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-color); }
+    .cal-grid-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 4px; }
+    .cal-grid-header div { text-align: center; font-size: 0.7rem; font-weight: 700; color: var(--accent-gold); padding: 6px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+    .cal-cell {
+        background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.06);
+        border-radius: 6px; padding: 5px 6px; cursor: pointer; min-height: 88px;
+        display: flex; flex-direction: column; gap: 2px; transition: all 0.18s;
+        position: relative; overflow: hidden;
+    }
+    .cal-cell:hover { border-color: #a23922; background: rgba(162,57,34,0.08); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(162,57,34,0.15); }
+    .cal-cell.selected { border-color: #fbbf24 !important; background: rgba(251,191,36,0.07) !important; box-shadow: 0 0 0 2px rgba(251,191,36,0.25); }
+    .cal-cell.today-cell { border-color: rgba(99,102,241,0.6); background: rgba(99,102,241,0.07); }
+    .cal-cell.empty-cell { background: transparent; border-color: transparent; cursor: default; pointer-events: none; }
+    .cell-day-num { font-size: 1rem; font-weight: 800; color: var(--text-color); line-height: 1; }
+    .cell-tithi { font-size: 0.62rem; font-weight: 700; color: #fbbf24; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cell-nakshatra { font-size: 0.58rem; color: #a78bfa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cell-sun-moon { margin-top: auto; display: flex; justify-content: space-between; font-size: 0.56rem; color: rgba(255,255,255,0.5); }
+    .cal-month-loading { text-align: center; padding: 2rem; color: var(--muted-text); font-size: 1rem; }
+    .sidebar-mini-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; }
+    .sidebar-mini-card .smc-label { font-size: 0.7rem; color: var(--muted-text); font-weight: 600; margin-bottom: 2px; }
+    .sidebar-mini-card .smc-value { font-size: 0.82rem; color: #e2e8f0; font-weight: 700; }
+    @media (max-width: 900px) {
+        .monthly-panchang-wrapper { flex-direction: column; }
+        .monthly-cal-sidebar { width: 100%; border-left: none; border-top: 2px solid rgba(162,57,34,0.3); max-height: 380px; }
+        .cal-cell { min-height: 65px; }
+    }
+
+</style>
+</head>
+<body>
+
+
+<!-- HEADER -->
+<header class="header">
+<div class="logo-area">
+<img src="../../logo.png" class="logo">
+<h1>Sanskrit AI</h1>
+</div>
+<div class="header-icons"><span>🔍</span><span id="themeToggleBtn">🌓</span><span id="notificationBtn">🔔</span><span id="profileBtn">👤</span><span class="menu-icon">☰</span></div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="menu-overlay"></div>
+<div class="mobile-menu">
+</div>
+
+<div class="container">
+    <div id="breadcrumbs" class="breadcrumbs-container"></div>
+
+    <!-- Top Navigation Tabs -->
+    <div class="top-nav-tabs">
+        <button class="top-tab-btn active" onclick="switchTopTab(event, 'personalKundliSection')">Personalized Kundli</button>
+        <button class="top-tab-btn" onclick="switchTopTab(event, 'gocharSection')">Graha Gochar (Transits)</button>
+        <button class="top-tab-btn" onclick="switchTopTab(event, 'milanSection')">Match Making (Milan)</button>
+    </div>
+
+    <!-- 1. Personalized Kundli Section -->
+    <div id="personalKundliSection" class="main-section active">
+        <div class="dashboard-grid">
+            <div class="glass-card">
+                <h3 style="color: var(--accent-purple); margin-bottom: 1.5rem;">Enter Birth Details</h3>
+                <div class="form-group">
+                    <label for="birthDate">Date of Birth</label>
+                    <input type="date" id="birthDate" value="1994-01-05">
+                </div>
+                <div class="form-group">
+                    <label for="birthTime">Time of Birth</label>
+                    <input type="time" id="birthTime" value="20:00">
+                </div>
+                <div class="form-group">
+                    <label for="birthPlace">Place of Birth</label>
+                    <input type="text" id="birthPlace" value="Patna, Bihar, India">
+                </div>
+                <button class="btn-submit" id="btnCalculate">Generate Kundli</button>
+            </div>
+
+            <!-- Output Display -->
+            <div class="glass-card" id="outputCard" style="display: none;">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab(event, 'tabDivisional')">Divisional Charts</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tabPanchang')">Panchang</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tabMuhurtas')">Muhurtas & Times</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tabDasha')">Vimshottari Dasha</button>
+                </div>
+
+                <!-- Tab Divisional Charts -->
+                <div id="tabDivisional" class="tab-content active">
+                    <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                        <label for="vargaSelect" style="font-weight: 600; color: var(--muted-text);">Choose Varga (Division):</label>
+                        <select id="vargaSelect" style="width: 250px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: #fff; padding: 0.5rem; border-radius: 6px;" onchange="updateVargaCharts()">
+                            <option value="D1">D1 (Rashi) - Natal Chart</option>
+                            <option value="D2">D2 (Hora) - Wealth</option>
+                            <option value="D3">D3 (Drekkana) - Siblings</option>
+                            <option value="D4">D4 (Chaturthamsa) - Destiny/House</option>
+                            <option value="D7">D7 (Saptamsa) - Progeny</option>
+                            <option value="D9" selected>D9 (Navamsa) - Marriage/Spouse</option>
+                            <option value="D10">D10 (Dasamsa) - Career/Profession</option>
+                            <option value="D12">D12 (Dwadasamsa) - Parents</option>
+                            <option value="D16">D16 (Shodasamsa) - Vehicles/Luxuries</option>
+                            <option value="D20">D20 (Vimsamsa) - Spiritual Progress</option>
+                            <option value="D24">D24 (Chaturvimsamsa) - Learning/Knowledge</option>
+                            <option value="D30">D30 (Trimsamsa) - Evil Effects</option>
+                            <option value="D40">D40 (Khavedamsa) - Auspiciousness</option>
+                            <option value="D45">D45 (Akshavedamsa) - Character</option>
+                            <option value="D60">D60 (Shastiamsa) - Past Karma</option>
+                        </select>
+                    </div>
+
+                    <div class="charts-row">
+                        <div class="chart-box">
+                            <h4 id="vargaNorthTitle">North Indian Chart (D9)</h4>
+                            <div id="vargaNorth"></div>
+                        </div>
+                        <div class="chart-box">
+                            <h4 id="vargaSouthTitle">South Indian Chart (D9)</h4>
+                            <div id="vargaSouth"></div>
+                        </div>
+                    </div>
+                    <h3 style="margin-top: 2rem; color: var(--accent-purple);">Planetary Placements</h3>
+                    <div class="planet-grid" id="d1Planets"></div>
+                </div>
+
+                <!-- Tab Panchang (Dainik) -->
+                <div id="tabPanchang" class="tab-content">
+                    <!-- Unified Panchang Navigation Header -->
+                    <div class="panchang-unified-header" id="daikPancHeader">
+                        <div>
+                            <div class="ph-title" id="phTitleDaik">Dainik Panchang</div>
+                            <div class="ph-subtitle" id="phSubDaik">Loading...</div>
+                        </div>
+                        <div class="ph-controls">
+                            <div class="ph-view-toggle">
+                                <button class="ph-view-btn active" id="phViewDayBtn" onclick="switchPancView('day')">Day</button>
+                                <button class="ph-view-btn" id="phViewMonthBtn" onclick="switchPancView('month')">Month</button>
+                            </div>
+                            <button class="ph-nav-btn" id="panchangPrevDayBtn" title="Previous Day">&#8249;</button>
+                            <input type="date" class="ph-date-input" id="panchangDateInput" value="2026-07-14">
+                            <button class="ph-nav-btn" id="panchangNextDayBtn" title="Next Day">&#8250;</button>
+                            <button class="ph-today-btn" id="panchangTodayBtn">Today</button>
+                            <input type="text" class="ph-place-input" id="panchangPlaceInput" value="New Delhi, India" placeholder="Place...">
+                        </div>
+                    </div>
+
+                    <!-- Visual Timeline Container -->
+                    <div id="drikTimelineContainer" style="background: #ebd9b4; border: 2px solid #a23922; border-top: none; padding: 25px; border-radius: 0 0 8px 8px; color: #2d3748; font-family: 'Noto Serif', serif; position: relative; overflow-x: auto; margin-bottom: 2rem;">
+                        <div style="text-align: center; padding: 2rem; color: #7c2d12; font-weight: 700;">Loading Panchang for today...</div>
+                    </div>
+
+                    <!-- Grid Cards Container -->
+                    <div id="panchangBody" class="drik-dashboard-panchang"></div>
+                </div>
+
+                <!-- Tab Muhurtas -->
+                <div id="tabMuhurtas" class="tab-content">
+                    <h3 class="muhurta-section-title">Choghadiya Timings (Day/Night)</h3>
+                    <table class="panchang-table">
+                        <thead>
+                            <tr style="color: var(--accent-purple); text-align: left; font-weight: 700;">
+                                <th style="padding: 0.5rem;">Period</th>
+                                <th style="padding: 0.5rem;">Time Span</th>
+                                <th style="padding: 0.5rem;">Choghadiya</th>
+                                <th style="padding: 0.5rem;">Quality</th>
+                            </tr>
+                        </thead>
+                        <tbody id="choghadiyaBody"></tbody>
+                    </table>
+
+                    <h3 class="muhurta-section-title" style="margin-top: 2rem;">Planetary Horas</h3>
+                    <table class="panchang-table">
+                        <thead>
+                            <tr style="color: var(--accent-purple); text-align: left; font-weight: 700;">
+                                <th style="padding: 0.5rem;">Hour</th>
+                                <th style="padding: 0.5rem;">Time Span</th>
+                                <th style="padding: 0.5rem;">Lord (Ruler)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="horaBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Tab Dasha -->
+                <div id="tabDasha" class="tab-content">
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;" id="dashaHeader">Vimshottari Dasha Hierarchy</h3>
+                    <div class="dasha-list" id="dashaContainer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Graha Gochar Section -->
+    <div id="gocharSection" class="main-section">
+        <div class="dashboard-grid">
+            <div class="glass-card">
+                <h3 style="color: var(--accent-purple); margin-bottom: 1.5rem;">Select Gochar Date</h3>
+                <div class="form-group">
+                    <label for="gocharDate">Date</label>
+                    <input type="date" id="gocharDate">
+                </div>
+                <div class="form-group">
+                    <label for="gocharTime">Time</label>
+                    <input type="time" id="gocharTime" value="12:00">
+                </div>
+                <div class="form-group">
+                    <label for="gocharPlace">Place</label>
+                    <input type="text" id="gocharPlace" value="New Delhi, India">
+                </div>
+                <button class="btn-submit" id="btnGochar">View Gochar</button>
+            </div>
+
+            <!-- Gochar Output -->
+            <div class="glass-card" id="gocharOutputCard" style="display: none;">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab(event, 'tabGocharD1')">Gochar Charts</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tabGocharPanchang')">Panchang</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tabGocharMuhurtas')">Muhurtas</button>
+                </div>
+
+                <div id="tabGocharD1" class="tab-content active">
+                    <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                        <label for="gocharVargaSelect" style="font-weight: 600; color: var(--muted-text);">Choose Varga (Transit):</label>
+                        <select id="gocharVargaSelect" style="width: 250px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: #fff; padding: 0.5rem; border-radius: 6px;" onchange="updateGocharVargaCharts()">
+                            <option value="D1" selected>D1 (Rashi) - Natal Chart</option>
+                            <option value="D9">D9 (Navamsa) - Marriage/Spouse</option>
+                        </select>
+                    </div>
+
+                    <div class="charts-row">
+                        <div class="chart-box">
+                            <h4 id="gocharVargaNorthTitle">Gochar North Indian</h4>
+                            <div id="gocharNorth"></div>
+                        </div>
+                        <div class="chart-box">
+                            <h4 id="gocharVargaSouthTitle">Gochar South Indian</h4>
+                            <div id="gocharSouth"></div>
+                        </div>
+                    </div>
+                    <h3 style="margin-top: 2rem; color: var(--accent-purple);">Gochar Transit Degrees</h3>
+                    <div class="planet-grid" id="gocharPlanets"></div>
+                </div>
+
+                <div id="tabGocharPanchang" class="tab-content">
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">Gochar Panchang</h3>
+                    <table class="panchang-table">
+                        <tbody id="gocharPanchangBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="tabGocharMuhurtas" class="tab-content">
+                    <h3 class="muhurta-section-title">Choghadiya Timings (Transit)</h3>
+                    <table class="panchang-table">
+                        <thead>
+                            <tr style="color: var(--accent-purple); text-align: left; font-weight: 700;">
+                                <th style="padding: 0.5rem;">Period</th>
+                                <th style="padding: 0.5rem;">Time Span</th>
+                                <th style="padding: 0.5rem;">Choghadiya</th>
+                                <th style="padding: 0.5rem;">Quality</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gocharChoghadiyaBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Match Making Section -->
+    <div id="milanSection" class="main-section">
+        <div class="glass-card" style="margin-bottom: 2rem;">
+            <h3 style="color: var(--accent-purple); margin-bottom: 1.5rem; text-align: center;">Kundli Milan (Ashtakoot Compatibility)</h3>
+            <div class="milan-grid">
+                <!-- Boy Details -->
+                <div>
+                    <h4 style="color: var(--accent-gold); margin-bottom: 1rem;">Groom (Boy) Birth Details</h4>
+                    <div class="form-group">
+                        <label for="boyDate">Date of Birth</label>
+                        <input type="date" id="boyDate" value="1994-01-05">
+                    </div>
+                    <div class="form-group">
+                        <label for="boyTime">Time of Birth</label>
+                        <input type="time" id="boyTime" value="20:00">
+                    </div>
+                    <div class="form-group">
+                        <label for="boyPlace">Place of Birth</label>
+                        <input type="text" id="boyPlace" value="Patna, Bihar, India">
+                    </div>
+                </div>
+                <!-- Girl Details -->
+                <div>
+                    <h4 style="color: var(--accent-gold); margin-bottom: 1rem;">Bride (Girl) Birth Details</h4>
+                    <div class="form-group">
+                        <label for="girlDate">Date of Birth</label>
+                        <input type="date" id="girlDate" value="1995-03-10">
+                    </div>
+                    <div class="form-group">
+                        <label for="girlTime">Time of Birth</label>
+                        <input type="time" id="girlTime" value="08:30">
+                    </div>
+                    <div class="form-group">
+                        <label for="girlPlace">Place of Birth</label>
+                        <input type="text" id="girlPlace" value="Patna, Bihar, India">
+                    </div>
+                </div>
+            </div>
+            <button class="btn-submit" id="btnMatch" style="margin-top: 1.5rem;">Calculate Match Compatibility</button>
+        </div>
+
+        <!-- Match Output Card -->
+        <div class="glass-card" id="milanOutputCard" style="display: none;">
+            <h3 style="color: var(--accent-purple); margin-bottom: 1.5rem; text-align: center;">Guna Milan Results</h3>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div style="font-size: 1.2rem; color: var(--muted-text);">
+                    Boy: <strong id="boyResultInfo" style="color: #fff;"></strong> | Girl: <strong id="girlResultInfo" style="color: #fff;"></strong>
+                </div>
+                <div id="milanScoreBadge" class="result-badge"></div>
+            </div>
+
+            <table class="panchang-table">
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--border-color); text-align: left; font-weight: 700; color: var(--accent-purple);">
+                        <th style="padding: 0.75rem 1rem;">Koot parameter</th>
+                        <th style="padding: 0.75rem 1rem;">Max points</th>
+                        <th style="padding: 0.75rem 1rem;">Obtained points</th>
+                    </tr>
+                </thead>
+                <tbody id="milanTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- 4. Maasik / Monthly Panchang Section -->
+    <div id="maasikSection" class="main-section">
+        <!-- Unified Panchang Header (shared with dainik, shows month) -->
+        <div class="panchang-unified-header" id="maasikPancHeader">
+            <div>
+                <div class="ph-title" id="phTitleMaasik">Maasik Panchang</div>
+                <div class="ph-subtitle" id="phSubMaasik">Loading...</div>
+            </div>
+            <div class="ph-controls">
+                <div class="ph-view-toggle">
+                    <button class="ph-view-btn" id="phViewDayBtnM" onclick="switchPancView('day')">Day</button>
+                    <button class="ph-view-btn active" id="phViewMonthBtnM" onclick="switchPancView('month')">Month</button>
+                </div>
+                <button class="ph-nav-btn" id="maasikPrevBtn" title="Previous Month">&#8249;</button>
+                <input type="month" class="ph-date-input" id="maasikMonthInput" style="min-width:140px;">
+                <button class="ph-nav-btn" id="maasikNextBtn" title="Next Month">&#8250;</button>
+                <button class="ph-today-btn" id="maasikTodayBtn">This Month</button>
+                <input type="text" class="ph-place-input" id="maasikPlaceInput" value="New Delhi, India" placeholder="Place...">
+            </div>
+        </div>
+
+        <!-- Calendar Grid + Sidebar Wrapper -->
+        <div class="monthly-panchang-wrapper">
+            <!-- Main Calendar Grid -->
+            <div class="monthly-cal-main">
+                <div class="cal-grid-header">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                </div>
+                <div class="cal-grid" id="maasikCalGrid">
+                    <div class="cal-month-loading">Select a month to view the calendar...</div>
+                </div>
+            </div>
+
+            <!-- Sidebar Details -->
+            <div class="monthly-cal-sidebar" id="maasikSidebar">
+                <div class="sidebar-title" id="maasikSidebarTitle">Select a date for details</div>
+                <div id="maasikSidebarContent">
+                    <div style="color: var(--muted-text); font-size: 0.85rem; text-align: center; padding: 2rem 0;">Click any date in the calendar to view its full Panchang details.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer diagnostic API panel -->
+    <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color); text-align: center; font-size: 0.9rem; color: var(--muted-text);">
+        <p>© 2026 Sanskrit AI Astrological Suite. Enterprise Grade.</p>
+        <button id="btnOpenApiTest" style="background: rgba(124, 45, 18, 0.2); border: 1.5px solid #a23922; color: #fff; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: all 0.2s;">⚙️ Open API Diagnostic Panel</button>
+        
+        <div id="apiTestPanel" style="display: none; background: rgba(0,0,0,0.4); border: 2px solid #a23922; border-radius: 8px; padding: 20px; margin-top: 1.5rem; text-align: left;">
+            <h4 style="color: var(--accent-gold); margin-top:0; border-bottom: 1.5px solid var(--border-color); padding-bottom: 6px;">⚙️ API Diagnostic & Live Validation System</h4>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;">
+                <div style="flex:1; min-width:200px;">
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Date</label>
+                    <input type="date" id="apiTestDate" value="2026-07-14" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:#1e1b4b; color:#fff;">
+                </div>
+                <div style="flex:1; min-width:200px;">
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Place</label>
+                    <input type="text" id="apiTestPlace" value="New Delhi, India" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:#1e1b4b; color:#fff;">
+                </div>
+                <div style="display:flex; align-items:flex-end;">
+                    <button id="btnRunApiTest" style="background:#a23922; border:none; color:#fff; padding:10px 20px; border-radius:4px; font-weight:700; cursor:pointer;">Run API Test</button>
+                </div>
+            </div>
+            <div id="apiTestOutput" style="max-height: 350px; overflow-y: auto; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; border: 1px solid var(--border-color);">
+                Click "Run API Test" to load live dynamic calculation response.
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script src="astrology.js?v=20260715c"></script>
+</body>
+</html>

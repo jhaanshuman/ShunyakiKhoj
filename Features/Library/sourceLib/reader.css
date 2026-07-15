@@ -1,0 +1,70 @@
+body{margin:0;font-family:'Inter',sans-serif;background:#AF6118;overflow:hidden;}
+body.dark #content {background: #1a1a1a;color: #ddd;}
+body.dark .verse-block {background: #2a2a2a;border-left: 4px solid #c2a96b;}
+body.dark .verse {color: #eee;}
+body.dark .verse-id {color: #c2a96b;}
+
+/* HEADER */
+.header{position:fixed;top:0;width:100%;height:50px;background-color: #7f5a83;
+background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
+display:flex;align-items:center;justify-content:space-between;padding:0 15px;box-shadow:0 2px 10px rgba(0,0,0,0.05);z-index:1000;}
+.title{margin-left:50%;}
+
+/* PAGE INDICATOR */
+.page-indicator{position:fixed;top:60px;left:50%;transform:translateX(-50%);background:#111;color:white;padding:4px 12px;border-radius:20px;font-size:14px;}
+#progressContainer {position: fixed;top: 53px;left: 60%;width: 200px;height: 40px;background: #ddd;transform: translateX(-50%);border-radius: 10px;}
+#progressBar {height: 100%;width: 0%;background: #8b6f3d;transition: width 0.2s;border-radius: 10px;}
+
+/* READER */
+.reader{height:75vh;margin-top:100px;width:80%;margin-left:20%;display:flex;justify-content:center;align-items:center;padding-top:0px;padding-bottom:70px;perspective: 1400px;overflow: hidden;}
+
+/* PAGE */
+.page{width:95%;height:70vh;background-color: #faa499;
+background-image: linear-gradient(319deg, #ffae42 0%, #FFFF31 37%, #f8de7e 100%);
+border-radius:12px;padding:5px;box-shadow:0 20px 50px rgba(0,0,0,0.15);position:relative;overflow:hidden;transform-origin: left;transition: transform 0.6s ease;}
+/* fold animation */
+.page.fold {transform: rotateY(-90deg);}
+/* unfold */
+.page.unfold {transform: rotateY(0deg);}
+#content{padding-top:0%;width:100%;height: 100%;overflow-y: auto; font-family: "Noto Serif Devanagari", "Sanskrit 2003", serif;}
+
+/* MOBILE */
+@media(max-width:768px;){.verse{font-size:30px; }}
+
+/* CONTROLS */
+.controls{position:fixed;bottom:0;width:100%;height:60px;background-color: #7f5a83;
+background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
+display:flex;justify-content:space-around;align-items:center;
+    box-shadow:0 -2px 10px rgba(0,0,0,0.05);}
+.controls button{font-size:20px;}
+
+/* VERSE BLOCK */
+.verse-block{margin-bottom:15px;border-radius:6px;box-shadow: 0 2px 6px rgba(0,0,0,0.08);background-color:#8C7111;padding: 12px 14px;border-left: 4px solid #8b6f3d;}
+/* VERSE ID INSIDE PAGE */
+.verse-id{font-size:13px;color:black;margin-bottom:6px;background-color:#BCA140;}
+.verse{font-size: 18px;color: #2b1d0e;letter-spacing: 0.5px;text-align:center;line-height: 1.9;word-break: break-word;font-weight: bold;background-color:#C7AF59;}
+.verse-block::after {content: "॥";display: block;text-align: right;color: #8b6f3d;font-size: 14px;margin-top: 6px;}
+
+/* SIDEBAR */
+#sidebar {position: fixed;left: 0;top: 8%;width: 330px;height: 83%;background: black;color:white;transform: translateX(-100%);transition: 0.3s;overflow-y: auto;padding: 5px;}
+#sidebar.active {transform: translateX(0);}
+
+/* PART */
+.part-title{border-bottom:2px dashed #999;border-top:2px dashed #999;padding:10px;font-weight:bold;left:5px;font-size:16px;}
+/* 🔥 NEW CHAPTER BUTTON */
+.chapter-btn {background-image: linear-gradient(135deg, #ff9f00 0%, #ff6961 74%);color:black;padding: 1px;border-radius: 12px;margin: 8px 0;cursor: pointer;transition: 0.25s;display: flex;flex-direction: column;}
+.chapter-btn:hover {background-image: linear-gradient(135deg, #ff9f00 30%, #ff6961 30%);transform: translateX(5px);}
+.chapter-title{padding:5px;font-weight:600;}
+
+/* VERSE ID */
+.verse-link{padding:6px 10px;margin:5px;border-radius:6px;background:#f3f4f6;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+.verse-link:hover{background:#e0e7ff;}
+
+/* BOOKMARK PANEL */
+.bookmark-panel{position:fixed;right:0;top:0;width:260px;height:100%;background:white;transform:translateX(100%);transition:0.3s;z-index:1001;}
+.bookmark-panel.active{transform:translateX(0);}
+
+/* PAGE CURL */
+.page-corner{position:absolute;bottom:0;right:0;width:80px;height:80px;background:linear-gradient(135deg,#eee,#ccc);clip-path:polygon(100% 0,0 100%,100% 100%);
+    cursor:pointer;transition:0.3s;}
+.page-corner.drag{transform:rotate(-15deg) scale(1.2);}

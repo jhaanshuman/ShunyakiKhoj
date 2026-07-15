@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jyotish Calculator — ShunyaKiKhoj</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg-deep:    #070b14;
+            --bg-card:    rgba(15,23,42,0.85);
+            --accent:     #6366f1;
+            --accent2:    #a855f7;
+            --gold:       #fbbf24;
+            --text:       #e2e8f0;
+            --text-muted: #94a3b8;
+            --border:     rgba(255,255,255,0.08);
+        }
+
+        html, body {
+            min-height: 100vh;
+            background: var(--bg-deep);
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+        }
+
+        /* Cosmic animated background */
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: 0;
+            background:
+                radial-gradient(ellipse 80% 50% at 20% 10%, rgba(99,102,241,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 90%, rgba(168,85,247,0.10) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 30% at 50% 50%, rgba(251,191,36,0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* ── TOP NAV ── */
+        .jw-nav {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 28px;
+            background: rgba(7,11,20,0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+        }
+        .jw-nav-brand {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 1.1rem; font-weight: 800;
+            color: var(--gold);
+            text-decoration: none;
+        }
+        .jw-nav-brand span { font-size: 1.5rem; }
+        .jw-nav-back {
+            display: flex; align-items: center; gap: 6px;
+            color: var(--text-muted); font-size: 0.82rem; font-weight: 600;
+            text-decoration: none; cursor: pointer; border: none; background: none;
+            transition: color 0.2s;
+        }
+        .jw-nav-back:hover { color: var(--accent2); }
+        .jw-feature-badge {
+            background: linear-gradient(90deg, rgba(99,102,241,0.2), rgba(168,85,247,0.2));
+            border: 1px solid rgba(99,102,241,0.3);
+            color: #c7d2fe;
+            padding: 4px 14px; border-radius: 20px;
+            font-size: 0.78rem; font-weight: 700;
+            max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+
+        /* ── MAIN LAYOUT ── */
+        .jw-main {
+            position: relative; z-index: 1;
+            max-width: 1100px; margin: 0 auto;
+            padding: 28px 20px 60px;
+        }
+
+        /* ── HEADING ── */
+        .jw-heading {
+            text-align: center; margin-bottom: 28px;
+        }
+        .jw-heading h1 {
+            font-size: 1.7rem; font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #f97316, #a855f7);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+        .jw-heading p {
+            color: var(--text-muted); font-size: 0.88rem;
+        }
+
+        /* ── INPUT CARD ── */
+        .jw-input-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px 24px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+        }
+        .jw-input-grid {
+            display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px;
+        }
+        .jw-input-group { flex: 1; min-width: 130px; }
+        .jw-input-group.wide { flex: 2; min-width: 200px; }
+        .jw-input-group label {
+            display: block; font-size: 0.72rem; font-weight: 700;
+            color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .jw-input-group input {
+            width: 100%; padding: 9px 11px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #fff; border-radius: 8px;
+            font-family: inherit; font-size: 0.9rem;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .jw-input-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(99,102,241,0.08);
+        }
+        .jw-btn {
+            width: 100%; padding: 11px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            color: #fff; border: none; border-radius: 8px;
+            font-weight: 800; font-size: 0.95rem; cursor: pointer;
+            font-family: inherit;
+            transition: opacity 0.2s, transform 0.15s;
+            box-shadow: 0 4px 20px rgba(99,102,241,0.35);
+        }
+        .jw-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .jw-btn:active { transform: translateY(0); }
+
+        /* Milan form */
+        .jw-milan-grid {
+            display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 14px;
+        }
+        .jw-milan-col { flex: 1; min-width: 200px; }
+        .jw-milan-col h5 {
+            color: var(--gold); font-size: 0.85rem; font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .jw-milan-col input {
+            width: 100%; padding: 8px 10px; margin-bottom: 7px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #fff; border-radius: 7px;
+            font-family: inherit; font-size: 0.88rem;
+        }
+        .jw-milan-col input:focus {
+            outline: none; border-color: var(--accent);
+        }
+
+        /* ── LIVE CLOCK BAR ── */
+        .jw-clock-bar {
+            background: rgba(15,23,42,0.7);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 18px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 8px;
+            margin-bottom: 20px;
+            font-size: 0.82rem;
+        }
+        .jw-clock-bar .live-time {
+            color: var(--gold); font-weight: 800; font-size: 1rem; letter-spacing: 1px;
+        }
+        .jw-clock-bar .live-countdown { color: #fda4af; font-weight: 600; }
+
+        /* ── RESULTS AREA ── */
+        .jw-results {
+            position: relative;
+        }
+
+        /* Spinner */
+        .jw-spinner {
+            text-align: center; padding: 4rem;
+            color: var(--accent); font-weight: 700; font-size: 1.05rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Error */
+        .jw-error {
+            color: #f87171; padding: 2rem;
+            background: rgba(248,113,113,0.06);
+            border: 1px solid rgba(248,113,113,0.2);
+            border-radius: 10px;
+        }
+
+        /* Generic rendered cards inherit styles from jyotish_modal.js render functions */
+        /* Pass-through for drik-card, drik-grid, etc */
+        .drik-card {
+            background: rgba(255,255,255,0.97); color: #1e293b;
+            border-radius: 12px; padding: 16px 18px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+        }
+        .drik-card-title {
+            font-size: 0.82rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            margin-bottom: 10px; color: #4f46e5;
+        }
+        .drik-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 8px;
+        }
+        .drik-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.06);
+            font-size: 0.83rem;
+        }
+        .drik-row:last-child { border-bottom: none; }
+        .drik-label { color: #64748b; font-weight: 600; }
+        .drik-value { color: #1e293b; font-weight: 700; text-align: right; }
+
+        /* Timeline bar */
+        .jw-timeline { margin: 14px 0; position: relative; }
+        .jw-timeline-track {
+            height: 18px; border-radius: 9px; overflow: hidden;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+            position: relative; display: flex;
+        }
+        .jw-timeline-marker {
+            position: absolute; top: -3px; width: 3px; height: 24px;
+            background: #fff; border-radius: 2px; z-index: 5;
+            box-shadow: 0 0 8px rgba(255,255,255,0.8);
+        }
+
+        /* Scrollable section */
+        .jw-section { margin-bottom: 24px; }
+        .jw-section-title {
+            font-size: 0.78rem; font-weight: 800; letter-spacing: 1px;
+            text-transform: uppercase; color: var(--text-muted);
+            margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+        }
+        .jw-section-title::after {
+            content: ''; flex: 1; height: 1px; background: var(--border);
+        }
+
+        /* Chart SVG container */
+        .jw-chart-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .jw-nav { padding: 10px 14px; }
+            .jw-main { padding: 18px 12px 40px; }
+            .jw-heading h1 { font-size: 1.3rem; }
+            .jw-input-grid { flex-direction: column; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.35); border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="jw-nav">
+    <button class="jw-nav-back" onclick="window.close()">
+        ← Close Window
+    </button>
+    <a class="jw-nav-brand" href="/" target="_blank">
+        <span>🕉️</span> ShunyaKiKhoj
+    </a>
+    <div class="jw-feature-badge" id="navBadge">Loading…</div>
+</nav>
+
+<!-- MAIN -->
+<main class="jw-main">
+    <div class="jw-heading">
+        <h1 id="pageHeading">🕉️ Jyotish Calculator</h1>
+        <p id="pageSubtitle">High-precision Vedic Astrology calculations via Swiss Ephemeris</p>
+    </div>
+
+    <!-- INPUT CARD -->
+    <div class="jw-input-card">
+        <!-- Birth form (default) -->
+        <div id="formBirth">
+            <div class="jw-input-grid">
+                <div class="jw-input-group">
+                    <label>Date of Birth</label>
+                    <input type="date" id="mDate" value="">
+                </div>
+                <div class="jw-input-group">
+                    <label>Time</label>
+                    <input type="time" id="mTime" value="20:00">
+                </div>
+                <div class="jw-input-group wide">
+                    <label>📍 City / Place of Birth <span style="color:#64748b;font-weight:400;font-size:0.68rem;">(any city worldwide)</span></label>
+                    <input type="text" id="mPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off">
+                </div>
+            </div>
+            <button class="jw-btn" onclick="triggerCalculation()">Calculate Astrological Placement</button>
+        </div>
+
+        <!-- Milan form (hidden by default) -->
+        <div id="formMilan" style="display:none;">
+            <div class="jw-milan-grid">
+                <div class="jw-milan-col">
+                    <h5>🤵 Groom (Boy)</h5>
+                    <input type="date" id="mBoyDate" value="1994-01-05">
+                    <input type="time" id="mBoyTime" value="20:00">
+                    <input type="text" id="mBoyPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off">
+                </div>
+                <div class="jw-milan-col">
+                    <h5>👰 Bride (Girl)</h5>
+                    <input type="date" id="mGirlDate" value="1995-03-10">
+                    <input type="time" id="mGirlTime" value="08:30">
+                    <input type="text" id="mGirlPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off">
+                </div>
+            </div>
+            <button class="jw-btn" onclick="triggerCalculation()">Calculate Milan Match</button>
+        </div>
+    </div>
+
+    <!-- LIVE CLOCK -->
+    <div class="jw-clock-bar" id="clockBar" style="display:none;">
+        <div>🕐 Live: <span class="live-time" id="liveVedicTime">--:--:--</span></div>
+        <div class="live-countdown" id="liveTransitCountdown">Calculating…</div>
+        <div style="font-size:0.75rem; color:#64748b;" id="liveDateDisplay"></div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="jw-results" id="jwResults">
+        <div class="jw-spinner">🕉️ Initialising calculations…</div>
+    </div>
+</main>
+
+<!-- City autocomplete engine -->
+<script src="./geocomplete.js?v=1.0"></script>
+<!-- Pass-through: reuse the full calculation + render engine -->
+<script src="./jyotish_modal.js?v=1.1.6"></script>
+
+<script>
+// ── Bootstrap: read URL params ──────────────────────────────────────────────
+const _params   = new URLSearchParams(window.location.search);
+const _tab      = _params.get('tab')   || 'panchang';
+const _varga    = _params.get('varga') || 'D1';
+const _feature  = decodeURIComponent(_params.get('feature') || 'Vedic Jyotish Calculator');
+
+// Set page title & heading
+document.title = _feature + ' — ShunyaKiKhoj';
+document.getElementById('navBadge').textContent    = _feature;
+document.getElementById('pageHeading').textContent = '🕉️ ' + _feature;
+
+// Feature-specific subtitle
+const _subtitles = {
+    panchang:   'Dainik Panchang · Tithi · Nakshatra · Yoga · Karana · Sunrise/Sunset',
+    kundli:     'Birth Chart (Kundli) · Swiss Ephemeris · Sidereal Zodiac · Lahiri Ayanamsa',
+    varga:      'Divisional Charts · ' + _varga + ' · Shodashvarga System',
+    dasha:      'Vimshottari Dasha · Mahadasha · Antardasha · Pratyantardasha Timeline',
+    eclipse:    'Eclipses & Planetary Transits · Real-time Astronomical Events',
+    milan:      'Kundli Milan · Guna Matching · Compatibility Analysis',
+    choghadiya: 'Choghadiya · Hora · Auspicious Muhurta Timings',
+    muhurtas:   'Muhurta Calculator · Electional Astrology'
+};
+document.getElementById('pageSubtitle').textContent =
+    _subtitles[_tab] || 'High-precision Swiss Ephemeris calculations';
+
+// Show/hide correct form
+if (_tab === 'milan') {
+    document.getElementById('formBirth').style.display = 'none';
+    document.getElementById('formMilan').style.display = 'block';
+}
+
+// Pre-fill today's date & current time
+const _now = new Date();
+document.getElementById('mDate').value =
+    _now.getFullYear() + '-' +
+    String(_now.getMonth() + 1).padStart(2, '0') + '-' +
+    String(_now.getDate()).padStart(2, '0');
+document.getElementById('mTime').value =
+    String(_now.getHours()).padStart(2, '0') + ':' +
+    String(_now.getMinutes()).padStart(2, '0');
+
+// ── Override getElementById so modal engine writes land in correct containers ─
+// (must run BEFORE jyotish_modal.js DOMContentLoaded fires → placed here)
+const _origGetEl = document.getElementById.bind(document);
+document.getElementById = function (id) {
+    if (id === 'modalResults')      return _origGetEl('jwResults')      || _origGetEl(id);
+    if (id === 'modalFormBirth')    return _origGetEl('formBirth')      || _origGetEl(id);
+    if (id === 'modalFormMilan')    return _origGetEl('formMilan')      || _origGetEl(id);
+    if (id === 'modalFeatureTitle') return _origGetEl('pageHeading')    || _origGetEl(id);
+    return _origGetEl(id);
+};
+
+// ── Wire globals the modal engine reads (NO re-declaration — already in jyotish_modal.js) ─
+window.currentModalTab     = _tab;
+window.currentModalVarga   = _varga;
+window.currentModalFeature = _feature;
+// modalCalculatedData is already declared in jyotish_modal.js as a module-level let
+
+// ── City-not-found helper ────────────────────────────────────────────────────
+function _cityErrorHtml(place) {
+    return `
+        <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);
+                    border-radius:12px;padding:28px 24px;text-align:center;margin-top:10px;">
+            <div style="font-size:2rem;margin-bottom:10px;">🔍</div>
+            <h3 style="color:#fbbf24;margin-bottom:8px;font-size:1.05rem;">
+                City not recognised: "<em>${place}</em>"
+            </h3>
+            <p style="color:#94a3b8;font-size:0.87rem;line-height:1.6;max-width:420px;margin:0 auto 16px;">
+                The geocoding service could not resolve this location.
+                Please try a more specific name, e.g. <strong style="color:#e2e8f0;">
+                "Mumbai, Maharashtra, India"</strong> instead of just <strong style="color:#e2e8f0;">"Mumbai"</strong>,
+                or use the autocomplete dropdown to pick a verified city.
+            </p>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+                <button onclick="document.getElementById('mPlace').focus()"
+                    style="background:linear-gradient(90deg,#6366f1,#a855f7);color:#fff;border:none;
+                           padding:8px 20px;border-radius:7px;font-weight:700;cursor:pointer;font-size:0.85rem;">
+                    ✏️ Change City
+                </button>
+                <button onclick="document.getElementById('mPlace').value='Patna, Bihar, India'; triggerCalculation();"
+                    style="background:rgba(255,255,255,0.07);color:#e2e8f0;border:1px solid rgba(255,255,255,0.12);
+                           padding:8px 20px;border-radius:7px;font-weight:600;cursor:pointer;font-size:0.85rem;">
+                    🔄 Use Default (Patna)
+                </button>
+            </div>
+        </div>`;
+}
+
+// ── Trigger calculation ──────────────────────────────────────────────────────
+async function triggerCalculation() {
+    const resultsEl = _origGetEl('jwResults');
+    if (!resultsEl) return;
+    resultsEl.innerHTML = "<div class='jw-spinner'>🕉️ Generating Calculations…</div>";
+
+    const HOST_API = "http://13.233.37.237";
+
+    if (_tab === 'milan') {
+        const payload = {
+            boy_date:   document.getElementById('mBoyDate').value.replace(/-/g, '/'),
+            boy_time:   document.getElementById('mBoyTime').value,
+            boy_place:  document.getElementById('mBoyPlace').value,
+            girl_date:  document.getElementById('mGirlDate').value.replace(/-/g, '/'),
+            girl_time:  document.getElementById('mGirlTime').value,
+            girl_place: document.getElementById('mGirlPlace').value
+        };
+        try {
+            const res  = await fetch(`${HOST_API}/api/match`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (data.status === 'success') {
+                if (typeof renderModalMilan === 'function') renderModalMilan(data);
+            } else {
+                resultsEl.innerHTML = _cityErrorHtml(payload.boy_place + ' / ' + payload.girl_place);
+            }
+        } catch (e) {
+            resultsEl.innerHTML = `<div class='jw-error'>⚠️ Network error: ${e.message}</div>`;
+        }
+    } else {
+        const dateVal  = document.getElementById('mDate').value;
+        const timeVal  = document.getElementById('mTime').value;
+        const placeVal = (document.getElementById('mPlace').value || '').trim() || 'Patna, Bihar, India';
+
+        const payload = {
+            date:  dateVal.replace(/-/g, '/'),
+            time:  timeVal,
+            place: placeVal
+        };
+
+        try {
+            const res  = await fetch(`${HOST_API}/api/calculate`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+
+            if (data.status === 'success') {
+                // Write into the shared modal engine variables
+                modalCalculatedData = data;
+                window.currentVedicData = {
+                    date: dateVal, time: timeVal, place: placeVal,
+                    pob: data.pob, timezone: data.timezone,
+                    utc_offset: data.utc_offset, ayanamsa: data.ayanamsa,
+                    ayanamsa_val: data.ayanamsa_val, ascendant: data.ascendant,
+                    d1_chart: data.d1_chart, divisional_charts: data.divisional_charts,
+                    panchang: data.panchang, choghadiya: data.choghadiya,
+                    hora: data.hora, regional: data.regional, houses: data.houses
+                };
+                // Sync modal engine globals
+                window.currentModalTab   = _tab;
+                window.currentModalVarga = _varga;
+                if (typeof renderModalOutput === 'function') {
+                    renderModalOutput();
+                }
+                startLiveClock();
+            } else {
+                // 400 or other server error — likely bad place name
+                resultsEl.innerHTML = _cityErrorHtml(placeVal);
+            }
+        } catch (e) {
+            resultsEl.innerHTML = `
+                <div class='jw-error'>
+                    ⚠️ Network error: ${e.message}<br>
+                    <small style='color:#94a3b8;'>Check that the calculation server is reachable.</small>
+                </div>`;
+        }
+    }
+}
+
+// ── Live clock ───────────────────────────────────────────────────────────────
+let _clockTimer = null;
+function startLiveClock() {
+    const bar = _origGetEl('clockBar');
+    if (bar) bar.style.display = 'flex';
+    if (_clockTimer) clearInterval(_clockTimer);
+    _clockTimer = setInterval(() => {
+        const n  = new Date();
+        const el = _origGetEl('liveVedicTime');
+        if (el) el.textContent = n.toLocaleTimeString('en-US', { hour12: true });
+        const dd = _origGetEl('liveDateDisplay');
+        if (dd) dd.textContent = n.toLocaleDateString('en-IN', {
+            weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+        });
+        if (typeof updateLiveVedicClock === 'function') updateLiveVedicClock();
+    }, 1000);
+}
+
+// ── Auto-run on load ─────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+    // Initialise city autocomplete for all place inputs
+    if (typeof initGeoComplete === 'function') {
+        initGeoComplete('mPlace',     { defaultPlace: 'Patna, Bihar, India' });
+        initGeoComplete('mBoyPlace',  { defaultPlace: 'Patna, Bihar, India' });
+        initGeoComplete('mGirlPlace', { defaultPlace: 'Patna, Bihar, India' });
+    }
+    // Short delay so the engine's DOMContentLoaded fires first
+    setTimeout(triggerCalculation, 150);
+});
+</script>
+
+</body>
+</html>
+

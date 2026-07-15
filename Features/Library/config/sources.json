@@ -1,0 +1,13 @@
+{
+ "sources":[
+
+  { "id":"archive", "file":"sources/archive.json" },
+  { "id":"gretil", "file":"sources/gretil.json" },
+  { "id":"sacred", "file":"sources/sacred.json" },
+  { "id":"sarit", "file":"sources/sarit.json" },
+  { "id":"dli", "file":"sources/dli.json" },
+  { "id":"wikisource", "file":"sources/wikisource.json" },
+  { "id":"muktabodha", "file":"sources/muktabodha.json" }
+
+ ]
+}

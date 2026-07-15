@@ -1,0 +1,21 @@
+{
+ "id":"gretil",
+ "name":"GRETIL",
+ "base_url":"https://gretil.sub.uni-goettingen.de/gretil.html#Sanskrit",
+ "icon":"icons/gretil.png",
+ "info":"Electronic Sanskrit texts",
+
+ "parser":"text-heavy",
+
+ "categories":[
+  "veda",
+  "upanishad",
+  "purana",
+  "ramayana",
+  "mahabharata"
+ ],
+
+ "selectors":{
+  "links":"a"
+ }
+}

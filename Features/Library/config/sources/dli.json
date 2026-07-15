@@ -1,0 +1,18 @@
+{
+ "id":"dli",
+ "name":"Digital Library of India",
+ "base_url":"https://archive.org/details/digitallibraryindia",
+ "icon":"icons/dli.png",
+ "info":"Rare Indian books",
+
+ "parser":"archive",
+
+ "categories":[
+  "history",
+  "philosophy"
+ ],
+
+ "selectors":{
+  "links":"a"
+ }
+}

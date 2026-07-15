@@ -1,0 +1,20 @@
+{
+ "id":"archive",
+ "name":"Internet Archive",
+ "base_url":"https://archive.org/details/texts",
+ "icon":"icons/archive.png",
+ "info":"Massive collection of digitized books",
+
+ "parser":"generic",
+
+ "categories":[
+  "veda",
+  "upanishad",
+  "purana",
+  "itihasa"
+ ],
+
+ "selectors":{
+  "links":"a"
+ }
+}

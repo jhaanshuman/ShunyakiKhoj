@@ -1,0 +1,19 @@
+{
+ "id":"wikisource",
+ "name":"Wikisource Sanskrit",
+ "base_url":"https://sa.wikisource.org",
+ "icon":"icons/wikisource.png",
+ "info":"Unicode Sanskrit texts",
+
+ "parser":"wiki",
+
+ "categories":[
+ "veda","Philology","Grammar","History", "upanishad", "purana", "Epics" "ramayana", "mahabharata", "philosophy", "other", "Drama", "Kavya", 
+"वेद", "उपनिषद", "पुराणान","स्मृतय","आगमः","वेदाङ्गानि", "साहित्यम्","महाभारतम्","रामायणम्","कोषाः","दर्शनानि","कलाः"
+ ],
+
+ "selectors":{
+  "links":"a"
+ }
+}
+

@@ -1,0 +1,18 @@
+{
+ "id":"sarit",
+ "name":"SARIT",
+ "base_url":"https://github.com/sarit/SARIT-corpus",
+ "icon":"icons/sarit.png",
+ "info":"Scholarly XML texts",
+
+ "parser":"xml",
+
+ "categories":[
+  "philosophy",
+  "grammar"
+ ],
+
+ "selectors":{
+  "links":"a"
+ }
+}

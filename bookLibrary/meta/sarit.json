@@ -1,0 +1,504 @@
+{
+  "source": "sarit",
+  "base_path": "/bookLibrary/sarit/",
+  "books": [
+  {
+    "id": "arunadatta-sarvangasundara",
+    "file": "arunadatta-sarvangasundara.json",
+    "title": "Arunadatta Sarvangasundara",
+    "author": ""
+  },
+  {
+    "id": "astangahrdayasamhita",
+    "file": "astangahrdayasamhita.json",
+    "title": "Vāgbhaṭa's Aṣṭāṅgahṛdayasaṃhitā - SARIT transcript",
+    "author": "R. P. Das and R. E. Emmerick"
+  },
+  {
+    "id": "astangasangraha",
+    "file": "astangasangraha.json",
+    "title": "Astanga Sangraha",
+    "author": ""
+  },
+  {
+    "id": "astavakragita",
+    "file": "astavakragita.json",
+    "title": "Astavakra Gita",
+    "author": ""
+  },
+  {
+    "id": "asvaghosa-buddhacarita",
+    "file": "asvaghosa-buddhacarita.json",
+    "title": "Asvaghosa Buddha Carita",
+    "author": ""
+  },
+  {
+    "id": "avayavinirakarana",
+    "file": "avayavinirakarana.json",
+    "title": "Avayavi nirakarana",
+    "author": ""
+  },
+  {
+    "id": "ayurvedasutram",
+    "file": "ayurvedasutram.json",
+    "title": "आयुर्वेदसूत्रम्",
+    "author": ""
+  },
+  {
+    "id": "bana-kadambari",
+    "file": "bana-kadambari.json",
+    "title": "बाण कादम्बरी",
+    "author": ""
+  },
+  {
+    "id": "bandimocana",
+    "file": "bandimocana.json",
+    "title": "बन्धिमोचन",
+    "author": ""
+  },
+  {
+    "id": "bhartrhari-vakyapadiya",
+    "file": "bhartrhari-vakyapadiya.json",
+    "title": "Vākyapadīya",
+    "author": "Bhartṛhari"
+  },
+  {
+    "id": "bhattojidiksita-siddhantakaumudi",
+    "file": "bhattojidiksita-siddhantakaumudi.json",
+    "title": "भट्टोजी दीक्षित सिद्धान्तकौमुदी",
+    "author": ""
+  },
+  {
+    "id": "bhelasamhita",
+    "file": "bhelasamhita.json",
+    "title": "भेलसंहिता",
+    "author": ""
+  },
+  {
+    "id": "bhoja-rajamartanda",
+    "file": "bhoja-rajamartanda.json",
+    "title": "भोज राजमार्तण्ड",
+    "author": ""
+  },
+  {
+    "id": "brahmapurana",
+    "file": "brahmapurana.json",
+    "title": "ब्रह्मपुराणम्",
+    "author": ""
+  },
+  {
+    "id": "cakradatta",
+    "file": "cakradatta.json",
+    "title": "चक्रदत्त",
+    "author": ""
+  },
+  {
+    "id": "cakrapanidatta-ayurvedadipika",
+    "file": "cakrapanidatta-ayurvedadipika.json",
+    "title": "चक्रपाणिदत्त आयुर्वेददीपिका",
+    "author": ""
+  },
+  {
+    "id": "carakasamhita",
+    "file": "carakasamhita.json",
+    "title": "चरकसंहिता",
+    "author": ""
+  },
+  {
+    "id": "caryamelapakapradipa",
+    "file": "caryamelapakapradipa.json",
+    "title": "The Caryāmelāpakapradīpa - SARIT transcript",
+    "author": "Christian K. Wedemeyer, University of Chicago"
+  },
+  {
+    "id": "dasarupaka",
+    "file": "dasarupaka.json",
+    "title": "दशरूपक",
+    "author": ""
+  },
+  {
+    "id": "dharmottarapradipa",
+    "file": "dharmottarapradipa.json",
+    "title": "Nyāyabindu, Nyāyabinduṭīkā, and Dharmottarapradīpa",
+    "author": "Dharmakīrti, Dharmottara, and Durveka Miśra"
+  },
+  {
+    "id": "dharmottaratippanaka",
+    "file": "dharmottaratippanaka.json",
+    "title": "धर्मोत्तरटिप्पणक",
+    "author": ""
+  },
+  {
+    "id": "diksita-jivanacaritra",
+    "file": "diksita-jivanacaritra.json",
+    "title": "दीक्षित जीवनचरित्र",
+    "author": ""
+  },
+  {
+    "id": "dudhadasa-ramasvamedhabhasa",
+    "file": "dudhadasa-ramasvamedhabhasa.json",
+    "title": "दुधदास रामस्वमेधभाषा",
+    "author": ""
+  },
+  {
+    "id": "dvadasara_nayacakra",
+    "file": "dvadasara_nayacakra.json",
+    "title": "द्वादशार नयचक्र",
+    "author": ""
+  },
+  {
+    "id": "giridharadasa-bharatibhusana",
+    "file": "giridharadasa-bharatibhusana.json",
+    "title": "गिरिधरदास भारतीभूषण",
+    "author": ""
+  },
+  {
+    "id": "govindabhagavatpada-rasahrdayatantra",
+    "file": "govindabhagavatpada-rasahrdayatantra.json",
+    "title": "गोविन्दभगवत्पाद रसहृदयतन्त्र",
+    "author": ""
+  },
+  {
+    "id": "hajarilala-srisivavivahakavitavali",
+    "file": "hajarilala-srisivavivahakavitavali.json",
+    "title": "हजारिलाल श्रीशिवविवाहकावितावली",
+    "author": ""
+  },
+  {
+    "id": "jitari-isvaravadimatapariksa",
+    "file": "jitari-isvaravadimatapariksa.json",
+    "title": "जितरि ईश्वरवादिमतपरीक्षा",
+    "author": ""
+  },
+  {
+    "id": "jitari-jatinirakrti",
+    "file": "jitari-jatinirakrti.json",
+    "title": "जितरि जातिनिराकृति",
+    "author": ""
+  },
+  {
+    "id": "jitari-nairatmyasiddhi",
+    "file": "jitari-nairatmyasiddhi.json",
+    "title": "जितरि नैरात्म्यसिद्धि",
+    "author": ""
+  },
+  {
+    "id": "jitari-sarvajnasiddhi",
+    "file": "jitari-sarvajnasiddhi.json",
+    "title": "जितरि सर्वज्ञसिद्धि",
+    "author": ""
+  },
+  {
+    "id": "jitari-vedapramanyasiddhi",
+    "file": "jitari-vedapramanyasiddhi.json",
+    "title": "जितरि वेदप्रामाण्यसिद्धि",
+    "author": ""
+  },
+  {
+    "id": "jnanadasa-aparoksanubhava-tika",
+    "file": "jnanadasa-aparoksanubhava-tika.json",
+    "title": "ज्ञानदास अपरोक्षानुभव टीका",
+    "author": ""
+  },
+  {
+    "id": "jnanasrimitra-nibandhavali",
+    "file": "jnanasrimitra-nibandhavali.json",
+    "title": "ज्ञानश्रीमित्र निबन्धावली",
+    "author": ""
+  },
+  {
+    "id": "kautalyarthasastra",
+    "file": "kautalyarthasastra.json",
+    "title": "The Kauṭilīya Arthaśāstra - SARIT transcript",
+    "author": "Muneo Tokunaga et al., Kyoto University"
+  },
+  {
+    "id": "kumarila-tantravarttika",
+    "file": "kumarila-tantravarttika.json",
+    "title": "कुमारिल तन्त्रवार्त्तिक",
+    "author": ""
+  },
+  {
+    "id": "madhusudanasarasvati-atmabodhaprakarana",
+    "file": "madhusudanasarasvati-atmabodhaprakarana.json",
+    "title": "मधुसूदनसरस्वती आत्मबोधप्रकरण",
+    "author": ""
+  },
+  {
+    "id": "mahabharata-devanagari",
+    "file": "mahabharata-devanagari.json",
+    "title": "महाभारतम्",
+    "author": ""
+  },
+  {
+    "id": "manusmrti",
+    "file": "manusmrti.json",
+    "title": "The Mānavadharmaśāstra - SARIT transcript",
+    "author": "Michio Yano and Yasuke Ikari, Kyoto University"
+  },
+  {
+    "id": "naradasmrti",
+    "file": "naradasmrti.json",
+    "title": "The Nāradasmṛti - SARIT transcript",
+    "author": "Yasuke Ikari, Kyoto University"
+  },
+  {
+    "id": "nityanatha-rasaratnakara-rasayanakhanda",
+    "file": "nityanatha-rasaratnakara-rasayanakhanda.json",
+    "title": "नित्यनाथ रसरत्नाकर रसायनखण्ड",
+    "author": ""
+  },
+  {
+    "id": "nivajakavi-sakuntala-upakhyana",
+    "file": "nivajakavi-sakuntala-upakhyana.json",
+    "title": "निवाजकवि शकुन्तला उपाख्यान",
+    "author": ""
+  },
+  {
+    "id": "nyayakumudacandra",
+    "file": "nyayakumudacandra.json",
+    "title": "न्यायकुमुदचन्द्र",
+    "author": ""
+  },
+  {
+    "id": "nyayamanjari",
+    "file": "nyayamanjari.json",
+    "title": "न्यायमञ्जरी",
+    "author": ""
+  },
+  {
+    "id": "nyayasudha",
+    "file": "nyayasudha.json",
+    "title": "न्यायसुधा",
+    "author": ""
+  },
+  {
+    "id": "nyayavarttikatatparyatika",
+    "file": "nyayavarttikatatparyatika.json",
+    "title": "न्यायवार्त्तिकतत्पर्यटीका",
+    "author": ""
+  },
+  {
+    "id": "patanjalayogasastra",
+    "file": "patanjalayogasastra.json",
+    "title": "पतञ्जल योगशास्त्र",
+    "author": ""
+  },
+  {
+    "id": "pramanamimamsa-and-vrtti",
+    "file": "pramanamimamsa-and-vrtti.json",
+    "title": "प्रमाणमीमांसा वृत्ति",
+    "author": ""
+  },
+  {
+    "id": "pramanantarbhava",
+    "file": "pramanantarbhava.json",
+    "title": "प्रमाणान्तरभाव",
+    "author": ""
+  },
+  {
+    "id": "pramanavarttikalankarabhasya",
+    "file": "pramanavarttikalankarabhasya.json",
+    "title": "प्रमाणवार्त्तिकभाष्यम् (वार्त्तिकालङ्कारः)",
+    "author": "प्रज्ञाकरगुप्तः"
+  },
+  {
+    "id": "pramanavarttikaparisista-1",
+    "file": "pramanavarttikaparisista-1.json",
+    "title": "Pramāṇavārttika Pariśiṣṭa 1",
+    "author": "Vibhūticandra"
+  },
+  {
+    "id": "pramanavarttikasvavrttitika",
+    "file": "pramanavarttikasvavrttitika.json",
+    "title": "प्रमाणवार्त्तिकस्ववृत्तिटिका",
+    "author": ""
+  },
+  {
+    "id": "pramanavarttikavrtti",
+    "file": "pramanavarttikavrtti.json",
+    "title": "Dharmakīrti's Pramāṇavārttika with a commentary by Manorathanandin",
+    "author": "Dharmakīrti"
+  },
+  {
+    "id": "prasastapada-padarthadharmasangraha",
+    "file": "prasastapada-padarthadharmasangraha.json",
+    "title": "प्रशस्तपाद पदार्थधर्मसंग्रह",
+    "author": ""
+  },
+  {
+    "id": "pravarasena-setubandha",
+    "file": "pravarasena-setubandha.json",
+    "title": "प्रवरसेन सेतुबन्ध",
+    "author": ""
+  },
+  {
+    "id": "pujyapada-sarvarthasiddhi",
+    "file": "pujyapada-sarvarthasiddhi.json",
+    "title": "पूज्यपाद सर्वार्थसिद्धि",
+    "author": ""
+  },
+  {
+    "id": "pyarelala-ragabinoda",
+    "file": "pyarelala-ragabinoda.json",
+    "title": "प्यारेलाल रागबिनोद",
+    "author": ""
+  },
+  {
+    "id": "rasarnava",
+    "file": "rasarnava.json",
+    "title": "रसार्णव",
+    "author": ""
+  },
+  {
+    "id": "ratnakirti-nibandhavali",
+    "file": "ratnakirti-nibandhavali.json",
+    "title": "रत्नकीर्ति निबन्धावली",
+    "author": ""
+  },
+  {
+    "id": "ratnasritika-dn",
+    "file": "ratnasritika-dn.json",
+    "title": "रत्नश्रितिका",
+    "author": ""
+  },
+  {
+    "id": "samanyadusana",
+    "file": "samanyadusana.json",
+    "title": "सामान्यदूषण",
+    "author": ""
+  },
+  {
+    "id": "sarasvatikanthabharana-dn",
+    "file": "sarasvatikanthabharana-dn.json",
+    "title": "सरस्वतीकण्ठाभरण",
+    "author": ""
+  },
+  {
+    "id": "sarvadarsanasangraha",
+    "file": "sarvadarsanasangraha.json",
+    "title": "सर्वदर्शनसंग्रह",
+    "author": ""
+  },
+  {
+    "id": "siddhayoga",
+    "file": "siddhayoga.json",
+    "title": "सिद्धयोग",
+    "author": ""
+  },
+  {
+    "id": "siddhiviniscayatika",
+    "file": "siddhiviniscayatika.json",
+    "title": "सिद्धिविनिश्चयटीका",
+    "author": ""
+  },
+  {
+    "id": "skandapurana",
+    "file": "skandapurana.json",
+    "title": "स्कन्दपुराणम्",
+    "author": ""
+  },
+  {
+    "id": "sridharadasa-saduktikarnamrta",
+    "file": "sridharadasa-saduktikarnamrta.json",
+    "title": "श्रीधरदास सदुक्तिकर्णामृत",
+    "author": ""
+  },
+  {
+    "id": "susrutasamhita",
+    "file": "susrutasamhita.json",
+    "title": "सुश्रुतसंहिता",
+    "author": ""
+  },
+  {
+    "id": "tarkabhasa",
+    "file": "tarkabhasa.json",
+    "title": "तर्कभाषा",
+    "author": ""
+  },
+  {
+    "id": "tarkarahasya",
+    "file": "tarkarahasya.json",
+    "title": "तर्करहस्य",
+    "author": ""
+  },
+  {
+    "id": "tattvasangrahapanjika",
+    "file": "tattvasangrahapanjika.json",
+    "title": "तत्त्वसंग्रहपञ्जिका",
+    "author": ""
+  },
+  {
+    "id": "trisuli-piyusalahari",
+    "file": "trisuli-piyusalahari.json",
+    "title": "त्रिशूली पीयूषलहरी",
+    "author": ""
+  },
+  {
+    "id": "trivikrama-nalacampu",
+    "file": "trivikrama-nalacampu.json",
+    "title": "त्रिविक्रम नलचम्पू",
+    "author": ""
+  },
+  {
+    "id": "tulasidasa-ramayanasatika",
+    "file": "tulasidasa-ramayanasatika.json",
+    "title": "तुलसीदास रामायणसटिका",
+    "author": ""
+  },
+  {
+    "id": "ugraditya-kalyanakaraka",
+    "file": "ugraditya-kalyanakaraka.json",
+    "title": "उग्रादित्य कल्याणकारक",
+    "author": ""
+  },
+  {
+    "id": "vacaspati-tattvavaisaradi",
+    "file": "vacaspati-tattvavaisaradi.json",
+    "title": "वाचस्पति तत्त्ववैशारदी",
+    "author": ""
+  },
+  {
+    "id": "vadanyayatika",
+    "file": "vadanyayatika.json",
+    "title": "वादन्यायटीका",
+    "author": ""
+  },
+  {
+    "id": "vadasthana",
+    "file": "vadasthana.json",
+    "title": "वादस्थान",
+    "author": ""
+  },
+  {
+    "id": "vagbhata-rasaratnasamuccaya-comms",
+    "file": "vagbhata-rasaratnasamuccaya-comms.json",
+    "title": "वाग्भट रसरत्नसमुच्चय टिप्पणियाँ",
+    "author": ""
+  },
+  {
+    "id": "vatsyayana-nyayabhasya",
+    "file": "vatsyayana-nyayabhasya.json",
+    "title": "वात्स्यायन न्यायभाष्य",
+    "author": ""
+  },
+  {
+    "id": "vidhiviveka-and-nyayakanika",
+    "file": "vidhiviveka-and-nyayakanika.json",
+    "title": "विधिविवेक न्यायकणिका",
+    "author": ""
+  },
+  {
+    "id": "vijnanesvara-mitaksara",
+    "file": "vijnanesvara-mitaksara.json",
+    "title": "विज्ञानेश्वर मिताक्षरा",
+    "author": ""
+  },
+  {
+    "id": "yogapradipa",
+    "file": "yogapradipa.json",
+    "title": "योगप्रदीप",
+    "author": ""
+  }
+]
+}

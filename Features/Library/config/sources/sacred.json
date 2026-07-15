@@ -1,0 +1,20 @@
+{
+ "id":"sacred",
+ "name":"Sacred Texts",
+ "base_url":"https://www.sacred-texts.com/hin/",
+ "icon":"icons/sacred.png",
+ "info":"HTML scriptures",
+
+ "parser":"clean-html",
+
+ "categories":[
+  "gita",
+  "veda",
+  "upanishad",
+  "tantra"
+ ],
+
+ "selectors":{
+  "links":"a"
+ }
+}

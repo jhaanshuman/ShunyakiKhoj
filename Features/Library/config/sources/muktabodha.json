@@ -1,0 +1,18 @@
+{
+ "id":"muktabodha",
+ "name":"Muktabodha Library",
+ "base_url":"https://muktabodha.org",
+ "icon":"icons/muktabodha.png",
+ "info":"Tantric manuscripts",
+
+ "parser":"advanced",
+
+ "categories":[
+  "tantra",
+  "shaiva"
+ ],
+
+ "selectors":{
+  "links":"a"
+ }
+}

@@ -1,0 +1,216 @@
+{
+  "menu": [
+    {
+      "label": "Panchang",
+      "type": "megamenu",
+      "description": "Astronomical data, calendar epochs, and regional calendars",
+      "icon": "📅",
+      "columns": [
+        {
+          "title": "Core & East India",
+          "items": [
+            { "label": "Month Panchang", "url": "./Features/Astrology/astrology.html?tab=maasik", "icon": "🗓️", "description": "Vedic monthly calendar grid views" },
+            { "label": "Dainik Panchang", "url": "./Features/Astrology/astrology.html?tab=panchang", "icon": "☀️", "description": "Daily Panchang with exact timing segments" },
+            { "label": "Assamese Panjika", "url": "./Features/Astrology/astrology.html?tab=panchang&region=assamese", "icon": "🌸" },
+            { "label": "Bengali Panjika", "url": "./Features/Astrology/astrology.html?tab=panchang&region=bengali", "icon": "🎷" },
+            { "label": "Tamil Panchangam", "url": "./Features/Astrology/astrology.html?tab=panchang&region=tamil", "icon": "🐚" }
+          ]
+        },
+        {
+          "title": "West & North India",
+          "items": [
+            { "label": "Odia Panji", "url": "./Features/Astrology/astrology.html?tab=panchang&region=odia", "icon": "🎨" },
+            { "label": "Malayalam Panchangam", "url": "./Features/Astrology/astrology.html?tab=panchang&region=malayalam", "icon": "🌴" },
+            { "label": "Marathi Panchang", "url": "./Features/Astrology/astrology.html?tab=panchang&region=marathi", "icon": "🚩" },
+            { "label": "Gujarati Panchang", "url": "./Features/Astrology/astrology.html?tab=panchang&region=gujarati", "icon": "☀️" },
+            { "label": "Kannada Panchangam", "url": "./Features/Astrology/astrology.html?tab=panchang&region=kannada", "icon": "🌿" }
+          ]
+        },
+        {
+          "title": "South & Miscellaneous",
+          "items": [
+            { "label": "Telugu Panchangam", "url": "./Features/Astrology/astrology.html?tab=panchang&region=telugu", "icon": "🌺" },
+            { "label": "Nepali Patro", "url": "./Features/Astrology/astrology.html?tab=panchang&region=nepali", "icon": "🏔️" },
+            { "label": "ISKCON Panchang", "url": "./Features/Astrology/astrology.html?tab=panchang&region=iskcon", "icon": "🕉️" },
+            { "label": "Chandrabalam", "url": "./Features/Astrology/astrology.html?tab=panchang", "icon": "🌙" },
+            { "label": "Panchang Utilities", "url": "./Features/Astrology/astrology.html?tab=panchang", "icon": "⚙️" }
+          ]
+        },
+        {
+          "title": "Transits & Stars",
+          "items": [
+            { "label": "Vinchudo", "url": "./Features/Astrology/astrology.html?tab=panchang", "icon": "🦂" },
+            { "label": "Nakshatra", "url": "./Features/Astrology/astrology.html?tab=panchang", "icon": "⭐" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Muhurta",
+      "type": "dropdown",
+      "description": "Auspicious and inauspicious daily timing windows",
+      "icon": "✨",
+      "items": [
+        { "label": "Abhijit Muhurta", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "☀️" },
+        { "label": "Brahma Muhurta", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "🧘" },
+        { "label": "Rahukaal Duration", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "⚠️" },
+        { "label": "Gulikai Duration", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "⏳" },
+        { "label": "Yamaganda Duration", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "🛑" },
+        { "label": "Varjyam Duration", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "🚫" },
+        { "label": "Durmuhurta Timings", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "⚠️" },
+        { "label": "Planetary Horas", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "🔮" },
+        { "label": "Choghadiya Shifts", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "⏱️" },
+        { "label": "Gowri Panchangam", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "🏵️" },
+        { "label": "Guru Pushya Yoga", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "🌟" },
+        { "label": "Ravi Pushya Yoga", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "☀️" },
+        { "label": "Amrit Siddhi Yogas", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "🍯" },
+        { "label": "Sarvartha Siddhi", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "🕉️" }
+      ]
+    },
+    {
+      "label": "Kundli",
+      "type": "megamenu",
+      "description": "Vargas, house strengths, and planetary dignities",
+      "icon": "☸️",
+      "columns": [
+        {
+          "title": "Core Chart Analysis",
+          "items": [
+            { "label": "Personalized Kundli", "url": "./Features/Astrology/astrology.html?tab=personal", "icon": "🧘", "description": "Generate and view divisional charts, dashas, and panchang" },
+            { "label": "Birth Chart (D1)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D1", "icon": "☸️", "description": "Lagna natal rashi chart" },
+            { "label": "Planetary Positions", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D1", "icon": "🪐", "description": "Degrees, retrogrades, combustions" }
+          ]
+        },
+        {
+          "title": "Divisional Charts (Vargas)",
+          "items": [
+            { "label": "D2 Hora (Wealth)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D2", "icon": "💰" },
+            { "label": "D3 Drekkana (Siblings)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D3", "icon": "🤝" },
+            { "label": "D4 Chaturthamsa (Assets)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D4", "icon": "🏡" },
+            { "label": "D7 Saptamsa (Children)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D7", "icon": "👶" },
+            { "label": "D9 Navamsa (Marriage)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D9", "icon": "❤️" },
+            { "label": "D10 Dasamsa (Career)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D10", "icon": "💼" },
+            { "label": "D12 Dwadasamsa (Parents)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D12", "icon": "👪" },
+            { "label": "D60 Shastiamsa (Karma)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D60", "icon": "☸️" }
+          ]
+        },
+        {
+          "title": "Yoga & Dosha Engines",
+          "items": [
+            { "label": "Yogas", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D1", "icon": "💫", "description": "Raja, Dhana, and specialized yogas" },
+            { "label": "Doshas", "url": "./Features/Astrology/astrology.html?tab=panchang", "icon": "⚠️", "description": "Manglik, Kaal Sarp, Pitra, Sade Sati" },
+            { "label": "Ashtakavarga", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D1", "icon": "📊", "description": "Sarvashtakavarga point grids" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Gochar",
+      "type": "dropdown",
+      "description": "Planetary transits, retrograde cycles, and aspects",
+      "icon": "☄️",
+      "items": [
+        { "label": "Graha Gochar (Transits)", "url": "./Features/Astrology/astrology.html?tab=gochar", "icon": "🪐", "description": "Real-time planetary transits and charts" },
+        { "label": "Planet Transits", "url": "./Features/Astrology/astrology.html?tab=gochar", "icon": "📈" },
+        { "label": "Transit Charts", "url": "./Features/Astrology/astrology.html?tab=gochar", "icon": "📊" },
+        { "label": "Transit Aspects", "url": "./Features/Astrology/astrology.html?tab=gochar", "icon": "📐" },
+        { "label": "Retrograde Cycles", "url": "./Features/Astrology/astrology.html?tab=gochar", "icon": "🔄" },
+        { "label": "Combustion Transits", "url": "./Features/Astrology/astrology.html?tab=gochar", "icon": "🔥" },
+        { "label": "Eclipse Transits", "url": "./Features/Astrology/astrology.html?tab=gochar", "icon": "🌑" }
+      ]
+    },
+    {
+      "label": "Dasha",
+      "type": "dropdown",
+      "description": "Time-lord systems and timelines",
+      "icon": "⏳",
+      "items": [
+        { "label": "Vimshottari Dasha", "url": "./Features/Astrology/astrology.html?tab=dasha", "icon": "⏳" },
+        { "label": "Yogini Dasha", "url": "./Features/Astrology/astrology.html?tab=dasha", "icon": "🏵️" },
+        { "label": "Mahadasha Cycles", "url": "./Features/Astrology/astrology.html?tab=dasha", "icon": "🔄" },
+        { "label": "Antardasha Timelines", "url": "./Features/Astrology/astrology.html?tab=dasha", "icon": "📈" },
+        { "label": "Pratyantardasha", "url": "./Features/Astrology/astrology.html?tab=dasha", "icon": "⏱️" },
+        { "label": "Dasha Strength", "url": "./Features/Astrology/astrology.html?tab=dasha", "icon": "📊" }
+      ]
+    },
+    {
+      "label": "Matching",
+      "type": "dropdown",
+      "description": "Vedic relationship compatibility analysis",
+      "icon": "💞",
+      "items": [
+        { "label": "Match Making (Milan)", "url": "./Features/Astrology/astrology.html?tab=milan", "icon": "💞", "description": "Ashtakoot relationship compatibility analysis" },
+        { "label": "Ashtakoot (36 Guna)", "url": "./Features/Astrology/astrology.html?tab=milan", "icon": "📊" },
+        { "label": "Dashakoot South", "url": "./Features/Astrology/astrology.html?tab=milan", "icon": "🧭" },
+        { "label": "Manglik Compatibility", "url": "./Features/Astrology/astrology.html?tab=milan", "icon": "🔥" },
+        { "label": "Nadi Dosha Check", "url": "./Features/Astrology/astrology.html?tab=milan", "icon": "🧬" },
+        { "label": "Rajju Koot Match", "url": "./Features/Astrology/astrology.html?tab=milan", "icon": "🎗️" },
+        { "label": "Bhakoot Dosha Check", "url": "./Features/Astrology/astrology.html?tab=milan", "icon": "🚫" },
+        { "label": "Mahendra Koot Match", "url": "./Features/Astrology/astrology.html?tab=milan", "icon": "🌟" },
+        { "label": "Stree Deergha Match", "url": "./Features/Astrology/astrology.html?tab=milan", "icon": "🌿" }
+      ]
+    },
+    {
+      "label": "Research",
+      "type": "megamenu",
+      "description": "Platform statistics, database queries, and research portals",
+      "icon": "🔬",
+      "columns": [
+        {
+          "title": "Jyotish Analysis",
+          "items": [
+            { "label": "Chart Comparison", "url": "#", "icon": "📊", "description": "Compare multiple charts and transits side-by-side" },
+            { "label": "Statistical Analysis", "url": "#", "icon": "📈", "description": "Run statistical scans over custom databases" },
+            { "label": "Historical Charts", "url": "#", "icon": "📜", "description": "Access charts of historical figures and epochs" }
+          ]
+        },
+        {
+          "title": "Reference Libraries",
+          "items": [
+            { "label": "Timeline Explorer", "url": "#", "icon": "⏳", "description": "Visual time traversal for transit research" },
+            { "label": "Planet Database", "url": "#", "icon": "🪐", "description": "Query specific planetary configurations" },
+            { "label": "Yoga Database", "url": "#", "icon": "📚", "description": "Index of thousands of classical Sanskrit yogas" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Learning",
+      "type": "megamenu",
+      "description": "Jyotish tutorials, formulas, and classical reference texts",
+      "icon": "🎓",
+      "columns": [
+        {
+          "title": "Study Guides",
+          "items": [
+            { "label": "Learn Jyotish", "url": "#", "icon": "🎓", "description": "Step-by-step introduction to Vedic astrology" },
+            { "label": "Sanskrit Terms", "url": "#", "icon": "🕉️", "description": "Vedic astrological dictionary and audio glossary" },
+            { "label": "Tutorials & Videos", "url": "#", "icon": "🎥", "description": "Interactive walk-throughs for calculations" }
+          ]
+        },
+        {
+          "title": "Classical Sources",
+          "items": [
+            { "label": "Classical Texts", "url": "#", "icon": "📜", "description": "Brihat Parashara Hora Shastra, Jaimini Sutras" },
+            { "label": "Formula Library", "url": "#", "icon": "📐", "description": "Mathematical algorithms used in Vedic astronomy" },
+            { "label": "Calculations Wiki", "url": "#", "icon": "🧮", "description": "Explanations of Ayanamsa, Shadbala & houses" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Tools",
+      "type": "dropdown",
+      "description": "General calculations and utility converter tools",
+      "icon": "🔧",
+      "items": [
+        { "label": "Calendar Converter", "url": "#", "icon": "📅" },
+        { "label": "Ayanamsa Calculator", "url": "#", "icon": "📐" },
+        { "label": "Julian Day Converter", "url": "#", "icon": "🔢" },
+        { "label": "Sunrise/Sunset Calculator", "url": "#", "icon": "☀️" },
+        { "label": "Solar/Lunar Eclipse Calculator", "url": "#", "icon": "🌑" },
+        { "label": "Astronomical Utilities", "url": "#", "icon": "⚙️" }
+      ]
+    }
+  ]
+}
