@@ -364,8 +364,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             output.innerHTML = "Fetching dynamic calculation from API...";
+            const apiUrl = (window.location.hostname === '13.233.37.237' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+                ? '/api/calculate'
+                : 'http://13.233.37.237/api/calculate';
             try {
-                const res = await fetch('/api/calculate', {
+                const res = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

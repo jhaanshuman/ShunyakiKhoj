@@ -38,6 +38,10 @@ const PLANET_POSITIONS = {
 let lastCalculatedData = null;
 let lastGocharData = null;
 
+const API_URL = (window.location.hostname === '13.233.37.237' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? '/api/calculate'
+    : 'http://13.233.37.237/api/calculate';
+
 // Initialize dates and parse URL Parameters for direct heading navigation
 window.addEventListener('DOMContentLoaded', () => {
     const today = new Date().toISOString().split('T')[0];
@@ -117,7 +121,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
             output.innerHTML = "Fetching dynamic calculation from API...";
             try {
-                const res = await fetch('/api/calculate', {
+                const res = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -293,7 +297,7 @@ document.getElementById('btnCalculate').addEventListener('click', async () => {
     const payload = { date: formattedDate, time: timeInput, place: placeInput };
 
     try {
-        const response = await fetch('/api/calculate', {
+        const response = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -354,7 +358,7 @@ document.getElementById('btnGochar').addEventListener('click', async () => {
     const payload = { date: formattedDate, time: timeInput, place: placeInput };
 
     try {
-        const response = await fetch('/api/calculate', {
+        const response = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -1627,7 +1631,7 @@ async function loadDainikPanchang(dateStr, place) {
 
     const formattedDate = dateStr.replace(/-/g, '/');
     try {
-        const res = await fetch('/api/calculate', {
+        const res = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ date: formattedDate, time: '12:00', place: place || 'New Delhi, India' })
@@ -1737,7 +1741,7 @@ async function loadMaasikCalendar() {
         const batch = datesToFetch.slice(i, i + BATCH_SIZE);
         await Promise.all(batch.map(async (dateStr) => {
             try {
-                const res = await fetch('/api/calculate', {
+                const res = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ date: dateStr.replace(/-/g,'/'), time: '06:00', place: place })
