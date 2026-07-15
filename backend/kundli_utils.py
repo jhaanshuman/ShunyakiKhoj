@@ -697,6 +697,8 @@ VARA_NAMES = [
 
 def get_panchang(sun_lon: float, moon_lon: float, birth_date: date, lat: float, lon: float, tz_offset: float) -> Dict[str, Any]:
     """Calculates high-precision Hindu Panchang details and element transition times using Swiss Ephemeris."""
+    import swisseph as swe
+    swe.set_sid_mode(swe.SIDM_LAHIRI)
     # 1. Sunrise / Sunset
     sr_str, ss_str = calculate_sunrise_sunset_approx(birth_date, lat, lon, tz_offset)
     
@@ -759,8 +761,8 @@ def get_panchang(sun_lon: float, moon_lon: float, birth_date: date, lat: float, 
         jd_current = jd_start + (h_offset / 24.0)
         
         # Calculate Sun and Moon positions at current Julian Date
-        res_sun, *err = swe.calc_ut(jd_current, swe.SUN)
-        res_moon, *err = swe.calc_ut(jd_current, swe.MOON)
+        res_sun, *err = swe.calc_ut(jd_current, swe.SUN, swe.FLG_SIDEREAL)
+        res_moon, *err = swe.calc_ut(jd_current, swe.MOON, swe.FLG_SIDEREAL)
         
         c_sun_lon = res_sun[0]
         c_moon_lon = res_moon[0]
