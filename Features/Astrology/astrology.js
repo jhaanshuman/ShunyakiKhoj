@@ -45,11 +45,11 @@ const API_URL = window.location.hostname.includes('github.io')
 // Initialize dates and parse URL Parameters for direct heading navigation
 window.addEventListener('DOMContentLoaded', () => {
     const today = new Date().toISOString().split('T')[0];
-    document.getElementById('gocharDate').value = today;
+    const gocharDateEl = document.getElementById('gocharDate');
+    if (gocharDateEl) gocharDateEl.value = today;
 
     const params = new URLSearchParams(window.location.search);
-    const tab = params.get('tab') || 'personal';
-    const varga = params.get('varga');
+    const tab = params.get('tab') || 'panchang';
     
     // Hide the top-tab navigation buttons bar completely
     const topNavTabs = document.querySelector('.top-nav-tabs');
@@ -57,7 +57,28 @@ window.addEventListener('DOMContentLoaded', () => {
         topNavTabs.style.display = 'none';
     }
 
-    // Hide all main sections by default
+    // Toggle day/month view containers for homepage
+    const dayView = document.getElementById('dayViewContainer');
+    const maasikView = document.getElementById('maasikViewContainer');
+    if (dayView && maasikView) {
+        if (tab === 'maasik') {
+            dayView.style.display = 'none';
+            maasikView.style.display = 'block';
+            const monthBtn = document.getElementById('phViewMonthBtn');
+            if (monthBtn) monthBtn.classList.add('active');
+            const dayBtn = document.getElementById('phViewDayBtn');
+            if (dayBtn) dayBtn.classList.remove('active');
+        } else {
+            dayView.style.display = 'block';
+            maasikView.style.display = 'none';
+            const dayBtn = document.getElementById('phViewDayBtn');
+            if (dayBtn) dayBtn.classList.add('active');
+            const monthBtn = document.getElementById('phViewMonthBtn');
+            if (monthBtn) monthBtn.classList.remove('active');
+        }
+    }
+
+    // Standard tab routing for standalone page
     const sections = document.querySelectorAll('.main-section');
     sections.forEach(sec => sec.classList.remove('active'));
 
@@ -78,17 +99,14 @@ window.addEventListener('DOMContentLoaded', () => {
         else if (tab === 'divisional') targetSubTabId = 'tabDivisional';
     }
 
-    // Activate selected section
     const activeSection = document.getElementById(targetTopSectionId);
     if (activeSection) {
         activeSection.classList.add('active');
-        // Also force inline display for maasikSection since CSS ID selector beats class
         if (targetTopSectionId === 'maasikSection') {
             activeSection.style.display = 'block';
         }
     }
     
-    // Immediately activate the correct sub-tab (synchronously, before any async calls)
     if (targetSubTabId && targetTopSectionId === 'personalKundliSection') {
         const outputCard = document.getElementById('outputCard');
         if (outputCard) outputCard.style.display = 'block';
@@ -97,8 +115,8 @@ window.addEventListener('DOMContentLoaded', () => {
         if (targetSubTab) targetSubTab.classList.add('active');
     }
 
-    // Apply isolated layout styling and hide/show form sidebar based on active tab
     applyLayoutStyles(tab);
+    initGlossaryTooltips();
 
     // API test panel triggers
     const btnOpenApiTest = document.getElementById('btnOpenApiTest');
@@ -1619,6 +1637,9 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
 }
 
 // ── Standalone Dainik Panchang Loader ─────────────────────────────────────
+let currentSunriseStr = "05:37";
+let currentSunsetStr = "19:16";
+
 async function loadDainikPanchang(dateStr, place) {
     const timelineContainer = document.getElementById('drikTimelineContainer');
     const panchangBody = document.getElementById('panchangBody');
@@ -1639,16 +1660,158 @@ async function loadDainikPanchang(dateStr, place) {
         const data = await res.json();
         if (data.status === 'success') {
             lastCalculatedData = data;
+            
+            const p = data.panchang;
+            const ext = data.panchang_extended || {};
+            const regional = data.regional || {};
+
+            // Save sunrise/sunset for Vedic clock
+            if (p.sunrise) currentSunriseStr = p.sunrise;
+            if (p.sunset) currentSunsetStr = p.sunset;
+
+            // 1. Populate top traditional status info header card
+            const monthTithiEl = document.getElementById('headerMonthTithi');
+            if (monthTithiEl) monthTithiEl.textContent = `${p.month || 'Ashadha'}, ${p.tithi || 'Pratipada'}`;
+
+            const pakshaSamvatEl = document.getElementById('headerPakshaSamvat');
+            if (pakshaSamvatEl) {
+                pakshaSamvatEl.textContent = `${p.paksha || 'Shukla'} Paksha | Vikrama Samvata ${ext.vikrama_samvat || '2083 Siddharthi'}`;
+            }
+
+            const placeDisplayEl = document.getElementById('headerPlaceDisplay');
+            if (placeDisplayEl) {
+                placeDisplayEl.textContent = `📍 ${place || 'New Delhi, India'}`;
+            }
+
+            const dateObj = new Date(dateStr);
+            const dayNumEl = document.getElementById('headerDayNum');
+            if (dayNumEl) dayNumEl.textContent = dateObj.getDate();
+
+            const monthYearEl = document.getElementById('headerMonthYear');
+            if (monthYearEl) {
+                const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+                monthYearEl.textContent = `${months[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+            }
+
+            const weekdayEl = document.getElementById('headerWeekday');
+            if (weekdayEl) {
+                const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                weekdayEl.textContent = days[dateObj.getDay()];
+            }
+
+            // 2. Parse and show matched festivals in header bar
+            const matchedFests = [];
+            if (window.VEDIC_DATA && window.VEDIC_DATA.festivals) {
+                window.VEDIC_DATA.festivals.forEach(f => {
+                    let isMatch = true;
+                    if (f.month && f.month !== p.month) isMatch = false;
+                    if (f.paksha && f.paksha !== p.paksha) isMatch = false;
+                    if (f.tithi && f.tithi !== p.tithi) isMatch = false;
+                    if (isMatch) matchedFests.push(f);
+                });
+            }
+            const headerFestBar = document.getElementById('headerFestivalBar');
+            if (headerFestBar) {
+                if (matchedFests.length > 0) {
+                    headerFestBar.innerHTML = matchedFests.map(f => `${f.icon} ${f.name}`).join(' | ');
+                } else {
+                    headerFestBar.innerHTML = '✨ No major festival or fast today';
+                }
+            }
+
+            // 3. Render transit D1 Chart in Column 2 (Lagna Kundali card)
+            const chartData = data.divisional_charts['D1'];
+            if (chartData) {
+                const ascSign = chartData.Asc.sign;
+                const activeStyle = window.currentLagnaStyle || 'North';
+                const chartContainer = document.getElementById('lagnaChartContainer');
+                if (chartContainer) {
+                    if (activeStyle === 'North') {
+                        chartContainer.innerHTML = getNorthIndianSVG(chartData, ascSign);
+                    } else {
+                        chartContainer.innerHTML = getSouthIndianSVG(chartData, ascSign);
+                    }
+                }
+
+                // Render planetary placements below chart
+                const planetsContainer = document.getElementById('lagnaPlanetsContainer');
+                if (planetsContainer && data.d1_chart) {
+                    const SIGN_NAMES = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
+                    let pHTML = '<table style="width:100%; border-collapse:collapse; font-size:0.75rem; line-height:1.4;">';
+                    pHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.06); font-weight:700; color:var(--accent-color);"><td>Planet</td><td>Longitude</td><td>Motion</td><td>Status</td></tr>';
+                    
+                    Object.keys(data.d1_chart).forEach(pName => {
+                        const pObj = data.d1_chart[pName];
+                        const indName = pObj.indian || pName;
+                        const motion = pObj.is_retrograde ? '<span style="color:#f87171;">Vakri</span>' : 'Margi';
+                        const status = pObj.is_combust ? '<span style="color:#f87171;">Asta</span>' : 'Udita';
+                        
+                        const signIdx = SIGN_NAMES.indexOf(pObj.sign);
+                        const absLon = (signIdx >= 0 ? (signIdx * 30 + pObj.lon) : pObj.lon).toFixed(2);
+                        
+                        pHTML += `<tr style="border-bottom:1px solid rgba(255,255,255,0.03);">
+                            <td style="font-weight:700; padding:2px 0;">${indName}</td>
+                            <td>${absLon}° (${pObj.sign})</td>
+                            <td>${motion}</td>
+                            <td>${status}</td>
+                        </tr>`;
+                    });
+                    pHTML += '</table>';
+                    planetsContainer.innerHTML = pHTML;
+                }
+            }
+
+            // 4. Render fasts & upcoming festivals in Column 3
+            const upcomingContainer = document.getElementById('upcomingFestivalsContainer');
+            if (upcomingContainer && window.VEDIC_DATA && window.VEDIC_DATA.festivals) {
+                const monthFests = window.VEDIC_DATA.festivals.filter(f => f.month === p.month);
+                if (monthFests.length > 0) {
+                    upcomingContainer.innerHTML = monthFests.map(f => `
+                        <div class="festival-item" style="padding:10px; border-bottom:1.5px solid rgba(162,57,34,0.1); display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.1); border-radius:6px; margin-bottom:4px;">
+                            <span style="font-weight:700; color:var(--title-color); font-size:0.85rem;">${f.icon} ${f.name}</span>
+                            <span style="font-size:0.75rem; color:#b33922; font-weight:700;">${f.tithi}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    upcomingContainer.innerHTML = '<div style="color:var(--text-muted); font-size:0.85rem; padding:10px;">No festivals loaded for this lunar month.</div>';
+                }
+            }
+
+            // 5. Render planetary transits in Widget 1
+            const widget1 = document.getElementById('planetaryEventsContainer');
+            if (widget1 && window.VEDIC_DATA && window.VEDIC_DATA.planetary_transits) {
+                widget1.innerHTML = window.VEDIC_DATA.planetary_transits.map(e => `
+                    <div style="padding:6px 0; border-bottom:1px dashed rgba(255,255,255,0.05); display:flex; justify-content:space-between; font-size:0.82rem;">
+                        <span style="font-weight:700; color:var(--title-color);">${e.planet} ➡️ ${e.sign}</span>
+                        <span style="color:var(--accent-color); font-weight:700;">${e.date}</span>
+                    </div>
+                `).join('');
+            }
+
+            // 6. Render Rashifal in Widget 2
+            const widget2 = document.getElementById('rashifalTodayContainer');
+            if (widget2 && window.VEDIC_DATA && window.VEDIC_DATA.rashifal) {
+                widget2.innerHTML = Object.keys(window.VEDIC_DATA.rashifal).map(sign => `
+                    <div style="padding:8px; border-radius:6px; background:rgba(0,0,0,0.12); margin-bottom:6px; border:1px solid rgba(255,255,255,0.03);">
+                        <strong style="color:var(--accent-color); font-size:0.8rem; display:block;">🐑 ${sign.toUpperCase()}</strong>
+                        <p style="margin:2px 0 0 0; line-height:1.35; color:var(--text-muted); font-size:0.78rem;">${window.VEDIC_DATA.rashifal[sign]}</p>
+                    </div>
+                `).join('');
+            }
+
             // Ensure outputCard is visible and switch to tabPanchang
             const outputCard = document.getElementById('outputCard');
             if (outputCard) outputCard.style.display = 'block';
-            // Scope to #outputCard only to avoid resetting gochar/milan tabs
             document.querySelectorAll('#outputCard .tab-content').forEach(tc => tc.classList.remove('active'));
             const tabPanchangEl = document.getElementById('tabPanchang');
             if (tabPanchangEl) tabPanchangEl.classList.add('active');
+            
             // Render the full panchang
             renderPanchang('panchangBody', data.panchang, data.regional);
-            renderMuhurtas('choghadiyaBody', 'horaBody', data.choghadiya, data.hora);
+            const choghadiyaBody = document.getElementById('choghadiyaBody');
+            if (choghadiyaBody) {
+                renderMuhurtas('choghadiyaBody', 'horaBody', data.choghadiya, data.hora);
+            }
         } else {
             if (timelineContainer) timelineContainer.innerHTML = '<div style="color:#f87171;padding:2rem;text-align:center;">Error: ' + (data.detail || 'Panchang calculation failed') + '</div>';
         }
@@ -1888,3 +2051,167 @@ function viewDaikFromMaasik(dateStr) {
                   (maasikPlaceInput && maasikPlaceInput.value) ? maasikPlaceInput.value : 'New Delhi, India';
     loadDainikPanchang(dateStr, place);
 }
+
+// ── Unified Portal Dynamic Action Helpers ─────────────────────────────────
+window.currentLagnaStyle = 'North';
+window.ghatiMode = '30';
+window.currentTimeFormat = '12';
+
+window.setLagnaStyle = function(style) {
+    window.currentLagnaStyle = style;
+    const btnNorth = document.getElementById('btnLagnaNorth');
+    const btnSouth = document.getElementById('btnLagnaSouth');
+    if (btnNorth && btnSouth) {
+        if (style === 'North') {
+            btnNorth.classList.add('active');
+            btnSouth.classList.remove('active');
+        } else {
+            btnSouth.classList.add('active');
+            btnNorth.classList.remove('active');
+        }
+    }
+    if (lastCalculatedData) {
+        const chartData = lastCalculatedData.divisional_charts['D1'];
+        const ascSign = chartData.Asc.sign;
+        const chartContainer = document.getElementById('lagnaChartContainer');
+        if (chartContainer) {
+            if (style === 'North') {
+                chartContainer.innerHTML = getNorthIndianSVG(chartData, ascSign);
+            } else {
+                chartContainer.innerHTML = getSouthIndianSVG(chartData, ascSign);
+            }
+        }
+    }
+};
+
+window.toggleMainChart = function() {
+    const card = document.getElementById('lagnaKundaliCard');
+    const grid = document.querySelector('.day-dashboard-grid');
+    const btnHide = document.getElementById('btnHideChart');
+    if (card && grid) {
+        if (card.style.display === 'none') {
+            card.style.display = 'block';
+            grid.style.gridTemplateColumns = '1fr 1fr 1fr';
+            if (btnHide) btnHide.textContent = 'Hide Chart';
+        } else {
+            card.style.display = 'none';
+            grid.style.gridTemplateColumns = '1.2fr 1fr';
+            if (btnHide) btnHide.textContent = 'Show Chart';
+        }
+    }
+};
+
+window.toggleAmantaPurnimanta = function() {
+    const btn = document.getElementById('btnAmantaPurnimanta');
+    if (btn) {
+        const isAmanta = btn.textContent.includes('Amanta');
+        if (isAmanta) {
+            btn.textContent = 'Switch to Purnimanta';
+            // Show Purnimanta month name if available
+        } else {
+            btn.textContent = 'Switch to Amanta';
+        }
+    }
+};
+
+window.setFormat = function(format) {
+    window.currentTimeFormat = format;
+    ['btn12Hr', 'btn24Hr', 'btn24Plus'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+    });
+    const activeBtn = document.getElementById('btn' + format + 'Hr') || document.getElementById('btn' + format);
+    if (activeBtn) activeBtn.classList.add('active');
+};
+
+window.setGhatiMode = function(mode) {
+    window.ghatiMode = mode;
+    const btn30 = document.getElementById('btn30Ghati');
+    const btn60 = document.getElementById('btn60Ghati');
+    if (btn30 && btn60) {
+        if (mode === '30') {
+            btn30.classList.add('active');
+            btn60.classList.remove('active');
+        } else {
+            btn60.classList.add('active');
+            btn30.classList.remove('active');
+        }
+    }
+};
+
+// ── Glossary Hover Tooltip Engine ─────────────────────────────────────────
+function initGlossaryTooltips() {
+    const tooltip = document.getElementById('vedicGlossaryTooltip');
+    if (!tooltip) return;
+
+    document.addEventListener('mouseover', (e) => {
+        const el = e.target.closest('.glossary-term, [data-term]');
+        if (!el) return;
+
+        let term = el.getAttribute('data-term') || el.innerText.trim();
+        term = term.toLowerCase().replace(':', '');
+        if (window.VEDIC_DATA && window.VEDIC_DATA.glossary) {
+            const desc = window.VEDIC_DATA.glossary[term];
+            if (desc) {
+                tooltip.innerHTML = `<strong style="color:#b33922; text-transform:capitalize;">${term}:</strong> ${desc}`;
+                tooltip.style.display = 'block';
+                
+                const rect = el.getBoundingClientRect();
+                tooltip.style.left = `${rect.left + window.scrollX + 10}px`;
+                tooltip.style.top = `${rect.bottom + window.scrollY + 10}px`;
+            }
+        }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+        const el = e.target.closest('.glossary-term, [data-term]');
+        if (el) {
+            tooltip.style.display = 'none';
+        }
+    });
+}
+
+// ── Dynamic Ghati Clock loop ──────────────────────────────────────────────
+function updateVedicTimeClock() {
+    const now = new Date();
+    const gregClock = document.getElementById('gregorianClockDisplay');
+    if (gregClock) gregClock.textContent = now.toLocaleTimeString();
+    
+    const srParts = currentSunriseStr.split(':').map(Number);
+    const sunriseToday = new Date(now);
+    sunriseToday.setHours(srParts[0], srParts[1], 0, 0);
+    
+    let diffMs = now - sunriseToday;
+    if (diffMs < 0) {
+        const yesterdaySunrise = new Date(sunriseToday);
+        yesterdaySunrise.setDate(yesterdaySunrise.getDate() - 1);
+        diffMs = now - yesterdaySunrise;
+    }
+    
+    const elapsedSeconds = diffMs / 1000;
+    const totalGhatis = elapsedSeconds / 1440; // 1 Ghati = 24 mins = 1440 secs
+    
+    let ghati = Math.floor(totalGhatis);
+    let pal = Math.floor((totalGhatis - ghati) * 60);
+    let vipal = Math.floor(((totalGhatis - ghati) * 60 - pal) * 60);
+    
+    const pad = (n) => String(n).padStart(2, '0');
+    const clockEl = document.getElementById('vedicClockDisplay');
+    if (clockEl) {
+        if (window.ghatiMode === '60') {
+            clockEl.textContent = `${pad(ghati)}:${pad(pal)}:${pad(vipal)}`;
+        } else {
+            // display out of 30 Ghatis scaling for daytime
+            clockEl.textContent = `${pad(ghati % 30)}:${pad(pal)}:${pad(vipal)}`;
+        }
+    }
+
+    // Populate dynamic clock details
+    const timeDetails = document.getElementById('vedicTimeDetails');
+    if (timeDetails && lastCalculatedData) {
+        const p = lastCalculatedData.panchang;
+        timeDetails.innerHTML = `Hindu Sunrise: ${p.sunrise || '05:37'} | Sunset: ${p.sunset || '19:16'}<br>Active Ascendant: ${lastCalculatedData.ascendant ? lastCalculatedData.ascendant.sign : 'Aries'}`;
+    }
+}
+setInterval(updateVedicTimeClock, 1000);
+

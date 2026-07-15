@@ -494,14 +494,21 @@ function setupSearch(menuItems) {
 // ==========================================
 // DARK THEME / LIGHT THEME TOGGLE ENGINE
 // ==========================================
+function applyTheme(themeId) {
+    document.body.classList.remove('theme-dark', 'theme-manuscript', 'theme-bright', 'theme-focus', 'theme-pale', 'theme-indigo', 'dark-theme');
+    document.body.classList.add(themeId);
+    if (['theme-dark', 'theme-focus', 'theme-indigo'].includes(themeId)) {
+        document.body.classList.add('dark-theme');
+    }
+    localStorage.setItem('shunya-theme-name', themeId);
+}
+
 function setupThemeToggle() {
-    // Find theme toggle inside header or create a dynamic one
     const headerIcons = document.querySelector('.header-icons');
     if (!headerIcons) return;
 
     let themeToggleBtn = document.getElementById('themeToggleBtn');
     if (!themeToggleBtn) {
-        // Find existing spans that look like settings or gear and replace / add theme toggle
         themeToggleBtn = document.createElement('span');
         themeToggleBtn.id = 'themeToggleBtn';
         themeToggleBtn.style.cursor = 'pointer';
@@ -509,19 +516,58 @@ function setupThemeToggle() {
         headerIcons.insertBefore(themeToggleBtn, headerIcons.firstChild);
     }
 
-    // Read stored theme preference
-    const savedTheme = localStorage.getItem('shunya-theme') || 'light';
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-theme');
-    }
+    const savedTheme = localStorage.getItem('shunya-theme-name') || 'theme-dark';
+    applyTheme(savedTheme);
 
-    themeToggleBtn.addEventListener('click', () => {
-        const isDark = document.body.classList.toggle('dark-theme');
-        localStorage.setItem('shunya-theme', isDark ? 'dark' : 'light');
+    themeToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         
-        // Dynamic notification of theme switch
-        const toggleVal = isDark ? "Dark theme active" : "Light theme active";
-        showSnackbarNotification(toggleVal);
+        let existingDropdown = document.querySelector('.theme-dropdown-panel');
+        if (existingDropdown) {
+            existingDropdown.remove();
+            return;
+        }
+
+        const dropdown = document.createElement('div');
+        dropdown.className = 'theme-dropdown-panel';
+        
+        const themesList = [
+            { id: 'theme-dark', name: '🌌 Dark Mode', bg: '#0d1117' },
+            { id: 'theme-manuscript', name: '📜 Yellow Manuscript', bg: '#fdfaf2' },
+            { id: 'theme-bright', name: '☀️ Bright & Clean', bg: '#f8fafc' },
+            { id: 'theme-focus', name: '👁️ Focus Mode', bg: '#09090b' },
+            { id: 'theme-pale', name: '🍃 Slightly Pale', bg: '#fafafa' },
+            { id: 'theme-indigo', name: '🍇 Royal Indigo', bg: '#030712' }
+        ];
+
+        themesList.forEach(t => {
+            const item = document.createElement('div');
+            item.className = 'theme-dropdown-item';
+            item.innerHTML = `
+                <span class="theme-preview-dot" style="background: ${t.bg}; border: 1px solid rgba(255,255,255,0.2); width: 14px; height: 14px; border-radius: 50%; display: inline-block;"></span>
+                <span>${t.name}</span>
+            `;
+            item.addEventListener('click', () => {
+                applyTheme(t.id);
+                showSnackbarNotification(`${t.name} Activated`);
+                dropdown.remove();
+            });
+            dropdown.appendChild(item);
+        });
+
+        document.body.appendChild(dropdown);
+
+        const rect = themeToggleBtn.getBoundingClientRect();
+        dropdown.style.top = `${rect.bottom + window.scrollY + 10}px`;
+        dropdown.style.left = `${rect.left + window.scrollX - 100}px`;
+        
+        const closeDropdown = (event) => {
+            if (!dropdown.contains(event.target) && event.target !== themeToggleBtn) {
+                dropdown.remove();
+                document.removeEventListener('click', closeDropdown);
+            }
+        };
+        document.addEventListener('click', closeDropdown);
     });
 }
 

@@ -53,9 +53,11 @@ gtag('js', new Date());
 gtag('config','G-DZ2CM1SBWW');
 </script>
 <script src="./nav.js" defer></script>
+<link rel="stylesheet" href="./Features/Astrology/astrology_dashboard.css?v=1.1.8">
+<script src="./Features/Astrology/vedic_data.js?v=1.1.8"></script>
 </head>
 
-<body>
+<body class="homepage-layout">
 
 <!-- HEADER -->
 <header class="header">
@@ -71,13 +73,428 @@ gtag('config','G-DZ2CM1SBWW');
 <div class="mobile-menu">
 </div>
 
-<!-- HERO -->
+<!-- MAIN ASTROLOGY PORTAL CONTAINER -->
+<div class="container main-portal-container" style="margin-top: 2rem;">
 
-<section class="hero">
-<h2>Artificial Intelligence for Sanskrit Knowledge</h2>
-<p>Explore Sanskrit literature, grammar and philosophy using advanced AI tools designed for scholars, students and seekers.</p>
-<button>Explore the Platform</button>
-</section>
+    <!-- 1. Traditional Status Info Header Card -->
+    <div class="glass-card status-header-card" style="margin-bottom: 1.5rem; border: 2.5px solid #a23922; background: var(--card-bg); position: relative; padding: 20px;">
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="moon-phase-icon-container" style="width: 55px; height: 55px; border-radius: 50%; background: #0f172a; border: 2px solid #a23922; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);" id="headerMoonIcon">🌕</div>
+                <div>
+                    <h2 id="headerMonthTithi" style="margin: 0; font-size: 1.4rem; font-weight: 800; color: var(--title-color);">Loading today's panchang...</h2>
+                    <p id="headerPakshaSamvat" style="margin: 3px 0 0 0; font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Calculating Samvatsara and Paksha...</p>
+                    <p id="headerPlaceDisplay" style="margin: 2px 0 0 0; font-size: 0.8rem; color: var(--accent-color); font-weight: 700;">📍 New Delhi, India</p>
+                </div>
+            </div>
+            <div style="text-align: right; min-width: 140px;">
+                <div id="headerDayNum" style="font-size: 2.2rem; font-weight: 900; line-height: 1; color: var(--title-color);">--</div>
+                <div id="headerMonthYear" style="font-size: 0.9rem; font-weight: 700; margin-top: 3px;">Loading Month...</div>
+                <div id="headerWeekday" style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Weekday</div>
+            </div>
+        </div>
+        
+        <!-- Saffron top festival bar link -->
+        <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed rgba(162, 57, 34, 0.3); font-size: 0.85rem; text-align: center; font-weight: 700; color: var(--title-color);" id="headerFestivalBar">
+            Loading major auspicious transits and fasts...
+        </div>
+    </div>
+
+    <!-- 2. Controls & Search Bar Row -->
+    <div class="glass-card controls-card" style="padding: 15px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; background: rgba(0,0,0,0.22); border: var(--card-border);">
+        <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 280px; position: relative;">
+            <span style="font-size: 1.1rem; color: var(--accent-color);">📍</span>
+            <input type="text" id="panchangPlaceInput" value="New Delhi, India" placeholder="Search any city worldwide..." autocomplete="off" style="flex: 1; background: rgba(0, 0, 0, 0.2); border: var(--card-border); color: var(--text-color); padding: 8px 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 600;">
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;" class="controls-action-buttons">
+            <button class="ph-today-btn" id="btnAmantaPurnimanta" onclick="toggleAmantaPurnimanta()" style="background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.15); color: var(--text-color); padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">Switch to Amanta</button>
+            <button class="ph-today-btn" id="btnHideChart" onclick="toggleMainChart()" style="background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.15); color: var(--text-color); padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">Hide Chart</button>
+            <button class="ph-today-btn" id="btnThemeSelectorTrigger" style="background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.15); color: var(--title-color); padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px;">🎨 Theme Selector</button>
+        </div>
+    </div>
+
+    <!-- 3. Navigation Header for Dainik / Maasik views -->
+    <div class="panchang-unified-header" style="display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #a23922 0%, #7c1a08 100%); border-radius: 10px 10px 0 0; padding: 12px 20px;">
+        <div>
+            <div class="ph-title" id="phTitleDaik" style="font-size: 1.15rem; font-weight: 800; color: #fff;">Dainik Panchang</div>
+            <div class="ph-subtitle" id="phSubDaik" style="font-size: 0.78rem; color: rgba(255,255,255,0.75);">Loading today's panchang...</div>
+        </div>
+        <div class="ph-controls" style="display: flex; align-items: center; gap: 8px;">
+            <div class="ph-view-toggle" style="display: flex; background: rgba(0,0,0,0.25); border-radius: 6px; overflow: hidden; border: 1.5px solid rgba(255,255,255,0.15);">
+                <button class="ph-view-btn active" id="phViewDayBtn" onclick="switchViewMode('day')" style="padding: 5px 12px; border: none; background: transparent; color: #fff; font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;">Day</button>
+                <button class="ph-view-btn" id="phViewMonthBtn" onclick="switchViewMode('month')" style="padding: 5px 12px; border: none; background: transparent; color: rgba(255,255,255,0.7); font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;">Month</button>
+            </div>
+            <button class="ph-nav-btn" id="panchangPrevDayBtn" title="Previous Day" style="background: rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.25); color: #fff; width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center;">‹</button>
+            <input type="date" class="ph-date-input" id="panchangDateInput" style="background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.3); border-radius: 6px; color: #fff; padding: 5px 10px; font-weight: 700; font-size: 0.9rem; min-width: 130px;">
+            <button class="ph-nav-btn" id="panchangNextDayBtn" title="Next Day" style="background: rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.25); color: #fff; width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center;">›</button>
+            <button class="ph-today-btn" id="panchangTodayBtn" style="background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.2); color: #fbbf24; padding: 5px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.85rem;">Today</button>
+        </div>
+    </div>
+
+    <!-- 4. Dainik (Day) View Section -->
+    <div id="dayViewContainer" style="display: block;">
+        <!-- Visual Timeline Container -->
+        <div id="drikTimelineContainer" style="background: #ebd9b4; border: 2px solid #a23922; border-top: none; padding: 20px; border-radius: 0 0 8px 8px; color: #2d3748; font-family: 'Noto Serif', serif; position: relative; overflow-x: auto; margin-bottom: 1.5rem; box-shadow: var(--shadow);">
+            <div style="text-align: center; padding: 2rem; color: #7c2d12; font-weight: 700;">Loading Panchang for today...</div>
+        </div>
+
+        <!-- 3-Column Core Dashboard -->
+        <div class="day-dashboard-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; align-items: start;">
+            
+            <!-- Column 1: Panchang for Today -->
+            <div class="glass-card panchang-card" style="padding: 20px; min-height: 520px; background: var(--card-bg); border: var(--card-border); border-radius: 12px; box-shadow: var(--shadow);">
+                <h3 style="color: var(--title-color); margin-top: 0; margin-bottom: 15px; font-size: 1.15rem; font-weight: 800; border-bottom: var(--card-border); padding-bottom: 8px; display: flex; align-items: center; gap: 8px;">☀️ Panchang for Today</h3>
+                <div class="time-format-toggle" style="display: flex; gap: 8px; margin-bottom: 15px;">
+                    <button class="ph-today-btn active" id="btn12Hr" onclick="setFormat('12')" style="font-size: 0.75rem; padding: 4px 10px;">12 Hour</button>
+                    <button class="ph-today-btn" id="btn24Hr" onclick="setFormat('24')" style="font-size: 0.75rem; padding: 4px 10px;">24 Hour</button>
+                    <button class="ph-today-btn" id="btn24Plus" onclick="setFormat('24Plus')" style="font-size: 0.75rem; padding: 4px 10px;">24 Plus</button>
+                </div>
+                <div id="panchangBody" style="display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem;">
+                    <!-- Filled dynamically by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Column 2: Lagna Kundali -->
+            <div class="glass-card chart-card" id="lagnaKundaliCard" style="padding: 20px; min-height: 520px; background: var(--card-bg); border: var(--card-border); border-radius: 12px; box-shadow: var(--shadow); text-align: center;">
+                <h3 style="color: var(--title-color); margin-top: 0; margin-bottom: 12px; font-size: 1.15rem; font-weight: 800; border-bottom: var(--card-border); padding-bottom: 8px; text-align: left; display: flex; justify-content: space-between; align-items: center;">
+                    <span>☸️ Lagna Kundali</span>
+                    <div style="display: flex; gap: 4px;">
+                        <button onclick="setLagnaStyle('North')" class="ph-today-btn active" id="btnLagnaNorth" style="font-size: 0.7rem; padding: 3px 8px; border-radius: 4px;">North</button>
+                        <button onclick="setLagnaStyle('South')" class="ph-today-btn" id="btnLagnaSouth" style="font-size: 0.7rem; padding: 3px 8px; border-radius: 4px;">South</button>
+                    </div>
+                </h3>
+                <div id="lagnaChartContainer" style="display: flex; justify-content: center; align-items: center; min-height: 250px; margin: 15px 0;">
+                    <!-- SVG drawn dynamically -->
+                </div>
+                <div id="lagnaPlanetsContainer" style="text-align: left; font-size: 0.85rem; max-height: 180px; overflow-y: auto; border-top: var(--card-border); padding-top: 10px;">
+                    <!-- Planet list mapped dynamically -->
+                </div>
+            </div>
+
+            <!-- Column 3: Upcoming Upavas and Festivals -->
+            <div class="glass-card festivals-card" style="padding: 20px; min-height: 520px; background: var(--card-bg); border: var(--card-border); border-radius: 12px; box-shadow: var(--shadow);">
+                <h3 style="color: var(--title-color); margin-top: 0; margin-bottom: 15px; font-size: 1.15rem; font-weight: 800; border-bottom: var(--card-border); padding-bottom: 8px; display: flex; align-items: center; gap: 8px;">📅 Upavas & Festivals</h3>
+                <div id="upcomingFestivalsContainer" style="display: flex; flex-direction: column; gap: 10px; max-height: 440px; overflow-y: auto; padding-right: 5px;">
+                    <!-- Filled dynamically by rules engine -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 3 Sub-dashboard bottom widgets -->
+        <div class="bottom-widgets-grid" style="display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 1.5rem; margin-bottom: 2rem; align-items: start;">
+            
+            <!-- Widget 1: Upcoming Planetary Events -->
+            <div class="glass-card widget-box" style="padding: 20px; min-height: 380px; background: var(--card-bg); border: var(--card-border); border-radius: 12px; box-shadow: var(--shadow);">
+                <h3 style="color: var(--title-color); margin-top: 0; margin-bottom: 12px; font-size: 1.1rem; font-weight: 800; border-bottom: var(--card-border); padding-bottom: 6px; display: flex; align-items: center; gap: 8px;">🪐 Planetary Events</h3>
+                <div id="planetaryEventsContainer" style="display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto; font-size: 0.85rem;">
+                    <!-- Mapped dynamically -->
+                </div>
+            </div>
+
+            <!-- Widget 2: Rashifal for Today -->
+            <div class="glass-card widget-box" style="padding: 20px; min-height: 380px; background: var(--card-bg); border: var(--card-border); border-radius: 12px; box-shadow: var(--shadow);">
+                <h3 style="color: var(--title-color); margin-top: 0; margin-bottom: 12px; font-size: 1.1rem; font-weight: 800; border-bottom: var(--card-border); padding-bottom: 6px; display: flex; align-items: center; gap: 8px;">🦁 Rashifal (Horoscope)</h3>
+                <div id="rashifalTodayContainer" style="display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto; font-size: 0.82rem; padding-right: 5px;">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Widget 3: Vedic Time -->
+            <div class="glass-card widget-box" style="padding: 20px; min-height: 380px; background: var(--card-bg); border: var(--card-border); border-radius: 12px; box-shadow: var(--shadow); text-align: center;">
+                <h3 style="color: var(--title-color); margin-top: 0; margin-bottom: 12px; font-size: 1.1rem; font-weight: 800; border-bottom: var(--card-border); padding-bottom: 6px; text-align: left; display: flex; align-items: center; gap: 8px;">⌛ Vedic Time</h3>
+                <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 15px;">
+                    <button id="btn30Ghati" onclick="setGhatiMode('30')" class="ph-today-btn active" style="font-size: 0.7rem; padding: 4px 10px;">30 Ghati</button>
+                    <button id="btn60Ghati" onclick="setGhatiMode('60')" class="ph-today-btn" style="font-size: 0.7rem; padding: 4px 10px;">60 Ghati</button>
+                </div>
+                
+                <div id="vedicClockDisplay" style="font-size: 2rem; font-weight: 900; color: var(--accent-color); font-family: monospace; letter-spacing: 1px; margin: 15px 0;">41:06:27</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--title-color); margin-bottom: 12px;">Ghati : Pal : Vipal</div>
+                
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; border-top: var(--card-border); padding-top: 10px; margin-bottom: 10px; color: var(--text-muted);">
+                    <span>Sunrise 🌅 05:37:00</span>
+                    <span>Sunset 🌇 19:16:00</span>
+                </div>
+                
+                <div id="vedicTimeDetails" style="font-size: 0.8rem; line-height: 1.5; color: var(--text-muted); font-weight: 600; background: rgba(0,0,0,0.12); padding: 8px; border-radius: 6px;">
+                    <!-- Panchang details -->
+                </div>
+                
+                <div style="margin-top: 15px; font-size: 0.78rem; font-weight: 700; color: var(--text-muted);">GREGORIAN TIME</div>
+                <div id="gregorianClockDisplay" style="font-size: 1.15rem; font-weight: 800; color: var(--text-color); margin-top: 4px;">23:08:49</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Maasik (Month) View Section -->
+    <div id="maasikViewContainer" style="display: none; border: 2px solid #a23922; border-top: none; border-radius: 0 0 10px 10px; overflow: hidden; background: var(--card-bg); margin-bottom: 2rem; box-shadow: var(--shadow);">
+        <div style="background: rgba(0,0,0,0.12); padding: 12px 20px; border-bottom: 2px solid rgba(162,57,34,0.2); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div style="font-weight: 800; color: var(--title-color); font-size: 1rem;">🗓️ Monthly Calendar & Panjika</div>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <input type="month" id="maasikMonthInput" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-color); padding: 6px 12px; font-weight: 700;">
+                <input type="text" id="maasikPlaceInput" value="New Delhi, India" placeholder="City for calendar..." style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-color); padding: 6px 12px; font-weight: 700; width: 180px;">
+                <button onclick="loadMaasikCalendar()" class="ph-today-btn" style="padding: 6px 14px; font-weight: 700; font-size: 0.8rem;">Update</button>
+            </div>
+        </div>
+        <div class="monthly-panchang-wrapper" style="display: flex; flex-wrap: wrap;">
+            <!-- Calendar Main Grid -->
+            <div class="monthly-cal-main" style="flex: 1; padding: 20px; min-width: 320px;">
+                <div class="cal-grid-header" style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 700; font-size: 0.75rem; color: var(--title-color); margin-bottom: 6px;">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                </div>
+                <div class="cal-grid" id="maasikCalGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;">
+                    <!-- Populated dynamically by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Calendar Sidebar Details -->
+            <div class="monthly-cal-sidebar" id="maasikSidebar" style="width: 310px; background: rgba(0,0,0,0.22); border-left: 2px solid rgba(162,57,34,0.2); padding: 15px; min-height: 500px;">
+                <div class="sidebar-title" id="maasikSidebarTitle" style="font-size: 1rem; font-weight: 800; color: var(--title-color); border-bottom: var(--card-border); padding-bottom: 8px; margin-bottom: 12px;">Panchang Details</div>
+                <div id="maasikSidebarContent" style="display: flex; flex-direction: column; gap: 8px; max-height: 480px; overflow-y: auto;">
+                    <div style="color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: 2rem 0;">Click any date in the calendar to view its full details.</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Month Festivals Directory List -->
+        <div style="padding: 20px; border-top: 2px solid rgba(162,57,34,0.2); background: rgba(0,0,0,0.1);">
+            <h4 style="color: var(--title-color); margin-top: 0; margin-bottom: 12px; font-size: 1.05rem; font-weight: 800; border-bottom: var(--card-border); padding-bottom: 6px;">📋 Festivals for this Month</h4>
+            <div id="maasikFestivalsList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; font-size: 0.85rem;">
+                <!-- Loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Floating Tooltip Popups for Vedic glossary terms -->
+    <div id="vedicGlossaryTooltip" style="display: none; position: absolute; background: #ebd9b4; border: 2.5px solid #a23922; color: #2d3748; padding: 12px 16px; border-radius: 8px; font-family: 'Noto Serif', serif; font-size: 0.82rem; max-width: 300px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 11000; line-height: 1.5; pointer-events: none; animation: tooltipFade 0.15s ease-out;">
+        Tooltip content.
+    </div>
+
+    <!-- 7. Portal Directory Grid of Link Cards -->
+    <section class="portal-directory">
+        <h2>explore calculations & vedic shastras</h2>
+        <div class="directory-grid">
+            <div class="directory-box">
+                <h4>🕉️ Hindu Panchang</h4>
+                <ul>
+                    <li><a href="?tab=panchang">Dainik Panchang</a></li>
+                    <li><a href="?tab=panchang">Bengali Panjika</a></li>
+                    <li><a href="?tab=panchang">Tamil Panchangam</a></li>
+                    <li><a href="?tab=panchang">Telugu Panchangam</a></li>
+                    <li><a href="?tab=panchang">Malayalam Panchangam</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>📅 Vedic Calendars</h4>
+                <ul>
+                    <li><a href="?tab=maasik">Maasik Hindu Calendar</a></li>
+                    <li><a href="?tab=maasik">National Indian Calendar</a></li>
+                    <li><a href="?tab=maasik">Tamil Calendar</a></li>
+                    <li><a href="?tab=maasik">Telugu Calendar</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🔮 Jyotish Utilities</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Personalised Kundli D1/D9</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('gemstone')">Gemstone recommendation</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('rudraksha')">Rudraksha suggestion</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('milan')">Kundli Matching (Milan)</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('prashna')">Prashna Kundali</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>⏰ Muhurat</h4>
+                <ul>
+                    <li><a href="?tab=muhurtas">Choghadiya Timings</a></li>
+                    <li><a href="?tab=muhurtas">Do Ghati Muhurtas</a></li>
+                    <li><a href="?tab=muhurtas">Planetary Hora list</a></li>
+                    <li><a href="?tab=muhurtas">Vivah Muhurat Dates</a></li>
+                    <li><a href="?tab=muhurtas">Griha Pravesh Timings</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🎉 Hindu Festivals</h4>
+                <ul>
+                    <li><a href="?tab=panchang">Diwali Shubh Muhurtas</a></li>
+                    <li><a href="?tab=panchang">Raksha Bandhan Thread Time</a></li>
+                    <li><a href="?tab=panchang">Maha Shivaratri Nishita</a></li>
+                    <li><a href="?tab=panchang">Ganesha Chaturthi Murti Sthapna</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🦁 Rashifal Prediction</h4>
+                <ul>
+                    <li><a href="#rashifalTodayContainer">Daily Rashifal Predictions</a></li>
+                    <li><a href="#rashifalTodayContainer">Weekly Horoscope Signs</a></li>
+                    <li><a href="#rashifalTodayContainer">Monthly Rashi Transits</a></li>
+                    <li><a href="#rashifalTodayContainer">Yearly Predictions 2026</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🌾 Panchang Utilities</h4>
+                <ul>
+                    <li><a href="?tab=panchang">Rahu Kala Timings</a></li>
+                    <li><a href="?tab=panchang">Panchak Boundary Times</a></li>
+                    <li><a href="?tab=panchang">Bhadra Vishti Karana Span</a></li>
+                    <li><a href="?tab=panchang">Ganda Mool constellations</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🎗️ Yoga in Astrology</h4>
+                <ul>
+                    <li><a href="?tab=panchang">Gurupushyamrut Yoga</a></li>
+                    <li><a href="?tab=panchang">Sarvarthasiddhi Yoga</a></li>
+                    <li><a href="?tab=panchang">Dwipushkar Yoga</a></li>
+                    <li><a href="?tab=panchang">Ravi Pushya Yoga</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🛐 Vrat and Upavas</h4>
+                <ul>
+                    <li><a href="?tab=panchang">Sankashti Chaturthi moonrise</a></li>
+                    <li><a href="?tab=panchang">Vinayaka Chaturthi timings</a></li>
+                    <li><a href="?tab=panchang">Ekadashi Dates list</a></li>
+                    <li><a href="?tab=panchang">Pradosham Fasting slots</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>📜 Vrat Katha</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Satyanarayana Vrat Katha</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Ekadashi Vrat Katha</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Karwa Chauth Vrat Katha</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Ahoi Ashtami Vrat Katha</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🪐 Planetary Events</h4>
+                <ul>
+                    <li><a href="#planetaryEventsContainer">Sidereal Zodiac entry</a></li>
+                    <li><a href="#planetaryEventsContainer">Tropical Sign transits</a></li>
+                    <li><a href="#planetaryEventsContainer">Planet Retrograde phases</a></li>
+                    <li><a href="#planetaryEventsContainer">Planet Combustion angles</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🔭 Hindu Astronomy</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Solar Eclipse calculations</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Lunar Eclipse timings</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Eclipse Dates database</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Winter Solstice alignment</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🎼 Devotional Lyrics</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Ganesh Aarti & Chalisa</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Sundarkand Paath lyrics</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Vishnu Sahasranama Stotram</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Shri Durga Saptashati text</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🔱 Hindu Gods</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Lord Vishnu avatars</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Lord Shiva temples</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Ashta Vinayaka spots</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Navagraha deities</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🎀 Hindu Goddesses</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Maha Lakshmi Ashtakam</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Navdurga forms list</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Dasha Mahavidya sadhana</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Saraswati stotrams</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🔥 Puja Vidhi</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Ganesha Puja Vidhi steps</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Lakshmi Puja Vidhi Deepavali</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Shivaratri Abhishekam Vidhi</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>☀️ Vedic Mantras</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Gayatri Mantra meaning</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Mahamrityunjaya Mantra</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Shanti Path translations</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🛡️ Deities Yantra</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Shri Yantra geometric logic</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Kubera Yantra installation</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Mahavidya Yantra protection</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🌊 Hindu Rituals</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Kumbha Mela bathing dates</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Shradh Karma Pitru Paksha</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Vivah Sanskar 7 rounds</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🎨 Art Gallery</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Rangoli Collection designs</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Mehandi Designs traditional</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Festivals greetings templates</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>📱 Mobile Apps</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Android App Playstore</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">iOS App Appstore</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Mobile HD Wallpapers</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. About Section Card -->
+    <div class="about-panchang-box">
+        <h3>About Sanskrit AI Astrological Suite</h3>
+        <p>The Sanskrit AI Astrological Suite calculates accurate panchang, festival, and Vrat dates for cities globally. It features high-precision algorithms based on astronomical measurements (Drik Ganita) leveraging Swiss Ephemeris computations.</p>
+        <p>By compiling the traditional variables (Tithi, Nakshatra, Yoga, Karana, Var) alongside dynamic Divisional Charts (D1 to D60), Graha transits, and matchmaking compatibility, the suite serves as an enterprise-grade Vedic portal for research and daily schedules.</p>
+    </div>
+
+    <!-- 9. Footer copyright / Diagnostic test panel -->
+    <footer style="margin-top: 3rem; padding-top: 2rem; border-top: var(--card-border); text-align: center; font-size: 0.9rem; color: var(--text-muted);">
+        <p>© 2026 Sanskrit AI Astrological Suite. Enterprise Grade.</p>
+        <button id="btnOpenApiTest" style="background: rgba(124, 45, 18, 0.2); border: 1.5px solid #a23922; color: #fff; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: all 0.2s;">⚙️ Open API Diagnostic Panel</button>
+        
+        <div id="apiTestPanel" style="display: none; background: rgba(0,0,0,0.4); border: 2px solid #a23922; border-radius: 8px; padding: 20px; margin-top: 1.5rem; text-align: left;">
+            <h4 style="color: var(--title-color); margin-top:0; border-bottom: var(--card-border); padding-bottom: 6px;">⚙️ API Diagnostic & Live Validation System</h4>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;">
+                <div style="flex:1; min-width:200px;">
+                    <label style="display:block; margin-bottom:5px; font-weight:600; color: var(--text-color);">Date</label>
+                    <input type="date" id="apiTestDate" value="2026-07-14" style="width:100%; padding:8px; border:var(--card-border); border-radius:4px; background:#0d1117; color:#fff;">
+                </div>
+                <div style="flex:1; min-width:200px;">
+                    <label style="display:block; margin-bottom:5px; font-weight:600; color: var(--text-color);">Place</label>
+                    <input type="text" id="apiTestPlace" value="New Delhi, India" style="width:100%; padding:8px; border:var(--card-border); border-radius:4px; background:#0d1117; color:#fff;">
+                </div>
+                <div style="display:flex; align-items:flex-end;">
+                    <button id="btnRunApiTest" style="background:#a23922; border:none; color:#fff; padding:10px 20px; border-radius:4px; font-weight:700; cursor:pointer;">Run API Test</button>
+                </div>
+            </div>
+            <div id="apiTestOutput" style="max-height: 350px; overflow-y: auto; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.06); color: #e2e8f0;">
+                Click "Run API Test" to load live dynamic calculation response.
+            </div>
+        </div>
+    </footer>
+</div>
     
 <!-- CHATBOT SECTION -->  
 <div id="chatBubble">🕉</div><div id="chatWindow">
@@ -332,33 +749,50 @@ chatclose.onclick=function(){	windowBox.style.display="none"	}
   </div>
 </div>
 
-<script src="/UserLog/auth.js"></script>
+ <script src="/UserLog/auth.js"></script>
 <script src="./geocomplete.js?v=1.0"></script>
 <script src="./jyotish_modal.js?v=1.1.6"></script>
+<script src="./Features/Astrology/astrology.js?v=1.1.8" defer></script>
 <script>
+// Open general modal utility
+function openGeneralJyotishModal(feature) {
+    if (typeof openJyotishModal === 'function') {
+        openJyotishModal(feature);
+    }
+}
+
 // Initialise city autocomplete for modal place inputs and API test events
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof initGeoComplete === 'function') {
+        if (document.getElementById('panchangPlaceInput')) {
+            initGeoComplete('panchangPlaceInput', { defaultPlace: 'New Delhi, India' });
+        }
+        if (document.getElementById('maasikPlaceInput')) {
+            initGeoComplete('maasikPlaceInput', { defaultPlace: 'New Delhi, India' });
+        }
+        if (document.getElementById('apiTestPlace')) {
+            initGeoComplete('apiTestPlace', { defaultPlace: 'New Delhi, India' });
+        }
         initGeoComplete('mPlace',    { defaultPlace: 'Patna, Bihar, India' });
         initGeoComplete('mBoyPlace', { defaultPlace: 'Patna, Bihar, India' });
         initGeoComplete('mGirlPlace',{ defaultPlace: 'Patna, Bihar, India' });
     }
 
-    // Open/Run API Test Home Panel
-    const btnOpenApiTestHome = document.getElementById('btnOpenApiTestHome');
-    const apiTestPanelHome = document.getElementById('apiTestPanelHome');
-    if (btnOpenApiTestHome && apiTestPanelHome) {
-        btnOpenApiTestHome.addEventListener('click', () => {
-            apiTestPanelHome.style.display = apiTestPanelHome.style.display === 'none' ? 'block' : 'none';
+    // Open/Run API Test Panel
+    const btnOpenApiTest = document.getElementById('btnOpenApiTest');
+    const apiTestPanel = document.getElementById('apiTestPanel');
+    if (btnOpenApiTest && apiTestPanel) {
+        btnOpenApiTest.addEventListener('click', () => {
+            apiTestPanel.style.display = apiTestPanel.style.display === 'none' ? 'block' : 'none';
         });
     }
     
-    const btnRunApiTestHome = document.getElementById('btnRunApiTestHome');
-    if (btnRunApiTestHome) {
-        btnRunApiTestHome.addEventListener('click', async () => {
-            const testDate = document.getElementById('apiTestDateHome').value;
-            const testPlace = document.getElementById('apiTestPlaceHome').value;
-            const output = document.getElementById('apiTestOutputHome');
+    const btnRunApiTest = document.getElementById('btnRunApiTest');
+    if (btnRunApiTest) {
+        btnRunApiTest.addEventListener('click', async () => {
+            const testDate = document.getElementById('apiTestDate').value;
+            const testPlace = document.getElementById('apiTestPlace').value;
+            const output = document.getElementById('apiTestOutput');
             if (!testDate || !testPlace) {
                 alert("Please select Date and Place for API test.");
                 return;

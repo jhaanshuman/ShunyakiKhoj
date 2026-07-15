@@ -351,6 +351,7 @@ def get_planet_positions(chart: SwissChart) -> Dict[str, Dict]:
     Returns:
         A dictionary containing parameters for each planet.
     """
+    sun_lon = chart.get('Sun').lon
     planets_data = {}
     for planet in PLANETS:
         obj = chart.get(planet)
@@ -367,6 +368,29 @@ def get_planet_positions(chart: SwissChart) -> Dict[str, Dict]:
         dignity = get_dignity(planet, sign)
         strength = estimate_strength(dignity, relation)
 
+        # Margi / Vakri
+        is_retro = False
+        if planet in ['Rahu', 'Ketu']:
+            is_retro = True
+        elif planet not in ['Sun', 'Moon'] and obj.lonspeed < 0:
+            is_retro = True
+
+        # Udita / Asta (Combust)
+        is_comb = False
+        if planet not in ['Sun', 'Moon', 'Rahu', 'Ketu']:
+            diff = abs(obj.lon - sun_lon) % 360
+            if diff > 180:
+                diff = 360 - diff
+            comb_limits = {
+                'Mars': 17.0,
+                'Mercury': 12.0 if is_retro else 14.0,
+                'Jupiter': 11.0,
+                'Venus': 8.0 if is_retro else 10.0,
+                'Saturn': 15.0
+            }
+            if diff <= comb_limits.get(planet, 0.0):
+                is_comb = True
+
         planets_data[planet] = {
             "sign": sign,
             "lon": deg,
@@ -377,12 +401,15 @@ def get_planet_positions(chart: SwissChart) -> Dict[str, Dict]:
             "relation": relation,
             "dignity": dignity,
             "strength": strength,
-            "house": obj.house
+            "house": obj.house,
+            "is_retrograde": is_retro,
+            "is_combust": is_comb
         }
     return planets_data
 
 
 def get_house_details(chart: SwissChart, house_system: str = "Whole Sign") -> Dict[str, Dict]:
+
     """Maps which planets occupy which astrological houses.
 
     Args:
