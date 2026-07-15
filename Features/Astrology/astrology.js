@@ -38,9 +38,9 @@ const PLANET_POSITIONS = {
 let lastCalculatedData = null;
 let lastGocharData = null;
 
-const API_URL = (window.location.hostname === '13.233.37.237' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? '/api/calculate'
-    : 'http://13.233.37.237/api/calculate';
+const API_URL = window.location.hostname.includes('github.io')
+    ? 'http://13.233.37.237/api/calculate'
+    : '/api/calculate';
 
 // Initialize dates and parse URL Parameters for direct heading navigation
 window.addEventListener('DOMContentLoaded', () => {
