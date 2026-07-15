@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 import sys
 import os
+import traceback
 
 app = FastAPI()
 
@@ -11,16 +12,16 @@ def test_imports():
         "python_version": sys.version,
         "current_dir": os.getcwd(),
         "dir_contents": os.listdir("."),
-        "sys_path": sys.path,
         "imports": {}
     }
     
-    modules = ["fastapi", "pydantic", "geopy", "pytz", "swisseph", "timezonefinder"]
-    for mod in modules:
-        try:
-            __import__(mod)
-            report["imports"][mod] = "OK"
-        except Exception as e:
-            report["imports"][mod] = f"ERROR: {str(e)}"
+    # Try importing kundli_utils
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    try:
+        import kundli_utils
+        report["imports"]["kundli_utils"] = "OK"
+    except Exception as e:
+        report["imports"]["kundli_utils"] = f"ERROR: {str(e)}"
+        report["traceback"] = traceback.format_exc()
             
     return report
