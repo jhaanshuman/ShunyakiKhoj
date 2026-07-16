@@ -618,10 +618,6 @@ window.addEventListener('DOMContentLoaded', () => {
             if (controlsCard) controlsCard.style.display = 'none';
             if (routerHeader) routerHeader.style.display = 'none';
 
-            // Still fetch today's basic panchang to populate the status-header-card
-            const pDateInput = document.getElementById('panchangDateInput');
-            const place = pPlaceInput ? pPlaceInput.value : savedPlace;
-            loadDainikPanchang(pDateInput ? pDateInput.value : curToday, place);
         }
     };
 
@@ -1686,6 +1682,7 @@ function renderPanchang(bodyId, panchang, regional) {
         const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
         phSubDaik.textContent = `${dayNames[d3.getDay()]}, ${d3.getDate()} ${monthNames[d3.getMonth()]} ${d3.getFullYear()} | ${panchang.vara || ''}`;
     }
+    if (phTitleDaik) {
         phTitleDaik.textContent = `Dainik Panchang — ${panchang.tithi || ''}`;
     }
     initScrollAnimations();
