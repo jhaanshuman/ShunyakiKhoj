@@ -540,7 +540,7 @@ body {
 }
 .drik-table td:last-child {
     text-align: right;
-    color: #fff;
+    //color: #fff;
 }
 .drik-pill {
     padding: 4px 10px;
