@@ -2141,7 +2141,6 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
 
 
 
-    let dateStr = (document.getElementById('panchangDateInput') || document.getElementById('birthDate') || {}).value || new Date().toISOString().split('T')[0];
     let wdIdx = weekdayIdx !== undefined ? weekdayIdx : new Date(dateStr).getDay();
     let panchakaList = calculatePanchakaList(sunriseStr, sunsetStr, ascSign, ascDeg, panchang.tithis_list, panchang.nakshatras_list, wdIdx);
     
