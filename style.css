@@ -517,7 +517,7 @@ body {
 .drik-card-title {
     font-size: 1.05rem;
     font-weight: 700;
-    color: #fff;
+    color: #915;
     margin-bottom: 15px;
     border-bottom: 1px solid rgba(255,255,255,0.06);
     padding-bottom: 8px;
@@ -529,13 +529,13 @@ body {
 .drik-table td {
     padding: 8px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-    font-size: 0.95rem;
+    font-size: 0.95rem; color : red; font-weight:300;
 }
 .drik-table tr:last-child td {
     border-bottom: none;
 }
 .drik-table td:first-child {
-    color: #94a3b8;
+    color: red;
     font-weight: 500;
 }
 .drik-table td:last-child {
