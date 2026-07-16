@@ -992,19 +992,19 @@ function getNorthIndianSVG(chart, ascSign) {
     let signTexts = "";
     let planetTexts = "";
     for (let h = 1; h <= 12; h++) {
-        signTexts += `<text x="${SIGN_POSITIONS[h].x}" y="${SIGN_POSITIONS[h].y}" fill="#a78bfa" font-size="12" font-weight="700" text-anchor="middle">${houseSigns[h]}</text>`;
-        planetTexts += `<text x="${PLANET_POSITIONS[h].x}" y="${PLANET_POSITIONS[h].y}" fill="#e2e8f0" font-size="13" font-weight="800" text-anchor="middle">${housePlanets[h].join(', ')}</text>`;
+        signTexts += `<text x="${SIGN_POSITIONS[h].x}" y="${SIGN_POSITIONS[h].y}" fill="#fbbf24" font-size="12" font-weight="700" text-anchor="middle">${houseSigns[h]}</text>`;
+        planetTexts += `<text x="${PLANET_POSITIONS[h].x}" y="${PLANET_POSITIONS[h].y}" fill="#ebd9b4" font-size="13" font-weight="800" text-anchor="middle">${housePlanets[h].join(', ')}</text>`;
     }
 
     return `
-    <svg width="320" height="320" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg" style="background-color: #0c0e17; border: 1px solid rgba(129, 140, 248, 0.2); border-radius: 12px;">
-      <rect x="5" y="5" width="350" height="350" fill="none" stroke="#4f46e5" stroke-width="2.5" rx="8"/>
-      <line x1="5" y1="5" x2="355" y2="355" stroke="#4f46e5" stroke-width="1"/>
-      <line x1="355" y1="5" x2="5" y2="355" stroke="#4f46e5" stroke-width="1"/>
-      <line x1="180" y1="5" x2="355" y2="180" stroke="#4f46e5" stroke-width="1"/>
-      <line x1="355" y1="180" x2="180" y2="355" stroke="#4f46e5" stroke-width="1"/>
-      <line x1="180" y1="355" x2="5" y2="180" stroke="#4f46e5" stroke-width="1"/>
-      <line x1="5" y1="180" x2="180" y2="5" stroke="#4f46e5" stroke-width="1"/>
+    <svg width="320" height="320" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg" style="background-color: #120200; border: 1.5px solid #FCC201; border-radius: 12px;">
+      <rect x="5" y="5" width="350" height="350" fill="none" stroke="#FCC201" stroke-width="2.5" rx="8"/>
+      <line x1="5" y1="5" x2="355" y2="355" stroke="#FCC201" stroke-width="1"/>
+      <line x1="355" y1="5" x2="5" y2="355" stroke="#FCC201" stroke-width="1"/>
+      <line x1="180" y1="5" x2="355" y2="180" stroke="#FCC201" stroke-width="1"/>
+      <line x1="355" y1="180" x2="180" y2="355" stroke="#FCC201" stroke-width="1"/>
+      <line x1="180" y1="355" x2="5" y2="180" stroke="#FCC201" stroke-width="1"/>
+      <line x1="5" y1="180" x2="180" y2="5" stroke="#FCC201" stroke-width="1"/>
       ${signTexts}
       ${planetTexts}
     </svg>
@@ -1030,19 +1030,19 @@ function getSouthIndianSVG(chart, ascSign) {
         const pStr = signPlanets[name].join(', ');
         const isAsc = name === ascSign ? `<text x="${coord.x+50}" y="${coord.y+20}" fill="#ef4444" font-size="10" font-weight="900" text-anchor="middle">Lagn</text>` : "";
         boxes += `
-        <rect x="${coord.x}" y="${coord.y}" width="80" height="80" fill="none" stroke="#4f46e5" stroke-width="1.2"/>
-        <text x="${coord.x+5}" y="${coord.y+15}" fill="#a78bfa" font-size="10" font-weight="700">${SIGN_ABBRS[name]}</text>
+        <rect x="${coord.x}" y="${coord.y}" width="80" height="80" fill="none" stroke="#FCC201" stroke-width="1.2"/>
+        <text x="${coord.x+5}" y="${coord.y+15}" fill="#fbbf24" font-size="10" font-weight="700">${SIGN_ABBRS[name]}</text>
         ${isAsc}
-        <text x="${coord.x+40}" y="${coord.y+48}" fill="#e2e8f0" font-size="12" font-weight="800" text-anchor="middle">${pStr}</text>
+        <text x="${coord.x+40}" y="${coord.y+48}" fill="#ebd9b4" font-size="12" font-weight="800" text-anchor="middle">${pStr}</text>
         `;
     });
 
     return `
-    <svg width="320" height="320" viewBox="0 0 345 345" xmlns="http://www.w3.org/2000/svg" style="background-color: #0c0e17; border: 1px solid rgba(129, 140, 248, 0.2); border-radius: 12px;">
-      <rect x="5" y="5" width="335" height="335" fill="none" stroke="#4f46e5" stroke-width="2.5" rx="8"/>
+    <svg width="320" height="320" viewBox="0 0 345 345" xmlns="http://www.w3.org/2000/svg" style="background-color: #120200; border: 1.5px solid #FCC201; border-radius: 12px;">
+      <rect x="5" y="5" width="335" height="335" fill="none" stroke="#FCC201" stroke-width="2.5" rx="8"/>
       ${boxes}
-      <text x="172" y="165" fill="#818cf8" font-size="14" font-weight="800" text-anchor="middle">Vedic Kundli</text>
-      <text x="172" y="185" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="middle">Sanskrit AI Engine</text>
+      <text x="172" y="165" fill="#fbbf24" font-size="14" font-weight="800" text-anchor="middle">Vedic Kundli</text>
+      <text x="172" y="185" fill="#b3905c" font-size="11" font-weight="600" text-anchor="middle">Sanskrit AI Engine</text>
     </svg>
     `;
 }
