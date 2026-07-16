@@ -17,35 +17,35 @@
 }
 
 body.theme-manuscript {
-    --bg-color: #f8f2e7;
-    --bg-gradient: radial-gradient(circle at 30% 40%, #f8f2e7 0%, #e8d5b8 100%);
+    --bg-color: #f5e6c8;
+    --bg-gradient: radial-gradient(circle at 30% 40%, #f5e6c8 0%, #d4b896 100%);
     --text-color: #2c1a0a;
     --text-muted: #6b5340;
-    --card-bg: rgba(252, 247, 238, 0.92);
-    --card-border: 2px solid #8b3a1f;
-    --accent-color: #b8451e;
-    --accent-gradient: linear-gradient(135deg, #8b3a1f, #d45a2a);
-    --header-bg: rgba(248, 242, 231, 0.96);
-    --shadow: 0 8px 30px rgba(139, 58, 31, 0.15);
-    --title-color: #7a341c;
-    --tile-bg: #f0e8d8;
-    --sidebar-bg: #e2d0b8;
-    --minicard-bg: #f5ead5;
+    --card-bg: rgba(245, 230, 200, 0.92);
+    --card-border: 2px solid #8b6b3a;
+    --accent-color: #b8860b;
+    --accent-gradient: linear-gradient(135deg, #8b6b3a, #daa520);
+    --header-bg: rgba(245, 230, 200, 0.96);
+    --shadow: 0 8px 30px rgba(139, 107, 58, 0.25);
+    --title-color: #7a5a2a;
+    --tile-bg: #ede0c8;
+    --sidebar-bg: #dcc8a8;
+    --minicard-bg: #f0ddc0;
 }
 
 body.theme-bright {
     --bg-color: #f0fdfa;
     --bg-gradient: linear-gradient(135deg, #ecfdf5, #d1fae5, #a7f3d0);
     --text-color: #064e3b;
-    --text-muted: #4b7b6e;
+    --text-muted: #0d6b52;
     --card-bg: rgba(255, 255, 255, 0.95);
-    --card-border: 1px solid #6ee7b7;
-    --accent-color: #059669;
+    --card-border: 2px solid #059669;
+    --accent-color: #047857;
     --accent-gradient: linear-gradient(135deg, #047857, #10b981);
     --header-bg: rgba(255, 255, 255, 0.97);
-    --shadow: 0 8px 30px rgba(5, 150, 105, 0.1);
-    --title-color: #047857;
-    --tile-bg: #ffffff;
+    --shadow: 0 8px 30px rgba(5, 150, 105, 0.15);
+    --title-color: #065f46;
+    --tile-bg: #f0fdfa;
     --sidebar-bg: #ecfdf5;
     --minicard-bg: #d1fae5;
 }
@@ -54,13 +54,13 @@ body.theme-focus {
     --bg-color: #0a0a0f;
     --bg-gradient: linear-gradient(160deg, #0a0a0f, #16161f);
     --text-color: #f1f1f1;
-    --text-muted: #8a8a96;
-    --card-bg: rgba(22, 22, 31, 0.9);
-    --card-border: 1px solid #2d2d3a;
-    --accent-color: #a8a8b5;
-    --accent-gradient: linear-gradient(135deg, #6b6b7a, #b8b8c5);
+    --text-muted: #b8b8c5;
+    --card-bg: rgba(22, 22, 31, 0.92);
+    --card-border: 2px solid #3d3d4a;
+    --accent-color: #c8c8d5;
+    --accent-gradient: linear-gradient(135deg, #7a7a8a, #d8d8e5);
     --header-bg: rgba(10, 10, 15, 0.97);
-    --shadow: 0 0 0 1px #2d2d3a, 0 8px 30px rgba(0, 0, 0, 0.5);
+    --shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
     --title-color: #e8e8f0;
     --tile-bg: #16161f;
     --sidebar-bg: #0a0a0f;
@@ -70,15 +70,15 @@ body.theme-focus {
 body.theme-pale {
     --bg-color: #faf7f2;
     --bg-gradient: linear-gradient(145deg, #f5f0eb, #e8f0e5);
-    --text-color: #2d3a2d;
-    --text-muted: #6b7a6b;
+    --text-color: #1a2a1a;
+    --text-muted: #4a5a4a;
     --card-bg: rgba(255, 252, 248, 0.92);
-    --card-border: 1px solid #b8c9b8;
-    --accent-color: #7a9a5a;
+    --card-border: 2px solid #7a9a5a;
+    --accent-color: #5a7a3a;
     --accent-gradient: linear-gradient(135deg, #5a7a3a, #8aba6a);
     --header-bg: rgba(250, 247, 242, 0.96);
-    --shadow: 0 8px 30px rgba(90, 122, 58, 0.08);
-    --title-color: #4a6a3a;
+    --shadow: 0 8px 30px rgba(90, 122, 58, 0.12);
+    --title-color: #3a5a2a;
     --tile-bg: #f2efe8;
     --sidebar-bg: #e8e8e0;
     --minicard-bg: #e0e8d8;
@@ -88,14 +88,14 @@ body.theme-indigo {
     --bg-color: #06070e;
     --bg-gradient: radial-gradient(circle at 25% 30%, #1a1a3e, #06070e 80%);
     --text-color: #e8e6f0;
-    --text-muted: #8a86b0;
-    --card-bg: rgba(26, 26, 62, 0.6);
-    --card-border: 1px solid rgba(129, 140, 248, 0.3);
-    --accent-color: #9b8cf5;
-    --accent-gradient: linear-gradient(135deg, #7c6df0, #b8abfa);
-    --header-bg: rgba(6, 7, 14, 0.96);
-    --shadow: 0 8px 40px rgba(0, 0, 0, 0.6), 0 0 60px rgba(129, 140, 248, 0.05);
-    --title-color: #b8abfa;
+    --text-muted: #b8b4d8;
+    --card-bg: rgba(26, 26, 62, 0.7);
+    --card-border: 2px solid rgba(129, 140, 248, 0.4);
+    --accent-color: #a89cf5;
+    --accent-gradient: linear-gradient(135deg, #8c7cf0, #c8bcf5);
+    --header-bg: rgba(6, 7, 14, 0.97);
+    --shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+    --title-color: #c8bcf5;
     --tile-bg: #1a1a3e;
     --sidebar-bg: #0e0e26;
     --minicard-bg: #2a2a5a;
