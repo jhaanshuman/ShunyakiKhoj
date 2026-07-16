@@ -517,9 +517,9 @@ body {
 .drik-card-title {
     font-size: 1.05rem;
     font-weight: 700;
-    color: #915;
+    color: var(--title-color);
     margin-bottom: 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid var(--card-border);
     padding-bottom: 8px;
 }
 .drik-table {
@@ -528,19 +528,19 @@ body {
 }
 .drik-table td {
     padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-    font-size: 0.95rem; color : red; font-weight:300;
+    border-bottom: 1px solid var(--card-border);
+    font-size: 0.95rem;
 }
 .drik-table tr:last-child td {
     border-bottom: none;
 }
 .drik-table td:first-child {
-    color: red;
+    color: var(--text-muted);
     font-weight: 500;
 }
 .drik-table td:last-child {
     text-align: right;
-    //color: #fff;
+    color: var(--text-color);
 }
 .drik-pill {
     padding: 4px 10px;
@@ -1281,5 +1281,186 @@ body.homepage-layout .menu-icon {
 @media (min-width: 1024px) {
     #drikTimelineContainer {
         width: 80%;
+    }
+}
+
+/* ── DAINIK PANCHANG STYLING & ANIMATIONS ────────────────────────────────── */
+
+/* Smooth fade-in and slide-up animation */
+@keyframes dainikReveal {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Dainik Cards layout and styling */
+.dainik-layout-card, 
+#panchangBody .drik-card {
+    background: linear-gradient(135deg, rgba(219, 165, 20, 0.22) 0%, rgba(252, 194, 1, 0.1) 100%) !important;
+    border: 1.5px solid #FCC201 !important;
+    border-radius: 14px !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    box-shadow: 0 8px 32px 0 rgba(198, 147, 32, 0.15) !important;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                box-shadow 0.4s ease, 
+                border-color 0.4s ease, 
+                background 0.4s ease !important;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* Animated active state (when scrolled into view) */
+.dainik-layout-card.animated-in, 
+#panchangBody .drik-card.animated-in {
+    animation: dainikReveal 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards !important;
+}
+
+/* Hover 3D effects with animation on scroll */
+.dainik-layout-card:hover, 
+#panchangBody .drik-card:hover {
+    transform: translateY(-6px) scale(1.01) rotateX(1deg) rotateY(1deg) !important;
+    box-shadow: 0 16px 36px 0 rgba(198, 147, 32, 0.35) !important;
+    border-color: #fbbf24 !important;
+}
+
+/* Table styling for Dainik */
+#dayViewContainer table.drik-table,
+#tabPanchang table.drik-table {
+    background: #C69320 !important;
+    border-radius: 8px !important;
+    border: 1.5px solid #FCC201 !important;
+    padding: 8px 12px !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    transition: all 0.3s ease !important;
+}
+
+#dayViewContainer table.drik-table tr,
+#tabPanchang table.drik-table tr {
+    transition: background 0.25s ease !important;
+}
+
+#dayViewContainer table.drik-table tr:hover,
+#tabPanchang table.drik-table tr:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+#dayViewContainer table.drik-table td,
+#tabPanchang table.drik-table td {
+    padding: 8px 10px !important;
+    border-bottom: 1.5px solid rgba(252, 194, 1, 0.2) !important;
+    color: #431407 !important; /* Rich readable dark text */
+    font-weight: 600 !important;
+}
+
+#dayViewContainer table.drik-table tr:last-child td,
+#tabPanchang table.drik-table tr:last-child td {
+    border-bottom: none !important;
+}
+
+#dayViewContainer table.drik-table td:first-child,
+#tabPanchang table.drik-table td:first-child {
+    color: #310d04 !important; /* Slightly darker */
+    font-weight: 700 !important;
+}
+
+#dayViewContainer table.drik-table td:last-child,
+#tabPanchang table.drik-table td:last-child {
+    color: #270600 !important; /* Deep dark brown for high contrast on gold background */
+}
+
+/* Ensure header titles match */
+.dainik-card-header-title {
+    color: #431407 !important;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border-bottom: 2px solid #FCC201 !important;
+    padding-bottom: 8px;
+}
+
+/* top responsive panchang grids */
+.drik-panchang-grid-top {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+.drik-panchang-grid-double {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.span-all-cols {
+    grid-column: span 3;
+}
+
+@media (max-width: 1024px) {
+    .drik-panchang-grid-top {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .span-all-cols {
+        grid-column: span 2;
+    }
+}
+@media (max-width: 768px) {
+    .drik-panchang-grid-top {
+        grid-template-columns: 1fr;
+    }
+    .span-all-cols {
+        grid-column: span 1;
+    }
+    .drik-panchang-grid-double {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Timeline and Clock Layout side-by-side */
+.timeline-clock-row {
+    display: grid;
+    grid-template-columns: 2.1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    align-items: stretch;
+}
+
+.timeline-clock-row #drikTimelineContainer {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+/* 4-column layout for Lagna, Events, Rashifal, Festivals */
+.dainik-bottom-four-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    align-items: stretch;
+}
+
+@media (max-width: 1200px) {
+    .dainik-bottom-four-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .timeline-clock-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dainik-bottom-four-grid {
+        grid-template-columns: 1fr;
     }
 }

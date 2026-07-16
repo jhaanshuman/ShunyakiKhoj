@@ -14,6 +14,367 @@ const SIGN_ABBRS = {
     'Sagittarius': 'Sg', 'Capricorn': 'Cp', 'Aquarius': 'Aq', 'Pisces': 'Pi'
 };
 
+const TRANSLATIONS = {
+    hi: {
+        // Tithis
+        "Dwitiya": "द्वितीया",
+        "Tritiya": "तृतीया",
+        "Chaturthi": "चतुर्थी",
+        "Pratipada": "प्रतिपदा",
+        "Panchami": "पंचमी",
+        "Shashthi": "षष्ठी",
+        "Saptami": "सप्तमी",
+        "Ashtami": "अष्टमी",
+        "Navami": "नवमी",
+        "Dashami": "दशमी",
+        "Ekadashi": "एकादशी",
+        "Dwadashi": "द्वादशी",
+        "Trayodashi": "त्रयोदशी",
+        "Chaturdashi": "चतुर्दशी",
+        "Amavasya": "अमावास्या",
+        "Purnima": "पूर्णिमा",
+        "Shukla Paksha": "शुक्ल पक्ष",
+        "Krishna Paksha": "कृष्ण पक्ष",
+        // Weekdays
+        "Somavara": "सोमवार",
+        "Mangalavara": "मंगलवार",
+        "Budhavara": "बुधवार",
+        "Guruvara": "गुरुवार",
+        "Shukravara": "शुक्रवार",
+        "Shanivara": "शनिवार",
+        "Ravivara": "रविवार",
+        "Monday": "सोमवार",
+        "Tuesday": "मंगलवार",
+        "Wednesday": "बुधवार",
+        "Thursday": "गुरुवार",
+        "Friday": "शुक्रवार",
+        "Saturday": "शनिवार",
+        "Sunday": "रविवार",
+        // Nakshatras
+        "Ashlesha": "आश्लेषा",
+        "Pushya": "पुष्य",
+        "Magha": "मघा",
+        "Purva Phalguni": "पूर्वा फाल्गुनी",
+        "Uttara Phalguni": "उत्तरा फाल्गुनी",
+        "Hasta": "हस्त",
+        "Chitra": "चित्रा",
+        "Swati": "स्वाती",
+        "Vishakha": "विशाखा",
+        "Anuradha": "अनुराधा",
+        "Jyeshtha": "ज्येष्ठा",
+        "Mula": "मूल",
+        "Purva Ashadha": "पूर्वाषाढ़ा",
+        "Uttara Ashadha": "उत्तराषाढ़ा",
+        "Shravana": "श्रवण",
+        "Dhanishtha": "धनिष्ठा",
+        "Shatabhisha": "शतभिषा",
+        "Purva Bhadrapada": "पूर्वाभाद्रपद",
+        "Uttara Bhadrapada": "उत्तराभाद्रपद",
+        "Revati": "रेवती",
+        "Ashwini": "अश्विनी",
+        "Bharani": "भरणी",
+        "Krittika": "कृत्तिका",
+        "Rohini": "रोहिणी",
+        "Mrigashira": "मृगशिरा",
+        "Ardra": "आर्द्रा",
+        "Punarvasu": "पुनर्वसु",
+        // Yogas
+        "Siddhi": "सिद्धि",
+        "Shiva": "शिव",
+        "Parigha": "परिघ",
+        "Variyan": "वरीयान",
+        "Siddha": "सिद्ध",
+        "Sadhya": "साध्य",
+        "Shubha": "शुभ",
+        "Shukla": "शुक्ल",
+        "Brahma": "ब्रह्म",
+        "Indra": "इन्द्र",
+        "Vaidhriti": "वैधृति",
+        "Vishkumbha": "विष्कम्भ",
+        "Priti": "प्रीति",
+        "Ayushman": "आयुष्मान",
+        "Saubhagya": "सौभाग्य",
+        "Shobhana": "शोभन",
+        "Atiganda": "अतिगण्ड",
+        "Sukarma": "सुकर्मा",
+        "Dhriti": "धृति",
+        "Shula": "शूल",
+        "Ganda": "गण्ड",
+        "Vriddhi": "वृद्धि",
+        "Dhruva": "ध्रुव",
+        "Vyatipata": "व्यतीपात",
+        "Harshana": "हर्षण",
+        "Vajra": "वज्र",
+        // Karanas
+        "Bava": "बव",
+        "Balava": "बालव",
+        "Kaulava": "कौलव",
+        "Taitila": "तैतिल",
+        "Gara": "गर",
+        "Vanija": "वणिज",
+        "Vishti": "विष्टि",
+        "Kimstughna": "किंस्तुघ्न",
+        "Shakuni": "शकुनि",
+        "Chatuspada": "चतुष्पाद",
+        "Naga": "नाग",
+        // Months
+        "Ashadha": "आषाढ़",
+        "Shravana": "श्रावण",
+        "Bhadrapada": "भाद्रपद",
+        "Ashvina": "आश्विन",
+        "Kartika": "कार्तिक",
+        "Margashirsha": "मार्गशीर्ष",
+        "Pausha": "पौष",
+        "Magha": "माघ",
+        "Phalguna": "फाल्गुन",
+        "Chaitra": "चैत्र",
+        "Vaishakha": "वैशाख",
+        "Jyeshtha": "ज्येष्ठ",
+        "July": "जुलाई",
+        "August": "अगस्त",
+        "September": "सितंबर",
+        "October": "अक्टूबर",
+        "November": "नवंबर",
+        "December": "दिसंबर",
+        "January": "जनवरी",
+        "February": "फरवरी",
+        "March": "मार्च",
+        "April": "अप्रैल",
+        "May": "मई",
+        "June": "जून",
+        // Sidebar & Main Labels
+        "Tithi": "तिथि",
+        "Nakshatra": "नक्षत्र",
+        "Yoga": "योग",
+        "Karana": "करण",
+        "Vaar": "वार",
+        "Choghadiya": "चोघड़िया",
+        "Weekday": "वार",
+        "Panchang for Today": "☀️ आज का पंचांग",
+        "Lagna Kundali": "☸️ लग्न कुंडली",
+        "Upavas & Festivals": "📅 उपवास और त्योहार",
+        "Planetary Events": "🪐 ग्रहीय गोचर",
+        "Rashifal (Horoscope)": "🦁 आज का राशिफल",
+        "Dainik Panchang": "दैनिक पंचांग",
+        "Maasik Panchang": "मासिक पंचांग",
+        "Save Location": "स्थान सहेजें",
+        "Select Theme": "थीम चुनें",
+        "Search City": "शहर खोजें",
+        "Sunrise": "सूर्योदय",
+        "Sunset": "सूर्यास्त",
+        "Moonrise": "चन्द्रोदय",
+        "Moonset": "चन्द्रास्त",
+        "Sun Sign": "सूर्य राशि",
+        "Moon Sign": "चन्द्र राशि",
+        "Ritu": "ऋतु",
+        "Ayana": "अयन",
+        "Karna": "करण",
+        "Hour": "घंटा",
+        "Time": "समय",
+        "Quality": "गुणवत्ता",
+        "Good": "शुभ",
+        "Bad": "अशुभ",
+        "Neutral": "मध्यम",
+        "Upcoming Festivals": "आगामी त्योहार",
+        "Upcoming Transit": "आगामी गोचर"
+    },
+    mai: {
+        "Dwitiya": "द्वितीया",
+        "Tritiya": "तृतीया",
+        "Chaturthi": "चतुर्थी",
+        "Pratipada": "प्रतिपदा",
+        "Panchami": "पंचमी",
+        "Shashthi": "षष्ठी",
+        "Saptami": "सप्तमी",
+        "Ashtami": "अष्टमी",
+        "Navami": "नवमी",
+        "Dashami": "दशमी",
+        "Ekadashi": "एकादशी",
+        "Dwadashi": "द्वादशी",
+        "Trayodashi": "त्रयोदशी",
+        "Chaturdashi": "चतुर्दशी",
+        "Amavasya": "अमावस्या",
+        "Purnima": "पूर्णिमा",
+        "Shukla Paksha": "शुक्ल पक्ष",
+        "Krishna Paksha": "कृष्ण पक्ष",
+        "Somavara": "सोमदिन",
+        "Mangalavara": "मंगलदिन",
+        "Budhavara": "बुधदिन",
+        "Guruvara": "बृहस्पतिदिन",
+        "Shukravara": "शुक्रदिन",
+        "Shanivara": "शनिदिन",
+        "Ravivara": "रविदिन",
+        "Monday": "सोमदिन",
+        "Tuesday": "मंगलदिन",
+        "Wednesday": "बुधदिन",
+        "Thursday": "बृहस्पतिदिन",
+        "Friday": "शुक्रदिन",
+        "Saturday": "शनिदिन",
+        "Sunday": "रविदिन",
+        "Ashlesha": "आश्लेषा",
+        "Pushya": "पुष्य",
+        "Magha": "मघा",
+        "Purva Phalguni": "पूर्वा फाल्गुनी",
+        "Uttara Phalguni": "उत्तरा फाल्गुनी",
+        "Hasta": "हस्त",
+        "Chitra": "चित्रा",
+        "Swati": "स्वाती",
+        "Vishakha": "विशाखा",
+        "Anuradha": "अनुराधा",
+        "Jyeshtha": "ज्येष्ठा",
+        "Mula": "मूल",
+        "Purva Ashadha": "पूर्वाषाढ़ा",
+        "Uttara Ashadha": "उत्तराषाढ़ा",
+        "Shravana": "श्रवण",
+        "Dhanishtha": "धनिष्ठा",
+        "Shatabhisha": "शतभिषा",
+        "Purva Bhadrapada": "पूर्वाभाद्रपद",
+        "Uttara Bhadrapada": "उत्तराभाद्रपद",
+        "Revati": "रेवती",
+        "Ashwini": "अश्विनी",
+        "Bharani": "भरणी",
+        "Krittika": "कृत्तिका",
+        "Rohini": "रोहिणी",
+        "Mrigashira": "मृगशिरा",
+        "Ardra": "आर्द्रा",
+        "Punarvasu": "पुनर्वसु",
+        "Siddhi": "सिद्धि",
+        "Shiva": "शिव",
+        "Saubhagya": "सौभाग्य",
+        "Tithi": "तिथि",
+        "Nakshatra": "नक्षत्र",
+        "Yoga": "योग",
+        "Karana": "करण",
+        "Vaar": "वार",
+        "Choghadiya": "चोघड़िया",
+        "Weekday": "दिन",
+        "Panchang for Today": "☀️ आजुक पंचांग",
+        "Lagna Kundali": "☸️ लग्न कुंडली",
+        "Upavas & Festivals": "📅 उपवास ओ पाबनि",
+        "Planetary Events": "🪐 ग्रहीय गोचर",
+        "Rashifal (Horoscope)": "🦁 आजुक राशिफल",
+        "Dainik Panchang": "दैनिक पंचांग",
+        "Maasik Panchang": "मासिक पंचांग",
+        "Search City": "नगर खोजू",
+        "Sunrise": "सूर्योदय",
+        "Sunset": "सूर्யாஸ்த",
+        "Moonrise": "चन्द्रोदय",
+        "Moonset": "चन्द्रास्त"
+    },
+    ta: {
+        "Dwitiya": "துவிதியை",
+        "Tritiya": "திருதியை",
+        "Chaturthi": "சதுர்த்தி",
+        "Pratipada": "பிரதமை",
+        "Panchami": "பஞ்சமி",
+        "Shashthi": "சஷ்டி",
+        "Saptami": "சப்தமி",
+        "Ashtami": "அஷ்டமி",
+        "Navami": "நவமி",
+        "Dashami": "தசமி",
+        "Ekadashi": "ஏகாதசி",
+        "Dwadashi": "துவாதசி",
+        "Trayodashi": "திரயோதசி",
+        "Chaturdashi": "சதுர்தசி",
+        "Amavasya": "அமாவாசை",
+        "Purnima": "பௌர்ணமி",
+        "Shukla Paksha": "வளர்பிறை",
+        "Krishna Paksha": "தேய்பிறை",
+        "Somavara": "திங்கட்கிழமை",
+        "Mangalavara": "செவ்வாய்க்கிழமை",
+        "Budhavara": "புதன்கிழமை",
+        "Guruvara": "வியாழக்கிழமை",
+        "Shukravara": "வெள்ளிக்கிழமை",
+        "Shanivara": "சனிக்கிழமை",
+        "Ravivara": "ஞாயிற்றுக்கிழமை",
+        "Monday": "திங்கள்",
+        "Tuesday": "செவ்வாய்",
+        "Wednesday": "புதன்",
+        "Thursday": "வியாழன்",
+        "Friday": "வெள்ளி",
+        "Saturday": "சனி",
+        "Sunday": "ஞாயிறு",
+        "Ashwini": "அசுவினி",
+        "Bharani": "பரணி",
+        "Krittika": "கார்த்திகை",
+        "Rohini": "ரோகிணி",
+        "Mrigashira": "மிருகசீரிடம்",
+        "Ardra": "திருவாதிரை",
+        "Punarvasu": "புனர்பூசம்",
+        "Pushya": "பூசம்",
+        "Ashlesha": "ஆயில்யம்",
+        "Magha": "மகம்",
+        "Purva Phalguni": "பூரம்",
+        "Uttara Phalguni": "உத்திரம்",
+        "Hasta": "அஸ்தம்",
+        "Chitra": "சித்திரை",
+        "Swati": "சுவாதி",
+        "Vishakha": "விசாகம்",
+        "Anuradha": "அனுஷம்",
+        "Jyeshtha": "கேட்டை",
+        "Mula": "மூலம்",
+        "Purva Ashadha": "பூராடம்",
+        "Uttara Ashadha": "உத்திராடம்",
+        "Shravana": "திருவோணம்",
+        "Dhanishtha": "அவிட்டம்",
+        "Shatabhisha": "சதயம்",
+        "Purva Bhadrapada": "பூரட்டாதி",
+        "Uttara Bhadrapada": "உத்திரட்டாதி",
+        "Revati": "ரேவதி",
+        "Siddhi": "சித்தி",
+        "Shiva": "சிவம்",
+        "Parigha": "பரிகம்",
+        "Variyan": "வரியான்",
+        "Siddha": "சித்தம்",
+        "Sadhya": "சாத்தியம்",
+        "Shubha": "சுபம்",
+        "Shukla": "சுக்லம்",
+        "Brahma": "பிரம்மம்",
+        "Indra": "இந்திரம்",
+        "Tithi": "திதி",
+        "Nakshatra": "நட்சத்திரம்",
+        "Yoga": "யோகம்",
+        "Karana": "கரணம்",
+        "Vaar": "கிழமை",
+        "Choghadiya": "சோகடியா",
+        "Weekday": "வாரம்",
+        "Panchang for Today": "☀️ இன்றைய பஞ்சாங்கம்",
+        "Lagna Kundali": "☸️ லக்ன ஜாதகம்",
+        "Upavas & Festivals": "📅 விரதங்கள் & பண்டிகைகள்",
+        "Planetary Events": "🪐 கிரக பெயர்ச்சி",
+        "Rashifal (Horoscope)": "🦁 ராசிபலன்",
+        "Dainik Panchang": "தினசரி பஞ்சாங்கம்",
+        "Maasik Panchang": "மாதாந்திர பஞ்சாங்கம்",
+        "Search City": "நகரம் தேடுக",
+        "Sunrise": "சூரியோதயம்",
+        "Sunset": "சூரிய அஸ்தமனம்",
+        "Moonrise": "சந்திரோதயம்",
+        "Moonset": "சந்திர அஸ்தமனம்"
+    },
+    en: {}
+};
+
+function translate(str) {
+    if (!str) return "";
+    const lang = sessionStorage.getItem('savedPanchangLang') || 'hi';
+    if (lang === 'en') return str;
+    
+    const cleanStr = String(str).trim();
+    if (TRANSLATIONS[lang] && TRANSLATIONS[lang][cleanStr]) {
+        return TRANSLATIONS[lang][cleanStr];
+    }
+    
+    let translated = cleanStr;
+    if (TRANSLATIONS[lang]) {
+        for (let k in TRANSLATIONS[lang]) {
+            let escapedKey = k.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            translated = translated.replace(new RegExp('\\b' + escapedKey + '\\b', 'g'), TRANSLATIONS[lang][k]);
+            translated = translated.replace(k, TRANSLATIONS[lang][k]);
+        }
+    }
+    return translated;
+}
+
 const BOX_COORDS = {
     'Aries': {x: 90, y: 5}, 'Taurus': {x: 175, y: 5}, 'Gemini': {x: 260, y: 5},
     'Cancer': {x: 260, y: 90}, 'Leo': {x: 260, y: 175}, 'Virgo': {x: 260, y: 260},
@@ -113,6 +474,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     applyLayoutStyles(tab);
     initGlossaryTooltips();
+    initScrollAnimations();
 
     // API test panel triggers
     const btnOpenApiTest = document.getElementById('btnOpenApiTest');
@@ -176,9 +538,31 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Define routePageByTab inside or globally
     window.routePageByTab = function() {
+        const langSel = document.getElementById('langSelector');
+        if (langSel) {
+            if (!sessionStorage.getItem('savedPanchangLang')) {
+                sessionStorage.setItem('savedPanchangLang', 'hi'); // Default Set to Hindi
+            }
+            langSel.value = sessionStorage.getItem('savedPanchangLang') || 'hi';
+            
+            if (!langSel.dataset.bound) {
+                langSel.dataset.bound = "true";
+                langSel.addEventListener('change', (e) => {
+                    sessionStorage.setItem('savedPanchangLang', e.target.value);
+                    document.querySelectorAll('#langSelector').forEach(el => {
+                        el.value = e.target.value;
+                    });
+                    window.routePageByTab();
+                });
+            }
+        }
+
         const prms = new URLSearchParams(window.location.search);
         const activeTab = prms.get('tab') || '';
         const curToday = new Date().toISOString().split('T')[0];
+        
+        const pDateInput = document.getElementById('panchangDateInput');
+        if (pDateInput && !pDateInput.value) pDateInput.value = curToday;
 
         const welcomeSection = document.getElementById('homeWelcomeSection');
         const dayViewHome = document.getElementById('dayViewContainer') || document.getElementById('panchangDaySection');
@@ -200,9 +584,6 @@ window.addEventListener('DOMContentLoaded', () => {
             const routerHeader = document.querySelector('.panchang-unified-header');
             if (controlsCard) controlsCard.style.display = 'flex';
             if (routerHeader) routerHeader.style.display = 'flex';
-
-            const pDateInput = document.getElementById('panchangDateInput');
-            if (pDateInput && !pDateInput.value) pDateInput.value = curToday;
 
             loadDainikPanchang(pDateInput ? pDateInput.value : curToday, pPlaceInput ? pPlaceInput.value : savedPlace);
 
@@ -1088,9 +1469,9 @@ function renderPanchang(bodyId, panchang, regional) {
     `;
 
     body.innerHTML = `
-        <div class="drik-dashboard" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 20px;">
+        <div class="drik-dashboard">
             <!-- Grid Panels -->
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+            <div class="drik-panchang-grid-top">
                 <!-- Panel 1: Sunrise & Moonrise -->
                 <div class="drik-card">
                     <div class="drik-card-title">🌅 Sunrise and Moonrise</div>
@@ -1209,7 +1590,7 @@ function renderPanchang(bodyId, panchang, regional) {
                 </div>
 
                 <!-- Panel 11: Other Calendars and Epoch -->
-                <div class="drik-card" style="grid-column: span 2;">
+                <div class="drik-card span-all-cols">
                     <div class="drik-card-title">🧮 Other Calendars and Epoch</div>
                     <table class="drik-table">
                         <tr><td>Kaliyuga</td><td><strong>5127 Years</strong></td><td>Lahiri Ayanamsha</td><td><strong>24.234453</strong></td></tr>
@@ -1222,7 +1603,7 @@ function renderPanchang(bodyId, panchang, regional) {
             </div>
 
             <!-- Double Column: Panchaka Rahita Muhurta vs Udaya Lagna -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="drik-panchang-grid-double">
                 <!-- Left: Panchaka Rahita Muhurta -->
                 <div class="drik-card">
                     <div class="drik-card-title">⚖️ Panchaka Rahita Muhurta for the day</div>
@@ -1271,7 +1652,7 @@ function renderPanchang(bodyId, panchang, regional) {
             </div>
 
             <!-- Chandrabalam & Tarabalam Lists -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="drik-panchang-grid-double">
                 <div class="drik-card">
                     <div class="drik-card-title">🌓 Chandrabalam Strength</div>
                     <div style="font-size: 0.9rem; line-height: 1.5; color: #cbd5e1; padding: 5px;">
@@ -1305,9 +1686,9 @@ function renderPanchang(bodyId, panchang, regional) {
         const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
         phSubDaik.textContent = `${dayNames[d3.getDay()]}, ${d3.getDate()} ${monthNames[d3.getMonth()]} ${d3.getFullYear()} | ${panchang.vara || ''}`;
     }
-    if (phTitleDaik) {
         phTitleDaik.textContent = `Dainik Panchang — ${panchang.tithi || ''}`;
     }
+    initScrollAnimations();
 }
 
 function renderMuhurtas(choghadiyaId, horaId, choghadiya, hora) {
@@ -1534,6 +1915,7 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     const container = document.getElementById('drikTimelineContainer');
     if (!container) return;
     
+    const dateStr = (document.getElementById('panchangDateInput') || document.getElementById('birthDate') || {}).value || new Date().toISOString().split('T')[0];
     const sunriseStr = panchang.sunrise || "05:33";
     const sunsetStr = panchang.sunset || "07:21";
     const totalMins = 1500;
@@ -1598,10 +1980,28 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
             <path d="M 4,10 L 16,10 M 10,4 L 10,16 M 6,6 L 14,14 M 6,14 L 14,6" stroke="#ea580c" stroke-width="1.5" />
             <text x="10" y="-3" font-size="10" font-weight="700" fill="#ea580c" text-anchor="middle">${sunriseStr}</text>
         </g>
-        <!-- Decorative Tree -->
-        <g transform="translate(${getX(720) - 10}, 10)">
-            <path d="M 10,25 L 10,10 M 10,12 C 5,12 5,5 10,5 C 15,5 15,12 10,12" stroke="#15803d" stroke-width="2" fill="#22c55e" />
-        </g>
+        <!-- Dynamic Current Time Indicator Pin -->
+        ${(function() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            if (dateStr === todayStr) {
+                const now = new Date();
+                let currentMins = now.getHours() * 60 + now.getMinutes();
+                // Offset early morning hours (before 5:00 AM) to next day on the timeline
+                if (currentMins < 300) currentMins += 1440;
+                let currentX = getX(currentMins);
+                if (currentX >= 130 && currentX <= 960) {
+                    const timeLabel = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    return `
+                        <g style="cursor: pointer;">
+                            <title>Current Time: ${timeLabel}</title>
+                            <line x1="${currentX}" y1="36" x2="${currentX}" y2="295" stroke="#22c55e" stroke-width="2.5" stroke-dasharray="3,3" />
+                            <circle cx="${currentX}" cy="32" r="5.5" fill="#22c55e" stroke="#15803d" stroke-width="1.5" />
+                        </g>
+                    `;
+                }
+            }
+            return '';
+        })()}
     `;
 
     let boundaries = [];
@@ -1626,11 +2026,13 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
             
             if (width > 0) {
                 svg += `
-                    <rect x="${drawStartX}" y="${y + 4}" width="${width}" height="22" fill="none" stroke="rgba(124,45,18,0.1)" stroke-width="1" />
+                    <g class="glossary-term" data-term="${seg.name.toLowerCase()}" style="cursor:pointer;">
+                        <rect x="${drawStartX}" y="${y + 4}" width="${width}" height="22" fill="none" stroke="rgba(124,45,18,0.1)" stroke-width="1" />
                 `;
                 if (width > 20) {
                     svg += `<text x="${drawStartX + width/2}" y="${y + 18}" font-size="11" font-weight="700" fill="#431407" text-anchor="middle">${displayName}</text>`;
                 }
+                svg += `</g>`;
             }
             
             // Draw transition dashed line and label if end time is within the timeline range
@@ -1732,11 +2134,13 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     }
 
     // New Weekday / Vaar track
+    svg += `<g class="glossary-term" data-term="var" style="cursor:pointer;">`;
     svg += `<text x="15" y="278" font-size="12" font-weight="700" fill="#7c2d12">Vaar</text>`;
     svg += `<line x1="130" y1="260" x2="960" y2="260" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
     let wdName = panchang.vara || "Mangalawara";
     svg += `<text x="520" y="278" font-size="11" font-weight="700" fill="#7c2d12" text-anchor="middle">${wdName}</text>`;
     svg += `<line x1="130" y1="300" x2="960" y2="300" stroke="#7c2d12" stroke-width="1.5" />`;
+    svg += `</g>`;
 
 
 
@@ -1772,6 +2176,28 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     notesHTML += `</div>`;
 
     container.innerHTML = svg + notesHTML;
+}
+
+// ── Scroll Reveal Animations helper ──────────────────────────────────────
+function initScrollAnimations() {
+    if (!window.IntersectionObserver) {
+        document.querySelectorAll('.dainik-layout-card, #panchangBody .drik-card').forEach(el => {
+            el.classList.add('animated-in');
+        });
+        return;
+    }
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated-in');
+            }
+        });
+    }, { threshold: 0.02, rootMargin: "0px 0px -20px 0px" });
+    
+    document.querySelectorAll('.dainik-layout-card, #panchangBody .drik-card').forEach(el => {
+        observer.observe(el);
+    });
 }
 
 // ── Standalone Dainik Panchang Loader ─────────────────────────────────────
@@ -1937,12 +2363,16 @@ async function loadDainikPanchang(dateStr, place) {
                 `).join('');
             }
 
-            // Ensure outputCard is visible and switch to tabPanchang
-            const outputCard = document.getElementById('outputCard');
-            if (outputCard) outputCard.style.display = 'block';
-            document.querySelectorAll('#outputCard .tab-content').forEach(tc => tc.classList.remove('active'));
-            const tabPanchangEl = document.getElementById('tabPanchang');
-            if (tabPanchangEl) tabPanchangEl.classList.add('active');
+            // Ensure outputCard is visible and switch to tabPanchang ONLY if active tab is panchang (standalone page load)
+            const prms = new URLSearchParams(window.location.search);
+            const activeTab = prms.get('tab') || '';
+            if (activeTab === 'panchang') {
+                const outputCard = document.getElementById('outputCard');
+                if (outputCard) outputCard.style.display = 'block';
+                document.querySelectorAll('#outputCard .tab-content').forEach(tc => tc.classList.remove('active'));
+                const tabPanchangEl = document.getElementById('tabPanchang');
+                if (tabPanchangEl) tabPanchangEl.classList.add('active');
+            }
             
             // Render the full panchang
             renderPanchang('panchangBody', data.panchang, data.regional);
@@ -1950,6 +2380,9 @@ async function loadDainikPanchang(dateStr, place) {
             if (choghadiyaBody) {
                 renderMuhurtas('choghadiyaBody', 'horaBody', data.choghadiya, data.hora);
             }
+            
+            // Re-bind and trigger animations for newly created elements
+            initScrollAnimations();
         } else {
             if (timelineContainer) timelineContainer.innerHTML = '<div style="color:#f87171;padding:2rem;text-align:center;">Error: ' + (data.detail || 'Panchang calculation failed') + '</div>';
         }
@@ -2125,8 +2558,15 @@ async function loadMaasikCalendar() {
             moonrise = p.moonrise || '';
         }
 
-        const tithiShort = tithi.split(' ')[0] || '';
-        const nakShort = nakshatra.split(' ')[0] || '';
+        let tithiDisplay = '—';
+        if (tithi) {
+            const parts = tithi.split(' - ');
+            const tName = translate(parts[0]);
+            const pName = parts[1] ? translate(parts[1].replace(' Paksha', '')) : '';
+            tithiDisplay = pName ? `${tName} - ${pName}` : tName;
+        }
+
+        const nakDisplay = nakshatra ? translate(nakshatra.split(' ')[0]) : '';
         const srDisplay = sunrise ? `☀️${sunrise}` : '';
         const mrDisplay = moonrise ? `🌙${moonrise.replace(' AM','').replace(' PM','')}` : '';
 
@@ -2135,8 +2575,8 @@ async function loadMaasikCalendar() {
                  data-date="${dateStr}" 
                  onclick="selectMaasikDate('${dateStr}')">
                 <div class="cell-day-num">${d}</div>
-                ${tithiShort ? `<div class="cell-tithi">${tithiShort}</div>` : '<div class="cell-tithi">—</div>'}
-                ${nakShort ? `<div class="cell-nakshatra">${nakShort}</div>` : ''}
+                <div class="cell-tithi">${tithiDisplay}</div>
+                ${nakDisplay ? `<div class="cell-nakshatra">${nakDisplay}</div>` : ''}
                 <div class="cell-sun-moon">
                     <span>${srDisplay}</span>
                     <span>${mrDisplay}</span>
@@ -2171,11 +2611,11 @@ function selectMaasikDate(dateStr) {
     const d = new Date(dateStr);
     const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    sidebarTitle.textContent = `${dayNames[d.getDay()]}, ${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+    sidebarTitle.textContent = `${translate(dayNames[d.getDay()])}, ${d.getDate()} ${translate(monthNames[d.getMonth()])} ${d.getFullYear()}`;
 
     const cellData = maasikCalendarData[dateStr];
     if (!cellData || !cellData.panchang) {
-        sidebarContent.innerHTML = '<div style="color:var(--muted-text);font-size:0.85rem;padding:1rem 0;text-align:center;">Panchang data not available for this date.</div>';
+        sidebarContent.innerHTML = `<div style="color:var(--muted-text);font-size:0.85rem;padding:1rem 0;text-align:center;">${translate('Panchang data not available for this date.')}</div>`;
         return;
     }
 
@@ -2185,12 +2625,15 @@ function selectMaasikDate(dateStr) {
 
     function smc(label, value) {
         if (!value) return '';
-        return `<div class="sidebar-mini-card"><div class="smc-label">${label}</div><div class="smc-value">${value}</div></div>`;
+        return `<div class="sidebar-mini-card"><div class="smc-label">${translate(label)}</div><div class="smc-value">${translate(value)}</div></div>`;
     }
 
     function listStr(list, current) {
-        if (!list || list.length === 0) return current || 'N/A';
-        return list.map(x => x.end_time ? `${x.name} upto ${x.end_time}` : x.name).join(', then ');
+        if (!list || list.length === 0) return translate(current) || 'N/A';
+        return list.map(x => {
+            const transName = translate(x.name);
+            return x.end_time ? `${transName} upto ${x.end_time}` : transName;
+        }).join(', then ');
     }
 
     sidebarContent.innerHTML = `
@@ -2216,7 +2659,7 @@ function selectMaasikDate(dateStr) {
         <div style="margin-top:10px;">
             <button style="width:100%;background:linear-gradient(135deg,#a23922,#7c1a08);border:none;color:#fff;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:700;font-size:0.85rem;" 
                     onclick="viewDaikFromMaasik('${dateStr}')">
-                📅 View Full Dainik Panchang
+                📅 ${translate('View Full Dainik Panchang')}
             </button>
         </div>
     `;
@@ -2332,10 +2775,25 @@ function initGlossaryTooltips() {
         const el = e.target.closest('.glossary-term, [data-term]');
         if (!el) return;
 
-        let term = el.getAttribute('data-term') || el.innerText.trim();
+        let rawTerm = el.getAttribute('data-term') || el.innerText.trim();
+        // Remove Paksha suffix or parentheses if present
+        let term = rawTerm.split(' - ')[0].split(' (')[0].trim();
         term = term.toLowerCase().replace(':', '');
+        
         if (window.VEDIC_DATA && window.VEDIC_DATA.glossary) {
-            const desc = window.VEDIC_DATA.glossary[term];
+            const fallbacks = {
+                'gara': 'garaja',
+                'naga': 'nagava',
+                'ayushman': 'ayushmana',
+                'kimstughna': 'kinstughna',
+                'variyan': 'variyana'
+            };
+            let lookupKey = term;
+            if (fallbacks[term]) {
+                lookupKey = fallbacks[term];
+            }
+            
+            const desc = window.VEDIC_DATA.glossary[lookupKey];
             if (desc) {
                 tooltip.innerHTML = `<strong style="color:#b33922; text-transform:capitalize;">${term}:</strong> ${desc}`;
                 tooltip.style.display = 'block';

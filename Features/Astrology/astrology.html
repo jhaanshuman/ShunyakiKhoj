@@ -437,7 +437,15 @@
     <div id="header-breadcrumb" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 1px; font-weight: 600;">🏠 Home</div>
 </div>
 </div>
-<div class="header-icons"><span>🔍</span><span id="themeToggleBtn">🌓</span><span id="notificationBtn">🔔</span><span id="profileBtn">👤</span><span class="menu-icon">☰</span></div>
+<div class="header-icons">
+    <select id="langSelector" style="background: var(--tile-bg); border: 1.5px solid var(--card-border); border-radius: 6px; color: var(--text-color); font-weight: 700; font-size: 0.8rem; padding: 3px 6px; cursor: pointer; outline: none; margin-right: 10px; font-family: inherit;">
+        <option value="hi" style="background: var(--bg-color); color: var(--text-color);">हिन्दी</option>
+        <option value="en" style="background: var(--bg-color); color: var(--text-color);">English</option>
+        <option value="mai" style="background: var(--bg-color); color: var(--text-color);">मैथिली</option>
+        <option value="ta" style="background: var(--bg-color); color: var(--text-color);">தமிழ்</option>
+    </select>
+    <span>🔍</span><span id="themeToggleBtn">🌓</span><span id="notificationBtn">🔔</span><span id="profileBtn">👤</span><span class="menu-icon">☰</span>
+</div>
 </header>
 
 <!-- MOBILE MENU -->
@@ -488,7 +496,7 @@
                 <div id="tabDivisional" class="tab-content active">
                     <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
                         <label for="vargaSelect" style="font-weight: 600; color: var(--muted-text);">Choose Varga (Division):</label>
-                        <select id="vargaSelect" style="width: 250px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: #fff; padding: 0.5rem; border-radius: 6px;" onchange="updateVargaCharts()">
+                        <select id="vargaSelect" style="width: 250px; background: var(--tile-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem; border-radius: 6px;" onchange="updateVargaCharts()">
                             <option value="D1">D1 (Rashi) - Natal Chart</option>
                             <option value="D2">D2 (Hora) - Wealth</option>
                             <option value="D3">D3 (Drekkana) - Siblings</option>
@@ -542,13 +550,94 @@
                         </div>
                     </div>
 
-                    <!-- Visual Timeline Container -->
-                    <div id="drikTimelineContainer" style="background: #ebd9b4; border: 2px solid #a23922; border-top: none; padding: 25px; border-radius: 0 0 8px 8px; color: #2d3748; font-family: 'Noto Serif', serif; position: relative; overflow-x: auto; margin-bottom: 2rem;">
-                        <div style="text-align: center; padding: 2rem; color: #7c2d12; font-weight: 700;">Loading Panchang for today...</div>
+                    <!-- Timeline and Vedic Time side-by-side row -->
+                    <div class="timeline-clock-row">
+                        <!-- Visual Timeline Container -->
+                        <div id="drikTimelineContainer" style="background: #ebd9b4; border: 2px solid #a23922; padding: 25px; border-radius: 8px; color: #2d3748; font-family: 'Noto Serif', serif; position: relative; overflow-x: auto; box-shadow: var(--shadow); display: flex; align-items: center; justify-content: center; min-height: 480px; box-sizing: border-box; width: 100%;">
+                            <div style="text-align: center; padding: 2rem; color: #7c2d12; font-weight: 700;">Loading Panchang for today...</div>
+                        </div>
+
+                        <!-- Vedic Time Clock -->
+                        <div class="glass-card widget-box dainik-layout-card" style="padding: 20px; box-sizing: border-box; text-align: center; display: flex; flex-direction: column; height: 100%; min-height: 480px;">
+                            <h3 class="dainik-card-header-title">⌛ Vedic Time</h3>
+                            <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 15px;">
+                                <button id="btn30Ghati" onclick="setGhatiMode('30')" class="ph-today-btn active" style="font-size: 0.7rem; padding: 4px 10px;">30 Ghati</button>
+                                <button id="btn60Ghati" onclick="setGhatiMode('60')" class="ph-today-btn" style="font-size: 0.7rem; padding: 4px 10px;">60 Ghati</button>
+                            </div>
+                            
+                            <div id="vedicClockDisplay" style="font-size: 2rem; font-weight: 900; color: var(--accent-color); font-family: monospace; letter-spacing: 1px; margin: 15px 0;">41:06:27</div>
+                            <div style="font-size: 0.85rem; font-weight: 700; color: var(--title-color); margin-bottom: 12px;">Ghati : Pal : Vipal</div>
+                            
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; border-top: 1px solid rgba(252,194,1,0.2); padding-top: 10px; margin-bottom: 10px; color: var(--text-muted);">
+                                <span>Sunrise 🌅 05:37:00</span>
+                                <span>Sunset 🌇 19:16:00</span>
+                            </div>
+                            
+                            <div id="vedicTimeDetails" style="font-size: 0.8rem; line-height: 1.5; color: var(--text-muted); font-weight: 600; background: rgba(0,0,0,0.12); padding: 8px; border-radius: 6px; flex-grow: 1;">
+                                <!-- Panchang details -->
+                            </div>
+                            
+                            <div style="margin-top: 15px; font-size: 0.78rem; font-weight: 700; color: var(--text-muted);">GREGORIAN TIME</div>
+                            <div id="gregorianClockDisplay" style="font-size: 1.15rem; font-weight: 800; color: var(--text-color); margin-top: 4px;">23:08:49</div>
+                        </div>
                     </div>
 
-                    <!-- Grid Cards Container -->
-                    <div id="panchangBody" class="drik-dashboard-panchang"></div>
+                    <!-- 1. Panchang for Today (Spread across width) -->
+                    <div style="margin-bottom: 1.5rem; width: 100%; box-sizing: border-box;">
+                        <h3 class="dainik-card-header-title">☀️ Panchang for Today</h3>
+                        <div class="time-format-toggle" style="display: flex; gap: 8px; margin-bottom: 15px;">
+                            <button class="ph-today-btn active" id="btn12Hr" onclick="setFormat('12')" style="font-size: 0.75rem; padding: 4px 10px;">12 Hour</button>
+                            <button class="ph-today-btn" id="btn24Hr" onclick="setFormat('24')" style="font-size: 0.75rem; padding: 4px 10px;">24 Hour</button>
+                            <button class="ph-today-btn" id="btn24Plus" onclick="setFormat('24Plus')" style="font-size: 0.75rem; padding: 4px 10px;">24 Plus</button>
+                        </div>
+                        <div id="panchangBody">
+                            <!-- Filled dynamically by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Bottom Grid: Lagna Kundali | Planetary Events | Rashifal | Upavas & Festivals -->
+                    <div class="dainik-bottom-four-grid">
+                        <!-- Column 1: Lagna Kundali -->
+                        <div class="glass-card chart-card dainik-layout-card" id="lagnaKundaliCard" style="padding: 20px; box-sizing: border-box; text-align: center; display: flex; flex-direction: column; height: 100%;">
+                            <h3 class="dainik-card-header-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                <span>☸️ Lagna Kundali</span>
+                                <div style="display: flex; gap: 4px;">
+                                    <button onclick="setLagnaStyle('North')" class="ph-today-btn active" id="btnLagnaNorth" style="font-size: 0.7rem; padding: 3px 8px; border-radius: 4px;">North</button>
+                                    <button onclick="setLagnaStyle('South')" class="ph-today-btn" id="btnLagnaSouth" style="font-size: 0.7rem; padding: 3px 8px; border-radius: 4px;">South</button>
+                                </div>
+                            </h3>
+                            <div id="lagnaChartContainer" style="display: flex; justify-content: center; align-items: center; min-height: 250px; margin: 15px 0;">
+                                <!-- SVG drawn dynamically -->
+                            </div>
+                            <div id="lagnaPlanetsContainer" style="text-align: left; font-size: 0.85rem; max-height: 180px; overflow-y: auto; border-top: 1px solid rgba(252,194,1,0.2); padding-top: 10px; flex-grow: 1;">
+                                <!-- Planet list mapped dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Column 2: Upcoming Planetary Events -->
+                        <div class="glass-card widget-box dainik-layout-card" style="padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; height: 100%;">
+                            <h3 class="dainik-card-header-title">🪐 Planetary Events</h3>
+                            <div id="planetaryEventsContainer" style="display: flex; flex-direction: column; gap: 10px; max-height: 400px; overflow-y: auto; font-size: 0.85rem; flex-grow: 1;">
+                                <!-- Mapped dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Rashifal (Horoscope) -->
+                        <div class="glass-card widget-box dainik-layout-card" style="padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; height: 100%;">
+                            <h3 class="dainik-card-header-title">🦁 Rashifal (Horoscope)</h3>
+                            <div id="rashifalTodayContainer" style="display: flex; flex-direction: column; gap: 10px; max-height: 400px; overflow-y: auto; font-size: 0.82rem; padding-right: 5px; flex-grow: 1;">
+                                <!-- Loaded dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Column 4: Upavas & Festivals -->
+                        <div class="glass-card festivals-card dainik-layout-card" style="padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; height: 100%;">
+                            <h3 class="dainik-card-header-title">📅 Upavas & Festivals</h3>
+                            <div id="upcomingFestivalsContainer" style="display: flex; flex-direction: column; gap: 10px; max-height: 400px; overflow-y: auto; padding-right: 5px; flex-grow: 1;">
+                                <!-- Filled dynamically by rules engine -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Tab Muhurtas -->
@@ -619,7 +708,7 @@
                 <div id="tabGocharD1" class="tab-content active">
                     <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
                         <label for="gocharVargaSelect" style="font-weight: 600; color: var(--muted-text);">Choose Varga (Transit):</label>
-                        <select id="gocharVargaSelect" style="width: 250px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: #fff; padding: 0.5rem; border-radius: 6px;" onchange="updateGocharVargaCharts()">
+                        <select id="gocharVargaSelect" style="width: 250px; background: var(--tile-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem; border-radius: 6px;" onchange="updateGocharVargaCharts()">
                             <option value="D1" selected>D1 (Rashi) - Natal Chart</option>
                             <option value="D9">D9 (Navamsa) - Marriage/Spouse</option>
                         </select>

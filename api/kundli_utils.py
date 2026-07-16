@@ -809,7 +809,7 @@ def get_panchang(sun_lon: float, moon_lon: float, birth_date: date, lat: float, 
             last_k = c_karana
             
     return {
-        "tithi": f"{tithi_name} ({paksha})",
+        "tithi": f"{tithi_name} - {paksha}",
         "nakshatra": nakshatra,
         "yoga": yoga_name,
         "karana": karana_name,
