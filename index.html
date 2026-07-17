@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DZ7500BNEZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-DZ7500BNEZ');
+</script>
+<meta charset="UTF-8">
+<title>Sanskrit AI | ShunyakiKhoj – AI powered Sanskrit research platform</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="./logo.png">
+<link rel="stylesheet" href="style.css?v=2.0">
+<link rel="stylesheet" href="/UserLog/auth.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="description" content="Sanskrit AI by ShunyakiKhoj is an advanced platform for exploring Sanskrit grammar, dictionaries, manuscripts, Vedic literature and AI-powered Sanskrit research tools.">
+<meta name="keywords" content="Sanskrit AI, Sanskrit tools, Sanskrit dictionary, Panini grammar, Sanskrit OCR, Vedic literature, Sanskrit research">
+<meta name="author" content="ShunyakiKhoj">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Sanskrit AI – ShunyakiKhoj">
+<meta property="og:description" content="AI powered Sanskrit research platform for grammar, literature and knowledge exploration.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://shunyakikhoj.co.in">
+<meta property="og:image" content="https://shunyakikhoj.co.in/logo.png">
+
+<!-- Canonical -->
+<link rel="canonical" href="https://shunyakikhoj.co.in/">
+
+<!-- Schema.org -->
+<script type="application/ld+json">
+{
+"@context":"https://schema.org",
+"@type":"WebSite",
+"name":"Sanskrit AI",
+"url":"https://shunyakikhoj.co.in",
+"description":"AI powered Sanskrit research platform",
+"potentialAction":{
+"@type":"SearchAction",
+"target":"https://shunyakikhoj.co.in/search?q={search_term_string}",
+"query-input":"required name=search_term_string"
+}
+}
+</script>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DZ2CM1SBWW"></script>
+
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config','G-DZ2CM1SBWW');
+</script>
+<script src="./nav.js" defer></script>
+<link rel="stylesheet" href="./Features/Astrology/astrology_dashboard.css?v=1.1.8">
+<script src="./Features/Astrology/vedic_data.js?v=1.1.8"></script>
+</head>
+
+<body class="homepage-layout" data-theme="dark">
+
+<!-- HEADER -->
+<header class="header">
+<div class="logo-area">
+<img src="./logo.png" class="logo" alt="Sanskrit AI Logo">
+<div>
+    <h1 style="line-height: 1.1;">Sanskrit AI</h1>
+    <div id="header-breadcrumb" class="header-breadcrumb">🏠 Home</div>
+</div>
+</div>
+<div class="header-icons">
+    <select id="langSelector">
+        <option value="hi">हिन्दी</option>
+        <option value="en">English</option>
+        <option value="mai">मैथिली</option>
+        <option value="ta">தமிழ்</option>
+    </select>
+    <span title="Search">🔍</span>
+    <span id="themeToggleBtn" title="Toggle Theme">🌓</span>
+    <span id="notificationBtn" title="Notifications">🔔</span>
+    <span id="profileBtn" title="Profile">👤</span>
+    <span class="menu-icon" title="Menu">☰</span>
+</div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="menu-overlay"></div>
+<div class="mobile-menu">
+</div>
+
+<!-- MAIN ASTROLOGY PORTAL CONTAINER -->
+<div class="container main-portal-container" style="margin-top: 2rem;">
+
+    <!-- 1. Traditional Status Info Header Card -->
+    <div class="glass-card status-header-card" style="margin-bottom: 1.5rem; padding: 20px;">
+        <div class="status-header-inner">
+            <div class="status-header-left">
+                <div class="moon-phase-icon-container" id="headerMoonIcon">🌕</div>
+                <div>
+                    <h2 id="headerMonthTithi" class="status-title">Loading today's panchang...</h2>
+                    <p id="headerPakshaSamvat" class="status-subtitle">Calculating Samvatsara and Paksha...</p>
+                    <p id="headerPlaceDisplay" class="status-location">📍 New Delhi, India</p>
+                </div>
+            </div>
+            <div class="status-header-right">
+                <div id="headerDayNum" class="status-day">--</div>
+                <div id="headerMonthYear" class="status-month">Loading Month...</div>
+                <div id="headerWeekday" class="status-weekday">Weekday</div>
+            </div>
+        </div>
+
+        <!-- Saffron top festival bar link -->
+        <div class="status-festival-bar" id="headerFestivalBar">
+            Loading major auspicious transits and fasts...
+        </div>
+    </div>
+
+    <!-- 2. Controls & Search Bar Row -->
+    <div class="glass-card controls-card" style="padding: 15px; margin-bottom: 1.5rem;">
+        <div class="controls-search">
+            <span class="controls-location-icon">📍</span>
+            <input type="text" id="panchangPlaceInput" value="New Delhi, India" placeholder="Search any city worldwide..." autocomplete="off">
+            <button id="btnSavePanchangPlace" class="btn-icon" title="Save Location for this Session">💾</button>
+        </div>
+        <div class="controls-action-buttons">
+            <button class="ph-today-btn" id="btnAmantaPurnimanta" onclick="toggleAmantaPurnimanta()">Switch to Amanta</button>
+            <button class="ph-today-btn" id="btnHideChart" onclick="toggleMainChart()">Hide Chart</button>
+            <button class="ph-today-btn" id="btnThemeSelectorTrigger">🎨 Theme Selector</button>
+        </div>
+    </div>
+
+    <!-- 3. Navigation Header for Dainik / Maasik views -->
+    <div class="panchang-unified-header">
+        <div>
+            <div class="ph-title" id="phTitleDaik">Dainik Panchang</div>
+            <div class="ph-subtitle" id="phSubDaik">Loading today's panchang...</div>
+        </div>
+        <div class="ph-controls">
+            <div class="ph-view-toggle">
+                <button class="ph-view-btn active" id="phViewDayBtn" onclick="switchPancView('day')">Day</button>
+                <button class="ph-view-btn" id="phViewMonthBtn" onclick="switchPancView('month')">Month</button>
+            </div>
+            <button class="ph-nav-btn" id="panchangPrevDayBtn" title="Previous Day">‹</button>
+            <input type="date" class="ph-date-input" id="panchangDateInput">
+            <button class="ph-nav-btn" id="panchangNextDayBtn" title="Next Day">›</button>
+            <button class="ph-today-btn" id="panchangTodayBtn">Today</button>
+        </div>
+    </div>
+
+    <!-- 4. Dainik (Day) View Section -->
+    <div id="dayViewContainer" style="display: none;">
+        <!-- Timeline and Vedic Time side-by-side row -->
+        <div class="timeline-clock-row">
+            <!-- Visual Timeline Container -->
+            <div id="drikTimelineContainer">
+                <div class="timeline-loading">Loading Panchang for today...</div>
+            </div>
+
+            <!-- Vedic Time Clock -->
+            <div class="glass-card widget-box dainik-layout-card" style="padding: 20px; text-align: center;">
+                <h3 class="dainik-card-header-title">⌛ Vedic Time</h3>
+                <div class="vedic-clock-toggle">
+                    <button id="btn30Ghati" onclick="setGhatiMode('30')" class="ph-today-btn active">30 Ghati</button>
+                    <button id="btn60Ghati" onclick="setGhatiMode('60')" class="ph-today-btn">60 Ghati</button>
+                </div>
+
+                <div id="vedicClockDisplay">41:06:27</div>
+                <div class="vedic-clock-label">Ghati : Pal : Vipal</div>
+
+                <div class="vedic-sun-info">
+                    <span>Sunrise 🌅 05:37:00</span>
+                    <span>Sunset 🌇 19:16:00</span>
+                </div>
+
+                <div id="vedicTimeDetails">
+                    <!-- Panchang details -->
+                </div>
+
+                <div class="gregorian-label">GREGORIAN TIME</div>
+                <div id="gregorianClockDisplay">23:08:49</div>
+            </div>
+        </div>
+
+        <!-- 1. Panchang for Today (Spread across width) -->
+        <div class="panchang-today-section">
+            <h3 class="dainik-card-header-title">☀️ Panchang for Today</h3>
+            <div class="time-format-toggle">
+                <button class="ph-today-btn active" id="btn12Hr" onclick="setFormat('12')">12 Hour</button>
+                <button class="ph-today-btn" id="btn24Hr" onclick="setFormat('24')">24 Hour</button>
+                <button class="ph-today-btn" id="btn24Plus" onclick="setFormat('24Plus')">24 Plus</button>
+            </div>
+            <div id="panchangBody">
+                <!-- Filled dynamically by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Bottom Grid: Lagna Kundali | Planetary Events | Rashifal | Upavas & Festivals -->
+        <div class="dainik-bottom-four-grid">
+            <!-- Column 1: Lagna Kundali -->
+            <div class="glass-card chart-card dainik-layout-card" id="lagnaKundaliCard" style="padding: 20px; text-align: center;">
+                <h3 class="dainik-card-header-title lagna-header">
+                    <span>☸️ Lagna Kundali</span>
+                    <div class="lagna-toggle">
+                        <button onclick="setLagnaStyle('North')" class="ph-today-btn active" id="btnLagnaNorth">North</button>
+                        <button onclick="setLagnaStyle('South')" class="ph-today-btn" id="btnLagnaSouth">South</button>
+                    </div>
+                </h3>
+                <div id="lagnaChartContainer">
+                    <!-- SVG drawn dynamically -->
+                </div>
+                <div id="lagnaPlanetsContainer">
+                    <!-- Planet list mapped dynamically -->
+                </div>
+            </div>
+
+            <!-- Column 2: Upcoming Planetary Events -->
+            <div class="glass-card widget-box dainik-layout-card" style="padding: 20px;">
+                <h3 class="dainik-card-header-title">🪐 Planetary Events</h3>
+                <div id="planetaryEventsContainer">
+                    <!-- Mapped dynamically -->
+                </div>
+            </div>
+
+            <!-- Column 3: Rashifal (Horoscope) -->
+            <div class="glass-card widget-box dainik-layout-card" style="padding: 20px;">
+                <h3 class="dainik-card-header-title">🦁 Rashifal (Horoscope)</h3>
+                <div id="rashifalTodayContainer">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Column 4: Upavas & Festivals -->
+            <div class="glass-card festivals-card dainik-layout-card" style="padding: 20px;">
+                <h3 class="dainik-card-header-title">📅 Upavas & Festivals</h3>
+                <div id="upcomingFestivalsContainer">
+                    <!-- Filled dynamically by rules engine -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Maasik (Month) View Section -->
+    <div id="maasikViewContainer" style="display: none;">
+        <div class="maasik-header">
+            <div class="maasik-title">🗓️ Monthly Calendar & Panjika</div>
+            <div class="maasik-controls">
+                <input type="month" id="maasikMonthInput">
+                <input type="text" id="maasikPlaceInput" value="New Delhi, India" placeholder="City for calendar...">
+                <button id="btnSaveMaasikPlace" class="btn-icon" title="Save Location for this Session">💾</button>
+                <button onclick="loadMaasikCalendar()" class="ph-today-btn">Update</button>
+            </div>
+        </div>
+        <div class="monthly-panchang-wrapper">
+            <!-- Calendar Main Grid -->
+            <div class="monthly-cal-main">
+                <div class="cal-grid-header">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                </div>
+                <div class="cal-grid" id="maasikCalGrid">
+                    <!-- Populated dynamically by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Calendar Sidebar Details -->
+            <div class="monthly-cal-sidebar" id="maasikSidebar">
+                <div class="sidebar-title" id="maasikSidebarTitle">Panchang Details</div>
+                <div id="maasikSidebarContent">
+                    <div class="sidebar-placeholder">Click any date in the calendar to view its full details.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Month Festivals Directory List -->
+        <div class="maasik-festivals">
+            <h4>📋 Festivals for this Month</h4>
+            <div id="maasikFestivalsList">
+                <!-- Loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Floating Tooltip Popups for Vedic glossary terms -->
+    <div id="vedicGlossaryTooltip">
+        Tooltip content.
+    </div>
+
+    <!-- 7. Portal Welcome & Directory Grid -->
+    <div id="homeWelcomeSection" style="display: block;">
+        <div class="glass-card welcome-card" style="padding: 30px; margin-bottom: 2rem;">
+            <h2>🕉️ Welcome to Sanskrit AI Astrological Suite</h2>
+            <p>
+                Explore real-time planetary transits, personalized Kundli generation, Guna Milan matchmaking, and regional Moon phase panjikas. Choose any tool below to begin.
+            </p>
+            <div class="welcome-actions">
+                <a href="?tab=panchang" class="btn btn-primary">☀️ Dainik Panchang</a>
+                <a href="?tab=maasik" class="btn btn-secondary">🗓️ Maasik Calendar</a>
+            </div>
+        </div>
+
+        <section class="portal-directory">
+            <h2>explore calculations & vedic shastras</h2>
+            <div class="directory-grid">
+            <div class="directory-box">
+                <h4>🕉️ Hindu Panchang</h4>
+                <ul>
+                    <li><a href="?tab=panchang">Dainik Panchang</a></li>
+                    <li><a href="?tab=panchang">Bengali Panjika</a></li>
+                    <li><a href="?tab=panchang">Tamil Panchangam</a></li>
+                    <li><a href="?tab=panchang">Telugu Panchangam</a></li>
+                    <li><a href="?tab=panchang">Malayalam Panchangam</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>📅 Vedic Calendars</h4>
+                <ul>
+                    <li><a href="?tab=maasik">Maasik Hindu Calendar</a></li>
+                    <li><a href="?tab=maasik">National Indian Calendar</a></li>
+                    <li><a href="?tab=maasik">Tamil Calendar</a></li>
+                    <li><a href="?tab=maasik">Telugu Calendar</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🔮 Jyotish Utilities</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Personalised Kundli D1/D9</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('gemstone')">Gemstone recommendation</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('rudraksha')">Rudraksha suggestion</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('milan')">Kundli Matching (Milan)</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('prashna')">Prashna Kundali</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>⏰ Muhurat</h4>
+                <ul>
+                    <li><a href="?tab=muhurtas">Choghadiya Timings</a></li>
+                    <li><a href="?tab=muhurtas">Do Ghati Muhurtas</a></li>
+                    <li><a href="?tab=muhurtas">Planetary Hora list</a></li>
+                    <li><a href="?tab=muhurtas">Vivah Muhurat Dates</a></li>
+                    <li><a href="?tab=muhurtas">Griha Pravesh Timings</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🎉 Hindu Festivals</h4>
+                <ul>
+                    <li><a href="?tab=panchang">Diwali Shubh Muhurtas</a></li>
+                    <li><a href="?tab=panchang">Raksha Bandhan Thread Time</a></li>
+                    <li><a href="?tab=panchang">Maha Shivaratri Nishita</a></li>
+                    <li><a href="?tab=panchang">Ganesha Chaturthi Murti Sthapna</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🦁 Rashifal Prediction</h4>
+                <ul>
+                    <li><a href="#rashifalTodayContainer">Daily Rashifal Predictions</a></li>
+                    <li><a href="#rashifalTodayContainer">Weekly Horoscope Signs</a></li>
+                    <li><a href="#rashifalTodayContainer">Monthly Rashi Transits</a></li>
+                    <li><a href="#rashifalTodayContainer">Yearly Predictions 2026</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🌾 Panchang Utilities</h4>
+                <ul>
+                    <li><a href="?tab=panchang">Rahu Kala Timings</a></li>
+                    <li><a href="?tab=panchang">Panchak Boundary Times</a></li>
+                    <li><a href="?tab=panchang">Bhadra Vishti Karana Span</a></li>
+                    <li><a href="?tab=panchang">Ganda Mool constellations</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🎗️ Yoga in Astrology</h4>
+                <ul>
+                    <li><a href="?tab=panchang">Gurupushyamrut Yoga</a></li>
+                    <li><a href="?tab=panchang">Sarvarthasiddhi Yoga</a></li>
+                    <li><a href="?tab=panchang">Dwipushkar Yoga</a></li>
+                    <li><a href="?tab=panchang">Ravi Pushya Yoga</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🛐 Vrat and Upavas</h4>
+                <ul>
+                    <li><a href="?tab=panchang">Sankashti Chaturthi moonrise</a></li>
+                    <li><a href="?tab=panchang">Vinayaka Chaturthi timings</a></li>
+                    <li><a href="?tab=panchang">Ekadashi Dates list</a></li>
+                    <li><a href="?tab=panchang">Pradosham Fasting slots</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>📜 Vrat Katha</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Satyanarayana Vrat Katha</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Ekadashi Vrat Katha</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Karwa Chauth Vrat Katha</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Ahoi Ashtami Vrat Katha</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🪐 Planetary Events</h4>
+                <ul>
+                    <li><a href="#planetaryEventsContainer">Sidereal Zodiac entry</a></li>
+                    <li><a href="#planetaryEventsContainer">Tropical Sign transits</a></li>
+                    <li><a href="#planetaryEventsContainer">Planet Retrograde phases</a></li>
+                    <li><a href="#planetaryEventsContainer">Planet Combustion angles</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🔭 Hindu Astronomy</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Solar Eclipse calculations</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Lunar Eclipse timings</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Eclipse Dates database</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Winter Solstice alignment</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🎼 Devotional Lyrics</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Ganesh Aarti & Chalisa</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Sundarkand Paath lyrics</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Vishnu Sahasranama Stotram</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Shri Durga Saptashati text</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🔱 Hindu Gods</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Lord Vishnu avatars</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Lord Shiva temples</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Ashta Vinayaka spots</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Navagraha deities</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🎀 Hindu Goddesses</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Maha Lakshmi Ashtakam</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Navdurga forms list</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Dasha Mahavidya sadhana</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Saraswati stotrams</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🔥 Puja Vidhi</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Ganesha Puja Vidhi steps</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Lakshmi Puja Vidhi Deepavali</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Shivaratri Abhishekam Vidhi</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>☀️ Vedic Mantras</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Gayatri Mantra meaning</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Mahamrityunjaya Mantra</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Shanti Path translations</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🛡️ Deities Yantra</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Shri Yantra geometric logic</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Kubera Yantra installation</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Mahavidya Yantra protection</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🌊 Hindu Rituals</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Kumbha Mela bathing dates</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Shradh Karma Pitru Paksha</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Vivah Sanskar 7 rounds</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🎨 Art Gallery</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Rangoli Collection designs</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Mehandi Designs traditional</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Festivals greetings templates</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>📱 Mobile Apps</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Android App Playstore</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">iOS App Appstore</a></li>
+                    <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Mobile HD Wallpapers</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. About Section Card -->
+    <div class="about-panchang-box">
+        <h3>About Sanskrit AI Astrological Suite</h3>
+        <p>The Sanskrit AI Astrological Suite calculates accurate panchang, festival, and Vrat dates for cities globally. It features high-precision algorithms based on astronomical measurements (Drik Ganita) leveraging Swiss Ephemeris computations.</p>
+        <p>By compiling the traditional variables (Tithi, Nakshatra, Yoga, Karana, Var) alongside dynamic Divisional Charts (D1 to D60), Graha transits, and matchmaking compatibility, the suite serves as an enterprise-grade Vedic portal for research and daily schedules.</p>
+    </div>
+
+    <!-- 9. Footer copyright / Diagnostic test panel -->
+    <footer class="minimal-footer" style="margin-top: 3rem;">
+        <p>© 2026 Sanskrit AI Astrological Suite. Enterprise Grade.</p>
+        <button id="btnOpenApiTest">⚙️ Open API Diagnostic Panel</button>
+
+        <div id="apiTestPanel">
+            <h4>⚙️ API Diagnostic & Live Validation System</h4>
+            <div class="api-test-form">
+                <div class="api-test-field">
+                    <label>Date</label>
+                    <input type="date" id="apiTestDate" value="2026-07-14">
+                </div>
+                <div class="api-test-field">
+                    <label>Place</label>
+                    <input type="text" id="apiTestPlace" value="New Delhi, India">
+                </div>
+                <div class="api-test-submit">
+                    <button id="btnRunApiTest">Run API Test</button>
+                </div>
+            </div>
+            <div id="apiTestOutput">
+                Click "Run API Test" to load live dynamic calculation response.
+            </div>
+        </div>
+    </footer>
+
+    </div> <!-- Closing homeWelcomeSection -->
+</div> <!-- Closing main-portal-container -->
+
+    <!-- MINIMAL FOOTER -->
+    <div class="minimal-footer">
+        <p>© 2026 ShunyakiKhoj. All rights reserved.</p>
+        <p>Created and Designed by Anshuman Jha</p>
+    </div>
+
+<script>
+const menuIcon=document.querySelector(".menu-icon");
+const mobileMenu=document.querySelector(".mobile-menu");
+const overlay=document.querySelector(".menu-overlay");
+menuIcon.onclick=function(){
+mobileMenu.classList.toggle("active");
+overlay.classList.toggle("active");
+}
+overlay.onclick=function(){
+mobileMenu.classList.remove("active");
+overlay.classList.remove("active");
+}
+</script>
+
+
+    <div id="authModal" class="auth-modal">
+  <div class="auth-card">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <h2 id="authTitle">Login</h2>
+    <div class="social-buttons">
+      <button class="google-btn">Continue with Google</button>
+      <button class="facebook-btn">Continue with Facebook</button>
+      <button class="instagram-btn">Continue with Instagram</button>
+    </div>
+    <div class="divider"><span>or</span></div>
+    <input id="loginEmail" placeholder="Email">
+    <input id="loginPassword" type="password" placeholder="Password">
+    <button class="primary-btn" onclick="login()">Login</button>
+    <div class="auth-links">
+      <span onclick="showSignup()">Create account</span>
+      <span onclick="forgotPassword()">Forgot password?</span>
+    </div>
+  </div>
+</div>
+
+<!-- JYOTISH MODAL OVERLAY -->
+<div id="jyotishModal" class="jyotish-modal-overlay">
+  <div class="jyotish-modal-card">
+    <button class="jyotish-modal-close" onclick="closeJyotishModal()">✕</button>
+
+    <h2 id="modalFeatureTitle">Detailed Analysis</h2>
+
+    <div class="modal-input-container">
+        <div id="modalFormBirth">
+            <div class="modal-form-row">
+                <div class="modal-form-field">
+                    <label>Date of Birth</label>
+                    <input type="date" id="mDate" value="1994-01-05">
+                </div>
+                <div class="modal-form-field">
+                    <label>Time</label>
+                    <input type="time" id="mTime" value="20:00">
+                </div>
+                <div class="modal-form-field modal-form-field-wide">
+                    <label>📍 City / Place <span class="field-hint">(any city worldwide)</span></label>
+                    <input type="text" id="mPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off">
+                </div>
+            </div>
+            <button onclick="triggerModalCalculation()" class="modal-calc-btn">Calculate Astrological Placement</button>
+        </div>
+
+        <div id="modalFormMilan" style="display:none;">
+            <div class="modal-milan-row">
+                <div class="modal-milan-col">
+                    <h5>Groom (Boy)</h5>
+                    <input type="date" id="mBoyDate" value="1994-01-05">
+                    <input type="time" id="mBoyTime" value="20:00">
+                    <input type="text" id="mBoyPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off">
+                </div>
+                <div class="modal-milan-col">
+                    <h5>Bride (Girl)</h5>
+                    <input type="date" id="mGirlDate" value="1995-03-10">
+                    <input type="time" id="mGirlTime" value="08:30">
+                    <input type="text" id="mGirlPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off">
+                </div>
+            </div>
+            <button onclick="triggerModalCalculation()" class="modal-calc-btn">Calculate Milan Match</button>
+        </div>
+    </div>
+
+    <div id="modalResults">
+    </div>
+  </div>
+</div>
+
+ <script src="/UserLog/auth.js"></script>
+<script src="./geocomplete.js?v=1.0"></script>
+<script src="./jyotish_modal.js?v=1.1.6"></script>
+<script src="./Features/Astrology/astrology.js?v=1.1.8" defer></script>
+<script>
+// Open general modal utility
+function openGeneralJyotishModal(feature) {
+    if (typeof openJyotishModal === 'function') {
+        openJyotishModal(feature);
+    }
+}
+
+// Initialise city autocomplete for modal place inputs and API test events
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof initGeoComplete === 'function') {
+        if (document.getElementById('panchangPlaceInput')) {
+            initGeoComplete('panchangPlaceInput', { defaultPlace: 'New Delhi, India' });
+        }
+        if (document.getElementById('maasikPlaceInput')) {
+            initGeoComplete('maasikPlaceInput', { defaultPlace: 'New Delhi, India' });
+        }
+        if (document.getElementById('apiTestPlace')) {
+            initGeoComplete('apiTestPlace', { defaultPlace: 'New Delhi, India' });
+        }
+        initGeoComplete('mPlace',    { defaultPlace: 'Patna, Bihar, India' });
+        initGeoComplete('mBoyPlace', { defaultPlace: 'Patna, Bihar, India' });
+        initGeoComplete('mGirlPlace',{ defaultPlace: 'Patna, Bihar, India' });
+    }
+
+    // Open/Run API Test Panel
+    const btnOpenApiTest = document.getElementById('btnOpenApiTest');
+    const apiTestPanel = document.getElementById('apiTestPanel');
+    if (btnOpenApiTest && apiTestPanel) {
+        btnOpenApiTest.addEventListener('click', () => {
+            apiTestPanel.style.display = apiTestPanel.style.display === 'none' ? 'block' : 'none';
+        });
+    }
+
+    const btnRunApiTest = document.getElementById('btnRunApiTest');
+    if (btnRunApiTest) {
+        btnRunApiTest.addEventListener('click', async () => {
+            const testDate = document.getElementById('apiTestDate').value;
+            const testPlace = document.getElementById('apiTestPlace').value;
+            const output = document.getElementById('apiTestOutput');
+            if (!testDate || !testPlace) {
+                alert("Please select Date and Place for API test.");
+                return;
+            }
+            output.innerHTML = "Fetching dynamic calculation from API...";
+            const apiUrl = (window.location.hostname.includes('github.io') || window.location.protocol.startsWith('file'))
+                ? 'https://sanskritai.vercel.app/api/calculate'
+                : '/api/calculate';
+            try {
+                const res = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        date: testDate.replace(/-/g, '/'),
+                        time: '12:00',
+                        place: testPlace
+                    })
+                });
+                const resJson = await res.json();
+                if (resJson.status === 'success') {
+                    let html = `<table style="width:100%; border-collapse:collapse; color:#fff; font-family:monospace; font-size:0.85rem;">`;
+                    html += `<tr style="border-bottom:1.5px solid rgba(255,255,255,0.1); color:#fbbf24; font-weight:700;"><td style="padding:6px;">Returned Key/Variable</td><td style="padding:6px;">Calculated Value</td></tr>`;
+
+                    function printJson(obj, prefix = "") {
+                        for (let k in obj) {
+                            if (typeof obj[k] === 'object' && obj[k] !== null) {
+                                printJson(obj[k], prefix + k + ".");
+                            } else {
+                                html += `<tr><td style="color:#93c5fd; padding: 4px; border-bottom: 1px solid rgba(255,255,255,0.05);">${prefix}${k}</td><td style="padding: 4px; color:#cbd5e1; border-bottom: 1px solid rgba(255,255,255,0.05);">${obj[k]}</td></tr>`;
+                            }
+                        }
+                    }
+                    printJson(resJson);
+                    html += `</table>`;
+                    output.innerHTML = html;
+                } else {
+                    output.innerHTML = `<span style="color:#f87171;">Calculation error: ${resJson.detail}</span>`;
+                }
+            } catch (err) {
+                console.error(err);
+                output.innerHTML = `<span style="color:#f87171;">Failed to connect to API server.</span>`;
+            }
+        });
+    }
+});
+</script>
+
+</body>
+
+</html>
