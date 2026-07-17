@@ -1181,6 +1181,10 @@ if (btnMatch) {
                     `;
                     body.appendChild(tr);
                 });
+
+                if (typeof renderMilanAnalysis === 'function') {
+                    renderMilanAnalysis(data);
+                }
             } else {
                 alert("Match Making failed: " + data.detail);
             }
