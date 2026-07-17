@@ -2254,12 +2254,12 @@ function renderPanchang(bodyId, panchang, regional) {
                                 </tr>
                             </thead>
                             <tbody>
-                                \${panchakaList.map(p => \`
+                                ${panchakaList.map(p => `
                                     <tr>
-                                        <td>\${p.start} to \${p.end}</td>
-                                        <td style="font-weight: 700; color: \${p.type === 'Good Muhurta' ? '#4ade80' : '#f87171'}">\${p.type}</td>
+                                        <td>${p.start} to ${p.end}</td>
+                                        <td style="font-weight: 700; color: ${p.type === 'Good Muhurta' ? '#4ade80' : '#f87171'}">${p.type}</td>
                                     </tr>
-                                \`).join('')}
+                                `).join('')}
                             </tbody>
                         </table>
                     </div>
@@ -2277,12 +2277,12 @@ function renderPanchang(bodyId, panchang, regional) {
                                 </tr>
                             </thead>
                             <tbody>
-                                \${udayaLagnas.map(l => \`
+                                ${udayaLagnas.map(l => `
                                     <tr>
-                                        <td><strong>\${l.sign}</strong></td>
-                                        <td>\${l.start} to \${l.end}</td>
+                                        <td><strong>${l.sign}</strong></td>
+                                        <td>${l.start} to ${l.end}</td>
                                     </tr>
-                                \`).join('')}
+                                `).join('')}
                             </tbody>
                         </table>
                     </div>
@@ -2294,18 +2294,18 @@ function renderPanchang(bodyId, panchang, regional) {
                 <div class="drik-card">
                     <div class="drik-card-title">🌓 Chandrabalam Strength</div>
                     <div style="font-size: 0.9rem; line-height: 1.5; color: #cbd5e1; padding: 10px; box-sizing: border-box;">
-                        \${chandrabalamHTML}
+                        ${chandrabalamHTML}
                     </div>
                 </div>
                 <div class="drik-card">
                     <div class="drik-card-title">⭐ Tarabalam Strength</div>
                     <div style="font-size: 0.9rem; line-height: 1.5; color: #cbd5e1; padding: 10px; box-sizing: border-box;">
-                        \${tarabalamHTML}
+                        ${tarabalamHTML}
                     </div>
                 </div>
             </div>
         </div>
-    \`;
+    `;
     
     // Call the visual SVG timeline renderer
     if (lastCalculatedData && lastCalculatedData.choghadiya) {
