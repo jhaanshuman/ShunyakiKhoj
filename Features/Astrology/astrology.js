@@ -854,40 +854,126 @@ function routeAstrologyPage() {
         case 'kundli':
         case 'divisional':
             activateSection('personalKundliSection');
-            setTimeout(() => activateInnerTab('tabDivisional'), 100);
+            setTimeout(() => activateInnerTab('tabDivisional'), 150);
             break;
         case 'gemstone':
             activateSection('personalKundliSection');
-            setTimeout(() => activateInnerTab('tabGemstone'), 100);
+            setTimeout(() => {
+                // Show output card and switch to gemstone tab
+                const outputCard = document.getElementById('outputCard');
+                if (outputCard) outputCard.style.display = 'block';
+                activateInnerTab('tabGemstone');
+                // Show instructions banner inside gemstoneContainer
+                const gc = document.getElementById('gemstoneContainer');
+                if (gc && !gc.innerHTML.trim()) {
+                    gc.innerHTML = '<div style="background:rgba(251,191,36,0.08);border:1.5px solid rgba(251,191,36,0.25);border-radius:10px;padding:16px;color:#fbbf24;font-size:0.9rem;margin-top:10px;">💎 Enter your birth details above and click <strong>Generate Kundli</strong> to receive personalised gemstone recommendations based on your Lagna (Ascendant).</div>';
+                }
+            }, 150);
             break;
         case 'rudraksha':
             activateSection('personalKundliSection');
-            setTimeout(() => activateInnerTab('tabRudraksha'), 100);
+            setTimeout(() => {
+                const outputCard = document.getElementById('outputCard');
+                if (outputCard) outputCard.style.display = 'block';
+                activateInnerTab('tabRudraksha');
+                const rc = document.getElementById('rudrakshaContainer');
+                if (rc && !rc.innerHTML.trim()) {
+                    rc.innerHTML = '<div style="background:rgba(251,191,36,0.08);border:1.5px solid rgba(251,191,36,0.25);border-radius:10px;padding:16px;color:#fbbf24;font-size:0.9rem;margin-top:10px;">📿 Enter your birth details above and click <strong>Generate Kundli</strong> to receive a personalised Rudraksha suggestion based on your Lagna lord and planetary positions.</div>';
+                }
+            }, 150);
             break;
         case 'dasha':
             activateSection('personalKundliSection');
-            setTimeout(() => activateInnerTab('tabDasha'), 100);
+            setTimeout(() => {
+                const outputCard = document.getElementById('outputCard');
+                if (outputCard) outputCard.style.display = 'block';
+                activateInnerTab('tabDasha');
+            }, 150);
             break;
         case 'milan':
             activateSection('milanSection');
             break;
         case 'prashna':
             activateSection('personalKundliSection');
-            setTimeout(() => activateInnerTab('tabPrashna'), 100);
+            setTimeout(() => {
+                const outputCard = document.getElementById('outputCard');
+                if (outputCard) outputCard.style.display = 'block';
+                activateInnerTab('tabDivisional');
+                // Show prashna banner
+                const tabDiv = document.getElementById('tabDivisional');
+                if (tabDiv) {
+                    let banner = document.getElementById('prashnaBanner');
+                    if (!banner) {
+                        banner = document.createElement('div');
+                        banner.id = 'prashnaBanner';
+                        banner.style.cssText = 'background:rgba(99,102,241,0.12);border:1.5px solid rgba(99,102,241,0.3);border-radius:10px;padding:14px;color:#a5b4fc;font-size:0.9rem;margin-bottom:14px;';
+                        banner.innerHTML = '🔮 <strong>Prashna Kundali:</strong> For Prashna (Horary Astrology), enter the <em>current date, time, and your current location</em> as the query moment, then generate the chart to read the planetary positions for your question.';
+                        tabDiv.insertBefore(banner, tabDiv.firstChild);
+                    }
+                }
+            }, 150);
             break;
         case 'rashifal':
+            activateSection('gocharSection');
+            setTimeout(() => {
+                const gfc = document.querySelector('#gocharSection .dashboard-grid > div:first-child');
+                if (gfc) gfc.style.display = 'block';
+                // Show rashifal prompt banner in gochar section
+                let rb = document.getElementById('rashifalRouteBanner');
+                const gSection = document.getElementById('gocharSection');
+                if (!rb && gSection) {
+                    rb = document.createElement('div');
+                    rb.id = 'rashifalRouteBanner';
+                    rb.style.cssText = 'background:rgba(251,191,36,0.08);border:1.5px solid rgba(251,191,36,0.25);border-radius:10px;padding:14px;color:#fbbf24;font-size:0.9rem;margin-bottom:18px;';
+                    rb.innerHTML = '🦁 <strong>Daily Rashifal:</strong> Select today\'s date and your city, then click <strong>Calculate Gochar</strong> to view real-time planetary transits and daily horoscope data for all 12 Rashis.';
+                    gSection.insertBefore(rb, gSection.firstChild);
+                }
+            }, 150);
+            break;
         case 'weekly':
+            activateSection('gocharSection');
+            setTimeout(() => {
+                let wb = document.getElementById('weeklyRouteBanner');
+                const gSection = document.getElementById('gocharSection');
+                if (!wb && gSection) {
+                    wb = document.createElement('div');
+                    wb.id = 'weeklyRouteBanner';
+                    wb.style.cssText = 'background:rgba(139,92,246,0.1);border:1.5px solid rgba(139,92,246,0.3);border-radius:10px;padding:14px;color:#c4b5fd;font-size:0.9rem;margin-bottom:18px;';
+                    wb.innerHTML = '📅 <strong>Weekly Horoscope:</strong> Select any date within the desired week and calculate Gochar to see the planetary positions governing that week\'s astrological energy for each Rashi.';
+                    gSection.insertBefore(wb, gSection.firstChild);
+                }
+            }, 150);
+            break;
         case 'yearly':
             activateSection('gocharSection');
             setTimeout(() => {
-                // Try to activate a rashifal sub-tab if present
-                const rashiBtn = document.getElementById('tabRashifal') || document.querySelector('[id*="rashifal"], [id*="Rashifal"]');
-                if (rashiBtn) rashiBtn.click();
-            }, 100);
+                let yb = document.getElementById('yearlyRouteBanner');
+                const gSection = document.getElementById('gocharSection');
+                if (!yb && gSection) {
+                    yb = document.createElement('div');
+                    yb.id = 'yearlyRouteBanner';
+                    yb.style.cssText = 'background:rgba(16,185,129,0.08);border:1.5px solid rgba(16,185,129,0.25);border-radius:10px;padding:14px;color:#6ee7b7;font-size:0.9rem;margin-bottom:18px;';
+                    yb.innerHTML = '🗓️ <strong>Yearly Predictions 2026:</strong> Enter any date in 2026 and calculate Gochar to review the major planetary transits shaping this year\'s astrological forecast for each Rashi.';
+                    gSection.insertBefore(yb, gSection.firstChild);
+                }
+            }, 150);
             break;
         case 'panchang':
             activateSection('personalKundliSection');
-            setTimeout(() => activateInnerTab('tabPanchang'), 100);
+            setTimeout(() => {
+                const outputCard = document.getElementById('outputCard');
+                if (outputCard) outputCard.style.display = 'block';
+                activateInnerTab('tabPanchang');
+            }, 150);
+            break;
+        case 'muhurtas':
+        case 'muhurta':
+            activateSection('personalKundliSection');
+            setTimeout(() => {
+                const outputCard = document.getElementById('outputCard');
+                if (outputCard) outputCard.style.display = 'block';
+                activateInnerTab('tabMuhurtas');
+            }, 150);
             break;
         case 'maasik':
             activateSection('maasikSection');
@@ -897,7 +983,6 @@ function routeAstrologyPage() {
             activateSection('gocharSection');
             break;
         default:
-            // Default: show personalKundliSection
             activateSection('personalKundliSection');
             break;
     }

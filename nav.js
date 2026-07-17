@@ -397,7 +397,12 @@ function setupSearch(menuItems) {
             </div>
         </div>
     `;
-    document.body.appendChild(overlay);
+    const header = document.querySelector('header');
+    if (header) {
+        header.insertAdjacentElement('afterend', overlay);
+    } else {
+        document.body.appendChild(overlay);
+    }
 
     const searchInput = document.getElementById('globalSearchInput');
     const resultsContainer = document.getElementById('globalSearchResults');

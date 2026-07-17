@@ -1565,11 +1565,42 @@ body {
 .timeline-clock-row {
     display: grid;
     grid-template-columns: 2.1fr 1fr;
-    gap: 1.5rem
-<truncated 76571 bytes>
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    align-items: stretch;
+}
 
-NOTE: The output was truncated because it was too long. Use a more targeted query or a smaller range to get the information you need.
+.timeline-clock-row #drikTimelineContainer {
+    width: 100% !important;
+    margin: 0 !important;
+}
 
+/* 4-column layout for Lagna, Events, Rashifal, Festivals */
+.dainik-bottom-four-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    align-items: stretch;
+}
+
+@media (max-width: 1200px) {
+    .dainik-bottom-four-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .timeline-clock-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dainik-bottom-four-grid {
+        grid-template-columns: 1fr;
+    }
+}
 /* ── HOMEPAGE GRID & SIDEBARS ── */
 .homepage-three-column-grid {
     display: grid;

@@ -17,7 +17,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="./logo.png">
-<link rel="stylesheet" href="style.css?v=20260718">
+<link rel="stylesheet" href="style.css?v=20260718_v2">
 <link rel="stylesheet" href="/UserLog/auth.css"> <!-- UserLog -->
     
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -88,6 +88,76 @@ gtag('config','G-DZ2CM1SBWW');
     <span>🔍</span><span id="themeToggleBtn">🌓</span><span id="notificationBtn">🔔</span><span id="profileBtn">👤</span><span class="menu-icon">☰</span>
 </div>
 </header>
+
+    <div id="authModal" class="auth-modal">
+  <div class="auth-card">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <h2 id="authTitle">Login</h2>
+    <div class="social-buttons">
+      <button class="google-btn">Continue with Google</button>
+      <button class="facebook-btn">Continue with Facebook</button>
+      <button class="instagram-btn">Continue with Instagram</button>
+    </div>
+    <div class="divider"><span>or</span></div>
+    <input id="loginEmail" placeholder="Email">
+    <input id="loginPassword" type="password" placeholder="Password">
+    <button class="primary-btn" onclick="login()">Login</button>
+    <div class="auth-links">
+      <span onclick="showSignup()">Create account</span>
+      <span onclick="forgotPassword()">Forgot password?</span>
+    </div>
+  </div>
+</div>
+
+<!-- JYOTISH MODAL OVERLAY -->
+<div id="jyotishModal" class="jyotish-modal-overlay">
+  <div class="jyotish-modal-card">
+    <button class="jyotish-modal-close" onclick="closeJyotishModal()">✕</button>
+    
+    <h2 id="modalFeatureTitle" style="color: #fbbf24; font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 10px;">Detailed Analysis</h2>
+    
+    <div class="modal-input-container">
+        <div id="modalFormBirth">
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+                <div style="flex:1; min-width:140px;">
+                    <label style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Date of Birth</label>
+                    <input type="date" id="mDate" value="1994-01-05" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
+                </div>
+                <div style="flex:1; min-width:100px;">
+                    <label style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Time</label>
+                    <input type="time" id="mTime" value="20:00" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
+                </div>
+                <div style="flex:2; min-width:180px;">
+                    <label style="font-size:0.75rem; color:#94a3b8; font-weight:700;">📍 City / Place <span style="color:#475569;font-weight:400;">(any city worldwide)</span></label>
+                    <input type="text" id="mPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
+                </div>
+            </div>
+            <button onclick="triggerModalCalculation()" style="background:linear-gradient(90deg,#6366f1,#a855f7); color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:700; width:100%;">Calculate Astrological Placement</button>
+        </div>
+        
+        <div id="modalFormMilan" style="display:none;">
+            <div style="display:flex; gap:15px; flex-wrap:wrap; margin-bottom:12px;">
+                <div style="flex:1; min-width:180px;">
+                    <h5 style="color:#fbbf24; margin-bottom:6px; font-size:0.85rem;">Groom (Boy)</h5>
+                    <input type="date" id="mBoyDate" value="1994-01-05" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px; margin-bottom:6px;">
+                    <input type="time" id="mBoyTime" value="20:00" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px; margin-bottom:6px;">
+                    <input type="text" id="mBoyPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
+                </div>
+                <div style="flex:1; min-width:180px;">
+                    <h5 style="color:#fbbf24; margin-bottom:6px; font-size:0.85rem;">Bride (Girl)</h5>
+                    <input type="date" id="mGirlDate" value="1995-03-10" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px; margin-bottom:6px;">
+                    <input type="time" id="mGirlTime" value="08:30" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px; margin-bottom:6px;">
+                    <input type="text" id="mGirlPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
+                </div>
+            </div>
+            <button onclick="triggerModalCalculation()" style="background:linear-gradient(90deg,#6366f1,#a855f7); color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:700; width:100%;">Calculate Milan Match</button>
+        </div>
+    </div>
+    
+    <div id="modalResults" style="max-height:420px; overflow-y:auto; padding-top:15px; border-top:1px solid rgba(255,255,255,0.06);">
+    </div>
+  </div>
+</div>
 
 <!-- MOBILE MENU -->
 <div class="menu-overlay"></div>
@@ -599,34 +669,35 @@ gtag('config','G-DZ2CM1SBWW');
             </div>
         </div>
     </footer>
-</main>
-        
-        <!-- Right Sidebar: Widgets -->
+</main><!-- end center-feature-showcase -->
+
+        <!-- Right Sidebar: Widgets (3rd column of homepage-three-column-grid) -->
         <aside class="right-widgets-sidebar">
-            <div class="glass-card widget-box dainik-layout-card" style="margin-bottom:15px; padding:15px; background: var(--card-bg); border: var(--card-border); border-radius: 8px;">
-                <h4 style="color:var(--title-color); margin-top:0; border-bottom:var(--card-border); padding-bottom:6px; font-size:0.95rem; font-weight:800;">🪐 Planetary Events</h4>
+            <div class="widget-box dainik-layout-card">
+                <h4>🪐 Planetary Events</h4>
                 <div id="planetaryEventsContainer_sidebar" style="display:flex; flex-direction:column; gap:8px;">
                     Loading...
                 </div>
             </div>
             
-            <div class="glass-card widget-box dainik-layout-card" style="margin-bottom:15px; padding:15px; background: var(--card-bg); border: var(--card-border); border-radius: 8px;">
-                <h4 style="color:var(--title-color); margin-top:0; border-bottom:var(--card-border); padding-bottom:6px; font-size:0.95rem; font-weight:800;">🦁 Rashifal (Horoscope)</h4>
+            <div class="widget-box dainik-layout-card">
+                <h4>🦁 Rashifal (Horoscope)</h4>
                 <div id="rashifalTodayContainer_sidebar" style="max-height:300px; overflow-y:auto; padding-right:4px;">
                     Loading...
                 </div>
             </div>
             
-            <div class="glass-card widget-box dainik-layout-card" style="margin-bottom:15px; padding:15px; background: var(--card-bg); border: var(--card-border); border-radius: 8px;">
-                <h4 style="color:var(--title-color); margin-top:0; border-bottom:var(--card-border); padding-bottom:6px; font-size:0.95rem; font-weight:800;">📅 Upavas & Festivals</h4>
+            <div class="widget-box dainik-layout-card">
+                <h4>📅 Upavas & Festivals</h4>
                 <div id="upcomingFestivalsContainer_sidebar" style="max-height:300px; overflow-y:auto; padding-right:4px;">
                     Loading...
                 </div>
             </div>
         </aside>
-    </div>
-    </div> <!-- Closing homeWelcomeSection -->
-</div> <!-- Closing main-portal-container -->
+
+    </div><!-- end homepage-three-column-grid -->
+    </div> <!-- end homeWelcomeSection -->
+</div> <!-- end main-portal-container -->
 
     <!-- MINIMAL FOOTER (NO CLASS="FOOTER") -->
     <div style="text-align: center; padding: 25px 20px; font-size: 0.82rem; color: var(--text-muted); border-top: var(--card-border); margin-top: 3rem; font-weight: 600; letter-spacing: 0.5px;">
@@ -650,75 +721,7 @@ overlay.classList.remove("active");
 
 
     
-    <div id="authModal" class="auth-modal">
-  <div class="auth-card">
-    <button class="auth-close" onclick="closeAuth()">✕</button>
-    <h2 id="authTitle">Login</h2>
-    <div class="social-buttons">
-      <button class="google-btn">Continue with Google</button>
-      <button class="facebook-btn">Continue with Facebook</button>
-      <button class="instagram-btn">Continue with Instagram</button>
-    </div>
-    <div class="divider"><span>or</span></div>
-    <input id="loginEmail" placeholder="Email">
-    <input id="loginPassword" type="password" placeholder="Password">
-    <button class="primary-btn" onclick="login()">Login</button>
-    <div class="auth-links">
-      <span onclick="showSignup()">Create account</span>
-      <span onclick="forgotPassword()">Forgot password?</span>
-    </div>
-  </div>
-</div>
 
-<!-- JYOTISH MODAL OVERLAY -->
-<div id="jyotishModal" class="jyotish-modal-overlay">
-  <div class="jyotish-modal-card">
-    <button class="jyotish-modal-close" onclick="closeJyotishModal()">✕</button>
-    
-    <h2 id="modalFeatureTitle" style="color: #fbbf24; font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 10px;">Detailed Analysis</h2>
-    
-    <div class="modal-input-container">
-        <div id="modalFormBirth">
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
-                <div style="flex:1; min-width:140px;">
-                    <label style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Date of Birth</label>
-                    <input type="date" id="mDate" value="1994-01-05" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
-                </div>
-                <div style="flex:1; min-width:100px;">
-                    <label style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Time</label>
-                    <input type="time" id="mTime" value="20:00" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
-                </div>
-                <div style="flex:2; min-width:180px;">
-                    <label style="font-size:0.75rem; color:#94a3b8; font-weight:700;">📍 City / Place <span style="color:#475569;font-weight:400;">(any city worldwide)</span></label>
-                    <input type="text" id="mPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
-                </div>
-            </div>
-            <button onclick="triggerModalCalculation()" style="background:linear-gradient(90deg,#6366f1,#a855f7); color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:700; width:100%;">Calculate Astrological Placement</button>
-        </div>
-        
-        <div id="modalFormMilan" style="display:none;">
-            <div style="display:flex; gap:15px; flex-wrap:wrap; margin-bottom:12px;">
-                <div style="flex:1; min-width:180px;">
-                    <h5 style="color:#fbbf24; margin-bottom:6px; font-size:0.85rem;">Groom (Boy)</h5>
-                    <input type="date" id="mBoyDate" value="1994-01-05" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px; margin-bottom:6px;">
-                    <input type="time" id="mBoyTime" value="20:00" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px; margin-bottom:6px;">
-                    <input type="text" id="mBoyPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
-                </div>
-                <div style="flex:1; min-width:180px;">
-                    <h5 style="color:#fbbf24; margin-bottom:6px; font-size:0.85rem;">Bride (Girl)</h5>
-                    <input type="date" id="mGirlDate" value="1995-03-10" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px; margin-bottom:6px;">
-                    <input type="time" id="mGirlTime" value="08:30" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px; margin-bottom:6px;">
-                    <input type="text" id="mGirlPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
-                </div>
-            </div>
-            <button onclick="triggerModalCalculation()" style="background:linear-gradient(90deg,#6366f1,#a855f7); color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:700; width:100%;">Calculate Milan Match</button>
-        </div>
-    </div>
-    
-    <div id="modalResults" style="max-height:420px; overflow-y:auto; padding-top:15px; border-top:1px solid rgba(255,255,255,0.06);">
-    </div>
-  </div>
-</div>
 
  <script src="/UserLog/auth.js"></script>
 <script src="./geocomplete.js?v=1.0"></script>
@@ -830,6 +833,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+<!-- Vercel Analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
 
 </body>
 
