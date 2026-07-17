@@ -529,10 +529,10 @@ function setupThemeToggle() {
         
         const themesList = [
             { id: 'theme-dark', name: '🌌 Dark Mode', bg: '#0d1117' },
-            { id: 'theme-manuscript', name: '📜 Yellow Manuscript', bg: '#fdfaf2' },
-            { id: 'theme-bright', name: '☀️ Bright & Clean', bg: '#f8fafc' },
+            { id: 'theme-manuscript', name: '📜 Ancient Manuscript', bg: '#f5e6c8' },
+            { id: 'theme-bright', name: '☀️ Surya Aarti', bg: '#fff8dc' },
             { id: 'theme-focus', name: '👁️ Focus Mode', bg: '#09090b' },
-            { id: 'theme-pale', name: '🍃 Slightly Pale', bg: '#fafafa' },
+            { id: 'theme-pale', name: '🍃 Ash & Tulsi', bg: '#e8ece9' },
             { id: 'theme-indigo', name: '🍇 Royal Indigo', bg: '#030712' }
         ];
 
