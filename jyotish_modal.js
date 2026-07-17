@@ -474,6 +474,42 @@ function renderModalOutput() {
     else if (fName.includes('panchangam') || fName.includes('panji') || fName.includes('patra') || fName.includes('patro') || fName.includes('bengali') || fName.includes('odia') || fName.includes('tamil') || fName.includes('telugu')) {
         renderRegionalDetail(container, fName, panchang, reg);
     }
+    // 14.b Gemstone Recommendation
+    else if (currentModalTab === 'gemstone' || fName.includes('gemstone')) {
+        if (typeof renderGemstoneDetail === 'function') {
+            renderGemstoneDetail(container, divCharts, panchang);
+        } else if (parent && typeof parent.renderGemstoneDetail === 'function') {
+            parent.renderGemstoneDetail(container, divCharts, panchang);
+        } else if (window.opener && typeof window.opener.renderGemstoneDetail === 'function') {
+            window.opener.renderGemstoneDetail(container, divCharts, panchang);
+        } else {
+            container.innerHTML = "<div style='padding:20px; color:#fff;'>Gemstone details renderer not loaded.</div>";
+        }
+    }
+    // 14.c Rudraksha Suggestion
+    else if (currentModalTab === 'rudraksha' || fName.includes('rudraksha')) {
+        if (typeof renderRudrakshaDetail === 'function') {
+            renderRudrakshaDetail(container, divCharts, panchang);
+        } else if (parent && typeof parent.renderRudrakshaDetail === 'function') {
+            parent.renderRudrakshaDetail(container, divCharts, panchang);
+        } else if (window.opener && typeof window.opener.renderRudrakshaDetail === 'function') {
+            window.opener.renderRudrakshaDetail(container, divCharts, panchang);
+        } else {
+            container.innerHTML = "<div style='padding:20px; color:#fff;'>Rudraksha details renderer not loaded.</div>";
+        }
+    }
+    // 14.d Prashna Kundali
+    else if (currentModalTab === 'prashna' || fName.includes('prashna')) {
+        if (typeof renderPrashnaDetail === 'function') {
+            renderPrashnaDetail(container, modalCalculatedData);
+        } else if (parent && typeof parent.renderPrashnaDetail === 'function') {
+            parent.renderPrashnaDetail(container, modalCalculatedData);
+        } else if (window.opener && typeof window.opener.renderPrashnaDetail === 'function') {
+            window.opener.renderPrashnaDetail(container, modalCalculatedData);
+        } else {
+            container.innerHTML = "<div style='padding:20px; color:#fff;'>Prashna details renderer not loaded.</div>";
+        }
+    }
     // 15. Default Fallback / Dainik Panchang
     else {
         renderGenericDashboard(container, panchang, reg);

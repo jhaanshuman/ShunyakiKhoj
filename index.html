@@ -62,11 +62,13 @@ gtag('js', new Date());
 gtag('config','G-DZ2CM1SBWW');
 </script>
 <script src="./nav.js" defer></script>
+<link rel="stylesheet" href="style.css?v=20260715">
 <link rel="stylesheet" href="./Features/Astrology/astrology_dashboard.css?v=1.1.8">
 <script src="./Features/Astrology/vedic_data.js?v=1.1.8"></script>
+<script src="./Features/Astrology/vedic_database.js?v=1.1.8"></script>
 </head>
 
-<body class="homepage-layout">
+<body class="homepage-layout theme-focus dark-theme">
 
 <!-- HEADER -->
 <header class="header">
@@ -144,6 +146,7 @@ gtag('config','G-DZ2CM1SBWW');
             <div class="ph-view-toggle" style="display: flex; background: rgba(0,0,0,0.25); border-radius: 6px; overflow: hidden; border: 1.5px solid rgba(255,255,255,0.15);">
                 <button class="ph-view-btn active" id="phViewDayBtn" onclick="switchPancView('day')" style="padding: 5px 12px; border: none; background: transparent; color: #fff; font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;">Day</button>
                 <button class="ph-view-btn" id="phViewMonthBtn" onclick="switchPancView('month')" style="padding: 5px 12px; border: none; background: transparent; color: rgba(255,255,255,0.7); font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;">Month</button>
+                <button class="ph-view-btn" id="phViewMuhurtasBtn" onclick="switchPancView('muhurtas')" style="padding: 5px 12px; border: none; background: transparent; color: rgba(255,255,255,0.7); font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;">Muhurtas</button>
             </div>
             <button class="ph-nav-btn" id="panchangPrevDayBtn" title="Previous Day" style="background: rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.25); color: #fff; width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center;">‹</button>
             <input type="date" class="ph-date-input" id="panchangDateInput" style="background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.3); border-radius: 6px; color: #fff; padding: 5px 10px; font-weight: 700; font-size: 0.9rem; min-width: 130px;">
@@ -203,17 +206,50 @@ gtag('config','G-DZ2CM1SBWW');
         <div class="dainik-bottom-four-grid">
             <!-- Column 1: Lagna Kundali -->
             <div class="glass-card chart-card dainik-layout-card" id="lagnaKundaliCard" style="padding: 20px; box-sizing: border-box; text-align: center; display: flex; flex-direction: column; height: 100%;">
-                <h3 class="dainik-card-header-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                    <span>☸️ Lagna Kundali</span>
+                <h3 class="dainik-card-header-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap:wrap; gap:4px;">
+                    <span>☸️ <span id="divisionLabel">Rasi (D1) — Lagna</span></span>
                     <div style="display: flex; gap: 4px;">
-                        <button onclick="setLagnaStyle('North')" class="ph-today-btn active" id="btnLagnaNorth" style="font-size: 0.7rem; padding: 3px 8px; border-radius: 4px;">North</button>
-                        <button onclick="setLagnaStyle('South')" class="ph-today-btn" id="btnLagnaSouth" style="font-size: 0.7rem; padding: 3px 8px; border-radius: 4px;">South</button>
+                        <select id="selChartStyle" onchange="renderAdvancedChart()" style="background:#0d1117; border:1px solid rgba(252,194,1,0.3); color:#fbbf24; border-radius:4px; padding:3px 8px; font-size:0.72rem; font-weight:700;">
+                            <option value="North">North Indian</option>
+                            <option value="South">South Indian</option>
+                        </select>
                     </div>
                 </h3>
+                
+                <!-- Advanced Controls Panel -->
+                <div class="kundli-advanced-controls" style="display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-bottom:10px; padding:8px 4px; border-bottom:1.5px solid rgba(252,194,1,0.15); font-size:0.75rem; background:rgba(0,0,0,0.12); border-radius:6px;">
+                    <select id="selChartCenter" onchange="triggerAdvancedCalc()" style="background:#0d1117; border:var(--card-border); color:#fff; border-radius:4px; padding:3px 6px; font-size:0.72rem; font-weight:700;">
+                        <option value="D1">D1 (Lagna)</option>
+                        <option value="D9">D9 (Navamsha)</option>
+                        <option value="D10">D10 (Dashamsha)</option>
+                        <option value="D3">D3 (Drekkana)</option>
+                        <option value="D7">D7 (Saptamsha)</option>
+                        <option value="D12">D12 (Dwadamsha)</option>
+                        <option value="D30">D30 (Trishamsha)</option>
+                        <option value="D60">D60 (Shastiamsha)</option>
+                    </select>
+                    <select id="selAyanamsa" onchange="triggerAdvancedCalc()" style="background:#0d1117; border:var(--card-border); color:#fff; border-radius:4px; padding:3px 6px; font-size:0.72rem; font-weight:700;">
+                        <option value="Lahiri">Lahiri</option>
+                        <option value="Raman">Raman</option>
+                        <option value="Krishnamurti">KP</option>
+                        <option value="Tropical">Tropical</option>
+                    </select>
+                    <select id="selNode" onchange="triggerAdvancedCalc()" style="background:#0d1117; border:var(--card-border); color:#fff; border-radius:4px; padding:3px 6px; font-size:0.72rem; font-weight:700;">
+                        <option value="True">True Rahu</option>
+                        <option value="Mean">Mean Rahu</option>
+                    </select>
+                    <select id="selZodiacStyle" onchange="triggerAdvancedCalc()" style="background:#0d1117; border:var(--card-border); color:#fff; border-radius:4px; padding:3px 6px; font-size:0.72rem; font-weight:700;">
+                        <option value="Sidereal">Sidereal</option>
+                        <option value="Tropical">Sayana</option>
+                    </select>
+                    <button onclick="toggleRashiNumDisplay()" class="ph-today-btn" id="btnToggleRashiNum" style="font-size:0.7rem; padding:2px 6px; border-radius:4px; font-weight:700; background:rgba(0,0,0,0.2);">🔢 Rashi</button>
+                    <button onclick="toggleOuterPlanetsDisplay()" class="ph-today-btn" id="btnToggleOuter" style="font-size:0.7rem; padding:2px 6px; border-radius:4px; font-weight:700; background:rgba(0,0,0,0.2);">🪐 Outer</button>
+                </div>
+                
                 <div id="lagnaChartContainer" style="display: flex; justify-content: center; align-items: center; min-height: 250px; margin: 15px 0;">
                     <!-- SVG drawn dynamically -->
                 </div>
-                <div id="lagnaPlanetsContainer" style="text-align: left; font-size: 0.85rem; max-height: 180px; overflow-y: auto; border-top: 1px solid rgba(252,194,1,0.2); padding-top: 10px; flex-grow: 1;">
+                <div id="lagnaPlanetsContainer" style="text-align: left; font-size: 0.85rem; max-height: 240px; overflow-y: auto; border-top: 1px solid rgba(252,194,1,0.2); padding-top: 10px; flex-grow: 1;">
                     <!-- Planet list mapped dynamically -->
                 </div>
             </div>
@@ -275,12 +311,43 @@ gtag('config','G-DZ2CM1SBWW');
             </div>
         </div>
         
+        <!-- Monthly Panchang Footer Widgets -->
+        <div style="padding: 20px; border-top: 2px solid rgba(162,57,34,0.2); background: rgba(0,0,0,0.15); display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px;">
+            <div class="glass-card widget-box dainik-layout-card" style="padding: 15px; background: var(--card-bg); border: var(--card-border); border-radius: 8px;">
+                <h4 style="color:var(--title-color); margin-top:0; border-bottom:var(--card-border); padding-bottom:6px; font-size:0.95rem;">🪐 Planetary Events</h4>
+                <div id="planetaryEventsContainer_maasik" style="display:flex; flex-direction:column; gap:8px;">
+                    Loading...
+                </div>
+            </div>
+            
+            <div class="glass-card widget-box dainik-layout-card" style="padding: 15px; background: var(--card-bg); border: var(--card-border); border-radius: 8px;">
+                <h4 style="color:var(--title-color); margin-top:0; border-bottom:var(--card-border); padding-bottom:6px; font-size:0.95rem;">🦁 Rashifal (Horoscope)</h4>
+                <div id="rashifalTodayContainer_maasik" style="max-height:300px; overflow-y:auto; padding-right:4px;">
+                    Loading...
+                </div>
+            </div>
+            
+            <div class="glass-card widget-box dainik-layout-card" style="padding: 15px; background: var(--card-bg); border: var(--card-border); border-radius: 8px;">
+                <h4 style="color:var(--title-color); margin-top:0; border-bottom:var(--card-border); padding-bottom:6px; font-size:0.95rem;">📅 Upavas & Festivals</h4>
+                <div id="upcomingFestivalsContainer_maasik" style="max-height:300px; overflow-y:auto; padding-right:4px;">
+                    Loading...
+                </div>
+            </div>
+        </div>
+
         <!-- Month Festivals Directory List -->
         <div style="padding: 20px; border-top: 2px solid rgba(162,57,34,0.2); background: rgba(0,0,0,0.1);">
             <h4 style="color: var(--title-color); margin-top: 0; margin-bottom: 12px; font-size: 1.05rem; font-weight: 800; border-bottom: var(--card-border); padding-bottom: 6px;">📋 Festivals for this Month</h4>
             <div id="maasikFestivalsList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; font-size: 0.85rem;">
                 <!-- Loaded dynamically -->
             </div>
+        </div>
+    </div>
+
+    <!-- 5.b Muhurtas & Jyotish Utilities View Section -->
+    <div id="muhurtasViewContainer" style="display: none; background: var(--card-bg); border: var(--card-border); border-radius: 12px; padding: 25px; margin-top: 15px; box-shadow: var(--shadow);">
+        <div style="text-align: center; padding: 3rem; color: var(--accent-color); font-weight: 700; font-size: 1.1rem;">
+            🕉️ Loading Muhurtas and Jyotish Calculations...
         </div>
     </div>
 
@@ -291,7 +358,18 @@ gtag('config','G-DZ2CM1SBWW');
 
     <!-- 7. Portal Welcome & Directory Grid -->
     <div id="homeWelcomeSection" style="display: block;">
-        <div class="glass-card welcome-card" style="padding: 30px; margin-bottom: 2rem; background: var(--card-bg); border: var(--card-border); border-radius: 12px; box-shadow: var(--shadow); text-align: center;">
+        <div class="homepage-three-column-grid">
+            <!-- Left Sidebar for Google Ad -->
+            <aside class="left-ad-sidebar glass-card" style="padding: 15px; background: var(--card-bg); border: var(--card-border); border-radius: 8px;">
+                <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; text-align:center; margin-bottom:8px; font-weight:700;">Advertisement</div>
+                <div class="ad-placeholder" style="border:1.5px dashed var(--card-border); border-radius:6px; display:flex; align-items:center; justify-content:center; height:600px; background:rgba(0,0,0,0.15); color:var(--text-muted); font-size:0.9rem; font-weight:700;">
+                    Google Ad Space
+                </div>
+            </aside>
+            
+            <!-- Center Content: Feature Showcase -->
+            <main class="center-feature-showcase">
+                <div class="glass-card welcome-card" style="padding: 30px; margin-bottom: 2rem; background: var(--card-bg); border: var(--card-border); border-radius: 12px; box-shadow: var(--shadow); text-align: center;">
             <h2 style="color: var(--title-color); margin-top: 0; font-size: 1.8rem; font-weight: 800; text-transform: capitalize;">🕉️ Welcome to Sanskrit AI Astrological Suite</h2>
             <p style="color: var(--text-color); font-size: 0.95rem; max-width: 700px; margin: 15px auto; line-height: 1.6;">
                 Explore real-time planetary transits, personalized Kundli generation, Guna Milan matchmaking, and regional Moon phase panjikas. Choose any tool below to begin.
@@ -306,7 +384,7 @@ gtag('config','G-DZ2CM1SBWW');
             <h2>explore calculations & vedic shastras</h2>
             <div class="directory-grid">
             <div class="directory-box">
-                <h4>🕉️ Hindu Panchang</h4>
+                <h4>🕉️ Hindu Panchang <a href="?tab=panchang" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="?tab=panchang">Dainik Panchang</a></li>
                     <li><a href="?tab=panchang">Bengali Panjika</a></li>
@@ -316,7 +394,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>📅 Vedic Calendars</h4>
+                <h4>📅 Vedic Calendars <a href="?tab=maasik" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="?tab=maasik">Maasik Hindu Calendar</a></li>
                     <li><a href="?tab=maasik">National Indian Calendar</a></li>
@@ -325,7 +403,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🔮 Jyotish Utilities</h4>
+                <h4>🔮 Jyotish Utilities <a href="Features/Astrology/astrology.html" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Personalised Kundli D1/D9</a></li>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('gemstone')">Gemstone recommendation</a></li>
@@ -335,7 +413,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>⏰ Muhurat</h4>
+                <h4>⏰ Muhurat <a href="?tab=muhurtas" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="?tab=muhurtas">Choghadiya Timings</a></li>
                     <li><a href="?tab=muhurtas">Do Ghati Muhurtas</a></li>
@@ -345,7 +423,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🎉 Hindu Festivals</h4>
+                <h4>🎉 Hindu Festivals <a href="list_events.html?category=festival" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="?tab=panchang">Diwali Shubh Muhurtas</a></li>
                     <li><a href="?tab=panchang">Raksha Bandhan Thread Time</a></li>
@@ -354,7 +432,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🦁 Rashifal Prediction</h4>
+                <h4>🦁 Rashifal Prediction <a href="list_events.html" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="#rashifalTodayContainer">Daily Rashifal Predictions</a></li>
                     <li><a href="#rashifalTodayContainer">Weekly Horoscope Signs</a></li>
@@ -363,7 +441,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🌾 Panchang Utilities</h4>
+                <h4>🌾 Panchang Utilities <a href="list_events.html?category=transit" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="?tab=panchang">Rahu Kala Timings</a></li>
                     <li><a href="?tab=panchang">Panchak Boundary Times</a></li>
@@ -372,7 +450,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🎗️ Yoga in Astrology</h4>
+                <h4>🎗️ Yoga in Astrology <a href="list_events.html?category=transit" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="?tab=panchang">Gurupushyamrut Yoga</a></li>
                     <li><a href="?tab=panchang">Sarvarthasiddhi Yoga</a></li>
@@ -381,7 +459,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🛐 Vrat and Upavas</h4>
+                <h4>🛐 Vrat and Upavas <a href="list_events.html?category=vrat" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="?tab=panchang">Sankashti Chaturthi moonrise</a></li>
                     <li><a href="?tab=panchang">Vinayaka Chaturthi timings</a></li>
@@ -390,7 +468,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>📜 Vrat Katha</h4>
+                <h4>📜 Vrat Katha <a href="list_events.html?category=vrat" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Satyanarayana Vrat Katha</a></li>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Ekadashi Vrat Katha</a></li>
@@ -399,7 +477,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🪐 Planetary Events</h4>
+                <h4>🪐 Planetary Events <a href="list_events.html?category=transit" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="#planetaryEventsContainer">Sidereal Zodiac entry</a></li>
                     <li><a href="#planetaryEventsContainer">Tropical Sign transits</a></li>
@@ -408,7 +486,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🔭 Hindu Astronomy</h4>
+                <h4>🔭 Hindu Astronomy <a href="list_events.html?category=transit" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Solar Eclipse calculations</a></li>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Lunar Eclipse timings</a></li>
@@ -417,7 +495,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🎼 Devotional Lyrics</h4>
+                <h4>🎼 Devotional Lyrics <a href="list_events.html?category=mantra" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Ganesh Aarti & Chalisa</a></li>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Sundarkand Paath lyrics</a></li>
@@ -426,7 +504,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🔱 Hindu Gods</h4>
+                <h4>🔱 Hindu Gods <a href="list_events.html?category=ritual" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Lord Vishnu avatars</a></li>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Lord Shiva temples</a></li>
@@ -435,7 +513,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🎀 Hindu Goddesses</h4>
+                <h4>🎀 Hindu Goddesses <a href="list_events.html?category=ritual" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Maha Lakshmi Ashtakam</a></li>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Navdurga forms list</a></li>
@@ -444,7 +522,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🔥 Puja Vidhi</h4>
+                <h4>🔥 Puja Vidhi <a href="list_events.html?category=puja" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Ganesha Puja Vidhi steps</a></li>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Lakshmi Puja Vidhi Deepavali</a></li>
@@ -452,7 +530,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>☀️ Vedic Mantras</h4>
+                <h4>☀️ Vedic Mantras <a href="list_events.html?category=mantra" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Gayatri Mantra meaning</a></li>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Mahamrityunjaya Mantra</a></li>
@@ -460,7 +538,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🛡️ Deities Yantra</h4>
+                <h4>🛡️ Deities Yantra <a href="list_events.html?category=ritual" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Shri Yantra geometric logic</a></li>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Kubera Yantra installation</a></li>
@@ -468,7 +546,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🌊 Hindu Rituals</h4>
+                <h4>🌊 Hindu Rituals <a href="list_events.html?category=ritual" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Kumbha Mela bathing dates</a></li>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Shradh Karma Pitru Paksha</a></li>
@@ -476,7 +554,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🎨 Art Gallery</h4>
+                <h4>🎨 Art Gallery <a href="list_events.html?category=ritual" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Rangoli Collection designs</a></li>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Mehandi Designs traditional</a></li>
@@ -484,7 +562,7 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>📱 Mobile Apps</h4>
+                <h4>📱 Mobile Apps <a href="list_events.html" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">Android App Playstore</a></li>
                     <li><a href="javascript:void(0)" onclick="openGeneralJyotishModal('kundli')">iOS App Appstore</a></li>
@@ -521,10 +599,37 @@ gtag('config','G-DZ2CM1SBWW');
                     <button id="btnRunApiTest" style="background:#a23922; border:none; color:#fff; padding:10px 20px; border-radius:4px; font-weight:700; cursor:pointer;">Run API Test</button>
                 </div>
             </div>
-            <div id="apiTestOutput" style="max-height: 350px; overflow-y: auto; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.06); color: #e2e8f0;">
+            <div id="apiTestOutput" style="max-height: 350px; overflow-y: auto; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.06); color: #e2e8f0; margin-top: 15px;">
                 Click "Run API Test" to load live dynamic calculation response.
             </div>
         </div>
+    </footer>
+</main>
+        
+        <!-- Right Sidebar: Widgets -->
+        <aside class="right-widgets-sidebar">
+            <div class="glass-card widget-box dainik-layout-card" style="margin-bottom:15px; padding:15px; background: var(--card-bg); border: var(--card-border); border-radius: 8px;">
+                <h4 style="color:var(--title-color); margin-top:0; border-bottom:var(--card-border); padding-bottom:6px; font-size:0.95rem; font-weight:800;">🪐 Planetary Events</h4>
+                <div id="planetaryEventsContainer_sidebar" style="display:flex; flex-direction:column; gap:8px;">
+                    Loading...
+                </div>
+            </div>
+            
+            <div class="glass-card widget-box dainik-layout-card" style="margin-bottom:15px; padding:15px; background: var(--card-bg); border: var(--card-border); border-radius: 8px;">
+                <h4 style="color:var(--title-color); margin-top:0; border-bottom:var(--card-border); padding-bottom:6px; font-size:0.95rem; font-weight:800;">🦁 Rashifal (Horoscope)</h4>
+                <div id="rashifalTodayContainer_sidebar" style="max-height:300px; overflow-y:auto; padding-right:4px;">
+                    Loading...
+                </div>
+            </div>
+            
+            <div class="glass-card widget-box dainik-layout-card" style="margin-bottom:15px; padding:15px; background: var(--card-bg); border: var(--card-border); border-radius: 8px;">
+                <h4 style="color:var(--title-color); margin-top:0; border-bottom:var(--card-border); padding-bottom:6px; font-size:0.95rem; font-weight:800;">📅 Upavas & Festivals</h4>
+                <div id="upcomingFestivalsContainer_sidebar" style="max-height:300px; overflow-y:auto; padding-right:4px;">
+                    Loading...
+                </div>
+            </div>
+        </aside>
+    </div>
     </div> <!-- Closing homeWelcomeSection -->
 </div> <!-- Closing main-portal-container -->
 
@@ -628,7 +733,14 @@ overlay.classList.remove("active");
 // Open general modal utility
 function openGeneralJyotishModal(feature) {
     if (typeof openJyotishModal === 'function') {
-        openJyotishModal(feature);
+        const featureNames = {
+            'kundli': 'Personalised Kundli D1/D9',
+            'gemstone': 'Gemstone Recommendation',
+            'rudraksha': 'Rudraksha Suggestion',
+            'milan': 'Kundli Matching (Milan)',
+            'prashna': 'Prashna Kundali'
+        };
+        openJyotishModal(feature, 'D1', featureNames[feature] || 'Vedic Astrology');
     }
 }
 

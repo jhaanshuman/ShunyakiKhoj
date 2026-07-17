@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DZ7500BNEZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  if (typeof gtag !== 'function') {
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-DZ7500BNEZ');
+  }
+</script>
+<meta charset="UTF-8">
+<title>Vedic Directory & Event List — Sanskrit AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="./logo.png">
+<link rel="stylesheet" href="style.css?v=1.1.5">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Noto+Serif:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./Features/Astrology/astrology_dashboard.css?v=1.1.8">
+<style>
+    .list-container {
+        max-width: 1100px;
+        margin: 2rem auto;
+        padding: 0 20px;
+    }
+    .filter-bar {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
+        background: rgba(0,0,0,0.22);
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid rgba(252,194,1,0.15);
+        align-items: center;
+        justify-content: space-between;
+    }
+    .filter-btn {
+        background: rgba(0,0,0,0.25);
+        border: 1.5px solid rgba(255,255,255,0.15);
+        color: var(--text-color, #ebd9b4);
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: all 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+        background: var(--accent-color, #fbbf24);
+        color: #120200;
+        border-color: var(--accent-color, #fbbf24);
+    }
+    .search-input {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1.5px solid rgba(252,194,1,0.25);
+        color: #fff;
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        width: 300px;
+        font-weight: 600;
+        outline: none;
+    }
+    .search-input:focus {
+        border-color: var(--accent-color, #fbbf24);
+    }
+    .events-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+        gap: 20px;
+    }
+    .event-card {
+        background: rgba(18, 2, 0, 0.4);
+        border: 1.5px solid rgba(252,194,1,0.15);
+        border-radius: 12px;
+        padding: 20px;
+        transition: all 0.2s;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .event-card:hover {
+        border-color: var(--accent-color, #fbbf24);
+        transform: translateY(-2px);
+        background: rgba(18, 2, 0, 0.6);
+        box-shadow: 0 8px 25px rgba(252,194,1,0.08);
+    }
+    .event-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--accent-color, #fbbf24);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .event-desc {
+        font-size: 0.85rem;
+        color: var(--text-color, #ebd9b4);
+        opacity: 0.85;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+    .event-meta {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--accent-color, #fbbf24);
+        letter-spacing: 0.5px;
+    }
+</style>
+</head>
+<body class="theme-focus dark-theme">
+
+<!-- HEADER -->
+<header class="header">
+<div class="logo-area">
+<img src="./logo.png" class="logo" onclick="window.location.href='index.html'" style="cursor:pointer;">
+<div>
+    <h1 style="line-height: 1.1; cursor:pointer;" onclick="window.location.href='index.html'">Sanskrit AI</h1>
+    <div id="header-breadcrumb" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 1px; font-weight: 600;">🏠 Home &gt; 📜 Directory List</div>
+</div>
+</div>
+<div class="header-icons">
+    <span>🔍</span><span id="themeToggleBtn" style="cursor:pointer;">🌓</span><span>🔔</span><span>👤</span>
+</div>
+</header>
+
+<div class="list-container">
+    <div style="margin-bottom: 1.5rem; text-align: center;">
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: #fbbf24;">📜 Vedic Observances & Rituals Directory</h2>
+        <p style="color: #ebd9b4; opacity: 0.8; font-size: 0.95rem; max-width: 600px; margin: 5px auto;">
+            Explore details, beliefs, and methods for over 100+ Vedic upavas, vrats, stotrams, and astronomical configurations.
+        </p>
+    </div>
+
+    <div class="filter-bar">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="filter-btn active" onclick="filterCategory('all')">All Items</button>
+            <button class="filter-btn" onclick="filterCategory('vrat')">Vrat & Upavas</button>
+            <button class="filter-btn" onclick="filterCategory('festival')">Festivals</button>
+            <button class="filter-btn" onclick="filterCategory('mantra')">Mantras & Hymns</button>
+            <button class="filter-btn" onclick="filterCategory('puja')">Puja & Vidhi</button>
+            <button class="filter-btn" onclick="filterCategory('ritual')">Rituals</button>
+            <button class="filter-btn" onclick="filterCategory('transit')">Astrological Yogas</button>
+        </div>
+        <input type="text" class="search-input" id="directorySearch" placeholder="Search events..." oninput="searchDirectory(this.value)">
+    </div>
+
+    <div class="events-grid" id="eventsGrid">
+        <!-- Rendered dynamically -->
+    </div>
+</div>
+
+<!-- Modal container for detailed view -->
+<div id="directoryDetailModal" style="display: none; position: fixed; inset: 0; z-index: 100000; background: rgba(7, 11, 20, 0.85); backdrop-filter: blur(10px); align-items: center; justify-content: center; padding: 20px;">
+</div>
+
+<script src="./Features/Astrology/vedic_database.js?v=1.1.8"></script>
+<script>
+    let activeCategory = 'all';
+    let searchQuery = '';
+
+    function renderEvents() {
+        const grid = document.getElementById('eventsGrid');
+        grid.innerHTML = '';
+        
+        const db = window.VedicDirectoryDatabase || {};
+        let keys = Object.keys(db);
+
+        // Filter keys
+        keys = keys.filter(k => {
+            const item = db[k];
+            const catMatch = activeCategory === 'all' || item.category === activeCategory;
+            const searchMatch = k.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                (item.hover && item.hover.toLowerCase().includes(searchQuery.toLowerCase()));
+            return catMatch && searchMatch;
+        });
+
+        if (keys.length === 0) {
+            grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #ebd9b4; opacity: 0.6; padding: 3rem;">No matching items found.</div>`;
+            return;
+        }
+
+        keys.forEach(k => {
+            const item = db[k];
+            const card = document.createElement('div');
+            card.className = 'event-card';
+            card.onclick = () => showDetail(k, item);
+            card.innerHTML = `
+                <div>
+                    <div class="event-title">🕉️ ${k}</div>
+                    <div class="event-desc">${item.hover}</div>
+                </div>
+                <div class="event-meta">${item.category}</div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function filterCategory(cat) {
+        activeCategory = cat;
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.currentTarget.classList.add('active');
+        renderEvents();
+    }
+
+    function searchDirectory(val) {
+        searchQuery = val;
+        renderEvents();
+    }
+
+    function showDetail(title, data) {
+        const modal = document.getElementById('directoryDetailModal');
+        modal.style.display = 'flex';
+        modal.innerHTML = `
+            <div class="glass-card" style="width: 100%; max-width: 600px; padding: 25px; border: 2.5px solid #fbbf24; background: #120200; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); position: relative; color: #ebd9b4; max-height: 90vh; overflow-y: auto;">
+                <button onclick="closeModal()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #fbbf24; font-size: 1.5rem; cursor: pointer;">✕</button>
+                <h2 style="color: #fbbf24; margin-top: 0; border-bottom: 2px solid rgba(252,194,1,0.25); padding-bottom: 10px; font-size: 1.5rem; display: flex; align-items: center; gap: 8px;">
+                    🕉️ ${title}
+                </h2>
+                <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem; line-height: 1.6;">
+                    <div style="background: rgba(252,194,1,0.06); padding: 12px; border-radius: 8px; border-left: 4px solid #fbbf24;">
+                        <strong>Overview:</strong><br>${data.hover || 'Information not available.'}
+                    </div>
+                    ${data.since_when ? `<div><strong>Since When:</strong> ${data.since_when}</div>` : ''}
+                    ${data.why_reason ? `<div><strong>Why & Reason:</strong> ${data.why_reason}</div>` : ''}
+                    ${data.belief ? `<div><strong>Belief & Significance:</strong> ${data.belief}</div>` : ''}
+                    ${data.where ? `<div><strong>Where:</strong> ${data.where}</div>` : ''}
+                    ${data.how ? `<div style="background: rgba(99, 102, 241, 0.08); padding: 12px; border-radius: 8px; border-left: 4px solid #6366f1;"><strong>How to Observe / Practice:</strong><br>${data.how}</div>` : ''}
+                </div>
+                <div style="margin-top: 20px; text-align: right;">
+                    <button onclick="closeModal()" style="background: #a23922; color: #fff; border: none; padding: 8px 20px; border-radius: 6px; font-weight: 700; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#7c1a08'" onmouseout="this.style.background='#a23922'">Close</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function closeModal() {
+        document.getElementById('directoryDetailModal').style.display = 'none';
+    }
+
+    // Set initial category from URL
+    const prms = new URLSearchParams(window.location.search);
+    const cat = prms.get('category');
+    if (cat) {
+        activeCategory = cat;
+        // Activate corresponding button
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            if (btn.getAttribute('onclick').includes(cat)) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    // Render initially
+    renderEvents();
+</script>
+</body>
+</html>

@@ -507,7 +507,7 @@ function setupThemeToggle() {
         headerIcons.insertBefore(themeToggleBtn, headerIcons.firstChild);
     }
 
-    const savedTheme = localStorage.getItem('shunya-theme-name') || 'theme-manuscript';
+    const savedTheme = localStorage.getItem('shunya-theme-name') || 'theme-focus';
     applyTheme(savedTheme);
 
     themeToggleBtn.addEventListener('click', (e) => {

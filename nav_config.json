@@ -211,6 +211,11 @@
         { "label": "Solar/Lunar Eclipse Calculator", "url": "#", "icon": "🌑" },
         { "label": "Astronomical Utilities", "url": "#", "icon": "⚙️" }
       ]
+    },
+    {
+      "label": "Wisdom Library",
+      "url": "./Static/index.html",
+      "icon": "📿"
     }
   ]
 }

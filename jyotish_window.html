@@ -15,6 +15,7 @@
     <title>Jyotish Calculator — ShunyaKiKhoj</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -344,6 +345,8 @@
 <!-- City autocomplete engine -->
 <script src="./geocomplete.js?v=1.0"></script>
 <!-- Pass-through: reuse the full calculation + render engine -->
+<script src="./Features/Astrology/vedic_data.js?v=1.1.8"></script>
+<script src="./Features/Astrology/vedic_database.js?v=1.1.8"></script>
 <script src="./jyotish_modal.js?v=1.1.6"></script>
 
 <script>
@@ -537,11 +540,27 @@ function startLiveClock() {
 
 // ── Auto-run on load ─────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
+    // 1. Sync Active Theme
+    const savedTheme = localStorage.getItem('shunya-theme-name') || 'theme-focus';
+    document.body.className = savedTheme;
+    if (['theme-dark', 'theme-focus', 'theme-indigo'].includes(savedTheme)) {
+        document.body.classList.add('dark-theme');
+    }
+
+    // 2. Sync Location Inputs
+    const savedPlace = sessionStorage.getItem('savedPanchangPlace') || 'New Delhi, India';
+    const mP = document.getElementById('mPlace');
+    if (mP && !mP.value) mP.value = savedPlace;
+    const mBP = document.getElementById('mBoyPlace');
+    if (mBP && !mBP.value) mBP.value = savedPlace;
+    const mGP = document.getElementById('mGirlPlace');
+    if (mGP && !mGP.value) mGP.value = savedPlace;
+
     // Initialise city autocomplete for all place inputs
     if (typeof initGeoComplete === 'function') {
-        initGeoComplete('mPlace',     { defaultPlace: 'Patna, Bihar, India' });
-        initGeoComplete('mBoyPlace',  { defaultPlace: 'Patna, Bihar, India' });
-        initGeoComplete('mGirlPlace', { defaultPlace: 'Patna, Bihar, India' });
+        initGeoComplete('mPlace',     { defaultPlace: savedPlace });
+        initGeoComplete('mBoyPlace',  { defaultPlace: savedPlace });
+        initGeoComplete('mGirlPlace', { defaultPlace: savedPlace });
     }
     // Short delay so the engine's DOMContentLoaded fires first
     setTimeout(triggerCalculation, 150);

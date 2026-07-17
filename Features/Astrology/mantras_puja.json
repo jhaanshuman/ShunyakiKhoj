@@ -1,0 +1,30 @@
+{
+  "mantra_gayatri": {
+    "name": "Gayatri Mantra",
+    "text": "ॐ भूर्भुवः स्वः तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि धियो यो नः प्रचोदयात् ॥",
+    "translation": "We meditate on the glory of that Creator; Who has created the Universe; Who is worthy of Worship; Who is the embodiment of Knowledge and Light; Who is the remover of all Sins and Ignorance; May He enlighten our Intellect.",
+    "how_to_chant": "Chant 108 times at sunrise, noon, or sunset facing East or North using a Rudraksha or Tulsi mala.",
+    "benefits": "Improves concentration, cleanses the mind, bestows wisdom, and aligns one with cosmic solar consciousness."
+  },
+  "mantra_mahamrityunjaya": {
+    "name": "Mahamrityunjaya Mantra",
+    "text": "ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम् उर्वारुकमिव बन्धनान् मृत्योर्मुक्षीय माऽमृतात् ॥",
+    "translation": "We worship the three-eyed Lord Shiva, who is fragrant and who nourishes all beings. May He liberate us from death for the sake of immortality, even as a cucumber is severed from its bond to the creeper.",
+    "how_to_chant": "Chant 108 times in the morning or near Shiva Linga. Best done with a Rudraksha mala.",
+    "benefits": "Provides health, prevents untimely death, resolves physical diseases, and bestows deep mental peace."
+  },
+  "puja_satyanarayan": {
+    "name": "Satyanarayan Puja",
+    "text": "Lord Satyanarayan is the embodiment of Truth. The worship is dedicated to Lord Vishnu.",
+    "translation": "He who resides in truth and sustains the universe with love.",
+    "how_to_chant": "Usually performed on Purnima (Full Moon) day of any month or during special family events.",
+    "benefits": "Brings harmony, happiness, removes family disputes, and ensures success in business or new ventures."
+  },
+  "aarti_ganesh": {
+    "name": "Jai Ganesh Deva Aarti",
+    "text": "जय गणेश जय गणेश जय गणेश देवा । माता जाकी पारवती पिता महादेवा ॥",
+    "translation": "Glory to Lord Ganesha, whose mother is Goddess Parvati and whose father is Lord Shiva.",
+    "how_to_chant": "Sing at sunset or sunrise during daily puja while waving a ghee lamp.",
+    "benefits": "Removes all life obstacles and fills the home with joy, health, and wisdom."
+  }
+}

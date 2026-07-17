@@ -1,0 +1,47 @@
+{
+  "ekadashi": {
+    "name": "Ekadashi Vrat",
+    "criteria": "11th lunar day of Shukla or Krishna Paksha of every Hindu month",
+    "since_when": "Since the Satya Yuga, instituted by Lord Vishnu to destroy worldly sins.",
+    "why_reason": "On this day, the demon Mura was slain by the female energy (Ekadashi) born from Lord Vishnu's body.",
+    "belief": "Observance washes away past life sins, purifies the mind, and guarantees ascent to Vaikuntha (Vishnu's abode).",
+    "where": "Observed globally by Vaishnavas and Hindus.",
+    "how": "Complete fast (upavasa) or fruit-only diet, avoiding grains, rice, and beans. Perform Vishnu Puja and stay awake chanting mantras."
+  },
+  "trayodashi": {
+    "name": "Pradosh Vrat",
+    "criteria": "13th lunar day of Shukla or Krishna Paksha of every Hindu month",
+    "since_when": "Since Vedic times, when the Devas and Asuras churned the ocean.",
+    "why_reason": "Lord Shiva consumed the Halahala poison on this day to save the universe and danced in bliss during twilight.",
+    "belief": "Observance removes all obstacles, bestows wealth, health, and releases one from ancestral karma.",
+    "where": "Observed globally by Shaivites.",
+    "how": "Fast from sunrise until sunset. Perform Shiva Abhishek with milk, honey, and water during Pradosha Kalam (twilight hours)."
+  },
+  "sankranti": {
+    "name": "Sankranti",
+    "criteria": "Transit of Sun from one zodiac sign to another",
+    "since_when": "Since astronomical records of ancient Rishis (approx. 5000+ years).",
+    "why_reason": "Solar transit marks the shift in seasonal energies and solar rays affecting human consciousness.",
+    "belief": "Holy bathing, charity, and solar worship on Sankranti fetch infinite blessings and longevity.",
+    "where": "Observed all over India with regional names (Makar Sankranti, Bihu, Pongal, Vishu).",
+    "how": "Take a dip in sacred rivers at sunrise. Offer Arghya (water) to the Sun God, distribute sesame seeds, jaggery, and donate food to the needy."
+  },
+  "rath_yatra": {
+    "name": "Jagannath Rath Yatra",
+    "criteria": "Ashadha Shukla Paksha Dwitiya",
+    "since_when": "Since the regime of King Indradyumna in Satya Yuga (Puranic records).",
+    "why_reason": "Annual visit of Lord Jagannath, along with siblings Balabhadra and Subhadra, to their maternal aunt's temple (Gundicha Temple).",
+    "belief": "Touching or pulling the chariot of Lord Jagannath cleanses all sins and frees the soul from rebirth.",
+    "where": "Puri, Odisha, India (and replicated in global cities).",
+    "how": "Pulling the giant wooden chariots, singing kirtans, and distributing Mahaprasad."
+  },
+  "kumbh_mela": {
+    "name": "Kumbh Mela",
+    "criteria": "Specific Jupiter and Sun placements in Aries, Taurus, Leo, and Aquarius",
+    "since_when": "Since the Samudra Churning (Samudra Manthan) era.",
+    "why_reason": "Drops of Amrit (nectar of immortality) fell from the pitcher (Kumbh) at Haridwar, Prayagraj, Nashik, and Ujjain during a chase between Devas and Asuras.",
+    "belief": "Holy bath in the sacred rivers during Kumbh resolves all karmic bonds and grants instant Moksha.",
+    "where": "Haridwar, Prayagraj, Nashik, and Ujjain on a 12-year cyclic rotation.",
+    "how": "Taking holy baths in the river (Shahi Snan) at calculated astronomical muhurtas, attending religious discourses, and serving sadhus."
+  }
+}
