@@ -14,8 +14,8 @@
 <title>Vedic Jyotishi Dashboard | Sanskrit AI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Noto+Serif:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../style.css?v=20260715">
-<script src="../../nav.js?v=20260715" defer></script>
+<link rel="stylesheet" href="../../style.css?v=20260717">
+<script src="../../nav.js?v=20260717" defer></script>
 <style>
     :root {
         --bg-color: #08090f;
@@ -490,6 +490,8 @@
                     <button class="tab-btn" onclick="switchTab(event, 'tabPanchang')">Panchang</button>
                     <button class="tab-btn" onclick="switchTab(event, 'tabMuhurtas')">Muhurtas & Times</button>
                     <button class="tab-btn" onclick="switchTab(event, 'tabDasha')">Vimshottari Dasha</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tabGemstone')">Gemstones</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tabRudraksha')">Rudraksha</button>
                 </div>
 
                 <!-- Tab Divisional Charts -->
@@ -703,6 +705,18 @@
                 <div id="tabDasha" class="tab-content">
                     <h3 style="color: var(--accent-purple); margin-bottom: 1rem;" id="dashaHeader">Vimshottari Dasha Hierarchy</h3>
                     <div class="dasha-list" id="dashaContainer"></div>
+                </div>
+
+                <!-- Tab Gemstone -->
+                <div id="tabGemstone" class="tab-content">
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">Gemstone Recommendation</h3>
+                    <div id="gemstoneContainer"></div>
+                </div>
+
+                <!-- Tab Rudraksha -->
+                <div id="tabRudraksha" class="tab-content">
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">Rudraksha Suggestion</h3>
+                    <div id="rudrakshaContainer"></div>
                 </div>
             </div>
         </div>
@@ -944,6 +958,6 @@
 
 <script src="vedic_data.js?v=1.1.8"></script>
 <script src="vedic_database.js?v=1.1.8"></script>
-<script src="astrology.js?v=20260715c"></script>
+<script src="astrology.js?v=1.1.9"></script>
 </body>
 </html>

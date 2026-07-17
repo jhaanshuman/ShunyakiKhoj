@@ -17,7 +17,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="./logo.png">
-<link rel="stylesheet" href="style.css?v=1.1.5">
+<link rel="stylesheet" href="style.css?v=20260717">
 <link rel="stylesheet" href="/UserLog/auth.css"> <!-- UserLog -->
     
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -62,7 +62,6 @@ gtag('js', new Date());
 gtag('config','G-DZ2CM1SBWW');
 </script>
 <script src="./nav.js" defer></script>
-<link rel="stylesheet" href="style.css?v=20260715">
 <link rel="stylesheet" href="./Features/Astrology/astrology_dashboard.css?v=1.1.8">
 <script src="./Features/Astrology/vedic_data.js?v=1.1.8"></script>
 <script src="./Features/Astrology/vedic_database.js?v=1.1.8"></script>
@@ -402,14 +401,18 @@ gtag('config','G-DZ2CM1SBWW');
                     <li><a href="Features/Astrology/astrology.html?tab=maasik">Telugu Calendar</a></li>
                 </ul>
             </div>
-            <div class="directory-box">
+            <div class="directory-box" id="jyotishUtilitiesBox">
                 <h4>🔮 Jyotish Utilities <a href="Features/Astrology/astrology.html" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
-                <ul>
-                    <li><a href="Features/Astrology/astrology.html?tab=panchang">Personalised Kundli D1/D9</a></li>
-                    <li><a href="Features/Astrology/astrology.html?tab=panchang">Gemstone recommendation</a></li>
-                    <li><a href="Features/Astrology/astrology.html?tab=panchang">Rudraksha suggestion</a></li>
-                    <li><a href="Features/Astrology/astrology.html?tab=panchang">Kundli Matching (Milan)</a></li>
-                    <li><a href="Features/Astrology/astrology.html?tab=panchang">Prashna Kundali</a></li>
+                <ul id="jyotishLinksList">
+                    <li><a href="Features/Astrology/astrology.html">Personalised Kundli D1/D9</a></li>
+                    <li><a href="Features/Astrology/astrology.html">Gemstone recommendation</a></li>
+                    <li><a href="Features/Astrology/astrology.html">Rudraksha suggestion</a></li>
+                    <li><a href="Features/Astrology/astrology.html">Kundli Matching (Milan)</a></li>
+                    <li><a href="Features/Astrology/astrology.html">Prashna Kundali</a></li>
+                    <li><a href="Features/Astrology/astrology.html">Daily Rashifal Predictions</a></li>
+                    <li><a href="Features/Astrology/astrology.html">Weekly Horoscope Signs</a></li>
+                    <li><a href="Features/Astrology/astrology.html">Monthly Rashi Transits</a></li>
+                    <li><a href="Features/Astrology/astrology.html">Yearly Predictions 2026</a></li>
                 </ul>
             </div>
             <div class="directory-box">
@@ -429,15 +432,6 @@ gtag('config','G-DZ2CM1SBWW');
                     <li><a href="Features/Astrology/astrology.html?tab=panchang">Raksha Bandhan Thread Time</a></li>
                     <li><a href="Features/Astrology/astrology.html?tab=panchang">Maha Shivaratri Nishita</a></li>
                     <li><a href="Features/Astrology/astrology.html?tab=panchang">Ganesha Chaturthi Murti Sthapna</a></li>
-                </ul>
-            </div>
-            <div class="directory-box">
-                <h4>🦁 Rashifal Prediction <a href="list_events.html" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
-                <ul>
-                    <li><a href="#rashifalTodayContainer">Daily Rashifal Predictions</a></li>
-                    <li><a href="#rashifalTodayContainer">Weekly Horoscope Signs</a></li>
-                    <li><a href="#rashifalTodayContainer">Monthly Rashi Transits</a></li>
-                    <li><a href="#rashifalTodayContainer">Yearly Predictions 2026</a></li>
                 </ul>
             </div>
             <div class="directory-box">
@@ -727,8 +721,8 @@ overlay.classList.remove("active");
 
  <script src="/UserLog/auth.js"></script>
 <script src="./geocomplete.js?v=1.0"></script>
-<script src="./jyotish_modal.js?v=1.1.6"></script>
-<script src="./Features/Astrology/astrology.js?v=1.1.8" defer></script>
+<script src="./jyotish_modal.js?v=1.1.9"></script>
+<script src="./Features/Astrology/astrology.js?v=1.1.9" defer></script>
 <script>
 // Open general modal utility
 function openGeneralJyotishModal(feature) {
@@ -746,6 +740,19 @@ function openGeneralJyotishModal(feature) {
 
 // Initialise city autocomplete for modal place inputs and API test events
 document.addEventListener('DOMContentLoaded', function() {
+    // Fetch and populate Jyotish directory box from JSON
+    fetch('Features/Astrology/jyotish_directory.json')
+        .then(res => res.json())
+        .then(data => {
+            const listEl = document.getElementById('jyotishLinksList');
+            if (listEl && data && data.links) {
+                listEl.innerHTML = data.links.map(link => 
+                    `<li><a href="${link.url}">${link.name}</a></li>`
+                ).join('');
+            }
+        })
+        .catch(err => console.error("Failed to load Jyotish directory:", err));
+
     if (typeof initGeoComplete === 'function') {
         if (document.getElementById('panchangPlaceInput')) {
             initGeoComplete('panchangPlaceInput', { defaultPlace: 'New Delhi, India' });

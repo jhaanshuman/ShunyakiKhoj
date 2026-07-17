@@ -1,0 +1,15 @@
+{
+  "title": "🔮 Jyotish Utilities",
+  "more_link": "Features/Astrology/astrology.html",
+  "links": [
+    { "name": "Personalised Kundli D1/D9", "url": "Features/Astrology/astrology.html" },
+    { "name": "Gemstone recommendation", "url": "Features/Astrology/astrology.html" },
+    { "name": "Rudraksha suggestion", "url": "Features/Astrology/astrology.html" },
+    { "name": "Kundli Matching (Milan)", "url": "Features/Astrology/astrology.html" },
+    { "name": "Prashna Kundali", "url": "Features/Astrology/astrology.html" },
+    { "name": "Daily Rashifal Predictions", "url": "Features/Astrology/astrology.html" },
+    { "name": "Weekly Horoscope Signs", "url": "Features/Astrology/astrology.html" },
+    { "name": "Monthly Rashi Transits", "url": "Features/Astrology/astrology.html" },
+    { "name": "Yearly Predictions 2026", "url": "Features/Astrology/astrology.html" }
+  ]
+}

@@ -855,6 +855,16 @@ if (btnCalculate) {
                 renderPlacementsGrid('d1Planets', data.d1_chart);
                 renderPanchang('panchangBody', data.panchang, data.regional);
                 renderMuhurtas('choghadiyaBody', 'horaBody', data.choghadiya, data.hora);
+                
+                const gemContainer = document.getElementById('gemstoneContainer');
+                if (gemContainer) {
+                    renderGemstoneDetail(gemContainer, data.divisional_charts, data.panchang);
+                }
+                const rudContainer = document.getElementById('rudrakshaContainer');
+                if (rudContainer) {
+                    renderRudrakshaDetail(rudContainer, data.divisional_charts, data.panchang);
+                }
+
                 loadDasha(payload);
             } else {
                 alert("Calculation failed: " + data.detail);
