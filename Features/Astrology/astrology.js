@@ -2634,13 +2634,13 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     let ssX = getX(ssMins);
     let srNextX = getX(srMins + 1440);
     
-    let svg = `<svg viewBox="0 0 1000 350" width="100%" preserveAspectRatio="xMinYMid meet" xmlns="http://www.w3.org/2000/svg" style="background: #ebd9b4; border-radius: 4px; font-family: 'Poppins', sans-serif; display:block;">`;
+    let svg = `<svg viewBox="0 0 1000 390" width="100%" preserveAspectRatio="xMinYMid meet" xmlns="http://www.w3.org/2000/svg" style="background: #ebd9b4; border-radius: 4px; font-family: 'Poppins', sans-serif; display:block;">`;
     
     svg += `
         <!-- Day Shading -->
-        <rect x="${srX}" y="40" width="${ssX - srX}" height="260" fill="#fcf6dd" />
+        <rect x="${srX}" y="40" width="${ssX - srX}" height="300" fill="#fcf6dd" />
         <!-- Night Shading -->
-        <rect x="${ssX}" y="40" width="${srNextX - ssX}" height="260" fill="#ded5b8" />
+        <rect x="${ssX}" y="40" width="${srNextX - ssX}" height="300" fill="#ded5b8" />
     `;
     
     svg += `<line x1="130" y1="40" x2="960" y2="40" stroke="#7c2d12" stroke-width="2" />`;
@@ -2690,7 +2690,7 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
                     return `
                         <g style="cursor: pointer;">
                             <title>Current Time: ${timeLabel}</title>
-                            <line x1="${currentX}" y1="36" x2="${currentX}" y2="295" stroke="#22c55e" stroke-width="2.5" stroke-dasharray="3,3" />
+                            <line x1="${currentX}" y1="36" x2="${currentX}" y2="335" stroke="#22c55e" stroke-width="2.5" stroke-dasharray="3,3" />
                             <circle cx="${currentX}" cy="32" r="5.5" fill="#22c55e" stroke="#15803d" stroke-width="1.5" />
                         </g>
                     `;
@@ -2829,13 +2829,47 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
         });
     }
 
+    // New Hora track
+    svg += `<text x="15" y="278" font-size="12" font-weight="700" fill="#7c2d12">Hora</text>`;
+    svg += `<line x1="130" y1="260" x2="960" y2="260" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
+    
+    let horaParts = [];
+    const horaData = (lastCalculatedData && lastCalculatedData.hora) ? lastCalculatedData.hora : null;
+    if (horaData && horaData.day && horaData.night) {
+        horaData.day.forEach(h => {
+            horaParts.push({ start: h.start_time, end: h.end_time, name: h.name });
+        });
+        horaData.night.forEach(h => {
+            horaParts.push({ start: h.start_time, end: h.end_time, name: h.name });
+        });
+    }
+    
+    if (horaParts.length > 0) {
+        horaParts.forEach(h => {
+            let startX = getX(parseTimeStr(h.start));
+            let endX = getX(parseTimeStr(h.end));
+            let w = endX - startX;
+            if (w > 0) {
+                let nameShort = h.name.split(' ')[0];
+                svg += `
+                    <g style="cursor: help;">
+                        <title>Planetary Hora: ${h.name} (${h.start} - ${h.end})</title>
+                        <rect x="${startX}" y="264" width="${w}" height="22" fill="none" stroke="rgba(124,45,18,0.1)" />
+                        <line x1="${startX}" y1="260" x2="${startX}" y2="286" stroke="rgba(124,45,18,0.2)" stroke-width="1" />
+                        <text x="${startX + w/2}" y="278" font-size="8" font-weight="700" fill="#7c2d12" text-anchor="middle">${nameShort}</text>
+                    </g>
+                `;
+            }
+        });
+    }
+
     // New Weekday / Vaar track
     svg += `<g class="glossary-term" data-term="var" style="cursor:pointer;">`;
-    svg += `<text x="15" y="278" font-size="12" font-weight="700" fill="#7c2d12">Vaar</text>`;
-    svg += `<line x1="130" y1="260" x2="960" y2="260" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
+    svg += `<text x="15" y="318" font-size="12" font-weight="700" fill="#7c2d12">Vaar</text>`;
+    svg += `<line x1="130" y1="300" x2="960" y2="300" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
     let wdName = panchang.vara || "Mangalawara";
-    svg += `<text x="520" y="278" font-size="11" font-weight="700" fill="#7c2d12" text-anchor="middle">${wdName}</text>`;
-    svg += `<line x1="130" y1="300" x2="960" y2="300" stroke="#7c2d12" stroke-width="1.5" />`;
+    svg += `<text x="520" y="318" font-size="11" font-weight="700" fill="#7c2d12" text-anchor="middle">${wdName}</text>`;
+    svg += `<line x1="130" y1="340" x2="960" y2="340" stroke="#7c2d12" stroke-width="1.5" />`;
     svg += `</g>`;
 
 
@@ -2960,6 +2994,28 @@ function populatePanchangUI(data, dateStr, place) {
 
     // 3. Render transit Chart using advanced controls
     renderAdvancedChart();
+}
+
+function getSankrantiForDate(monthNum, dayNum) {
+    const sankrantis = {
+        1: { day: 14, name: "Makar Sankranti", icon: "♑" },
+        2: { day: 13, name: "Kumbha Sankranti", icon: "♒" },
+        3: { day: 14, name: "Meena Sankranti", icon: "♓" },
+        4: { day: 14, name: "Mesha Sankranti", icon: "♈" },
+        5: { day: 14, name: "Vrishabha Sankranti", icon: "♉" },
+        6: { day: 15, name: "Mithuna Sankranti", icon: "♊" },
+        7: { day: 16, name: "Karka Sankranti", icon: "♋" },
+        8: { day: 16, name: "Simha Sankranti", icon: "♌" },
+        9: { day: 17, name: "Kanya Sankranti", icon: "♍" },
+        10: { day: 17, name: "Tula Sankranti", icon: "♎" },
+        11: { day: 16, name: "Vrishchika Sankranti", icon: "♏" },
+        12: { day: 16, name: "Dhanu Sankranti", icon: "♐" }
+    };
+    const s = sankrantis[monthNum];
+    if (s && s.day === dayNum) {
+        return { name: s.name, icon: s.icon };
+    }
+    return null;
 }
 
 async function loadDainikPanchang(dateStr, place) {
