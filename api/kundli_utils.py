@@ -1505,4 +1505,267 @@ LUNAR_MONTHS = [
 ]
 
 
+# ═══════════════════════════════════════════════════════════════════
+#  VIMSHOTTARI DASHA CALCULATION
+# ═══════════════════════════════════════════════════════════════════
 
+def get_vimshottari_dasha(moon_lon: float, birth_date) -> dict:
+    """Compute Vimshottari Dasha tree from Moon longitude and birth date.
+    Returns dict with moon_nakshatra, starting_lord, and dasha_tree list."""
+    from datetime import date, timedelta
+
+    NAK_SPAN = 360.0 / 27.0  # 13.333... degrees per nakshatra
+    nak_idx = int(moon_lon / NAK_SPAN) % 27
+    nak_lord_idx = nak_idx % 9
+    elapsed_fraction = (moon_lon % NAK_SPAN) / NAK_SPAN
+
+    # Sequence starting from the nakshatra lord
+    TOTAL_YEARS = 120
+    seq = VIMSHOTTARI_DASHA_SEQUENCE  # list of (planet, years)
+
+    # Remaining years in current MD
+    current_lord, current_years = seq[nak_lord_idx]
+    remaining_years = current_years * (1 - elapsed_fraction)
+
+    dasha_tree = []
+    current_date = birth_date
+
+    # Build full MD sequence from current position
+    for i in range(9):
+        idx = (nak_lord_idx + i) % 9
+        planet, years = seq[idx]
+        if i == 0:
+            duration_years = remaining_years
+        else:
+            duration_years = years
+
+        md_start = current_date
+        md_end_days = int(duration_years * 365.25)
+        md_end = md_start + timedelta(days=md_end_days)
+
+        # Antardashas within this Mahadasha
+        antardashas = []
+        ad_date = md_start
+        for j in range(9):
+            ad_idx = (idx + j) % 9
+            ad_planet, ad_years = seq[ad_idx]
+            ad_duration_days = int((ad_years / TOTAL_YEARS) * duration_years * 365.25)
+            ad_end = ad_date + timedelta(days=ad_duration_days)
+            antardashas.append({
+                "planet": ad_planet,
+                "start": str(ad_date),
+                "end": str(ad_end)
+            })
+            ad_date = ad_end
+
+        dasha_tree.append({
+            "planet": planet,
+            "start": str(md_start),
+            "end": str(md_end),
+            "antardashas": antardashas
+        })
+
+        current_date = md_end
+
+    return {
+        "moon_nakshatra": NAKSHATRAS[nak_idx],
+        "dasha_tree": dasha_tree
+    }
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  ASHTAKOOT GUNA MILAN (Compatibility Matching)
+# ═══════════════════════════════════════════════════════════════════
+
+# Rashi lords for Yoni animal determination
+RASHI_YONI = {
+    'Aries': ('Horse', 'M'), 'Taurus': ('Elephant', 'F'), 'Gemini': ('Dog', 'F'),
+    'Cancer': ('Serpent', 'F'), 'Leo': ('Cat', 'M'), 'Virgo': ('Dog', 'M'),
+    'Libra': ('Tiger', 'M'), 'Scorpio': ('Deer', 'F'), 'Sagittarius': ('Horse', 'M'),
+    'Capricorn': ('Serpent', 'F'), 'Aquarius': ('Elephant', 'F'), 'Pisces': ('Cat', 'M')
+}
+
+NAK_VARNA = {
+    # 0=Brahmin, 1=Kshatriya, 2=Vaishya, 3=Shudra
+    'Ashwini': 2, 'Bharani': 3, 'Krittika': 1, 'Rohini': 2, 'Mrigashira': 2,
+    'Ardra': 3, 'Punarvasu': 0, 'Pushya': 1, 'Ashlesha': 3, 'Magha': 1,
+    'Purva Phalguni': 2, 'Uttara Phalguni': 1, 'Hasta': 2, 'Chitra': 1, 'Swati': 3,
+    'Vishakha': 0, 'Anuradha': 3, 'Jyeshtha': 1, 'Mula': 1, 'Purva Ashadha': 0,
+    'Uttara Ashadha': 1, 'Shravana': 2, 'Dhanishta': 1, 'Shatabhisha': 3,
+    'Purva Bhadrapada': 0, 'Uttara Bhadrapada': 0, 'Revati': 0
+}
+
+NAK_GANA = {
+    'Ashwini': 'Deva', 'Bharani': 'Manushya', 'Krittika': 'Rakshasa',
+    'Rohini': 'Manushya', 'Mrigashira': 'Deva', 'Ardra': 'Manushya',
+    'Punarvasu': 'Deva', 'Pushya': 'Deva', 'Ashlesha': 'Rakshasa',
+    'Magha': 'Rakshasa', 'Purva Phalguni': 'Manushya', 'Uttara Phalguni': 'Manushya',
+    'Hasta': 'Deva', 'Chitra': 'Rakshasa', 'Swati': 'Deva',
+    'Vishakha': 'Rakshasa', 'Anuradha': 'Deva', 'Jyeshtha': 'Rakshasa',
+    'Mula': 'Rakshasa', 'Purva Ashadha': 'Manushya', 'Uttara Ashadha': 'Manushya',
+    'Shravana': 'Deva', 'Dhanishta': 'Rakshasa', 'Shatabhisha': 'Rakshasa',
+    'Purva Bhadrapada': 'Manushya', 'Uttara Bhadrapada': 'Manushya', 'Revati': 'Deva'
+}
+
+PLANET_LORDS = {
+    'Aries': 'Mars', 'Taurus': 'Venus', 'Gemini': 'Mercury', 'Cancer': 'Moon',
+    'Leo': 'Sun', 'Virgo': 'Mercury', 'Libra': 'Venus', 'Scorpio': 'Mars',
+    'Sagittarius': 'Jupiter', 'Capricorn': 'Saturn', 'Aquarius': 'Saturn', 'Pisces': 'Jupiter'
+}
+
+PLANET_FRIENDSHIP = {
+    'Sun': {'friend': ['Moon', 'Mars', 'Jupiter'], 'enemy': ['Venus', 'Saturn'], 'neutral': ['Mercury']},
+    'Moon': {'friend': ['Sun', 'Mercury'], 'enemy': [], 'neutral': ['Mars', 'Jupiter', 'Venus', 'Saturn']},
+    'Mars': {'friend': ['Sun', 'Moon', 'Jupiter'], 'enemy': ['Mercury'], 'neutral': ['Venus', 'Saturn']},
+    'Mercury': {'friend': ['Sun', 'Venus'], 'enemy': ['Moon'], 'neutral': ['Mars', 'Jupiter', 'Saturn']},
+    'Jupiter': {'friend': ['Sun', 'Moon', 'Mars'], 'enemy': ['Mercury', 'Venus'], 'neutral': ['Saturn']},
+    'Venus': {'friend': ['Mercury', 'Saturn'], 'enemy': ['Sun', 'Moon'], 'neutral': ['Mars', 'Jupiter']},
+    'Saturn': {'friend': ['Mercury', 'Venus'], 'enemy': ['Sun', 'Moon', 'Mars'], 'neutral': ['Jupiter']},
+}
+
+
+def _get_nakshatra(moon_lon: float):
+    nak_idx = int(moon_lon / (360.0 / 27.0)) % 27
+    return NAKSHATRAS[nak_idx], nak_idx
+
+
+def get_milan_score(boy_moon_lon: float, girl_moon_lon: float,
+                    boy_rashi: str, girl_rashi: str) -> dict:
+    """Compute Ashtakoot Guna Milan score."""
+    boy_nak, boy_nak_idx = _get_nakshatra(boy_moon_lon)
+    girl_nak, girl_nak_idx = _get_nakshatra(girl_moon_lon)
+    
+    boy_rashi_idx = SIGN_NAMES.index(boy_rashi) if boy_rashi in SIGN_NAMES else 0
+    girl_rashi_idx = SIGN_NAMES.index(girl_rashi) if girl_rashi in SIGN_NAMES else 0
+
+    results = {}
+
+    # 1. VARNA (max 1)
+    bv = NAK_VARNA.get(boy_nak, 0)
+    gv = NAK_VARNA.get(girl_nak, 0)
+    results['varna'] = {'max': 1, 'obtained': 1 if bv >= gv else 0,
+                        'boy': boy_nak, 'girl': girl_nak}
+
+    # 2. VASHYA (max 2)
+    VASHYA_MAP = {
+        'Aries': ['Leo', 'Scorpio'], 'Taurus': ['Cancer', 'Libra'],
+        'Gemini': ['Virgo'], 'Cancer': ['Scorpio', 'Sagittarius'],
+        'Leo': ['Libra'], 'Virgo': ['Gemini', 'Pisces'],
+        'Libra': ['Capricorn', 'Gemini'], 'Scorpio': ['Cancer'],
+        'Sagittarius': ['Pisces'], 'Capricorn': ['Aries', 'Aquarius'],
+        'Aquarius': ['Aries'], 'Pisces': ['Capricorn']
+    }
+    br = SIGN_NAMES[boy_rashi_idx]
+    gr = SIGN_NAMES[girl_rashi_idx]
+    vb = VASHYA_MAP.get(br, [])
+    vg = VASHYA_MAP.get(gr, [])
+    if gr in vb and br in vg:
+        vashya_pts = 2
+    elif gr in vb or br in vg:
+        vashya_pts = 1
+    else:
+        vashya_pts = 0
+    results['vashya'] = {'max': 2, 'obtained': vashya_pts}
+
+    # 3. TARA (max 3)
+    diff = abs(girl_nak_idx - boy_nak_idx) % 9
+    bad_taras = {3, 5, 7}
+    tara_pts = 0 if diff in bad_taras else (1.5 if diff % 9 == 0 else 3)
+    results['tara'] = {'max': 3, 'obtained': round(tara_pts)}
+
+    # 4. YONI (max 4)
+    by, bsex = RASHI_YONI.get(br, ('Unknown', 'M'))
+    gy, gsex = RASHI_YONI.get(gr, ('Unknown', 'F'))
+    if by == gy and bsex != gsex:
+        yoni_pts = 4
+    elif by == gy:
+        yoni_pts = 3
+    else:
+        # Check neutral/enemy pairs
+        YONI_ENEMIES = [('Cat', 'Rat'), ('Dog', 'Deer'), ('Snake', 'Mongoose'),
+                        ('Monkey', 'Lion'), ('Cow', 'Tiger')]
+        is_enemy = any(
+            (by in pair and gy in pair) for pair in YONI_ENEMIES
+        )
+        yoni_pts = 0 if is_enemy else 2
+    results['yoni'] = {'max': 4, 'obtained': yoni_pts, 'boy_animal': by, 'girl_animal': gy}
+
+    # 5. GRAHA MAITRI (max 5)
+    bl = PLANET_LORDS.get(br, 'Sun')
+    gl = PLANET_LORDS.get(gr, 'Moon')
+    if bl == gl:
+        gm_pts = 5
+    elif gl in PLANET_FRIENDSHIP.get(bl, {}).get('friend', []) and \
+         bl in PLANET_FRIENDSHIP.get(gl, {}).get('friend', []):
+        gm_pts = 5
+    elif gl in PLANET_FRIENDSHIP.get(bl, {}).get('friend', []) or \
+         bl in PLANET_FRIENDSHIP.get(gl, {}).get('friend', []):
+        gm_pts = 4
+    elif gl in PLANET_FRIENDSHIP.get(bl, {}).get('neutral', []):
+        gm_pts = 3
+    elif gl in PLANET_FRIENDSHIP.get(bl, {}).get('enemy', []) and \
+         bl in PLANET_FRIENDSHIP.get(gl, {}).get('enemy', []):
+        gm_pts = 0
+    else:
+        gm_pts = 1
+    results['graha_maitri'] = {'max': 5, 'obtained': gm_pts,
+                                'boy_lord': bl, 'girl_lord': gl}
+
+    # 6. GANA (max 6)
+    bg = NAK_GANA.get(boy_nak, 'Manushya')
+    gg = NAK_GANA.get(girl_nak, 'Manushya')
+    if bg == gg:
+        gana_pts = 6
+    elif (bg == 'Deva' and gg == 'Manushya') or (bg == 'Manushya' and gg == 'Deva'):
+        gana_pts = 5
+    elif bg == 'Deva' and gg == 'Rakshasa':
+        gana_pts = 1
+    else:
+        gana_pts = 0
+    results['gana'] = {'max': 6, 'obtained': gana_pts, 'boy_gana': bg, 'girl_gana': gg}
+
+    # 7. BHAKOOT (max 7)
+    diff12 = abs(boy_rashi_idx - girl_rashi_idx) % 12
+    bad_bhakoot = {2, 6, 5, 9, 12, 11}
+    bhakoot_pts = 0 if diff12 in bad_bhakoot else 7
+    results['bhakoot'] = {'max': 7, 'obtained': bhakoot_pts}
+
+    # 8. NADI (max 8)
+    NADI_GROUP = {
+        'Ashwini': 'Aadi', 'Bharani': 'Madhya', 'Krittika': 'Antya',
+        'Rohini': 'Antya', 'Mrigashira': 'Madhya', 'Ardra': 'Aadi',
+        'Punarvasu': 'Aadi', 'Pushya': 'Madhya', 'Ashlesha': 'Antya',
+        'Magha': 'Antya', 'Purva Phalguni': 'Madhya', 'Uttara Phalguni': 'Aadi',
+        'Hasta': 'Aadi', 'Chitra': 'Madhya', 'Swati': 'Antya',
+        'Vishakha': 'Antya', 'Anuradha': 'Madhya', 'Jyeshtha': 'Aadi',
+        'Mula': 'Aadi', 'Purva Ashadha': 'Madhya', 'Uttara Ashadha': 'Antya',
+        'Shravana': 'Antya', 'Dhanishta': 'Madhya', 'Shatabhisha': 'Aadi',
+        'Purva Bhadrapada': 'Aadi', 'Uttara Bhadrapada': 'Madhya', 'Revati': 'Antya'
+    }
+    bn = NADI_GROUP.get(boy_nak, 'Aadi')
+    gn = NADI_GROUP.get(girl_nak, 'Madhya')
+    nadi_pts = 0 if bn == gn else 8
+    results['nadi'] = {'max': 8, 'obtained': nadi_pts,
+                       'boy_nadi': bn, 'girl_nadi': gn}
+
+    total = sum(v['obtained'] for v in results.values())
+    if total >= 28:
+        rec = 'Excellent Match'
+    elif total >= 24:
+        rec = 'Very Good Match'
+    elif total >= 18:
+        rec = 'Good Match'
+    elif total >= 12:
+        rec = 'Average Match'
+    else:
+        rec = 'Poor Match — Remedies Recommended'
+
+    return {
+        **results,
+        'total': round(total, 1),
+        'recommendation': rec,
+        'boy_nakshatra': boy_nak,
+        'girl_nakshatra': girl_nak,
+        'boy_rashi': br,
+        'girl_rashi': gr
+    }

@@ -554,8 +554,8 @@ function setupThemeToggle() {
         document.body.appendChild(dropdown);
 
         const rect = themeToggleBtn.getBoundingClientRect();
-        dropdown.style.top = `${rect.bottom + window.scrollY + 10}px`;
-        dropdown.style.left = `${rect.left + window.scrollX - 100}px`;
+        dropdown.style.top = `${rect.bottom + 8}px`;
+        dropdown.style.left = `${Math.max(8, rect.right - 210)}px`;
         
         const closeDropdown = (event) => {
             if (!dropdown.contains(event.target) && event.target !== themeToggleBtn) {

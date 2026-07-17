@@ -95,6 +95,10 @@ def calculate_chart(details: BirthDetails):
         # 6. Houses
         houses = kundli_utils.get_house_details(chart)
         
+        # 7. Compute Vimshottari Dasha
+        moon_lon = chart.get('Moon').lon
+        dasha_data = kundli_utils.get_vimshottari_dasha(moon_lon, birth_date)
+        
         return {
             "status": "success",
             "pob": chart.formatted_pob,
@@ -113,10 +117,79 @@ def calculate_chart(details: BirthDetails):
             "choghadiya": choghadiya,
             "hora": hora,
             "regional": regional_panchang,
-            "houses": houses
+            "houses": houses,
+            "moon_nakshatra": dasha_data["moon_nakshatra"],
+            "dasha_tree": dasha_data["dasha_tree"]
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/dasha")
+def calculate_dasha(details: BirthDetails):
+    """Dedicated dasha endpoint (also embedded in /api/calculate)."""
+    try:
+        details.date = details.date.replace('-', '/')
+        chart = kundli_utils.get_chart(
+            date_str=details.date, time_str=details.time, place=details.place,
+            zodiac=details.zodiac, house_system="Whole Sign",
+            ayanamsa=details.ayanamsa, node_type=details.node_type
+        )
+        birth_date = datetime.strptime(details.date, "%Y/%m/%d").date()
+        moon_lon = chart.get('Moon').lon
+        dasha_data = kundli_utils.get_vimshottari_dasha(moon_lon, birth_date)
+        return {"status": "success", **dasha_data}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+class MatchDetails(BaseModel):
+    boy_date: str
+    boy_time: str
+    boy_place: str
+    girl_date: str
+    girl_time: str
+    girl_place: str
+    ayanamsa: str = "Lahiri"
+    node_type: str = "True"
+    zodiac: str = "Sidereal"
+
+
+@app.post("/api/match")
+def calculate_match(details: MatchDetails):
+    """Ashtakoot Guna Milan endpoint."""
+    try:
+        boy_date = details.boy_date.replace('-', '/')
+        girl_date = details.girl_date.replace('-', '/')
+        
+        boy_chart = kundli_utils.get_chart(
+            date_str=boy_date, time_str=details.boy_time, place=details.boy_place,
+            zodiac=details.zodiac, house_system="Whole Sign",
+            ayanamsa=details.ayanamsa, node_type=details.node_type
+        )
+        girl_chart = kundli_utils.get_chart(
+            date_str=girl_date, time_str=details.girl_time, place=details.girl_place,
+            zodiac=details.zodiac, house_system="Whole Sign",
+            ayanamsa=details.ayanamsa, node_type=details.node_type
+        )
+        
+        boy_moon_lon = boy_chart.get('Moon').lon
+        girl_moon_lon = girl_chart.get('Moon').lon
+        boy_planets = kundli_utils.get_planet_positions(boy_chart)
+        girl_planets = kundli_utils.get_planet_positions(girl_chart)
+        boy_rashi = boy_planets['Moon']['sign']
+        girl_rashi = girl_planets['Moon']['sign']
+        
+        milan = kundli_utils.get_milan_score(boy_moon_lon, girl_moon_lon, boy_rashi, girl_rashi)
+        
+        return {
+            "status": "success",
+            "boy": {"nakshatra": milan['boy_nakshatra'], "rashi": milan['boy_rashi']},
+            "girl": {"nakshatra": milan['girl_nakshatra'], "rashi": milan['girl_rashi']},
+            "milan": milan
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 class MonthDetails(BaseModel):
     year: int

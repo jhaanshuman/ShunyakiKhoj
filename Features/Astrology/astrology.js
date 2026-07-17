@@ -1043,7 +1043,20 @@ if (btnCalculate) {
                     renderRudrakshaDetail(rudContainer, data.divisional_charts, data.panchang);
                 }
 
-                loadDasha(payload);
+                // Load Dasha from already-returned data (no separate API call needed)
+                if (data.dasha_tree) {
+                    document.getElementById('dashaHeader').innerText = `Vimshottari Dasha (Moon Nakshatra: ${data.moon_nakshatra || ''})`.trim();
+                    renderDashaTree(data.dasha_tree);
+                    renderDashaTimeline(data.dasha_tree);
+                } else {
+                    // Fallback: compute client-side from moon_lon if server didn't return it
+                    loadDasha(payload);
+                }
+                
+                // Run analysis engine
+                if (typeof renderKundliAnalysis === 'function') {
+                    renderKundliAnalysis(data);
+                }
             } else {
                 alert("Calculation failed: " + data.detail);
             }
@@ -1174,6 +1187,147 @@ if (btnMatch) {
         } catch (e) {
             console.error(e);
             alert("Error executing Match Making API.");
+        }
+    });
+}
+
+// ========================================
+// PRASHNA KUNDALI (Horary Astrology)
+// ========================================
+(function initPrashna() {
+    // Auto-fill current date/time when tab is first shown
+    const prashnaTab = document.getElementById('tabPrashna');
+    if (prashnaTab) {
+        const observer = new MutationObserver(() => {
+            if (prashnaTab.classList.contains('active') || prashnaTab.style.display !== 'none') {
+                const pd = document.getElementById('prashnaDate');
+                const pt = document.getElementById('prashnaTime');
+                if (pd && !pd.value) {
+                    const now = new Date();
+                    pd.value = now.toISOString().split('T')[0];
+                    pt.value = now.toTimeString().slice(0, 5);
+                }
+            }
+        });
+        observer.observe(prashnaTab, { attributes: true });
+    }
+    // Also auto-fill on tab button click
+    const tabBtn = document.querySelector('[onclick*="tabPrashna"]');
+    if (tabBtn) {
+        tabBtn.addEventListener('click', () => {
+            setTimeout(() => {
+                const pd = document.getElementById('prashnaDate');
+                const pt = document.getElementById('prashnaTime');
+                if (pd && !pd.value) {
+                    const now = new Date();
+                    pd.value = now.toISOString().split('T')[0];
+                    pt.value = now.toTimeString().slice(0, 5);
+                }
+            }, 100);
+        });
+    }
+})();
+
+const btnPrashna = document.getElementById('btnPrashna');
+if (btnPrashna) {
+    btnPrashna.addEventListener('click', async () => {
+        const dateInput = document.getElementById('prashnaDate').value;
+        const timeInput = document.getElementById('prashnaTime').value;
+        const placeInput = document.getElementById('prashnaPlace').value;
+        const question = document.getElementById('prashnaQuestion').value || 'General Query';
+
+        if (!dateInput || !timeInput || !placeInput) {
+            alert('Please enter the query date, time and location.');
+            return;
+        }
+        btnPrashna.disabled = true;
+        btnPrashna.textContent = '\u23f3 Casting\u2026';
+        try {
+            const payload = { date: dateInput.replace(/-/g, '/'), time: timeInput, place: placeInput };
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await response.json();
+            if (data.status === 'success') {
+                const outCard = document.getElementById('prashnaOutputCard');
+                outCard.style.display = 'block';
+                const ascSign = data.ascendant.sign;
+                document.getElementById('prashnaNorth').innerHTML = getNorthIndianSVG(data.d1_chart, ascSign);
+                document.getElementById('prashnaSouth').innerHTML = getSouthIndianSVG(data.d1_chart, ascSign);
+                document.getElementById('prashnaNorthTitle').innerText = `Prashna North Indian (${dateInput} ${timeInput})`;
+                document.getElementById('prashnaSouthTitle').innerText = `Prashna South Indian (${dateInput} ${timeInput})`;
+
+                const LAGNA_LORDS = { Aries:'Mars', Taurus:'Venus', Gemini:'Mercury', Cancer:'Moon',
+                    Leo:'Sun', Virgo:'Mercury', Libra:'Venus', Scorpio:'Mars',
+                    Sagittarius:'Jupiter', Capricorn:'Saturn', Aquarius:'Saturn', Pisces:'Jupiter' };
+                const SIGNS = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+                const lagna = ascSign;
+                const lagnaLord = LAGNA_LORDS[lagna] || '?';
+                const moonSign = (data.d1_chart['Moon'] || {}).sign || '?';
+                const lagnaIdx = SIGNS.indexOf(lagna);
+                const seventhSign = lagnaIdx >= 0 ? SIGNS[(lagnaIdx + 6) % 12] : '?';
+                const seventhLord = LAGNA_LORDS[seventhSign] || '?';
+
+                const q = question.toLowerCase();
+                let qHouse = '1st (Self / Query Itself)';
+                if (/marriage|spouse|partner|relation/.test(q)) qHouse = '7th (Marriage & Partnership)';
+                else if (/career|job|work|profession|business/.test(q)) qHouse = '10th (Career & Status)';
+                else if (/wealth|money|finance|property|land/.test(q)) qHouse = '2nd & 11th (Wealth & Gains)';
+                else if (/health|illness|disease|sickness/.test(q)) qHouse = '6th (Health & Disease)';
+                else if (/travel|foreign|abroad/.test(q)) qHouse = '9th & 12th (Long Travel & Foreign Lands)';
+                else if (/child|pregnan|baby/.test(q)) qHouse = '5th (Children & Progeny)';
+                else if (/spiritual|moksha|religion|god/.test(q)) qHouse = '9th (Dharma & Spirituality)';
+                else if (/education|study|learn/.test(q)) qHouse = '4th & 5th (Education & Knowledge)';
+
+                const lagnaLordData = data.d1_chart[lagnaLord];
+                const lagnaLordSign = lagnaLordData ? lagnaLordData.sign : '?';
+                const moonNak = data.panchang ? data.panchang.nakshatra : '?';
+
+                document.getElementById('prashnaInterpretation').innerHTML = `
+                <div style="background:rgba(99,102,241,0.08);border:1.5px solid rgba(99,102,241,0.25);border-radius:12px;padding:20px;">
+                    <h3 style="color:#a5b4fc;margin:0 0 16px;">\ud83d\udd2e Prashna Reading: ${question}</h3>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px;">
+                        <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:12px;">
+                            <div style="font-size:0.72rem;color:var(--muted-text);margin-bottom:4px;font-weight:700;">PRASHNA LAGNA</div>
+                            <div style="font-size:1.05rem;font-weight:800;color:#c4b5fd;">${lagna}</div>
+                            <div style="font-size:0.78rem;color:var(--muted-text);">Lord: ${lagnaLord} in ${lagnaLordSign}</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:12px;">
+                            <div style="font-size:0.72rem;color:var(--muted-text);margin-bottom:4px;font-weight:700;">MOON (Mind of Querent)</div>
+                            <div style="font-size:1.05rem;font-weight:800;color:#94a3b8;">${moonSign}</div>
+                            <div style="font-size:0.78rem;color:var(--muted-text);">Nakshatra: ${moonNak}</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:12px;">
+                            <div style="font-size:0.72rem;color:var(--muted-text);margin-bottom:4px;font-weight:700;">7TH HOUSE (Quesited)</div>
+                            <div style="font-size:1.05rem;font-weight:800;color:#6ee7b7;">${seventhSign}</div>
+                            <div style="font-size:0.78rem;color:var(--muted-text);">Lord: ${seventhLord}</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:12px;">
+                            <div style="font-size:0.72rem;color:var(--muted-text);margin-bottom:4px;font-weight:700;">RELEVANT HOUSE</div>
+                            <div style="font-size:0.9rem;font-weight:700;color:#fbbf24;">${qHouse}</div>
+                        </div>
+                    </div>
+                    <div style="border-top:1px solid rgba(99,102,241,0.2);padding-top:14px;font-size:0.875rem;color:var(--text-color);line-height:1.8;">
+                        <p>This Prashna is cast for <strong>${data.pob || placeInput}</strong> on <strong>${dateInput}</strong> at <strong>${timeInput}</strong>. 
+                        The Prashna Lagna is <strong>${lagna}</strong> (lord <strong>${lagnaLord}</strong>, placed in <strong>${lagnaLordSign}</strong>). 
+                        The Moon in <strong>${moonSign} / ${moonNak}</strong> represents your mental state and the sincerity of the query.</p>
+                        <p>The 7th house (<strong>${seventhSign}</strong>, lord <strong>${seventhLord}</strong>) represents the quesited \u2014 the person or matter you are asking about. 
+                        The relationship between the Lagna lord (${lagnaLord}) and the 7th lord (${seventhLord}) in this chart indicates the outcome.</p>
+                        <p style="color:var(--muted-text);font-size:0.8rem;"><em>Traditional Prashna analysis: If the Lagna lord and 7th lord are in mutual aspect, conjunction, or the Moon applies to either, the matter will reach fruition. Retrograde planets delay; combust planets deny.</em></p>
+                    </div>
+                </div>`;
+                outCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                alert('Prashna casting failed: ' + (data.detail || 'Unknown error'));
+            }
+        } catch (e) {
+            console.error('Prashna error:', e);
+            alert('Error casting Prashna chart.');
+        } finally {
+            btnPrashna.disabled = false;
+            btnPrashna.textContent = '\ud83d\udd2e Cast Prashna';
         }
     });
 }
@@ -2244,24 +2398,80 @@ async function loadDasha(payload) {
 function renderDashaTree(tree) {
     const container = document.getElementById('dashaContainer');
     container.innerHTML = "";
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    
     tree.forEach(md => {
         const mdEl = document.createElement('div');
-        mdEl.className = 'dasha-item';
-        mdEl.innerHTML = `<span class="dasha-title">Mahadasha: ${md.planet}</span> (${md.start} to ${md.end})`;
+        const isActive = md.start <= todayStr && md.end >= todayStr;
+        mdEl.className = 'dasha-item' + (isActive ? ' dasha-active' : '');
+        mdEl.style.cssText = isActive ? 'border-left: 3px solid #fbbf24; padding-left: 10px; background: rgba(251,191,36,0.08); border-radius: 6px;' : '';
+        mdEl.innerHTML = `<span class="dasha-title" style="color:${isActive ? '#fbbf24' : 'var(--accent-purple)'}">${isActive ? '▶ ' : ''}Mahadasha: ${md.planet}</span> <span style="color:var(--muted-text);font-size:0.82rem;">(${md.start} → ${md.end})</span>`;
         
         const adContainer = document.createElement('div');
-        adContainer.style.display = "none";
+        adContainer.style.cssText = 'display:none; margin-top:6px; padding-left:12px; border-left:1px solid rgba(255,255,255,0.1);';
+        adContainer.id = `ad-${md.planet}-${md.start}`;
         
         md.antardashas.forEach(ad => {
             const adEl = document.createElement('div');
+            const adActive = ad.start <= todayStr && ad.end >= todayStr;
             adEl.className = 'dasha-item';
-            adEl.innerHTML = `<span>Antardasha: ${ad.planet}</span> (${ad.start} to ${ad.end})`;
+            adEl.style.cssText = `padding: 3px 0; font-size:0.85rem; color:${adActive ? '#fbbf24' : 'var(--muted-text)'};${adActive ? 'font-weight:700;' : ''}`;
+            adEl.innerHTML = `${adActive ? '● ' : '○ '}<strong>${ad.planet}</strong> Antardasha (${ad.start} → ${ad.end})`;
             adContainer.appendChild(adEl);
+        });
+        
+        mdEl.style.cursor = 'pointer';
+        mdEl.addEventListener('click', () => {
+            const isVisible = adContainer.style.display !== 'none';
+            adContainer.style.display = isVisible ? 'none' : 'block';
         });
         
         mdEl.appendChild(adContainer);
         container.appendChild(mdEl);
     });
+}
+
+function renderDashaTimeline(tree) {
+    const bar = document.getElementById('dashaTimelineBar');
+    if (!bar || !tree || tree.length === 0) return;
+    
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    
+    // Find total span
+    const first = tree[0];
+    const last = tree[tree.length - 1];
+    const startYear = parseInt(first.start.split('-')[0]);
+    const endYear = parseInt(last.end.split('-')[0]) + 1;
+    const totalYears = endYear - startYear;
+    
+    const PLANET_COLORS = {
+        'Sun': '#f97316', 'Moon': '#94a3b8', 'Mars': '#ef4444',
+        'Rahu': '#8b5cf6', 'Jupiter': '#fbbf24', 'Saturn': '#64748b',
+        'Mercury': '#22c55e', 'Ketu': '#ec4899', 'Venus': '#3b82f6'
+    };
+    
+    let html = `<div style="position:relative;width:100%;background:rgba(0,0,0,0.2);border-radius:8px;overflow:hidden;height:36px;margin-bottom:8px;">`;
+    
+    tree.forEach(md => {
+        const mdStart = parseInt(md.start.split('-')[0]);
+        const mdEnd = parseInt(md.end.split('-')[0]);
+        const left = ((mdStart - startYear) / totalYears) * 100;
+        const width = ((mdEnd - mdStart) / totalYears) * 100;
+        const color = PLANET_COLORS[md.planet] || '#818cf8';
+        const isActive = md.start <= todayStr && md.end >= todayStr;
+        html += `<div style="position:absolute;left:${left}%;width:${width}%;height:100%;background:${color};opacity:${isActive ? 1 : 0.5};display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:800;color:#fff;border-right:1px solid rgba(0,0,0,0.3);overflow:hidden;white-space:nowrap;cursor:pointer;${isActive ? 'box-shadow:0 0 0 2px #fbbf24 inset;' : ''}" title="${md.planet} Mahadasha: ${md.start} to ${md.end}">${md.planet}</div>`;
+    });
+    
+    // Today marker
+    const todayLeft = ((today.getFullYear() - startYear) / totalYears) * 100;
+    html += `<div style="position:absolute;left:${todayLeft}%;top:0;width:2px;height:100%;background:#fff;opacity:0.9;z-index:10;"></div>`;
+    
+    html += `</div>`;
+    html += `<div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted-text);margin-bottom:4px;"><span>${startYear}</span><span>Today ▲</span><span>${endYear}</span></div>`;
+    
+    bar.innerHTML = html;
 }
 
 function initSaffronControls() {
@@ -2401,7 +2611,7 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     let ssX = getX(ssMins);
     let srNextX = getX(srMins + 1440);
     
-    let svg = `<svg viewBox="0 0 1000 320" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background: #ebd9b4; border-radius: 4px; font-family: 'Poppins', sans-serif;">`;
+    let svg = `<svg viewBox="0 0 1000 350" width="100%" preserveAspectRatio="xMinYMid meet" xmlns="http://www.w3.org/2000/svg" style="background: #ebd9b4; border-radius: 4px; font-family: 'Poppins', sans-serif; display:block;">`;
     
     svg += `
         <!-- Day Shading -->
@@ -2419,7 +2629,7 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
         if (h <= 29) {
             svg += `
                 <line x1="${x}" y1="36" x2="${x}" y2="44" stroke="#7c2d12" stroke-width="1.5" />
-                <text x="${x}" y="55" font-size="11" font-weight="700" fill="#7c2d12" text-anchor="middle">${displayH}</text>
+                <text x="${x}" y="58" font-size="13" font-weight="700" fill="#7c2d12" text-anchor="middle">${displayH}</text>
             `;
         }
     }
@@ -2470,7 +2680,7 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     let boundaries = [];
     
     function drawTrack(title, y, segments) {
-        svg += `<text x="15" y="${y + 18}" font-size="12" font-weight="700" fill="#7c2d12">${title}</text>`;
+        svg += `<text x="8" y="${y + 20}" font-size="13" font-weight="800" fill="#7c2d12">${title}</text>`;
         svg += `<line x1="130" y1="${y}" x2="960" y2="${y}" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
         
         segments.forEach(seg => {
@@ -2490,10 +2700,10 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
             if (width > 0) {
                 svg += `
                     <g class="glossary-term" data-term="${seg.name.toLowerCase()}" style="cursor:pointer;">
-                        <rect x="${drawStartX}" y="${y + 4}" width="${width}" height="22" fill="none" stroke="rgba(124,45,18,0.1)" stroke-width="1" />
+                        <rect x="${drawStartX}" y="${y + 4}" width="${width}" height="24" fill="none" stroke="rgba(124,45,18,0.1)" stroke-width="1" />
                 `;
                 if (width > 20) {
-                    svg += `<text x="${drawStartX + width/2}" y="${y + 18}" font-size="11" font-weight="700" fill="#431407" text-anchor="middle">${displayName}</text>`;
+                    svg += `<text x="${drawStartX + width/2}" y="${y + 20}" font-size="12" font-weight="700" fill="#431407" text-anchor="middle">${displayName}</text>`;
                 }
                 svg += `</g>`;
             }

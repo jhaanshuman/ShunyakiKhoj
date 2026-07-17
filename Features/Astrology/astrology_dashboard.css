@@ -465,7 +465,7 @@
 }
 
 #drikTimelineContainer svg {
-    min-width: 960px;
+    min-width: 900px;
     width: 100%;
     height: auto;
     display: block;
@@ -473,6 +473,10 @@
 
 @media (min-width: 1024px) {
     #drikTimelineContainer {
-        width: 80%;
+        width: 100%;
+        overflow-x: visible;
+    }
+    #drikTimelineContainer svg {
+        min-width: unset;
     }
 }
