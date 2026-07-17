@@ -18,7 +18,7 @@ async function initNavigation() {
         menuConfig = await res.json();
         
         // Render menus
-        renderDesktopNav(menuConfig.menu);
+        // renderDesktopNav(menuConfig.menu);
         renderMobileNav(menuConfig.menu);
         
         // Setup Search, Theme Toggle, Breadcrumbs & Accessibility
