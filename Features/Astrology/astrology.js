@@ -435,10 +435,20 @@ window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get('tab') || '';
     
-    // Hide the top-tab navigation buttons bar completely
+    // Keep the top-tab navigation buttons bar visible
     const topNavTabs = document.querySelector('.top-nav-tabs');
     if (topNavTabs) {
-        topNavTabs.style.display = 'none';
+        topNavTabs.style.display = 'flex';
+    }
+
+    // Homepage load routing
+    const welcome = document.getElementById('homeWelcomeSection');
+    if (welcome) {
+        if (tab === 'panchang') {
+            switchPancView('day');
+        } else if (tab === 'maasik' || tab === 'month') {
+            switchPancView('month');
+        }
     }
 
     // Standard tab routing for standalone page
@@ -815,6 +825,25 @@ function switchTab(evt, tabId) {
     }
     document.getElementById(tabId).classList.add("active");
     evt.currentTarget.classList.add("active");
+
+    // Dynamic form customization based on active tab
+    const titleEl = document.querySelector('#personalKundliSection .glass-card h3');
+    const buttonEl = document.getElementById('btnCalculate');
+    if (titleEl && buttonEl) {
+        if (tabId === 'tabGemstone') {
+            titleEl.textContent = "Enter Details for Gemstones";
+            buttonEl.textContent = "Analyze Gemstones";
+        } else if (tabId === 'tabRudraksha') {
+            titleEl.textContent = "Enter Details for Rudraksha";
+            buttonEl.textContent = "Find Blessed Rudraksha";
+        } else if (tabId === 'tabPrashna' || tabId === 'tabDivisional' && document.getElementById('prashnaBanner')) {
+            titleEl.textContent = "Enter Details for Prashna Kundali";
+            buttonEl.textContent = "Cast Prashna Chart";
+        } else {
+            titleEl.textContent = "Enter Birth Details";
+            buttonEl.textContent = "Generate Kundli";
+        }
+    }
 }
 
 /* ── ASTROLOGY PAGE TAB ROUTER ─────────────────────────────────────────── */
@@ -1152,7 +1181,8 @@ if (btnMatch) {
         };
 
         try {
-            const response = await fetch('/api/match', {
+            const MATCH_API_URL = API_URL.replace('/calculate', '/match');
+            const response = await fetch(MATCH_API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -2089,141 +2119,129 @@ function renderPanchang(bodyId, panchang, regional) {
     `;
 
     body.innerHTML = `
-        <div class="drik-dashboard">
-            <!-- Grid Panels -->
-            <div class="drik-panchang-grid-top">
-                <!-- Panel 1: Sunrise & Moonrise -->
-                <div class="drik-card">
-                    <div class="drik-card-title">🌅 Sunrise and Moonrise</div>
-                    <table class="drik-table">
-                        <tr><td>Sunrise</td><td><strong>${sunriseStr} AM</strong></td></tr>
-                        <tr><td>Sunset</td><td><strong>${sunsetStr} PM</strong></td></tr>
-                        <tr><td>Moonrise</td><td><strong>${panchang.moonrise || 'No Moonrise'}</strong></td></tr>
-                        <tr><td>Moonset</td><td><strong>${panchang.moonset || '07:32 PM'}</strong></td></tr>
+        <div class="drik-dashboard" style="display: flex; flex-direction: column; gap: 20px; width:100%; box-sizing:border-box;">
+            <!-- Tabular Model: Key Panchang Parameters -->
+            <div class="drik-card" style="width: 100%; overflow-x: auto; padding: 20px; box-sizing: border-box; background: var(--card-bg); border: var(--card-border); border-radius: 12px;">
+                <div class="drik-card-title" style="margin-bottom: 15px; font-size: 1.1rem; border-bottom: 1.5px solid var(--accent-color); padding-bottom: 8px;">☀️ Vedic Panchang Elements (पञ्चाङ्ग तालिका)</div>
+                <table class="drik-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid rgba(252,194,1,0.3); font-weight: 800; color: var(--accent-color);">
+                            <th style="padding: 10px 12px;">Panchang Limb (अंग)</th>
+                            <th style="padding: 10px 12px;">Calculated Value (मान)</th>
+                            <th style="padding: 10px 12px;">Duration / Ending Time / Details (विवरण)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 10px 12px; font-weight: 600; color: var(--text-gold);">Tithi (तिथि)</td>
+                            <td style="padding: 10px 12px;"><strong>${panchang.tithi}</strong></td>
+                            <td style="padding: 10px 12px; color: var(--text-muted);">${richTithi}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 10px 12px; font-weight: 600; color: var(--text-gold);">Nakshatra (नक्षत्र)</td>
+                            <td style="padding: 10px 12px;"><strong>${panchang.nakshatra}</strong></td>
+                            <td style="padding: 10px 12px; color: var(--text-muted);">${richNak}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 10px 12px; font-weight: 600; color: var(--text-gold);">Yoga (योग)</td>
+                            <td style="padding: 10px 12px;"><strong>${panchang.yoga}</strong></td>
+                            <td style="padding: 10px 12px; color: var(--text-muted);">${richYoga}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 10px 12px; font-weight: 600; color: var(--text-gold);">Karana (करण)</td>
+                            <td style="padding: 10px 12px;"><strong>${panchang.karana}</strong></td>
+                            <td style="padding: 10px 12px; color: var(--text-muted);">${richKarana}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 10px 12px; font-weight: 600; color: var(--text-gold);">Weekday (वार)</td>
+                            <td style="padding: 10px 12px;"><strong>${panchang.vara}</strong></td>
+                            <td style="padding: 10px 12px; color: var(--text-muted);">All Day (सूर्योदय से सूर्योदय तक)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 10px 12px; font-weight: 600; color: var(--text-gold);">Paksha (पक्ष)</td>
+                            <td style="padding: 10px 12px;"><strong>${ext.paksha || 'Krishna Paksha'}</strong></td>
+                            <td style="padding: 10px 12px; color: var(--text-muted);">Fortnight of the Moon phase</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 10px 12px; font-weight: 600; color: var(--text-gold);">Sunsign & Moonsign</td>
+                            <td style="padding: 10px 12px;"><strong>Sun: ${cleanSunSign} | Moon: ${cleanMoonSign}</strong></td>
+                            <td style="padding: 10px 12px; color: var(--text-muted);">${richMoonsign}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 10px 12px; font-weight: 600; color: var(--text-gold);">Nakshatra Pada</td>
+                            <td style="padding: 10px 12px;" colspan="2"><span style="font-size:0.8rem; line-height:1.4;">${richNakPada}</span></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 10px 12px; font-weight: 600; color: var(--text-gold);">Sunrise / Sunset</td>
+                            <td style="padding: 10px 12px;"><strong>🌅 ${sunriseStr} AM / 🌇 ${sunsetStr} PM</strong></td>
+                            <td style="padding: 10px 12px; color: var(--text-muted);">Dinamana: 13h 48m | Madhyahna: 12:27 PM</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 10px 12px; font-weight: 600; color: var(--text-gold);">Moonrise / Moonset</td>
+                            <td style="padding: 10px 12px;"><strong>🌙 ${panchang.moonrise || 'No Moonrise'} / ${panchang.moonset || '07:32 PM'}</strong></td>
+                            <td style="padding: 10px 12px; color: var(--text-muted);">Ratrimana: 10h 11m</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Double Column: Auspicious & Inauspicious Timings -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex-wrap: wrap; width: 100%; box-sizing:border-box;">
+                <!-- Auspicious Timings Table -->
+                <div class="drik-card" style="padding: 15px; background: var(--card-bg); border: var(--card-border); border-radius: 12px;">
+                    <div class="drik-card-title" style="margin-bottom: 10px; color: #4ade80; font-size: 1rem; border-bottom: 1.5px solid rgba(74,222,128,0.2); padding-bottom: 6px;">✨ Auspicious Timings (शुभ मुहूर्त)</div>
+                    <table class="drik-table" style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+                        <tr><td style="padding: 6px 0;">Brahma Muhurta</td><td><strong>${ext.brahma_muhurta || '04:11 AM to 04:52 AM'}</strong></td></tr>
+                        <tr><td style="padding: 6px 0;">Abhijit Muhurta</td><td><strong>${ext.abhijit || '11:59 AM to 12:55 PM'}</strong></td></tr>
+                        <tr><td style="padding: 6px 0;">Godhuli Muhurta</td><td><strong>${ext.godhuli || '07:20 PM to 07:40 PM'}</strong></td></tr>
+                        <tr><td style="padding: 6px 0;">Amrit Kalam</td><td><strong>${ext.amrit_kalam || '10:01 PM to 11:27 PM'}</strong></td></tr>
+                        <tr><td style="padding: 6px 0;">Vijaya Muhurta</td><td><strong>${ext.vijaya || '02:45 PM to 03:40 PM'}</strong></td></tr>
+                        <tr><td style="padding: 6px 0;">Nishita Muhurta</td><td><strong>${ext.nishita || '12:07 AM to 12:48 AM'}</strong></td></tr>
                     </table>
                 </div>
 
-                <!-- Panel 2: Core Panchang -->
-                <div class="drik-card">
-                    <div class="drik-card-title">📅 Panchang</div>
-                    <table class="drik-table">
-                        <tr><td>Tithi</td><td><strong>${richTithi}</strong></td></tr>
-                        <tr><td>Nakshatra</td><td><strong>${richNak}</strong></td></tr>
-                        <tr><td>Yoga</td><td><strong>${richYoga}</strong></td></tr>
-                        <tr><td>Karana</td><td><strong>${richKarana}</strong></td></tr>
-                        <tr><td>Weekday</td><td><strong>${panchang.vara}</strong></td></tr>
-                        <tr><td>Paksha</td><td><strong>${ext.paksha || 'Krishna Paksha'}</strong></td></tr>
+                <!-- Inauspicious Timings Table -->
+                <div class="drik-card" style="padding: 15px; background: var(--card-bg); border: var(--card-border); border-radius: 12px;">
+                    <div class="drik-card-title" style="margin-bottom: 10px; color: #f87171; font-size: 1rem; border-bottom: 1.5px solid rgba(248,113,113,0.2); padding-bottom: 6px;">⚠️ Inauspicious Timings (अशुभ समय)</div>
+                    <table class="drik-table" style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+                        <tr><td style="padding: 6px 0; color:#f87171;">Rahu Kalam</td><td style="color:#f87171; font-weight:700;">${ext.rahu_kalam || '03:54 PM to 05:38 PM'}</td></tr>
+                        <tr><td style="padding: 6px 0; color:#f87171;">Yamaganda</td><td style="color:#f87171;">${ext.yamaganda || '09:00 AM to 10:43 AM'}</td></tr>
+                        <tr><td style="padding: 6px 0; color:#f87171;">Gulikai Kalam</td><td style="color:#f87171;">${ext.gulikai_kalam || '12:27 PM to 02:10 PM'}</td></tr>
+                        <tr><td style="padding: 6px 0; color:#f87171;">Varjyam</td><td style="color:#f87171;">${ext.varjyam || '01:30 PM to 02:55 PM'}</td></tr>
+                        <tr><td style="padding: 6px 0; color:#f87171;">Dur Muhurtam</td><td style="color:#f87171;">08:18 AM to 09:14 AM</td></tr>
+                        <tr><td style="padding: 6px 0; color:#f87171;">Baana (बाण)</td><td style="color:#f87171;">Mrityu from 09:27 PM to Full Night</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Double Column: Eras/Samvatsaras & Council of Lords -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex-wrap: wrap; width: 100%; box-sizing:border-box;">
+                <!-- Calendar Eras Table -->
+                <div class="drik-card" style="padding: 15px; background: var(--card-bg); border: var(--card-border); border-radius: 12px;">
+                    <div class="drik-card-title" style="margin-bottom: 10px; font-size: 1rem; border-bottom: 1.5px solid var(--accent-color); padding-bottom: 6px;">📅 Calendar Eras & Samvatsaras</div>
+                    <table class="drik-table" style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+                        <tr><td style="padding: 5px 0;">Vikram Samvat</td><td><strong>2083 Siddharthi</strong></td></tr>
+                        <tr><td style="padding: 5px 0;">Shaka Samvat</td><td><strong>1948 Parabhava</strong></td></tr>
+                        <tr><td style="padding: 5px 0;">Gujarati Samvat</td><td><strong>2082 Pingala</strong></td></tr>
+                        <tr><td style="padding: 5px 0;">Kaliyuga Year</td><td><strong>5127 Kali Era</strong></td></tr>
+                        <tr><td style="padding: 5px 0;">Chandramasa (Lunar Month)</td><td><strong>Ashadha - Purnimanta (Jyeshtha - Amanta)</strong></td></tr>
                     </table>
                 </div>
 
-                <!-- Panel 3: Lunar Month & Samvat -->
-                <div class="drik-card">
-                    <div class="drik-card-title">📆 Lunar Month, Samvat and Brihaspati Samvatsara</div>
-                    <table class="drik-table">
-                        <tr><td>Vikram Samvat</td><td><strong>2083 Siddharthi</strong></td></tr>
-                        <tr><td>Samvatsara Year</td><td><strong>Siddharthi upto 03:53 PM, Apr 21, 2026, then Raudra</strong></td></tr>
-                        <tr><td>Shaka Samvat</td><td><strong>1948 Parabhava</strong></td></tr>
-                        <tr><td>Gujarati Samvat</td><td><strong>2082 Pingala</strong></td></tr>
-                        <tr><td>Chandramasa</td><td><strong>Ashadha - Purnimanta (Jyeshtha - Amanta)</strong></td></tr>
-                        <tr><td>Pravishte/Gate</td><td><strong>30</strong></td></tr>
-                    </table>
-                </div>
-
-                <!-- Panel 4: Council of Lords (Mantri Mandala) -->
-                <div class="drik-card">
-                    <div class="drik-card-title">👑 Mantri Mandala of Vikram Samvat 2083</div>
-                    <table class="drik-table">
-                        <tr><td>Raja (King)</td><td><strong>Guru👑 - King</strong></td><td>Senadhipati</td><td><strong>Chandra⚔️ - Commander-in-Chief</strong></td></tr>
-                        <tr><td>Mantri (Minister)</td><td><strong>Mangal⚜️ - Minister of Cabinet</strong></td><td>Dhanyadhipati</td><td><strong>Budha🌾 - Rabi Crops</strong></td></tr>
-                        <tr><td>Sasyadhipati</td><td><strong>Guru🌾 - Kharif Crops</strong></td><td>Meghadhipati</td><td><strong>Chandra🌧️ - Clouds and Rain</strong></td></tr>
-                        <tr><td>Dhanadhipati</td><td><strong>Guru💰 - Wealth and Economy</strong></td><td>Nirasadhipati</td><td><strong>Guru💎 - Metals and Minerals</strong></td></tr>
-                        <tr><td>Rasadhipati</td><td><strong>Shani🍯 - Sap and Liquids</strong></td><td>Phaladhipati</td><td><strong>Chandra🍎 - Fruits and Flowers</strong></td></tr>
-                    </table>
-                </div>
-
-                <!-- Panel 5: Rashi and Nakshatra Transits -->
-                <div class="drik-card">
-                    <div class="drik-card-title">💫 Rashi and Nakshatra</div>
-                    <table class="drik-table">
-                        <tr><td>Moonsign</td><td><strong>${richMoonsign}</strong></td></tr>
-                        <tr><td>Nakshatra Pada</td><td><strong>${richNakPada}</strong></td></tr>
-                        <tr><td>Sunsign</td><td><strong>${cleanSunSign}</strong></td></tr>
-                        <tr><td>Surya Nakshatra</td><td><strong>Punarvasu</strong></td></tr>
-                        <tr><td>Surya Pada</td><td><strong>Punarvasu</strong></td></tr>
-                    </table>
-                </div>
-
-                <!-- Panel 6: Ritu and Ayana -->
-                <div class="drik-card">
-                    <div class="drik-card-title">❄️ Ritu and Ayana</div>
-                    <table class="drik-table">
-                        <tr><td>Drik Ritu</td><td><strong>${ext.drik_ritu || 'Varsha (Monsoon)'}</strong></td><td>Dinamana</td><td><strong>13 Hours 48 Mins 38 Secs</strong></td></tr>
-                        <tr><td>Vedic Ritu</td><td><strong>${ext.vedic_ritu || 'Grishma (Summer)'}</strong></td><td>Ratrimana</td><td><strong>10 Hours 11 Mins 52 Secs</strong></td></tr>
-                        <tr><td>Drik Ayana</td><td><strong>${ext.drik_ayana || 'Dakshinayana'}</strong></td><td>Madhyahna</td><td><strong>12:27 PM</strong></td></tr>
-                        <tr><td>Vedic Ayana</td><td><strong>${ext.vedic_ayana || 'Uttarayana'}</strong></td><td></td><td></td></tr>
-                    </table>
-                </div>
-
-                <!-- Panel 7: Auspicious Timings -->
-                <div class="drik-card">
-                    <div class="drik-card-title">✨ Auspicious Timings</div>
-                    <table class="drik-table">
-                        <tr><td>Brahma Muhurta</td><td><strong>${ext.brahma_muhurta || '04:11 AM to 04:52 AM'}</strong></td><td>Pratah Sandhya</td><td><strong>04:31 AM to 05:33 AM</strong></td></tr>
-                        <tr><td>Abhijit</td><td><strong>${ext.abhijit || '11:59 AM to 12:55 PM'}</strong></td><td>Vijaya Muhurta</td><td><strong>02:45 PM to 03:40 PM</strong></td></tr>
-                        <tr><td>Godhuli Muhurta</td><td><strong>${ext.godhuli || '07:20 PM to 07:40 PM'}</strong></td><td>Sayahna Sandhya</td><td><strong>07:21 PM to 08:22 PM</strong></td></tr>
-                        <tr><td>Amrit Kalam</td><td><strong>${ext.amrit_kalam || '10:01 PM to 11:27 PM'}</strong></td><td>Nishita Muhurta</td><td><strong>12:07 AM, Jul 15 to 12:48 AM, Jul 15</strong></td></tr>
-                    </table>
-                </div>
-
-                <!-- Panel 8: Inauspicious Timings -->
-                <div class="drik-card">
-                    <div class="drik-card-title">⚠️ Inauspicious Timings</div>
-                    <table class="drik-table">
-                        <tr><td>Rahu Kalam</td><td style="color:#f87171; font-weight:700;">${ext.rahu_kalam || '03:54 PM to 05:38 PM'}</td><td>Yamaganda</td><td style="color:#f87171;">${ext.yamaganda || '09:00 AM to 10:43 AM'}</td></tr>
-                        <tr><td>Aadal Yoga</td><td><strong>12:09 AM, Jul 15 to 05:33 AM, Jul 15</strong></td><td>Dur Muhurtam</td><td style="color:#f87171;">08:18 AM to 09:14 AM</td></tr>
-                        <tr><td>Gulikai Kalam</td><td style="color:#f87171;">${ext.gulikai_kalam || '12:27 PM to 02:10 PM'}</td><td></td><td style="color:#f87171;">11:26 PM to 12:07 AM, Jul 15</td></tr>
-                        <tr><td>Varjyam</td><td style="color:#f87171;">${ext.varjyam || '01:30 PM to 02:55 PM'}</td><td></td><td></td></tr>
-                        <tr><td>Baana</td><td colspan="3" style="color:#f87171;">Mrityu from 09:27 PM to Full Night</td></tr>
-                    </table>
-                </div>
-
-                <!-- Panel 9: Anandadi and Tamil Yoga -->
-                <div class="drik-card">
-                    <div class="drik-card-title">🧘 Anandadi and Tamil Yoga</div>
-                    <table class="drik-table">
-                        <tr><td>Anandadi Yoga</td><td><strong>Sthira upto 12:09 AM, Jul 15, then Vardhamana</strong></td></tr>
-                        <tr><td>Tamil Yoga</td><td><strong>Amrita upto 12:09 AM, Jul 15, then Siddha</strong></td></tr>
-                        <tr><td>Jeevanama</td><td><strong>0 Lifeless</strong></td></tr>
-                        <tr><td>Netrama</td><td><strong>0 Blind</strong></td></tr>
-                    </table>
-                </div>
-
-                <!-- Panel 10: Nivas and Shool -->
-                <div class="drik-card">
-                    <div class="drik-card-title">🧭 Nivas and Shool</div>
-                    <table class="drik-table">
-                        <tr><td>Homahuti</td><td><strong>Sun</strong></td><td>Disha Shool</td><td><strong>North ⬆️</strong></td></tr>
-                        <tr><td>Agnivasa</td><td><strong>Patala (Nadir) upto 03:12 PM, then Akasha (Heaven)</strong></td><td>Chandra Vasa</td><td><strong>West upto 06:48 PM, then North from 06:48 PM to Full Night</strong></td></tr>
-                        <tr><td>Shivavasa</td><td><strong>with Gowri upto 03:12 PM, then in Shmashana</strong></td><td>Rahu Vasa</td><td><strong>West ⬅️</strong></td></tr>
-                        <tr><td></td><td></td><td>Kumbha Chakra</td><td><strong>Mouth upto 12:09 AM, Jul 15, then East</strong></td></tr>
-                    </table>
-                </div>
-
-                <!-- Panel 11: Other Calendars and Epoch -->
-                <div class="drik-card span-all-cols">
-                    <div class="drik-card-title">🧮 Other Calendars and Epoch</div>
-                    <table class="drik-table">
-                        <tr><td>Kaliyuga</td><td><strong>5127 Years</strong></td><td>Lahiri Ayanamsha</td><td><strong>24.234453</strong></td></tr>
-                        <tr><td>Kali Ahargana</td><td><strong>1872770 Days</strong></td><td>Rata Die</td><td><strong>739811</strong></td></tr>
-                        <tr><td>Julian Date</td><td><strong>July 1, 2026 CE</strong></td><td>Julian Day</td><td><strong>2461235.5 Days</strong></td></tr>
-                        <tr><td>National Civil Date</td><td><strong>🇮🇳 Ashadha 23, 1948 Shaka</strong></td><td>Modified Julian Day</td><td><strong>61235 Days</strong></td></tr>
-                        <tr><td>National Nirayana Date</td><td><strong>🇮🇳 Ashadha 30, 1948 Shaka</strong></td><td></td><td></td></tr>
+                <!-- Council of Lords Table -->
+                <div class="drik-card" style="padding: 15px; background: var(--card-bg); border: var(--card-border); border-radius: 12px;">
+                    <div class="drik-card-title" style="margin-bottom: 10px; font-size: 1rem; border-bottom: 1.5px solid var(--accent-color); padding-bottom: 6px;">👑 Lords of the Year (मन्त्रिपरिषद्)</div>
+                    <table class="drik-table" style="width:100%; border-collapse:collapse; font-size:0.8rem;">
+                        <tr><td style="padding: 4px 0;">Raja (King)</td><td><strong>Guru👑</strong></td><td style="padding: 4px 0;">Senadhipati</td><td><strong>Chandra⚔️</strong></td></tr>
+                        <tr><td style="padding: 4px 0;">Mantri (Minister)</td><td><strong>Mangal⚜️</strong></td><td style="padding: 4px 0;">Dhanyadhipati</td><td><strong>Budha🌾</strong></td></tr>
+                        <tr><td style="padding: 4px 0;">Sasyadhipati</td><td><strong>Guru🌾</strong></td><td style="padding: 4px 0;">Meghadhipati</td><td><strong>Chandra🌧️</strong></td></tr>
+                        <tr><td style="padding: 4px 0;">Dhanadhipati</td><td><strong>Guru💰</strong></td><td style="padding: 4px 0;">Nirasadhipati</td><td><strong>Guru💎</strong></td></tr>
                     </table>
                 </div>
             </div>
 
             <!-- Double Column: Panchaka Rahita Muhurta vs Udaya Lagna -->
-            <div class="drik-panchang-grid-double">
+            <div class="drik-panchang-grid-double" style="width: 100%;">
                 <!-- Left: Panchaka Rahita Muhurta -->
                 <div class="drik-card">
                     <div class="drik-card-title">⚖️ Panchaka Rahita Muhurta for the day</div>
@@ -2236,12 +2254,12 @@ function renderPanchang(bodyId, panchang, regional) {
                                 </tr>
                             </thead>
                             <tbody>
-                                ${panchakaList.map(p => `
+                                \${panchakaList.map(p => \`
                                     <tr>
-                                        <td>${p.start} to ${p.end}</td>
-                                        <td style="font-weight: 700; color: ${p.type === 'Good Muhurta' ? '#4ade80' : '#f87171'}">${p.type}</td>
+                                        <td>\${p.start} to \${p.end}</td>
+                                        <td style="font-weight: 700; color: \${p.type === 'Good Muhurta' ? '#4ade80' : '#f87171'}">\${p.type}</td>
                                     </tr>
-                                `).join('')}
+                                \`).join('')}
                             </tbody>
                         </table>
                     </div>
@@ -2259,12 +2277,12 @@ function renderPanchang(bodyId, panchang, regional) {
                                 </tr>
                             </thead>
                             <tbody>
-                                ${udayaLagnas.map(l => `
+                                \${udayaLagnas.map(l => \`
                                     <tr>
-                                        <td><strong>${l.sign}</strong></td>
-                                        <td>${l.start} to ${l.end}</td>
+                                        <td><strong>\${l.sign}</strong></td>
+                                        <td>\${l.start} to \${l.end}</td>
                                     </tr>
-                                `).join('')}
+                                \`).join('')}
                             </tbody>
                         </table>
                     </div>
@@ -2272,22 +2290,22 @@ function renderPanchang(bodyId, panchang, regional) {
             </div>
 
             <!-- Chandrabalam & Tarabalam Lists -->
-            <div class="drik-panchang-grid-double">
+            <div class="drik-panchang-grid-double" style="width: 100%;">
                 <div class="drik-card">
                     <div class="drik-card-title">🌓 Chandrabalam Strength</div>
-                    <div style="font-size: 0.9rem; line-height: 1.5; color: #cbd5e1; padding: 5px;">
-                        ${chandrabalamHTML}
+                    <div style="font-size: 0.9rem; line-height: 1.5; color: #cbd5e1; padding: 10px; box-sizing: border-box;">
+                        \${chandrabalamHTML}
                     </div>
                 </div>
                 <div class="drik-card">
                     <div class="drik-card-title">⭐ Tarabalam Strength</div>
-                    <div style="font-size: 0.9rem; line-height: 1.5; color: #cbd5e1; padding: 5px;">
-                        ${tarabalamHTML}
+                    <div style="font-size: 0.9rem; line-height: 1.5; color: #cbd5e1; padding: 10px; box-sizing: border-box;">
+                        \${tarabalamHTML}
                     </div>
                 </div>
             </div>
         </div>
-    `;
+    \`;
     
     // Call the visual SVG timeline renderer
     if (lastCalculatedData && lastCalculatedData.choghadiya) {
@@ -2314,6 +2332,7 @@ function renderPanchang(bodyId, panchang, regional) {
 
 function renderMuhurtas(choghadiyaId, horaId, choghadiya, hora) {
     const cBody = document.getElementById(choghadiyaId);
+    if (!cBody) return;
     cBody.innerHTML = "";
     
     // Day Choghadiya
@@ -3150,10 +3169,8 @@ function switchPancView(view) {
         const pPlaceInput = document.getElementById('panchangPlaceInput');
         const place = (pPlaceInput && pPlaceInput.value) ? pPlaceInput.value : sessionStorage.getItem('savedPanchangPlace') || 'New Delhi, India';
         const today = new Date().toISOString().split('T')[0];
-        if (pDateInput) {
-            if (!pDateInput.value) pDateInput.value = today;
-            loadDainikPanchang(pDateInput.value, place);
-        }
+        const dateVal = pDateInput ? pDateInput.value || today : today;
+        loadDainikPanchang(dateVal, place);
     } else {
         if (personalSection) { personalSection.classList.remove('active'); personalSection.style.display = 'none'; }
         if (maasikSection) { maasikSection.classList.add('active'); maasikSection.style.display = 'block'; }

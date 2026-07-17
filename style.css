@@ -1584,9 +1584,24 @@ body {
     align-items: stretch;
 }
 
+/* 2-column layout for Dainik Panchang bottom section */
+.dainik-bottom-two-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    align-items: stretch;
+}
+
 @media (max-width: 1200px) {
     .dainik-bottom-four-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 800px) {
+    .dainik-bottom-two-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -2192,5 +2207,50 @@ body {
 }
 @keyframes scaleUp {
     to { transform: scale(1); }
+}
+
+/* Theme Dropdown Panel */
+.theme-dropdown-panel {
+    position: fixed;
+    background: var(--header-bg);
+    border: var(--card-border);
+    border-radius: 12px;
+    padding: 10px;
+    min-width: 210px;
+    box-shadow: var(--shadow);
+    z-index: 100000;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    animation: themeFadeIn 0.2s ease-out;
+}
+
+@keyframes themeFadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.theme-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-color);
+    transition: background 0.15s, transform 0.1s;
+}
+
+.theme-dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(2px);
+}
+
+body.theme-manuscript .theme-dropdown-item:hover {
+    background: rgba(0, 0, 0, 0.05);
 }
 
