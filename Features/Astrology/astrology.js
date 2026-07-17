@@ -817,6 +817,99 @@ function switchTab(evt, tabId) {
     evt.currentTarget.classList.add("active");
 }
 
+/* ── ASTROLOGY PAGE TAB ROUTER ─────────────────────────────────────────── */
+// Routes astrology.html to the correct top section and inner sub-tab
+// based on the ?tab= URL query parameter.
+function routeAstrologyPage() {
+    // Only applies when we are on the astrology page (has top-nav-tabs)
+    if (!document.querySelector('.top-nav-tabs')) return;
+
+    const prms = new URLSearchParams(window.location.search);
+    const tab = (prms.get('tab') || '').toLowerCase();
+    if (!tab) return;
+
+    // Helper: activate a top-section by ID
+    function activateSection(sectionId) {
+        document.querySelectorAll('.main-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.top-tab-btn').forEach(b => b.classList.remove('active'));
+        const sec = document.getElementById(sectionId);
+        if (sec) sec.classList.add('active');
+        // Activate the corresponding top-tab button
+        document.querySelectorAll('.top-tab-btn').forEach(btn => {
+            if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(sectionId)) {
+                btn.classList.add('active');
+            }
+        });
+    }
+
+    // Helper: activate an inner tab-btn inside a section
+    function activateInnerTab(tabBtnId) {
+        const btn = document.getElementById(tabBtnId);
+        if (!btn) return;
+        // Simulate a click to use the existing switchTab logic
+        btn.click();
+    }
+
+    switch (tab) {
+        case 'kundli':
+        case 'divisional':
+            activateSection('personalKundliSection');
+            setTimeout(() => activateInnerTab('tabDivisional'), 100);
+            break;
+        case 'gemstone':
+            activateSection('personalKundliSection');
+            setTimeout(() => activateInnerTab('tabGemstone'), 100);
+            break;
+        case 'rudraksha':
+            activateSection('personalKundliSection');
+            setTimeout(() => activateInnerTab('tabRudraksha'), 100);
+            break;
+        case 'dasha':
+            activateSection('personalKundliSection');
+            setTimeout(() => activateInnerTab('tabDasha'), 100);
+            break;
+        case 'milan':
+            activateSection('milanSection');
+            break;
+        case 'prashna':
+            activateSection('personalKundliSection');
+            setTimeout(() => activateInnerTab('tabPrashna'), 100);
+            break;
+        case 'rashifal':
+        case 'weekly':
+        case 'yearly':
+            activateSection('gocharSection');
+            setTimeout(() => {
+                // Try to activate a rashifal sub-tab if present
+                const rashiBtn = document.getElementById('tabRashifal') || document.querySelector('[id*="rashifal"], [id*="Rashifal"]');
+                if (rashiBtn) rashiBtn.click();
+            }, 100);
+            break;
+        case 'panchang':
+            activateSection('personalKundliSection');
+            setTimeout(() => activateInnerTab('tabPanchang'), 100);
+            break;
+        case 'maasik':
+            activateSection('maasikSection');
+            break;
+        case 'gochar':
+        case 'transits':
+            activateSection('gocharSection');
+            break;
+        default:
+            // Default: show personalKundliSection
+            activateSection('personalKundliSection');
+            break;
+    }
+}
+
+// Run on DOM load for astrology.html
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.querySelector('.top-nav-tabs')) {
+        routeAstrologyPage();
+    }
+});
+
 // 1. Personalized Kundli Calculation
 const btnCalculate = document.getElementById('btnCalculate');
 if (btnCalculate) {
