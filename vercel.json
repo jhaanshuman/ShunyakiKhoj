@@ -1,8 +1,5 @@
 {
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/calculate" }
-  ],
-  "analytics": {
-    "id": "auto"
-  }
+  ]
 }
