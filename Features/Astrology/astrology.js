@@ -1365,6 +1365,7 @@ if (btnPrashna) {
             btnPrashna.textContent = '\ud83d\udd2e Cast Prashna';
         }
     });
+}
 };
 
 // ── Advanced Chart Controls ────────────────────────────────────────────────

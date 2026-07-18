@@ -491,7 +491,7 @@ function setupSearch(menuItems) {
 function applyTheme(themeId) {
     document.body.classList.remove('theme-dark', 'theme-manuscript', 'theme-bright', 'theme-focus', 'theme-pale', 'theme-indigo', 'dark-theme');
     document.body.classList.add(themeId);
-    if (['theme-dark', 'theme-focus', 'theme-indigo'].includes(themeId)) {
+    if (['theme-dark', 'theme-indigo'].includes(themeId)) {
         document.body.classList.add('dark-theme');
     }
     localStorage.setItem('shunya-theme-name', themeId);

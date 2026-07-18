@@ -15,23 +15,6 @@ body{
     color:#5c3300;
 }
 
-/* Light Theme Variables */
-
-:root{
-
-    --glass-bg: rgba(255,252,220,.58);
-    --glass-bg-light: rgba(255,255,240,.45);
-
-    --card-bg: rgba(255,248,205,.62);
-
-    --glass-border: rgba(255,185,40,.45);
-    --glass-border-strong: rgba(230,145,0,.75);
-
-    --text-color:#5d3900;
-    --title-color:#8b4b00;
-    --accent-color:#d98200;
-
-}
 /* ── CSS VARIABLES: HINDU RITUAL PALETTE ────────────────────────────────── */
 :root {
     /* Core Hindu Ritual Colors */
@@ -52,33 +35,25 @@ body{
     --tulsi-green:    #2E7D32;
     --tulsi-light:    #4CAF50;
 
+    /* Light/Green Theme Config (Default) */
+    --glass-bg:       rgba(255,252,220,.58);
+    --glass-bg-light: rgba(255,255,240,.45);
+    --card-bg:        rgba(255,248,205,.62);
+    --glass-border:   rgba(255,185,40,.45);
+    --glass-border-strong: rgba(230,145,0,.75);
+    --text-color:     #5d3900;
+    --text-muted:     #8b4b00;
+    --title-color:    #8b4b00;
+    --accent-color:   #d98200;
+    --accent-gradient: linear-gradient(135deg, var(--saffron) 0%, var(--temple-gold) 100%);
+    --shadow:         0 8px 32px rgba(0, 0, 0, 0.15);
+    --header-bg:      rgba(255,252,220,.85);
+    --tile-bg:        rgba(255,252,220,.45);
+
     /* Glassmorphism Surfaces */
     --glass-shadow:   0 8px 32px rgba(0, 0, 0, 0.4);
     --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
     --glass-inset:    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-
-    /* Theme: Default Green (Auspicious Beginnings) */
-    --bg-color:       #050508;
-    --bg-gradient:    radial-gradient(ellipse at 25% 0%, rgba(26, 35, 126, 0.2) 0%, transparent 60%),
-                      radial-gradient(ellipse at 75% 100%, rgba(62, 39, 35, 0.3) 0%, transparent 60%),
-                      linear-gradient(160deg, #f5a5f8 0%, #92f195 50%, #d48ea4 100%);
-    --text-color:     #534949;
-    --text-muted:     #0000d7;
-    --text-gold:      #25dd17;
-    --card-bg:        rgb(75 173 76 / 85%);
-    --card-border:    1.5px solid rgba(255, 255, 255, 0.05);
-    --glass-border:   rgba(255, 255, 255, 0.04);
-    --glass-border-strong: rgba(255, 255, 255, 0.12);
-    --accent-color:   #e72222;
-    --accent-gradient: linear-gradient(135deg, #5534e9, #cd97dd);
-    --header-bg:      rgba(5, 5, 8, 0.95);
-    --shadow:         0 8px 30px rgba(0, 0, 0, 0.7);
-    --title-color:    #d0d0e0;
-    --tile-bg:        #0f0f16;
-    --sidebar-bg:     #050508;
-    --minicard-bg:    #1a1a24;
-    --glass-bg:       rgba(15, 15, 22, 0.8);
-    --glass-bg-light: rgba(20, 20, 30, 0.5);
 
     /* 3D & Animation */
     --perspective:    1200px;
@@ -254,6 +229,7 @@ body {
     background-color: var(--bg-color);
     background-attachment: fixed;
     min-height: 100vh;
+    padding-top: 90px;
     transition: background 0.5s ease, color 0.5s ease;
     overflow-x: hidden;
 }
@@ -652,10 +628,16 @@ button:hover{
     background: var(--header-bg);
     backdrop-filter: blur(24px) saturate(150%);
     -webkit-backdrop-filter: blur(24px) saturate(150%);
-    position: sticky;
-    top: 0;
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    max-width: 1400px;
     z-index: 1000;
-    border-bottom: 1px solid rgba(255, 153, 51, 0.1);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    box-sizing: border-box;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     transition: var(--transition-smooth);
 }
