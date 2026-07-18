@@ -204,65 +204,81 @@ document.getElementById("result").innerHTML=output
    HIDE SUGGESTIONS OUTSIDE
 ============================= */
 document.addEventListener("click",function(e){
-let input=document.getElementById("inputBox")
-let suggestions=document.getElementById("suggestions")
-if(!input.contains(e.target) && !suggestions.contains(e.target))
-suggestions.innerHTML=""
-})
-/* =============================
-   PASTE HANDLER
-============================= */
-document.getElementById("inputBox").addEventListener("paste",function(e){
-setTimeout(function(){
-latinBuffer=e.target.value
-devBuffer=ime.transliterate(latinBuffer)
-e.target.value=devBuffer
-},10)
-})
+    let input=document.getElementById("inputBox");
+    let suggestions=document.getElementById("suggestions");
+    if(input && suggestions && !input.contains(e.target) && !suggestions.contains(e.target)) {
+        suggestions.innerHTML="";
+    }
+});
+
+window.initDictionary = function() {
+    latinBuffer="";
+    devBuffer="";
+    slpWords=[];
+    
+    let inputBox = document.getElementById("inputBox");
+    if (inputBox) {
+        inputBox.addEventListener("paste",function(e){
+            setTimeout(function(){
+                latinBuffer=e.target.value;
+                devBuffer=ime.transliterate(latinBuffer);
+                e.target.value=devBuffer;
+            },10);
+        });
+        
+        inputBox.addEventListener("keydown", function(e){
+            if(e.key === "Enter" && !e.shiftKey){
+                e.preventDefault();
+                let btn = document.getElementById("searchBtn");
+                if (btn) btn.click();
+            }
+        });
+    }
+    
+    // Trigger typing guide render
+    if (typeof renderGuide === 'function') {
+        renderGuide();
+    }
+};
 
 /* launch Search*/
 function addUserMessage(text){
-const chat=document.getElementById("chatArea")
-const msg=document.createElement("div")
-msg.className="message user"
-msg.innerText=text
-chat.appendChild(msg)
-chat.scrollTop=chat.scrollHeight
+    const chat=document.getElementById("chatArea");
+    if (!chat) return;
+    const msg=document.createElement("div");
+    msg.className="message user";
+    msg.innerText=text;
+    chat.appendChild(msg);
+    chat.scrollTop=chat.scrollHeight;
 }
 function addAIMessage(text){
-const chat=document.getElementById("chatArea")
-const msg=document.createElement("div")
-msg.className="message ai"
-msg.innerHTML=text
-chat.appendChild(msg)
-chat.scrollTop=chat.scrollHeight
+    const chat=document.getElementById("chatArea");
+    if (!chat) return;
+    const msg=document.createElement("div");
+    msg.className="message ai";
+    msg.innerHTML=text;
+    chat.appendChild(msg);
+    chat.scrollTop=chat.scrollHeight;
 }
-
-/*Enter Button*/
-document.getElementById("inputBox").addEventListener("keydown", function(e){
-if(e.key === "Enter" && !e.shiftKey){
-e.preventDefault()
-document.getElementById("searchBtn").click()
-}
-})
 
 async function sendMessage(){
-const box=document.getElementById("inputBox")
-const text=box.value.trim()
-
-if(!text) return
-addUserMessage(text)
-box.value=""
-await searchSentence()
-const result=document.getElementById("result")
-
-if(result && result.innerHTML.trim()){
-addAIMessage(result.innerHTML)
-}
-   /* clean buffers for next input */
-
-latinBuffer=""
-devBuffer=""
-slpWords=[]
- document.getElementById("suggestions").innerHTML=""
+    const box=document.getElementById("inputBox");
+    if (!box) return;
+    const text=box.value.trim();
+    
+    if(!text) return;
+    addUserMessage(text);
+    box.value="";
+    await searchSentence();
+    const result=document.getElementById("result");
+    
+    if(result && result.innerHTML.trim()){
+        addAIMessage(result.innerHTML);
+    }
+    /* clean buffers for next input */
+    latinBuffer="";
+    devBuffer="";
+    slpWords=[];
+    let suggestions = document.getElementById("suggestions");
+    if (suggestions) suggestions.innerHTML="";
 }

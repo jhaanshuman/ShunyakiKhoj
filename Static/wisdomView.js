@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1342189574858672" crossorigin="anonymous"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShunyakiKhoj - Spiritual Portal</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Sans+Devanagari:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css">
-</head>
-<body>
+/**
+ * Dynamic View Builder for Spiritual Wisdom Library
+ */
+function renderWisdomView() {
+    return `
+    <div id="wisdomViewContainer">
+        
     <!-- Animated Background -->
     <div class="bg-container">
         <div class="bg-gradient"></div>
@@ -143,8 +138,7 @@
         </div>
     </footer>
 
-    <script src="./app.js"></script>
-    <!-- Vercel Analytics -->
-    <script defer src="/_vercel/insights/script.js"></script>
-</body>
-</html>
+    
+    </div>
+    `;
+}

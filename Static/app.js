@@ -14,25 +14,27 @@ const categories = [
 const dataStore = {};
 
 // ===== DOM ELEMENTS =====
-const categoryGrid = document.getElementById('categoryGrid');
-const itemsSection = document.getElementById('itemsSection');
-const itemsGrid = document.getElementById('itemsGrid');
-const itemsTitle = document.getElementById('itemsTitle');
-const itemsCount = document.getElementById('itemsCount');
-const backBtn = document.getElementById('backBtn');
-const detailModal = document.getElementById('detailModal');
-const modalBody = document.getElementById('modalBody');
-const modalClose = document.getElementById('modalClose');
-const searchInput = document.getElementById('searchInput');
-const particlesContainer = document.getElementById('particles');
+let categoryGrid, itemsSection, itemsGrid, itemsTitle, itemsCount, backBtn, detailModal, modalBody, modalClose, searchInput, particlesContainer;
 
 // ===== INITIALIZATION =====
-document.addEventListener('DOMContentLoaded', () => {
+window.initWisdom = function() {
+    categoryGrid = document.getElementById('categoryGrid');
+    itemsSection = document.getElementById('itemsSection');
+    itemsGrid = document.getElementById('itemsGrid');
+    itemsTitle = document.getElementById('itemsTitle');
+    itemsCount = document.getElementById('itemsCount');
+    backBtn = document.getElementById('backBtn');
+    detailModal = document.getElementById('detailModal');
+    modalBody = document.getElementById('modalBody');
+    modalClose = document.getElementById('modalClose');
+    searchInput = document.getElementById('searchInput');
+    particlesContainer = document.getElementById('particles');
+
     createParticles();
     renderCategories();
     setupEventListeners();
     setupScrollEffects();
-});
+};
 
 // ===== PARTICLES =====
 function createParticles() {

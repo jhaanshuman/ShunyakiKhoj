@@ -76,7 +76,6 @@ gtag('config','G-DZ2CM1SBWW');
 <img src="./logo.png" class="logo">
 <div>
     <h1 style="line-height: 1.1;">Sanskrit AI</h1>
-    <div id="header-breadcrumb" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 1px; font-weight: 600;">🏠 Home</div>
 </div>
 </div>
 <div class="header-icons">
@@ -86,7 +85,7 @@ gtag('config','G-DZ2CM1SBWW');
         <option value="mai" style="background: var(--bg-color); color: var(--text-color);">मैथिலி</option>
         <option value="ta" style="background: var(--bg-color); color: var(--text-color);">தமிழ்</option>
     </select>
-    <span>🔍</span><span id="themeToggleBtn">🌓</span><span id="notificationBtn">🔔</span><span id="profileBtn">👤</span><span class="menu-icon">☰</span>
+    <span>🏠</span><span>🔍</span><span id="themeToggleBtn">🌓</span><span id="notificationBtn">🔔</span><span id="profileBtn">👤</span><span class="menu-icon">☰</span>
 </div>
 </header>
 
@@ -125,7 +124,7 @@ gtag('config','G-DZ2CM1SBWW');
                     <input type="date" id="mDate" value="1994-01-05" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
                 </div>
                 <div style="flex:1; min-width:100px;">
-                    <label style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Time</label>
+                    <label style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Time of Birth</label>
                     <input type="time" id="mTime" value="20:00" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
                 </div>
                 <div style="flex:2; min-width:180px;">
@@ -205,6 +204,9 @@ gtag('config','G-DZ2CM1SBWW');
             <button class="ph-today-btn" id="btnThemeSelectorTrigger" style="background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.15); color: var(--title-color); padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px;">🎨 Theme Selector</button>
         </div>
     </div>
+
+    <!-- Main SPA Viewport -->
+    <div id="spaViewport">
 
     <!-- 3. Navigation Header for Dainik / Maasik views -->
     <div class="panchang-unified-header" style="display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #a23922 0%, #7c1a08 100%); border-radius: 10px 10px 0 0; padding: 12px 20px;">
@@ -483,27 +485,11 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box" id="jyotishUtilitiesBox">
-                <h4>🔮 Jyotish Utilities <a href="Features/Astrology/astrology.html" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
+                <h4>🔮 Jyotish Utilities </h4>
                 <ul id="jyotishLinksList">
-                    <li><a href="Features/Astrology/astrology.html">Personalised Kundli D1/D9</a></li>
-                    <li><a href="Features/Astrology/astrology.html">Gemstone recommendation</a></li>
-                    <li><a href="Features/Astrology/astrology.html">Rudraksha suggestion</a></li>
-                    <li><a href="Features/Astrology/astrology.html">Kundli Matching (Milan)</a></li>
-                    <li><a href="Features/Astrology/astrology.html">Prashna Kundali</a></li>
-                    <li><a href="Features/Astrology/astrology.html">Daily Rashifal Predictions</a></li>
-                    <li><a href="Features/Astrology/astrology.html">Weekly Horoscope Signs</a></li>
-                    <li><a href="Features/Astrology/astrology.html">Monthly Rashi Transits</a></li>
-                    <li><a href="Features/Astrology/astrology.html">Yearly Predictions 2026</a></li>
-                </ul>
-            </div>
-            <div class="directory-box">
-                <h4>⏰ Muhurat <a href="Features/Astrology/astrology.html?tab=muhurtas" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
-                <ul>
-                    <li><a href="Features/Astrology/astrology.html?tab=muhurtas">Choghadiya Timings</a></li>
-                    <li><a href="Features/Astrology/astrology.html?tab=muhurtas">Do Ghati Muhurtas</a></li>
-                    <li><a href="Features/Astrology/astrology.html?tab=muhurtas">Planetary Hora list</a></li>
-                    <li><a href="Features/Astrology/astrology.html?tab=muhurtas">Vivah Muhurat Dates</a></li>
-                    <li><a href="Features/Astrology/astrology.html?tab=muhurtas">Griha Pravesh Timings</a></li>
+                    <li><a href="Features/Astrology/astrology.html">Personalised Kundli</a></li>
+                    <li><a href="Features/Astrology/astrology.html?tab=muhurtas">⏰ Muhurat </a></li>
+                    <li><a href="list_events.html?category=transit">🪐 Planetary Events </a></li>
                 </ul>
             </div>
             <div class="directory-box">
@@ -552,48 +538,12 @@ gtag('config','G-DZ2CM1SBWW');
                 </ul>
             </div>
             <div class="directory-box">
-                <h4>🪐 Planetary Events <a href="list_events.html?category=transit" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
-                <ul>
-                    <li><a href="#planetaryEventsContainer">Sidereal Zodiac entry</a></li>
-                    <li><a href="#planetaryEventsContainer">Tropical Sign transits</a></li>
-                    <li><a href="#planetaryEventsContainer">Planet Retrograde phases</a></li>
-                    <li><a href="#planetaryEventsContainer">Planet Combustion angles</a></li>
-                </ul>
-            </div>
-            <div class="directory-box">
                 <h4>🔭 Hindu Astronomy <a href="list_events.html?category=transit" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
                     <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Solar Eclipse calculations</a></li>
                     <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Lunar Eclipse timings</a></li>
                     <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Eclipse Dates database</a></li>
                     <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Winter Solstice alignment</a></li>
-                </ul>
-            </div>
-            <div class="directory-box">
-                <h4>🎼 Devotional Lyrics <a href="list_events.html?category=mantra" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
-                <ul>
-                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Ganesh Aarti & Chalisa</a></li>
-                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Sundarkand Paath lyrics</a></li>
-                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Vishnu Sahasranama Stotram</a></li>
-                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Shri Durga Saptashati text</a></li>
-                </ul>
-            </div>
-            <div class="directory-box">
-                <h4>🔱 Hindu Gods <a href="list_events.html?category=ritual" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
-                <ul>
-                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Lord Vishnu avatars</a></li>
-                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Lord Shiva temples</a></li>
-                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Ashta Vinayaka spots</a></li>
-                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Navagraha deities</a></li>
-                </ul>
-            </div>
-            <div class="directory-box">
-                <h4>🎀 Hindu Goddesses <a href="list_events.html?category=ritual" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
-                <ul>
-                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Maha Lakshmi Ashtakam</a></li>
-                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Navdurga forms list</a></li>
-                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Dasha Mahavidya sadhana</a></li>
-                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Saraswati stotrams</a></li>
                 </ul>
             </div>
             <div class="directory-box">
@@ -607,6 +557,10 @@ gtag('config','G-DZ2CM1SBWW');
             <div class="directory-box">
                 <h4>☀️ Vedic Mantras <a href="list_events.html?category=mantra" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
                 <ul>
+                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Maha Lakshmi Ashtakam</a></li>
+                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Navdurga forms list</a></li>
+                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Dasha Mahavidya sadhana</a></li>
+                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Saraswati stotrams</a></li>
                     <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Gayatri Mantra meaning</a></li>
                     <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Mahamrityunjaya Mantra</a></li>
                     <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Shanti Path translations</a></li>
@@ -626,6 +580,15 @@ gtag('config','G-DZ2CM1SBWW');
                     <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Kumbha Mela bathing dates</a></li>
                     <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Shradh Karma Pitru Paksha</a></li>
                     <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Vivah Sanskar 7 rounds</a></li>
+                </ul>
+            </div>
+            <div class="directory-box">
+                <h4>🎼 Devotional Lyrics <a href="list_events.html?category=mantra" style="margin-left: auto; font-size: 0.72rem; color: var(--accent-color); font-weight: normal; text-decoration: none;">+ More...</a></h4>
+                <ul>
+                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Ganesh Aarti & Chalisa</a></li>
+                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Sundarkand Paath lyrics</a></li>
+                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Vishnu Sahasranama Stotram</a></li>
+                    <li><a href="javascript:void(0)" href="Features/Astrology/astrology.html?tab=panchang">Shri Durga Saptashati text</a></li>
                 </ul>
             </div>
             <div class="directory-box">
@@ -680,6 +643,7 @@ gtag('config','G-DZ2CM1SBWW');
         </div>
     </footer>
 </main><!-- end center-feature-showcase -->
+    </div><!-- end spaViewport -->
 
         <!-- Right Sidebar: Widgets (3rd column of homepage-three-column-grid) -->
         <aside class="right-widgets-sidebar">
@@ -737,6 +701,14 @@ overlay.classList.remove("active");
 <script src="./geocomplete.js?v=1.0"></script>
 <script src="./jyotish_modal.js?v=1.1.9"></script>
 <script src="./Features/Astrology/astrology.js?v=1.2.0" defer></script>
+<script src="./Features/Astrology/astrologyView.js" defer></script>
+<script src="./Features/Dictionary/dictionaryView.js" defer></script>
+<script src="./Static/wisdomView.js" defer></script>
+<script src="./Static/app.js" defer></script>
+<script src="./Features/Dictionary/sanskrit-map.js" defer></script>
+<script src="./Features/Dictionary/mw-typing-guide.js" defer></script>
+<script src="./Features/Dictionary/guide.js" defer></script>
+<script src="./Features/Dictionary/sanskrit-ai.js" defer></script>
 <script>
 // Open general modal utility
 function openGeneralJyotishModal(feature) {

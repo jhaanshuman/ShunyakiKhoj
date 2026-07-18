@@ -3,9 +3,7 @@
  * Designed for Shunyakikhoj
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-    initNavigation();
-});
+// DOMContentLoaded is handled at the bottom of nav.js
 
 let menuConfig = null;
 let currentActiveItem = null;
@@ -531,7 +529,7 @@ function setupThemeToggle() {
             { id: 'theme-dark', name: '🌌 Dark Mode', bg: '#0d1117' },
             { id: 'theme-manuscript', name: '📜 Ancient Manuscript', bg: '#f5e6c8' },
             { id: 'theme-bright', name: '☀️ Surya Aarti', bg: '#fff8dc' },
-            { id: 'theme-focus', name: '👁️ Focus Mode', bg: '#09090b' },
+            { id: 'theme-focus', name: '👁️ Focus Mode', bg: '#92f195' },
             { id: 'theme-pale', name: '🍃 Ash & Tulsi', bg: '#e8ece9' },
             { id: 'theme-indigo', name: '🍇 Royal Indigo', bg: '#030712' }
         ];
@@ -648,3 +646,194 @@ function setupKeyboardAccessibility() {
         });
     });
 }
+
+// ==========================================
+// SPA ROUTER IMPLEMENTATION
+// ==========================================
+let originalHomeHTML = null;
+
+function navigateToPage(page, tab = '', queryParams = {}) {
+    const viewport = document.getElementById('spaViewport');
+    if (!viewport) return;
+    
+    // Save original home HTML on first run
+    if (!originalHomeHTML) {
+        originalHomeHTML = viewport.innerHTML;
+    }
+    
+    // Update URL query parameters for bookmarking & reload support
+    const url = new URL(window.location);
+    url.searchParams.delete('tab');
+    url.searchParams.delete('region');
+    url.searchParams.delete('varga');
+    url.searchParams.delete('page');
+    
+    url.searchParams.set('page', page);
+    if (tab) url.searchParams.set('tab', tab);
+    for (let k in queryParams) {
+        if (k !== 'page' && k !== 'tab') {
+            url.searchParams.set(k, queryParams[k]);
+        }
+    }
+    window.history.pushState({}, '', url);
+    
+    // Toggle displays
+    const leftSidebar = document.querySelector('.left-ad-sidebar');
+    const rightSidebar = document.querySelector('.right-widgets-sidebar');
+    
+    // Render the view
+    if (page === 'astrology') {
+        if (leftSidebar) leftSidebar.style.display = 'none';
+        if (rightSidebar) rightSidebar.style.display = 'none';
+        
+        if (typeof renderAstrologyView === 'function') {
+            viewport.innerHTML = renderAstrologyView();
+            // Bind all event listeners inside astrology.js
+            if (typeof initAstrology === 'function') {
+                initAstrology(tab, queryParams);
+            }
+        }
+    } else if (page === 'dictionary') {
+        if (leftSidebar) leftSidebar.style.display = 'none';
+        if (rightSidebar) rightSidebar.style.display = 'none';
+        
+        if (typeof renderDictionaryView === 'function') {
+            viewport.innerHTML = renderDictionaryView();
+            if (typeof initDictionary === 'function') {
+                initDictionary();
+            }
+        }
+    } else if (page === 'wisdom') {
+        if (leftSidebar) leftSidebar.style.display = 'none';
+        if (rightSidebar) rightSidebar.style.display = 'none';
+        
+        if (typeof renderWisdomView === 'function') {
+            viewport.innerHTML = renderWisdomView();
+            if (typeof initWisdom === 'function') {
+                initWisdom();
+            }
+        }
+    } else {
+        // 'home' page
+        if (leftSidebar) leftSidebar.style.display = 'block';
+        if (rightSidebar) rightSidebar.style.display = 'block';
+        
+        viewport.innerHTML = originalHomeHTML;
+        
+        // Initialize/Restore default home panchang views if tab is set
+        if (tab === 'panchang' || tab === 'maasik' || tab === 'muhurtas') {
+            const welcome = document.getElementById('homeWelcomeSection');
+            if (welcome) welcome.style.display = 'none';
+            const controlsCard = document.querySelector('.controls-card');
+            const routerHeader = document.querySelector('.panchang-unified-header');
+            if (controlsCard) controlsCard.style.display = 'flex';
+            if (routerHeader) routerHeader.style.display = 'flex';
+            
+            if (tab === 'panchang') {
+                if (typeof switchPancView === 'function') switchPancView('day');
+            } else if (tab === 'maasik') {
+                if (typeof switchPancView === 'function') switchPancView('month');
+            } else if (tab === 'muhurtas') {
+                if (typeof switchPancView === 'function') switchPancView('muhurtas');
+            }
+        } else {
+            const welcome = document.getElementById('homeWelcomeSection');
+            if (welcome) welcome.style.display = 'block';
+            const controlsCard = document.querySelector('.controls-card');
+            const routerHeader = document.querySelector('.panchang-unified-header');
+            const dayViewHome = document.getElementById('dayViewContainer');
+            const maasikViewHome = document.getElementById('maasikViewContainer');
+            const muhurtasViewHome = document.getElementById('muhurtasViewContainer');
+            
+            if (controlsCard) controlsCard.style.display = 'none';
+            if (routerHeader) routerHeader.style.display = 'none';
+            if (dayViewHome) dayViewHome.style.display = 'none';
+            if (maasikViewHome) maasikViewHome.style.display = 'none';
+            if (muhurtasViewHome) muhurtasViewHome.style.display = 'none';
+        }
+    }
+    
+    highlightActiveMenu();
+}
+
+// Global popstate history back/forward support
+window.addEventListener('popstate', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page') || 'home';
+    const tab = urlParams.get('tab') || '';
+    const queryParams = {};
+    urlParams.forEach((value, key) => {
+        queryParams[key] = value;
+    });
+    navigateToPage(page, tab, queryParams);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    initNavigation();
+    
+    // Read page from search query on load
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialPage = urlParams.get('page') || 'home';
+    const initialTab = urlParams.get('tab') || '';
+    
+    const queryParams = {};
+    urlParams.forEach((value, key) => {
+        queryParams[key] = value;
+    });
+    
+    setTimeout(() => {
+        navigateToPage(initialPage, initialTab, queryParams);
+    }, 100);
+});
+
+// Intercept clicks on links for SPA
+document.addEventListener('click', (e) => {
+    const anchor = e.target.closest('a');
+    if (!anchor) return;
+    
+    const href = anchor.getAttribute('href');
+    if (!href) return;
+    
+    if (href.includes('astrology.html') || href.includes('Dictionary.html') || 
+        href.includes('Static/index.html') || href.includes('index.html') || 
+        href.startsWith('./index.html') || href === '#') {
+        
+        // Skip external links or target=_blank links
+        if (anchor.getAttribute('target') === '_blank') return;
+        
+        e.preventDefault();
+        
+        let page = 'home';
+        let tab = '';
+        let queryParams = {};
+        
+        try {
+            const parsed = new URL(href, window.location.origin);
+            const path = parsed.pathname;
+            
+            if (path.includes('astrology.html')) {
+                page = 'astrology';
+            } else if (path.includes('Dictionary.html')) {
+                page = 'dictionary';
+            } else if (path.includes('index.html') && path.includes('/Static/')) {
+                page = 'wisdom';
+            } else if (path.includes('index.html') || path === '/' || path === '') {
+                page = 'home';
+            }
+            
+            tab = parsed.searchParams.get('tab') || '';
+            parsed.searchParams.forEach((val, k) => {
+                queryParams[k] = val;
+            });
+        } catch (err) {
+            if (href.includes('astrology.html')) page = 'astrology';
+            else if (href.includes('Dictionary.html')) page = 'dictionary';
+            else if (href.includes('Static/index.html')) page = 'wisdom';
+            
+            const matchTab = href.match(/tab=([^&]+)/);
+            if (matchTab) tab = matchTab[1];
+        }
+        
+        navigateToPage(page, tab, queryParams);
+    }
+});

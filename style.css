@@ -36,7 +36,38 @@
     --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
     --glass-inset:    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 
-    /* Theme: Default Dark (Night Puja) */
+    /* Theme: Default Green (Auspicious Beginnings) */
+    --bg-color:       #050508;
+    --bg-gradient:    radial-gradient(ellipse at 25% 0%, rgba(26, 35, 126, 0.2) 0%, transparent 60%),
+                      radial-gradient(ellipse at 75% 100%, rgba(62, 39, 35, 0.3) 0%, transparent 60%),
+                      linear-gradient(160deg, #f5a5f8 0%, #92f195 50%, #d48ea4 100%);
+    --text-color:     #534949;
+    --text-muted:     #0000d7;
+    --text-gold:      #25dd17;
+    --card-bg:        rgb(75 173 76 / 85%);
+    --card-border:    1.5px solid rgba(255, 255, 255, 0.05);
+    --glass-border:   rgba(255, 255, 255, 0.04);
+    --glass-border-strong: rgba(255, 255, 255, 0.12);
+    --accent-color:   #e72222;
+    --accent-gradient: linear-gradient(135deg, #5534e9, #cd97dd);
+    --header-bg:      rgba(5, 5, 8, 0.95);
+    --shadow:         0 8px 30px rgba(0, 0, 0, 0.7);
+    --title-color:    #d0d0e0;
+    --tile-bg:        #0f0f16;
+    --sidebar-bg:     #050508;
+    --minicard-bg:    #1a1a24;
+    --glass-bg:       rgba(15, 15, 22, 0.8);
+    --glass-bg-light: rgba(20, 20, 30, 0.5);
+
+    /* 3D & Animation */
+    --perspective:    1200px;
+    --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-slow: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ── THEME: DARK (Night Puja) ─────────────────────────────────────────── */
+body.theme-dark {
     --bg-color:       #0a0a0f;
     --bg-gradient:    radial-gradient(ellipse at 20% 0%, rgba(26, 35, 126, 0.15) 0%, transparent 50%),
                       radial-gradient(ellipse at 80% 100%, rgba(255, 153, 51, 0.08) 0%, transparent 50%),
@@ -54,12 +85,8 @@
     --tile-bg:        rgba(22, 27, 34, 0.6);
     --sidebar-bg:     rgba(13, 17, 23, 0.75);
     --minicard-bg:    rgba(30, 41, 59, 0.5);
-
-    /* 3D & Animation */
-    --perspective:    1200px;
-    --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    --transition-slow: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    --glass-bg:       rgba(13, 17, 23, 0.65);
+    --glass-bg-light: rgba(22, 27, 34, 0.45);
 }
 
 /* ── THEME: MANUSCRIPT (Vedic Parchment) ──────────────────────────────── */
@@ -117,16 +144,16 @@ body.theme-focus {
     --bg-color:       #050508;
     --bg-gradient:    radial-gradient(ellipse at 25% 0%, rgba(26, 35, 126, 0.2) 0%, transparent 60%),
                       radial-gradient(ellipse at 75% 100%, rgba(62, 39, 35, 0.3) 0%, transparent 60%),
-                      linear-gradient(160deg, #050508 0%, #0a0a10 50%, #08080e 100%);
-    --text-color:     #e8e8f0;
-    --text-muted:     #6b6b7a;
-    --text-gold:      #a0a0b0;
-    --card-bg:        rgba(15, 15, 22, 0.85);
-    --card-border:    1.5px solid rgba(255, 255, 255, 0.05);
-    --glass-border:   rgba(255, 255, 255, 0.04);
+                      linear-gradient(160deg, #f5a5f8 0%, #92f195 50%, #d48ea4 100%);
+    --text-color: #534949;
+    --text-muted: #0000d7;
+    --text-gold: #25dd17;
+    --card-bg: rgb(75 173 76 / 85%);
+    --card-border: 1.5px solid rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.04);
     --glass-border-strong: rgba(255, 255, 255, 0.12);
-    --accent-color:   #c8c8d5;
-    --accent-gradient: linear-gradient(135deg, #5a5a6a, #a0a0b0);
+    --accent-color: #e72222;
+    --accent-gradient: linear-gradient(135deg, #5534e9, #cd97dd);
     --header-bg:      rgba(5, 5, 8, 0.95);
     --shadow:         0 8px 30px rgba(0, 0, 0, 0.7);
     --title-color:    #d0d0e0;
@@ -334,13 +361,13 @@ body {
     border-color: rgba(212, 175, 55, 0.45);
     box-shadow: var(--glass-shadow-lg), 0 0 40px rgba(212, 175, 55, 0.12), var(--glass-inset);
 }
-
 /* ── STATUS HEADER CARD (Special) ─────────────────────────────────────── */
 .status-header-card {
     background: linear-gradient(135deg, var(--glass-bg) 0%, var(--glass-bg-light) 100%);
     border: 2px solid rgba(162, 57, 34, 0.3);
     position: relative;
     overflow: hidden;
+    margin-left: 20px;padding:25px;width:95%;
 }
 
 .status-header-card::before {
@@ -1028,7 +1055,7 @@ body {
 
 .portal-directory h2 {
     text-align: center;
-    color: var(--title-color);
+    color: #1ca931;
     font-size: 1.6rem;
     font-weight: 800;
     margin-bottom: 2rem;
@@ -1059,7 +1086,7 @@ body {
 }
 
 .directory-box {
-    background: var(--glass-bg);
+    background: rgb(234 238 144 / 85%);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: var(--card-border);
@@ -1687,7 +1714,7 @@ body {
 }
 
 .right-widgets-sidebar .widget-box {
-    background: var(--glass-bg);
+    background: #62b95b;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: var(--card-border);
@@ -1704,7 +1731,7 @@ body {
 }
 
 .right-widgets-sidebar .widget-box h4 {
-    color: var(--title-color);
+    color: #cbde37;
     margin-top: 0;
     margin-bottom: 10px;
     border-bottom: 1px solid var(--glass-border);
@@ -2252,5 +2279,2104 @@ body {
 
 body.theme-manuscript .theme-dropdown-item:hover {
     background: rgba(0, 0, 0, 0.05);
+}
+
+
+
+/* =========================================================================
+   DYNAMICALLY APPENDED: ASTROLOGY SUITE STYLES
+   ========================================================================= */
+
+.astrology-container .top-nav-tabs {
+
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+
+}
+.astrology-container .top-tab-btn {
+
+    background: var(--card-bg);
+    border: var(--card-border);
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+
+}
+.astrology-container .top-tab-btn.active, .astrology-container .top-tab-btn:hover {
+
+    background: var(--accent-gradient);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+
+}
+.astrology-container .main-section {
+
+    display: none;
+
+}
+.astrology-container .main-section.active {
+
+    display: block;
+
+}
+.astrology-container .dashboard-grid {
+
+    display: grid;
+    grid-template-columns: 1.2fr 2fr;
+    gap: 2rem;
+    align-items: start;
+
+}
+@media (max-width: 950px) {
+.astrology-container .dashboard-grid {
+
+        grid-template-columns: 1fr;
+    
+}
+}
+.astrology-container .glass-card {
+
+    background: var(--card-bg);
+    border: var(--card-border);
+    border-radius: 16px;
+    padding: 2rem;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: var(--shadow);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+}
+.astrology-container .glass-card:hover {
+
+    border-color: var(--accent-color);
+
+}
+.astrology-container .form-group {
+
+    margin-bottom: 1.5rem;
+
+}
+.astrology-container .form-group label {
+
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+
+}
+.astrology-container .form-group input, .astrology-container .form-group select {
+
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s;
+
+}
+.astrology-container .form-group select option {
+
+    background-color: var(--bg-color);
+    color: var(--text-color);
+
+}
+.astrology-container .form-group input:focus, .astrology-container .form-group select:focus {
+
+    outline: none;
+    border-color: var(--accent-color);
+
+}
+.astrology-container .btn-submit {
+
+    width: 100%;
+    background: var(--accent-gradient);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    transition: all 0.3s ease;
+
+}
+.astrology-container .btn-submit:hover {
+
+    transform: translateY(-2px);
+
+}
+.astrology-container .tabs {
+
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: var(--card-border);
+    padding-bottom: 0.5rem;
+    flex-wrap: wrap;
+
+}
+.astrology-container .tab-btn {
+
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s;
+    position: relative;
+
+}
+.astrology-container .tab-btn.active {
+
+    color: var(--accent-color);
+
+}
+.astrology-container .tab-btn.active::after {
+
+    content: '';
+    position: absolute;
+    bottom: -0.6rem;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-color);
+
+}
+.astrology-container .tab-content {
+
+    display: none;
+
+}
+.astrology-container .tab-content.active {
+
+    display: block;
+
+}
+.astrology-container .charts-row {
+
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+
+}
+.astrology-container .chart-box {
+
+    text-align: center;
+
+}
+.astrology-container .chart-box h4 {
+
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+    font-size: 1.1rem;
+
+}
+.astrology-container .planet-grid {
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+
+}
+.astrology-container .planet-box {
+
+    background: rgba(255, 255, 255, 0.02);
+    border: var(--card-border);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+}
+.astrology-container .planet-name {
+
+    font-weight: 700;
+    color: var(--accent-color);
+
+}
+.astrology-container .panchang-table {
+
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+
+}
+.astrology-container .panchang-table td {
+
+    padding: 0.75rem 1rem;
+    border-bottom: var(--card-border);
+
+}
+.astrology-container .panchang-table td:first-child {
+
+    font-weight: 600;
+    color: var(--text-muted);
+    width: 35%;
+
+}
+.astrology-container .dasha-list {
+
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 1rem;
+    font-family: monospace;
+
+}
+.astrology-container .dasha-item {
+
+    margin-left: 1.5rem;
+    border-left: 1px dashed rgba(255, 255, 255, 0.1);
+    padding-left: 1rem;
+    margin-top: 0.25rem;
+
+}
+.astrology-container .dasha-title {
+
+    font-weight: 700;
+    color: var(--title-color);
+
+}
+.astrology-container .milan-grid {
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+
+}
+@media (max-width: 800px) {
+.astrology-container .milan-grid {
+
+        grid-template-columns: 1fr;
+    
+}
+}
+.astrology-container .result-badge {
+
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 8px;
+    margin-top: 1rem;
+
+}
+.astrology-container .result-badge.success {
+
+    background-color: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+
+}
+.astrology-container .result-badge.fail {
+
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+
+}
+.astrology-container .muhurta-section-title {
+
+    color: var(--title-color);
+    margin: 1.5rem 0 0.5rem 0;
+    border-bottom: var(--card-border);
+    padding-bottom: 0.25rem;
+
+}
+.astrology-container .panchang-unified-header {
+
+    background: linear-gradient(135deg, #a23922 0%, #7c1a08 100%);
+    border-radius: 10px 10px 0 0;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 1rem;
+
+}
+.astrology-container .panchang-unified-header .ph-title {
+ font-size: 1.15rem; font-weight: 800; color: #fff; 
+}
+.astrology-container .panchang-unified-header .ph-subtitle {
+ font-size: 0.78rem; color: rgba(255,255,255,0.75); 
+}
+.astrology-container .panchang-unified-header .ph-controls {
+ display: flex; align-items: center; gap: 8px; flex-wrap: wrap; 
+}
+.astrology-container .ph-nav-btn {
+
+    background: rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.25);
+    color: #fff; width: 32px; height: 32px; border-radius: 50%;
+    font-size: 1.1rem; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: background 0.2s;
+
+}
+.astrology-container .ph-nav-btn:hover {
+ background: rgba(0,0,0,0.5); 
+}
+.astrology-container .ph-date-input {
+
+    background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 6px; color: #fff; padding: 5px 10px; font-weight: 700; font-size: 0.9rem; min-width: 130px;
+
+}
+.astrology-container .ph-date-input::-webkit-calendar-picker-indicator {
+ filter: invert(1); 
+}
+.astrology-container .ph-today-btn {
+
+    background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.2);
+    color: #fbbf24; padding: 5px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.85rem; transition: all 0.2s;
+
+}
+.astrology-container .ph-today-btn:hover {
+ background: rgba(251,191,36,0.15); 
+}
+.astrology-container .ph-view-toggle {
+ display: flex; background: rgba(0,0,0,0.25); border-radius: 6px; overflow: hidden; border: 1.5px solid rgba(255,255,255,0.15); 
+}
+.astrology-container .ph-view-btn {
+ padding: 5px 12px; border: none; background: transparent; color: rgba(255,255,255,0.7); font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; 
+}
+.astrology-container .ph-view-btn.active {
+ background: rgba(255,255,255,0.2); color: #fff; 
+}
+.astrology-container .ph-place-input {
+
+    background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 6px; color: #fff; padding: 5px 10px; font-size: 0.85rem; min-width: 160px;
+
+}
+.astrology-container .ph-place-input::placeholder {
+ color: rgba(255,255,255,0.5); 
+}
+.astrology-container #maasikSection {
+ display: none; 
+}
+.astrology-container #maasikSection.active {
+ display: block; 
+}
+.astrology-container .monthly-panchang-wrapper {
+
+    display: flex; gap: 0; border: 2px solid #a23922; border-top: none;
+    border-radius: 0 0 10px 10px; background: var(--card-bg); overflow: hidden;
+
+}
+.astrology-container .monthly-cal-main {
+ flex: 1; padding: 1.25rem; overflow-x: auto; 
+}
+.astrology-container .monthly-cal-sidebar {
+
+    width: 310px; min-width: 260px; border-left: 2px solid rgba(162,57,34,0.3);
+    background: var(--sidebar-bg); padding: 1rem; overflow-y: auto; max-height: 75vh;
+
+}
+.astrology-container .monthly-cal-sidebar .sidebar-title {
+ font-size: 0.95rem; font-weight: 800; color: var(--accent-color); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--card-border); 
+}
+.astrology-container .cal-grid-header {
+ display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 4px; 
+}
+.astrology-container .cal-grid {
+ display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; 
+}
+.astrology-container .cal-cell {
+
+    background: var(--tile-bg); border: var(--card-border);
+    border-radius: 6px; padding: 5px 6px; cursor: pointer;
+    aspect-ratio: 1 / 1;
+    display: flex; flex-direction: column; gap: 2px; transition: all 0.18s;
+    position: relative; overflow: hidden;
+
+}
+.astrology-container .cal-cell:hover {
+ border-color: #a23922; background: rgba(162,57,34,0.12); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(162,57,34,0.15); 
+}
+.astrology-container .cal-cell.selected {
+ border-color: var(--accent-color) !important; background: rgba(251,191,36,0.15) !important; box-shadow: 0 0 0 2px rgba(251,191,36,0.25); 
+}
+.astrology-container .cal-cell.today-cell {
+ border-color: var(--accent-color); background: rgba(99,102,241,0.15); 
+}
+.astrology-container .cal-cell.empty-cell {
+ background: transparent; border-color: transparent; cursor: default; pointer-events: none; 
+}
+.astrology-container .cell-day-num {
+ font-size: 1.15rem; font-weight: 800; color: var(--text-color); line-height: 1; 
+}
+.astrology-container .cell-tithi {
+ font-size: 0.72rem; font-weight: 700; color: var(--title-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+}
+.astrology-container .cell-nakshatra {
+ font-size: 0.68rem; color: #a78bfa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+}
+.astrology-container .cell-sun-moon {
+ margin-top: auto; display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--text-muted); 
+}
+.astrology-container .cal-month-loading {
+ text-align: center; padding: 2rem; color: var(--text-muted); font-size: 1rem; 
+}
+.astrology-container .sidebar-mini-card {
+ background: var(--minicard-bg); border: var(--card-border); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; 
+}
+.astrology-container .sidebar-mini-card .smc-label {
+ font-size: 0.7rem; color: var(--text-muted); font-weight: 600; margin-bottom: 2px; 
+}
+.astrology-container .sidebar-mini-card .smc-value {
+ font-size: 0.82rem; color: var(--text-color); font-weight: 700; 
+}
+@media (max-width: 900px) {
+.astrology-container .monthly-panchang-wrapper {
+ flex-direction: column; 
+}
+.astrology-container .monthly-cal-sidebar {
+ width: 100%; border-left: none; border-top: 2px solid rgba(162,57,34,0.3); max-height: 380px; 
+}
+}
+@media (min-width: 901px) {
+.astrology-container #maasikViewContainer, .astrology-container #maasikSection {
+
+        width: 80% !important;
+        margin: 0 auto !important;
+    
+}
+}
+.astrology-container .portal-directory {
+
+    margin-top: 3rem;
+    border-top: var(--card-border);
+    padding-top: 2rem;
+
+}
+.astrology-container .portal-directory h2 {
+
+    color: #1ca931;
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    font-weight: 800;
+
+}
+.astrology-container .directory-grid {
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+
+}
+.astrology-container .directory-box {
+
+    background: var(--card-bg);
+    border: var(--card-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+    transition: all 0.2s;
+
+}
+.astrology-container .directory-box:hover {
+
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+
+}
+.astrology-container .directory-box h4 {
+
+    margin: 0 0 10px 0;
+    color: var(--accent-color);
+    font-size: 1.05rem;
+    font-weight: 700;
+    border-bottom: var(--card-border);
+    padding-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+}
+.astrology-container .directory-box ul {
+
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+}
+.astrology-container .directory-box ul li {
+
+    font-size: 0.88rem;
+
+}
+.astrology-container .directory-box ul li a {
+
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+
+}
+.astrology-container .directory-box ul li a:hover {
+
+    color: var(--text-color);
+    text-decoration: underline;
+
+}
+.astrology-container .about-panchang-box {
+
+    margin-top: 3rem;
+    background: var(--card-bg);
+    border: var(--card-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+
+}
+.astrology-container .about-panchang-box h3 {
+
+    margin-top: 0;
+    color: var(--title-color);
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+
+}
+.astrology-container .about-panchang-box p {
+
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+
+}
+.astrology-container #drikTimelineContainer {
+
+    width: 100%;
+    margin: 0 auto 1.5rem auto;
+    overflow-x: auto;
+    box-sizing: border-box;
+
+}
+.astrology-container #drikTimelineContainer svg {
+
+    min-width: 900px;
+    width: 100%;
+    height: auto;
+    display: block;
+
+}
+@media (min-width: 1024px) {
+.astrology-container #drikTimelineContainer {
+
+        width: 100%;
+        overflow-x: visible;
+    
+}
+.astrology-container #drikTimelineContainer svg {
+
+        min-width: unset;
+    
+}
+}
+
+/* =========================================================================
+   DYNAMICALLY APPENDED: SCOPED DICTIONARY STYLES
+   ========================================================================= */
+
+#dictionaryViewContainer * {
+box-sizing:border-box;margin:0;padding:0;
+}
+#dictionaryViewContainer {
+font-family:Segoe UI,Arial,sans-serif;height:100vh;background:linear-gradient(120deg,#1f3c88,#4b6cb7,#182848);display:flex;flex-direction:column;color:white;
+}
+#dictionaryViewContainer header {
+height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(0,0,0,0.35);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.2);
+}
+#dictionaryViewContainer .logo {
+display:flex;align-items:center;gap:10px;font-size:20px;font-weight:600;
+}
+#dictionaryViewContainer .logo img {
+height:34px;border-radius:50%;
+}
+#dictionaryViewContainer .controls select {
+padding:6px 8px;border-radius:6px;border:none;font-size:14px;
+}
+#dictionaryViewContainer main {
+flex:1;display:flex;flex-direction:column;height:90%;
+}
+#dictionaryViewContainer #chatArea {
+flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:12px;height:80%;
+}
+#dictionaryViewContainer .message {
+max-width:75%;padding:12px 14px;border-radius:14px;line-height:1.5;font-size:15px;
+}
+#dictionaryViewContainer .user {
+background:#6ea8fe;align-self:flex-end;color:#fff;
+}
+#dictionaryViewContainer .ai {
+background:#ffffff;color:#222;align-self:flex-start;
+}
+#dictionaryViewContainer #tokens {
+flex:1;padding:0 15px;display:flex;flex-direction:column;gap:12px;font-size:16px;
+}
+#dictionaryViewContainer .inputPanel {
+display:flex;gap:10px;padding:12px;background:rgba(0,0,0,0.4);backdrop-filter:blur(8px);border-top:1px solid rgba(255,255,255,0.15);
+}
+#dictionaryViewContainer #inputBox {
+flex:1;height:50px;resize:none;padding:10px;font-size:16px;border-radius:10px;border:none;outline:none;
+}
+#dictionaryViewContainer #searchBtn {
+padding:10px 16px;font-size:15px;border:none;border-radius:10px;background:linear-gradient(45deg,#ff9966,#ff5e62);color:white;cursor:pointer;
+}
+#dictionaryViewContainer #searchBtn:hover {
+transform:scale(1.05);
+}
+#dictionaryViewContainer #suggestions {
+display:flex;flex-wrap:wrap;gap:6px;padding:6px 12px;background:rgba(255,255,255,0.15);border-top:1px solid rgba(255,255,255,0.2);
+}
+#dictionaryViewContainer .suggestionItem {
+background:white;color:black;padding:4px 8px;border-radius:6px;font-size:13px;cursor:pointer;
+}
+#dictionaryViewContainer #guideButton {
+position:fixed;bottom:90px;right:18px;background:linear-gradient(45deg,#ffcc00,#ff0066,#00e1ff);padding:10px 14px;border-radius:8px;font-size:14px;cursor:pointer;
+}
+#dictionaryViewContainer #guideWindow {
+position:fixed;bottom:140px;right:20px;width:320px;height:300px;background:white;color:black;border-radius:10px;display:none;flex-direction:column;box-shadow:0 10px 25px rgba(0,0,0,0.3);overflow-y:auto;
+}
+#dictionaryViewContainer .guideHeader {
+background:#333;color:white;padding:8px;display:flex;justify-content:space-between;
+}
+#dictionaryViewContainer .guideContent {
+padding:10px;overflow-y:auto;
+}
+@media(max-width:700px) {
+#dictionaryViewContainer .message {
+max-width:90%;font-size:14px;
+}
+#dictionaryViewContainer #inputBox {
+font-size:15px;
+}
+}
+
+/* =========================================================================
+   DYNAMICALLY APPENDED: SCOPED SPIRITUAL WISDOM STYLES
+   ========================================================================= */
+
+#wisdomViewContainer {
+
+    --primary-gold: #FFD700;
+    --primary-orange: #FF6B35;
+    --primary-red: #E74C3C;
+    --primary-purple: #AF52DE;
+    --primary-blue: #5856D6;
+    --primary-green: #34C759;
+    --primary-teal: #5AC8FA;
+    
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-gold: #FFD700;
+    
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'Poppins', sans-serif;
+    --font-devanagari: 'Noto Sans Devanagari', sans-serif;
+    
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    scroll-behavior: smooth;
+    font-family: var(--font-body);
+    background: linear-gradient(135deg, #1a0a2e 0%, #16213e 25%, #0f3460 50%, #1a1a2e 75%, #0d0d1a 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+
+}
+#wisdomViewContainer * {
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+#wisdomViewContainer .bg-container {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+
+}
+#wisdomViewContainer .bg-gradient {
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(ellipse at 20% 50%, rgba(255, 107, 53, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(175, 82, 222, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 30% 30%, rgba(88, 86, 214, 0.1) 0%, transparent 50%);
+    animation: bgPulse 8s ease-in-out infinite;
+
+}
+@keyframes bgPulse {
+
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+
+}
+#wisdomViewContainer .floating-om {
+
+    position: absolute;
+    font-size: 200px;
+    color: rgba(255, 215, 0, 0.03);
+    top: 10%;
+    left: 5%;
+    animation: floatOm 20s ease-in-out infinite;
+    font-family: var(--font-devanagari);
+    user-select: none;
+
+}
+#wisdomViewContainer .floating-lotus {
+
+    position: absolute;
+    font-size: 120px;
+    top: 60%;
+    right: 8%;
+    opacity: 0.04;
+    animation: floatLotus 25s ease-in-out infinite;
+    user-select: none;
+
+}
+#wisdomViewContainer .floating-diya {
+
+    position: absolute;
+    font-size: 100px;
+    bottom: 15%;
+    left: 15%;
+    opacity: 0.04;
+    animation: floatDiya 18s ease-in-out infinite;
+    user-select: none;
+
+}
+@keyframes floatOm {
+
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-30px) rotate(5deg); }
+    50% { transform: translateY(-10px) rotate(-3deg); }
+    75% { transform: translateY(-40px) rotate(2deg); }
+
+}
+@keyframes floatLotus {
+
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-20px) rotate(10deg); }
+    66% { transform: translateY(-35px) rotate(-5deg); }
+
+}
+@keyframes floatDiya {
+
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-25px) scale(1.1); }
+
+}
+#wisdomViewContainer .mandala-bg {
+
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='90' fill='none' stroke='rgba(255,215,0,0.03)' stroke-width='0.5'/%3E%3Ccircle cx='100' cy='100' r='70' fill='none' stroke='rgba(255,215,0,0.03)' stroke-width='0.5'/%3E%3Ccircle cx='100' cy='100' r='50' fill='none' stroke='rgba(255,215,0,0.03)' stroke-width='0.5'/%3E%3Ccircle cx='100' cy='100' r='30' fill='none' stroke='rgba(255,215,0,0.03)' stroke-width='0.5'/%3E%3Cpath d='M100,10 L110,90 L190,100 L110,110 L100,190 L90,110 L10,100 L90,90 Z' fill='none' stroke='rgba(255,215,0,0.02)' stroke-width='0.5'/%3E%3C/svg%3E") center/contain no-repeat;
+    animation: rotateMandala 120s linear infinite;
+    pointer-events: none;
+
+}
+@keyframes rotateMandala {
+
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+
+}
+#wisdomViewContainer .particles {
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+}
+#wisdomViewContainer .particle {
+
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 215, 0, 0.4);
+    border-radius: 50%;
+    animation: particleFloat linear infinite;
+
+}
+@keyframes particleFloat {
+
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+
+}
+#wisdomViewContainer .glass-header {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(15, 10, 30, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0 2rem;
+    transition: var(--transition-smooth);
+
+}
+#wisdomViewContainer .glass-card {
+
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: var(--glass-shadow);
+    transition: var(--transition-smooth);
+
+}
+#wisdomViewContainer .glass-card:hover {
+
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 12px 40px rgba(255, 215, 0, 0.1);
+    transform: translateY(-4px);
+
+}
+#wisdomViewContainer .glass-modal {
+
+    background: rgba(20, 15, 40, 0.95);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 24px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(255, 215, 0, 0.05);
+
+}
+#wisdomViewContainer .glass-footer {
+
+    background: rgba(10, 8, 25, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--glass-border);
+    padding: 3rem 2rem 2rem;
+    margin-top: 4rem;
+
+}
+#wisdomViewContainer .header-content {
+
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    gap: 2rem;
+
+}
+#wisdomViewContainer .logo {
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+}
+#wisdomViewContainer .om-symbol {
+
+    font-size: 2.5rem;
+    color: var(--primary-gold);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    animation: omGlow 3s ease-in-out infinite;
+    font-family: var(--font-devanagari);
+
+}
+@keyframes omGlow {
+
+    0%, 100% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+    50% { text-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.3); }
+
+}
+#wisdomViewContainer .logo-text h1 {
+
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-gold);
+    letter-spacing: 2px;
+
+}
+#wisdomViewContainer .tagline {
+
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+
+}
+#wisdomViewContainer .main-nav {
+
+    display: flex;
+    gap: 2rem;
+
+}
+#wisdomViewContainer .nav-link {
+
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    position: relative;
+    padding: 0.5rem 0;
+    transition: var(--transition-smooth);
+
+}
+#wisdomViewContainer .nav-link::after {
+
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-gold);
+    transition: var(--transition-smooth);
+
+}
+#wisdomViewContainer .nav-link:hover, #wisdomViewContainer .nav-link.active {
+
+    color: var(--primary-gold);
+
+}
+#wisdomViewContainer .nav-link:hover::after, #wisdomViewContainer .nav-link.active::after {
+
+    width: 100%;
+
+}
+#wisdomViewContainer .search-box {
+
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+    transition: var(--transition-smooth);
+    min-width: 250px;
+
+}
+#wisdomViewContainer .search-box:focus-within {
+
+    border-color: rgba(255, 215, 0, 0.4);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+
+}
+#wisdomViewContainer .search-box input {
+
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    width: 100%;
+
+}
+#wisdomViewContainer .search-box input::placeholder {
+
+    color: var(--text-secondary);
+
+}
+#wisdomViewContainer .search-btn {
+
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    opacity: 0.7;
+    transition: var(--transition-smooth);
+
+}
+#wisdomViewContainer .search-btn:hover {
+
+    opacity: 1;
+    transform: scale(1.1);
+
+}
+#wisdomViewContainer .hero-section {
+
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+
+}
+#wisdomViewContainer .hero-content {
+
+    text-align: center;
+    padding: 4rem 3rem;
+    max-width: 800px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+
+}
+#wisdomViewContainer .hero-content::before {
+
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.05) 0%, transparent 70%);
+    animation: heroGlow 6s ease-in-out infinite;
+
+}
+@keyframes heroGlow {
+
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+
+}
+#wisdomViewContainer .hero-om {
+
+    font-size: 5rem;
+    color: var(--primary-gold);
+    margin-bottom: 1.5rem;
+    animation: heroOmFloat 4s ease-in-out infinite;
+    font-family: var(--font-devanagari);
+    position: relative;
+    z-index: 1;
+
+}
+@keyframes heroOmFloat {
+
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+
+}
+#wisdomViewContainer .hero-title {
+
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+
+}
+#wisdomViewContainer .hero-subtitle {
+
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+
+}
+#wisdomViewContainer .hero-stats {
+
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    position: relative;
+    z-index: 1;
+
+}
+#wisdomViewContainer .stat-item {
+
+    text-align: center;
+
+}
+#wisdomViewContainer .stat-number {
+
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-gold);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+
+}
+#wisdomViewContainer .stat-label {
+
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+
+}
+#wisdomViewContainer .categories-section {
+
+    padding: 4rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+
+}
+#wisdomViewContainer .section-header {
+
+    text-align: center;
+    margin-bottom: 3rem;
+
+}
+#wisdomViewContainer .section-title {
+
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    position: relative;
+    display: inline-block;
+
+}
+#wisdomViewContainer .section-title::after {
+
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--primary-gold);
+    border-radius: 2px;
+
+}
+#wisdomViewContainer .section-subtitle {
+
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-top: 1.5rem;
+
+}
+#wisdomViewContainer .category-grid {
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+
+}
+#wisdomViewContainer .category-tile {
+
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2.5rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 280px;
+
+}
+#wisdomViewContainer .category-tile::before {
+
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--tile-color), transparent);
+    opacity: 0;
+    transition: var(--transition-smooth);
+
+}
+#wisdomViewContainer .category-tile:hover::before {
+
+    opacity: 1;
+
+}
+#wisdomViewContainer .category-tile:hover {
+
+    transform: translateY(-8px) scale(1.02);
+    border-color: var(--tile-color);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        0 0 40px var(--tile-glow);
+
+}
+#wisdomViewContainer .tile-icon {
+
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+    animation: tileIconFloat 3s ease-in-out infinite;
+
+}
+@keyframes tileIconFloat {
+
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+
+}
+#wisdomViewContainer .tile-name {
+
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+
+}
+#wisdomViewContainer .tile-count {
+
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+
+}
+#wisdomViewContainer .tile-description {
+
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+
+}
+#wisdomViewContainer .tile-shine {
+
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.03) 50%,
+        transparent 70%
+    );
+    transform: rotate(45deg);
+    transition: var(--transition-smooth);
+    pointer-events: none;
+
+}
+#wisdomViewContainer .category-tile:hover .tile-shine {
+
+    animation: shineSweep 1.5s ease-in-out;
+
+}
+@keyframes shineSweep {
+
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+
+}
+#wisdomViewContainer .category-tile::after {
+
+    content: '✦';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1rem;
+    color: var(--tile-color);
+    opacity: 0.3;
+    transition: var(--transition-smooth);
+
+}
+#wisdomViewContainer .category-tile:hover::after {
+
+    opacity: 0.8;
+    transform: rotate(45deg) scale(1.2);
+
+}
+#wisdomViewContainer .items-section {
+
+    padding: 8rem 2rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: none;
+
+}
+#wisdomViewContainer .items-section.active {
+
+    display: block;
+    animation: fadeInUp 0.6s ease-out;
+
+}
+@keyframes fadeInUp {
+
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+
+}
+#wisdomViewContainer .items-header {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+}
+#wisdomViewContainer .back-btn {
+
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    padding: 0.7rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+
+}
+#wisdomViewContainer .back-btn:hover {
+
+    background: rgba(255, 215, 0, 0.15);
+    border-color: var(--primary-gold);
+    transform: translateX(-4px);
+
+}
+#wisdomViewContainer .items-title {
+
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: var(--text-primary);
+
+}
+#wisdomViewContainer .items-count {
+
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+
+}
+#wisdomViewContainer .items-grid {
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+
+}
+#wisdomViewContainer .item-card {
+
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 1.8rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+}
+#wisdomViewContainer .item-card::before {
+
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--item-color);
+    opacity: 0;
+    transition: var(--transition-smooth);
+
+}
+#wisdomViewContainer .item-card:hover::before {
+
+    opacity: 1;
+
+}
+#wisdomViewContainer .item-card:hover {
+
+    transform: translateY(-6px);
+    border-color: var(--item-color);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 30px var(--item-glow);
+
+}
+#wisdomViewContainer .item-id {
+
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-family: monospace;
+    letter-spacing: 1px;
+
+}
+#wisdomViewContainer .item-name {
+
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+
+}
+#wisdomViewContainer .item-deity {
+
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--item-color);
+    font-weight: 500;
+
+}
+#wisdomViewContainer .item-deity::before {
+
+    content: '✦';
+    font-size: 0.7rem;
+
+}
+#wisdomViewContainer .item-meta {
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+
+}
+#wisdomViewContainer .item-tag {
+
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    transition: var(--transition-smooth);
+
+}
+#wisdomViewContainer .item-card:hover .item-tag {
+
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--item-color);
+    color: var(--item-color);
+
+}
+#wisdomViewContainer .item-preview {
+
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-top: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+}
+#wisdomViewContainer .item-arrow {
+
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.2rem;
+    color: var(--item-color);
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: var(--transition-smooth);
+
+}
+#wisdomViewContainer .item-card:hover .item-arrow {
+
+    opacity: 1;
+    transform: translateX(0);
+
+}
+#wisdomViewContainer .modal-overlay {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+
+}
+#wisdomViewContainer .modal-overlay.active {
+
+    opacity: 1;
+    visibility: visible;
+
+}
+#wisdomViewContainer .modal-content {
+
+    max-width: 800px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 2.5rem;
+    position: relative;
+    transform: scale(0.9) translateY(20px);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+}
+#wisdomViewContainer .modal-overlay.active .modal-content {
+
+    transform: scale(1) translateY(0);
+
+}
+#wisdomViewContainer .modal-close {
+
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-smooth);
+    z-index: 10;
+
+}
+#wisdomViewContainer .modal-close:hover {
+
+    background: rgba(231, 76, 60, 0.2);
+    border-color: var(--primary-red);
+    transform: rotate(90deg);
+
+}
+#wisdomViewContainer .detail-header {
+
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--glass-border);
+
+}
+#wisdomViewContainer .detail-icon {
+
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: iconPulse 2s ease-in-out infinite;
+
+}
+@keyframes iconPulse {
+
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+
+}
+#wisdomViewContainer .detail-name {
+
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+
+}
+#wisdomViewContainer .detail-deity {
+
+    font-size: 1rem;
+    color: var(--primary-gold);
+    font-weight: 500;
+
+}
+#wisdomViewContainer .detail-section {
+
+    margin-bottom: 1.5rem;
+
+}
+#wisdomViewContainer .detail-section-title {
+
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    color: var(--primary-gold);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+}
+#wisdomViewContainer .detail-section-title::before {
+
+    content: '◆';
+    font-size: 0.7rem;
+
+}
+#wisdomViewContainer .detail-text {
+
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 0.95rem;
+
+}
+#wisdomViewContainer .detail-list {
+
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+}
+#wisdomViewContainer .detail-list li {
+
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    padding-left: 1.5rem;
+    position: relative;
+
+}
+#wisdomViewContainer .detail-list li::before {
+
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: var(--primary-gold);
+    font-size: 0.7rem;
+
+}
+#wisdomViewContainer .detail-tags {
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+}
+#wisdomViewContainer .detail-tag {
+
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    color: var(--primary-gold);
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    transition: var(--transition-smooth);
+
+}
+#wisdomViewContainer .detail-tag:hover {
+
+    background: rgba(255, 215, 0, 0.2);
+    transform: translateY(-2px);
+
+}
+#wisdomViewContainer .detail-mantra {
+
+    background: rgba(255, 215, 0, 0.05);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    margin: 1rem 0;
+
+}
+#wisdomViewContainer .detail-mantra-text {
+
+    font-family: var(--font-devanagari);
+    font-size: 1.3rem;
+    color: var(--primary-gold);
+    line-height: 2;
+    margin-bottom: 1rem;
+
+}
+#wisdomViewContainer .detail-mantra-meaning {
+
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-style: italic;
+
+}
+#wisdomViewContainer .about-section {
+
+    padding: 4rem 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+
+}
+#wisdomViewContainer .about-content {
+
+    padding: 3rem;
+    text-align: center;
+
+}
+#wisdomViewContainer .about-content h2 {
+
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+
+}
+#wisdomViewContainer .about-content > p {
+
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+
+}
+#wisdomViewContainer .about-features {
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+
+}
+#wisdomViewContainer .feature {
+
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    transition: var(--transition-smooth);
+
+}
+#wisdomViewContainer .feature:hover {
+
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-4px);
+    border-color: var(--primary-gold);
+
+}
+#wisdomViewContainer .feature-icon {
+
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+
+}
+#wisdomViewContainer .feature h3 {
+
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+
+}
+#wisdomViewContainer .feature p {
+
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.6;
+
+}
+#wisdomViewContainer .footer-content {
+
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+
+}
+#wisdomViewContainer .footer-logo {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    color: var(--primary-gold);
+
+}
+#wisdomViewContainer .footer-text {
+
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+
+}
+#wisdomViewContainer .footer-links {
+
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+
+}
+#wisdomViewContainer .footer-links a {
+
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: var(--transition-smooth);
+    position: relative;
+
+}
+#wisdomViewContainer .footer-links a::after {
+
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--primary-gold);
+    transition: var(--transition-smooth);
+
+}
+#wisdomViewContainer .footer-links a:hover {
+
+    color: var(--primary-gold);
+
+}
+#wisdomViewContainer .footer-links a:hover::after {
+
+    width: 100%;
+
+}
+#wisdomViewContainer .copyright {
+
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.8rem;
+    margin-top: 1rem;
+
+}
+#wisdomViewContainer ::-webkit-scrollbar {
+
+    width: 8px;
+
+}
+#wisdomViewContainer ::-webkit-scrollbar-track {
+
+    background: rgba(0, 0, 0, 0.2);
+
+}
+#wisdomViewContainer ::-webkit-scrollbar-thumb {
+
+    background: rgba(255, 215, 0, 0.3);
+    border-radius: 4px;
+
+}
+#wisdomViewContainer ::-webkit-scrollbar-thumb:hover {
+
+    background: rgba(255, 215, 0, 0.5);
+
+}
+@media (max-width: 768px) {
+#wisdomViewContainer .header-content {
+
+        flex-wrap: wrap;
+        padding: 0.8rem 0;
+    
+}
+#wisdomViewContainer .main-nav {
+
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        gap: 1rem;
+    
+}
+#wisdomViewContainer .search-box {
+
+        min-width: auto;
+        flex: 1;
+    
+}
+#wisdomViewContainer .hero-title {
+
+        font-size: 2rem;
+    
+}
+#wisdomViewContainer .hero-stats {
+
+        flex-direction: column;
+        gap: 1.5rem;
+    
+}
+#wisdomViewContainer .category-grid {
+
+        grid-template-columns: 1fr;
+    
+}
+#wisdomViewContainer .items-grid {
+
+        grid-template-columns: 1fr;
+    
+}
+#wisdomViewContainer .items-header {
+
+        flex-direction: column;
+        text-align: center;
+    
+}
+#wisdomViewContainer .modal-content {
+
+        padding: 1.5rem;
+        margin: 1rem;
+    
+}
+#wisdomViewContainer .about-features {
+
+        grid-template-columns: 1fr;
+    
+}
+#wisdomViewContainer .floating-om, #wisdomViewContainer .floating-lotus, #wisdomViewContainer .floating-diya {
+
+        display: none;
+    
+}
+}
+@media (max-width: 480px) {
+#wisdomViewContainer .hero-section {
+
+        padding: 7rem 1rem 2rem;
+    
+}
+#wisdomViewContainer .hero-content {
+
+        padding: 2rem 1.5rem;
+    
+}
+#wisdomViewContainer .hero-title {
+
+        font-size: 1.6rem;
+    
+}
+#wisdomViewContainer .section-title {
+
+        font-size: 1.6rem;
+    
+}
+#wisdomViewContainer .category-tile {
+
+        padding: 1.8rem;
+        min-height: 220px;
+    
+}
+#wisdomViewContainer .tile-icon {
+
+        font-size: 3rem;
+    
+}
+#wisdomViewContainer .tile-name {
+
+        font-size: 1.2rem;
+    
+}
+}
+#wisdomViewContainer .loading-shimmer {
+
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.03) 25%,
+        rgba(255, 255, 255, 0.08) 50%,
+        rgba(255, 255, 255, 0.03) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 16px;
+    min-height: 180px;
+
+}
+@keyframes shimmer {
+
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+
+}
+#wisdomViewContainer .fade-in-up {
+
+    animation: fadeInUp 0.6s ease-out forwards;
+
+}
+#wisdomViewContainer .fade-in {
+
+    animation: fadeIn 0.5s ease-out forwards;
+
+}
+#wisdomViewContainer .stagger-1 {
+ animation-delay: 0.05s; 
+}
+#wisdomViewContainer .stagger-2 {
+ animation-delay: 0.1s; 
+}
+#wisdomViewContainer .stagger-3 {
+ animation-delay: 0.15s; 
+}
+#wisdomViewContainer .stagger-4 {
+ animation-delay: 0.2s; 
+}
+#wisdomViewContainer .stagger-5 {
+ animation-delay: 0.25s; 
+}
+#wisdomViewContainer .stagger-6 {
+ animation-delay: 0.3s; 
 }
 

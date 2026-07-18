@@ -1024,6 +1024,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+window.initAstrologyCalculationListeners = function() {
 // 1. Personalized Kundli Calculation
 const btnCalculate = document.getElementById('btnCalculate');
 if (btnCalculate) {
@@ -1364,7 +1365,7 @@ if (btnPrashna) {
             btnPrashna.textContent = '\ud83d\udd2e Cast Prashna';
         }
     });
-}
+};
 
 // ── Advanced Chart Controls ────────────────────────────────────────────────
 window.hideRashiNumbers = false;
@@ -4114,5 +4115,58 @@ window.renderPrashnaDetail = function(container, data) {
     if (prashnaCont && data && data.d1_chart) {
         prashnaCont.innerHTML = getNorthIndianSVG(data.d1_chart, ascSign);
     }
+};
+
+window.initAstrology = function(tab = '', queryParams = {}) {
+    const today = new Date().toISOString().split('T')[0];
+    const gocharDateEl = document.getElementById('gocharDate');
+    if (gocharDateEl) gocharDateEl.value = today;
+    const birthDateEl = document.getElementById('birthDate');
+    if (birthDateEl && !birthDateEl.value) birthDateEl.value = "1994-01-05";
+    
+    // Bind calculation listeners
+    if (typeof window.initAstrologyCalculationListeners === 'function') {
+        window.initAstrologyCalculationListeners();
+    }
+    
+    // Initialize saffron controls bar for Panchang/Maasik navigation
+    if (typeof initSaffronControls === 'function') {
+        initSaffronControls();
+    }
+    
+    // Bind save buttons
+    const btnSavePanchangPlace = document.getElementById('btnSavePanchangPlace');
+    const pPlaceInput = document.getElementById('panchangPlaceInput');
+    const mPlaceInput = document.getElementById('maasikPlaceInput');
+    if (btnSavePanchangPlace) {
+        btnSavePanchangPlace.addEventListener('click', () => {
+            const val = pPlaceInput ? pPlaceInput.value : '';
+            if (val) {
+                sessionStorage.setItem('savedPanchangPlace', val);
+                if (mPlaceInput) mPlaceInput.value = val;
+                btnSavePanchangPlace.textContent = '✅';
+                setTimeout(() => { btnSavePanchangPlace.textContent = '💾'; }, 1500);
+            }
+        });
+    }
+    const btnSaveMaasikPlace = document.getElementById('btnSaveMaasikPlace');
+    if (btnSaveMaasikPlace) {
+        btnSaveMaasikPlace.addEventListener('click', () => {
+            const val = mPlaceInput ? mPlaceInput.value : '';
+            if (val) {
+                sessionStorage.setItem('savedPanchangPlace', val);
+                if (pPlaceInput) pPlaceInput.value = val;
+                btnSaveMaasikPlace.textContent = '✅';
+                setTimeout(() => { btnSaveMaasikPlace.textContent = '💾'; }, 1500);
+            }
+        });
+    }
+
+    // Trigger router and layouts
+    routeAstrologyPage(tab, queryParams);
+    applyLayoutStyles(tab);
+    initGlossaryTooltips();
+    initScrollAnimations();
+    setupDirectoryTooltipsAndClicks();
 };
 
