@@ -67,8 +67,17 @@ gtag('config','G-DZ2CM1SBWW');
 <script src="./Features/Astrology/vedic_database.js?v=1.1.8"></script>
 </head>
 
-<body class="homepage-layout theme-focus">
-
+<body class="homepage-layout">
+<script>
+(function(){
+    const hr = new Date().getHours();
+    const auto = (hr >= 6 && hr < 18) ? 'theme-bright' : 'theme-dark';
+    const saved = localStorage.getItem('shunya-theme-name');
+    const t = ['theme-bright','theme-dark'].includes(saved) ? saved : auto;
+    document.body.classList.add(t);
+    if (t === 'theme-dark') document.body.classList.add('dark-theme');
+})();
+</script>
 <!-- HEADER -->
 <header class="header">
 <div class="logo-area">

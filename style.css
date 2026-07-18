@@ -84,30 +84,6 @@ body.theme-dark {
     --glass-bg-light: rgba(22, 27, 34, 0.45);
 }
 
-/* ── THEME: MANUSCRIPT (Vedic Parchment) ──────────────────────────────── */
-body.theme-manuscript {
-    --bg-color:       #f5e6c8; /* Parchment */
-    --bg-gradient:    radial-gradient(ellipse at 30% 20%, rgba(226, 61, 40, 0.05) 0%, transparent 60%),
-                      radial-gradient(ellipse at 70% 80%, rgba(26, 35, 126, 0.05) 0%, transparent 60%),
-                      linear-gradient(145deg, #f5e6c8 0%, #ecdcb9 50%, #e2d1aa 100%);
-    --text-color:     #1a237e; /* Deep Krishna (high contrast) */
-    --text-muted:     #2e7d32; /* Tulsi Green */
-    --text-gold:      #e23d28; /* Vermilion */
-    --card-bg:        rgba(255, 252, 240, 0.94); /* Very clean parchment look card */
-    --card-border:    2px solid #e23d28; /* Stark Vermilion borders */
-    --glass-border:   rgba(226, 61, 40, 0.2);
-    --glass-border-strong: rgba(226, 61, 40, 0.5);
-    --accent-color:   #ff9933; /* Saffron */
-    --accent-gradient: linear-gradient(135deg, #ff9933 0%, #e23d28 100%);
-    --header-bg:      rgba(245, 230, 200, 0.95);
-    --shadow:         0 8px 30px rgba(226, 61, 40, 0.15), 0 4px 10px rgba(0,0,0,0.06);
-    --title-color:    #e23d28; /* Vermilion */
-    --tile-bg:        rgba(253, 247, 232, 0.95);
-    --sidebar-bg:     #ecdcb9;
-    --minicard-bg:    #e2d1aa;
-    --glass-bg:       rgba(255, 252, 240, 0.85);
-    --glass-bg-light: rgba(255, 255, 255, 0.6);
-}
 
 /* ── THEME: BRIGHT (Morning Aarti) ──────────────────────────────────────── */
 body.theme-bright {
@@ -134,75 +110,6 @@ body.theme-bright {
     --glass-bg-light: rgba(255, 250, 230, 0.6);
 }
 
-/* ── THEME: FOCUS (Green Mode) ─────────────────────────────────────────── */
-body.theme-focus {
-    --bg-color:       transparent;
-    --bg-gradient:    linear-gradient(rgba(255,245,185,.18),rgba(255,245,185,.18));
-    --glass-bg:       rgba(255,252,220,.58);
-    --glass-bg-light: rgba(255,255,240,.45);
-    --card-bg:        rgba(255,248,205,.62);
-    --glass-border:   rgba(255,185,40,.45);
-    --glass-border-strong: rgba(230,145,0,.75);
-    --text-color:     #5d3900;
-    --text-muted:     #8b4b00;
-    --title-color:    #8b4b00;
-    --accent-color:   #d98200;
-    --accent-gradient: linear-gradient(135deg, var(--saffron) 0%, var(--temple-gold) 100%);
-    --shadow:         0 8px 32px rgba(0, 0, 0, 0.15);
-    --header-bg:      rgba(255,252,220,.85);
-    --tile-bg:        rgba(255,252,220,.45);
-}
-
-/* ── THEME: PALE (Sandhya Twilight) ─────────────────────────────────────── */
-body.theme-pale {
-    --bg-color:       #e8ece9; /* Vibhuti Ash */
-    --bg-gradient:    radial-gradient(ellipse at 30% 30%, rgba(46, 125, 50, 0.08) 0%, transparent 50%),
-                      radial-gradient(ellipse at 70% 70%, rgba(255, 105, 180, 0.06) 0%, transparent 50%),
-                      linear-gradient(145deg, #e8ece9 0%, #dbdedb 100%);
-    --text-color:     #1d2d44; /* Dark slate */
-    --text-muted:     #2e7d32; /* Tulsi Green */
-    --text-gold:      #ff9933; /* Saffron */
-    --card-bg:        rgba(242, 246, 243, 0.92);
-    --card-border:    2px solid #2e7d32; /* Tulsi Green borders */
-    --glass-border:   rgba(46, 125, 50, 0.2);
-    --glass-border-strong: rgba(46, 125, 50, 0.55);
-    --accent-color:   #2e7d32; /* Tulsi Green */
-    --accent-gradient: linear-gradient(135deg, #2e7d32 0%, #ff69b4 100%);
-    --header-bg:      rgba(232, 236, 233, 0.95);
-    --shadow:         0 8px 30px rgba(46, 125, 50, 0.12), 0 4px 10px rgba(0, 0, 0, 0.05);
-    --title-color:    #ff69b4; /* Lotus Pink */
-    --tile-bg:        #edf1ee;
-    --sidebar-bg:     #dbdedb;
-    --minicard-bg:    #d0eed8;
-    --glass-bg:       rgba(242, 246, 243, 0.86);
-    --glass-bg-light: rgba(250, 252, 250, 0.6);
-}
-
-/* ── THEME: INDIGO (Krishna Night) ──────────────────────────────────────── */
-body.theme-indigo {
-    --bg-color:       #04040a;
-    --bg-gradient:    radial-gradient(ellipse at 20% 0%, rgba(99, 102, 241, 0.2) 0%, transparent 50%),
-                      radial-gradient(ellipse at 80% 100%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
-                      radial-gradient(ellipse at 50% 50%, rgba(26, 26, 62, 0.5) 0%, transparent 70%),
-                      linear-gradient(160deg, #04040a 0%, #0a0a18 50%, #060610 100%);
-    --text-color:     #e8e6f0;
-    --text-muted:     #8b87a8;
-    --text-gold:      #a89cf5;
-    --card-bg:        rgba(20, 20, 45, 0.7);
-    --card-border:    1.5px solid rgba(129, 140, 248, 0.2);
-    --glass-border:   rgba(129, 140, 248, 0.08);
-    --glass-border-strong: rgba(129, 140, 248, 0.35);
-    --accent-color:   #a89cf5;
-    --accent-gradient: linear-gradient(135deg, #8c7cf0, #c8bcf5);
-    --header-bg:      rgba(4, 4, 10, 0.92);
-    --shadow:         0 8px 40px rgba(0, 0, 0, 0.6);
-    --title-color:    #c8bcf5;
-    --tile-bg:        #1a1a3e;
-    --sidebar-bg:     #0e0e26;
-    --minicard-bg:    #2a2a5a;
-    --glass-bg:       rgba(20, 20, 45, 0.65);
-    --glass-bg-light: rgba(30, 30, 65, 0.4);
-}
 
 /* ── BASE STYLES ────────────────────────────────────────────────────────── */
 *, *::before, *::after {
@@ -1661,7 +1568,7 @@ button:hover{
 }
 
 .right-widgets-sidebar .widget-box {
-    background: #62b95b;
+    background: var(--card-bg);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: var(--card-border);
@@ -2224,10 +2131,6 @@ button:hover{
     transform: translateX(2px);
 }
 
-body.theme-manuscript .theme-dropdown-item:hover {
-    background: rgba(0, 0, 0, 0.05);
-}
-
 
 
 /* =========================================================================
@@ -2648,13 +2551,21 @@ body.theme-manuscript .theme-dropdown-item:hover {
  display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; 
 }
 .astrology-container .cal-cell {
-
-    background: var(--tile-bg); border: var(--card-border);
-    border-radius: 6px; padding: 5px 6px; cursor: pointer;
+    background: var(--tile-bg);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 6px 8px;
+    cursor: pointer;
     aspect-ratio: 1 / 1;
-    display: flex; flex-direction: column; gap: 2px; transition: all 0.18s;
-    position: relative; overflow: hidden;
-
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15), 
+                inset 2px 2px 3px rgba(255, 255, 255, 0.5), 
+                inset -2px -2px 3px rgba(0, 0, 0, 0.2);
 }
 .astrology-container .cal-cell:hover {
  border-color: #a23922; background: rgba(162,57,34,0.12); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(162,57,34,0.15); 

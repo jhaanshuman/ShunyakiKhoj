@@ -113,7 +113,17 @@
     }
 </style>
 </head>
-<body class="theme-focus dark-theme">
+<body>
+<script>
+(function(){
+    const hr = new Date().getHours();
+    const auto = (hr >= 6 && hr < 18) ? 'theme-bright' : 'theme-dark';
+    const saved = localStorage.getItem('shunya-theme-name');
+    const t = ['theme-bright','theme-dark'].includes(saved) ? saved : auto;
+    document.body.className = t;
+    if (t === 'theme-dark') document.body.classList.add('dark-theme');
+})();
+</script>
 
 <!-- HEADER -->
 <header class="header">

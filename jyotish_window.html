@@ -542,9 +542,12 @@ function startLiveClock() {
 // ── Auto-run on load ─────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
     // 1. Sync Active Theme
-    const savedTheme = localStorage.getItem('shunya-theme-name') || 'theme-focus';
-    document.body.className = savedTheme;
-    if (['theme-dark', 'theme-focus', 'theme-indigo'].includes(savedTheme)) {
+    const hr = new Date().getHours();
+    const autoDefaultTheme = (hr >= 6 && hr < 18) ? 'theme-bright' : 'theme-dark';
+    const savedTheme = localStorage.getItem('shunya-theme-name');
+    const activeTheme = ['theme-bright', 'theme-dark'].includes(savedTheme) ? savedTheme : autoDefaultTheme;
+    document.body.className = activeTheme;
+    if (activeTheme === 'theme-dark') {
         document.body.classList.add('dark-theme');
     }
 

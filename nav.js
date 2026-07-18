@@ -489,9 +489,9 @@ function setupSearch(menuItems) {
 // DARK THEME / LIGHT THEME TOGGLE ENGINE
 // ==========================================
 function applyTheme(themeId) {
-    document.body.classList.remove('theme-dark', 'theme-manuscript', 'theme-bright', 'theme-focus', 'theme-pale', 'theme-indigo', 'dark-theme');
+    document.body.classList.remove('theme-dark', 'theme-bright', 'dark-theme');
     document.body.classList.add(themeId);
-    if (['theme-dark', 'theme-indigo'].includes(themeId)) {
+    if (themeId === 'theme-dark') {
         document.body.classList.add('dark-theme');
     }
     localStorage.setItem('shunya-theme-name', themeId);
@@ -510,8 +510,11 @@ function setupThemeToggle() {
         headerIcons.insertBefore(themeToggleBtn, headerIcons.firstChild);
     }
 
-    const savedTheme = localStorage.getItem('shunya-theme-name') || 'theme-focus';
-    applyTheme(savedTheme);
+    const hr = new Date().getHours();
+    const autoDefaultTheme = (hr >= 6 && hr < 18) ? 'theme-bright' : 'theme-dark';
+    const savedTheme = localStorage.getItem('shunya-theme-name');
+    const activeTheme = ['theme-bright', 'theme-dark'].includes(savedTheme) ? savedTheme : autoDefaultTheme;
+    applyTheme(activeTheme);
 
     themeToggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -526,12 +529,8 @@ function setupThemeToggle() {
         dropdown.className = 'theme-dropdown-panel';
         
         const themesList = [
-            { id: 'theme-dark', name: '🌌 Dark Mode', bg: '#0d1117' },
-            { id: 'theme-manuscript', name: '📜 Ancient Manuscript', bg: '#f5e6c8' },
-            { id: 'theme-bright', name: '☀️ Surya Aarti', bg: '#fff8dc' },
-            { id: 'theme-focus', name: '👁️ Focus Mode', bg: '#92f195' },
-            { id: 'theme-pale', name: '🍃 Ash & Tulsi', bg: '#e8ece9' },
-            { id: 'theme-indigo', name: '🍇 Royal Indigo', bg: '#030712' }
+            { id: 'theme-bright', name: '☀️ Surya Aarti (Bright)', bg: '#fff8dc' },
+            { id: 'theme-dark', name: '🌌 Dark Mode', bg: '#0d1117' }
         ];
 
         themesList.forEach(t => {
