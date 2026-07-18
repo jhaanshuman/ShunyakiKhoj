@@ -1,61 +1,157 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Home / Main Portal -->
+  <url>
+    <loc>https://shunyakikhoj.co.in/</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
 
-<url>
-<loc>https://shunyakikhoj.co.in/</loc>
-<lastmod>2026-03-12</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1.0</priority>
-</url>
+  <!-- Panchang Pages -->
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=home&amp;tab=panchang</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=home&amp;tab=maasik</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=home&amp;tab=muhurtas</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
 
-<url>
-<loc>https://shunyakikhoj.co.in/dictionary</loc>
-<lastmod>2026-03-12</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.9</priority>
-</url>
+  <!-- Astrology Suite Pages -->
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=astrology&amp;tab=kundli</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.92</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=astrology&amp;tab=gochar</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.88</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=astrology&amp;tab=milan</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=astrology&amp;tab=dasha</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=astrology&amp;tab=numerology</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.82</priority>
+  </url>
 
-<url>
-<loc>https://shunyakikhoj.co.in/text-tools</loc>
-<lastmod>2026-03-12</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
+  <!-- Sanskrit Tools -->
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=dictionary</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=grammar</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=transliteration</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.82</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=text-tools</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
-<url>
-<loc>https://shunyakikhoj.co.in/research</loc>
-<lastmod>2026-03-12</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
+  <!-- Knowledge & Research -->
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=research</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=learning</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=corpus</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=ai-tools</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=ai-knowledge-lab</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+  </url>
 
-<url>
-<loc>https://shunyakikhoj.co.in/learning</loc>
-<lastmod>2026-03-12</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
-
-<url>
-<loc>https://shunyakikhoj.co.in/corpus</loc>
-<lastmod>2026-03-12</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
-
-<url>
-<loc>https://shunyakikhoj.co.in/ai-tools</loc>
-<lastmod>2026-03-12</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
-
-<url>
-<loc>https://shunyakikhoj.co.in/ai-knowledge-lab</loc>
-<lastmod>2026-03-12</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
+  <!-- Directory / Events Listings -->
+  <url>
+    <loc>https://shunyakikhoj.co.in/list_events.html</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.82</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/list_events.html?category=festival</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.78</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/list_events.html?category=puja</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/list_events.html?category=mantra</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/list_events.html?category=ritual</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
 
 </urlset>

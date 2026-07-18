@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /UserLog/
+Disallow: /_vercel/
 
-Sitemap: https://sanskrit.gt.tc/sitemap.xml
+Sitemap: https://shunyakikhoj.co.in/sitemap.xml
