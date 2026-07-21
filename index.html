@@ -169,6 +169,10 @@ gtag('config','G-DZ2CM1SBWW');
     if (t === 'theme-dark') document.body.classList.add('dark-theme');
 })();
 </script>
+<div class="cosmic-bg">
+    <div class="cosmic-nebula-purple"></div>
+    <div class="cosmic-nebula-amber"></div>
+</div>
 <!-- HEADER -->
 <header class="header">
 <div class="logo-area">
@@ -193,9 +197,9 @@ gtag('config','G-DZ2CM1SBWW');
     <button class="auth-close" onclick="closeAuth()">✕</button>
     <h2 id="authTitle">Login</h2>
     <div class="social-buttons">
-      <button class="google-btn">Continue with Google</button>
-      <button class="facebook-btn">Continue with Facebook</button>
-      <button class="instagram-btn">Continue with Instagram</button>
+      <button class="google-btn" onclick="loginWithGoogle()">Continue with Google</button>
+      <button class="facebook-btn" onclick="alert('Facebook Login coming soon. Please use Continue with Google.')">Continue with Facebook</button>
+      <button class="instagram-btn" onclick="alert('Instagram Login coming soon. Please use Continue with Google.')">Continue with Instagram</button>
     </div>
     <div class="divider"><span>or</span></div>
     <input id="loginEmail" placeholder="Email">
@@ -208,63 +212,30 @@ gtag('config','G-DZ2CM1SBWW');
   </div>
 </div>
 
-<!-- JYOTISH MODAL OVERLAY -->
-<div id="jyotishModal" class="jyotish-modal-overlay">
-  <div class="jyotish-modal-card">
-    <button class="jyotish-modal-close" onclick="closeJyotishModal()">✕</button>
-    
-    <h2 id="modalFeatureTitle" style="color: #fbbf24; font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 10px;">Detailed Analysis</h2>
-    
-    <div class="modal-input-container">
-        <div id="modalFormBirth">
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
-                <div style="flex:1; min-width:140px;">
-                    <label style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Date of Birth</label>
-                    <input type="date" id="mDate" value="1994-01-05" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
-                </div>
-                <div style="flex:1; min-width:100px;">
-                    <label style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Time of Birth</label>
-                    <input type="time" id="mTime" value="20:00" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
-                </div>
-                <div style="flex:2; min-width:180px;">
-                    <label style="font-size:0.75rem; color:#94a3b8; font-weight:700;">📍 City / Place <span style="color:#475569;font-weight:400;">(any city worldwide)</span></label>
-                    <input type="text" id="mPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
-                </div>
-            </div>
-            <button onclick="triggerModalCalculation()" style="background:linear-gradient(90deg,#6366f1,#a855f7); color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:700; width:100%;">Calculate Astrological Placement</button>
+
+
+<!-- LEFT ACCORDION DRAWER MENU -->
+<div class="menu-overlay" id="leftDrawerOverlay"></div>
+<div class="mobile-menu" id="leftDrawerMenu" style="display:flex; flex-direction:column; padding-top: 0;">
+    <div class="drawer-header" style="display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--border-color);">
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.4rem;">🕉️</span>
+            <span style="font-weight: 800; font-size: 1.15rem; color: var(--title-color);">Sanskrit AI Menu</span>
         </div>
-        
-        <div id="modalFormMilan" style="display:none;">
-            <div style="display:flex; gap:15px; flex-wrap:wrap; margin-bottom:12px;">
-                <div style="flex:1; min-width:180px;">
-                    <h5 style="color:#fbbf24; margin-bottom:6px; font-size:0.85rem;">Groom (Boy)</h5>
-                    <input type="date" id="mBoyDate" value="1994-01-05" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px; margin-bottom:6px;">
-                    <input type="time" id="mBoyTime" value="20:00" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px; margin-bottom:6px;">
-                    <input type="text" id="mBoyPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
-                </div>
-                <div style="flex:1; min-width:180px;">
-                    <h5 style="color:#fbbf24; margin-bottom:6px; font-size:0.85rem;">Bride (Girl)</h5>
-                    <input type="date" id="mGirlDate" value="1995-03-10" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px; margin-bottom:6px;">
-                    <input type="time" id="mGirlTime" value="08:30" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px; margin-bottom:6px;">
-                    <input type="text" id="mGirlPlace" value="Patna, Bihar, India" placeholder="Search any city…" autocomplete="off" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px; border-radius:4px;">
-                </div>
-            </div>
-            <button onclick="triggerModalCalculation()" style="background:linear-gradient(90deg,#6366f1,#a855f7); color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:700; width:100%;">Calculate Milan Match</button>
-        </div>
+        <button id="leftDrawerCloseBtn" style="background: none; border: none; color: var(--text-color); font-size: 1.3rem; cursor: pointer; padding: 4px;">✕</button>
     </div>
-    
-    <div id="modalResults" style="max-height:420px; overflow-y:auto; padding-top:15px; border-top:1px solid rgba(255,255,255,0.06);">
+    <div class="drawer-content" id="drawerAccordion" style="flex:1; overflow-y:auto; padding: 10px 0 30px;">
+        <!-- Filled dynamically by JavaScript -->
     </div>
-  </div>
 </div>
 
-<!-- MOBILE MENU -->
-<div class="menu-overlay"></div>
-<div class="mobile-menu">
+<!-- Custom Context Menu for Favourites -->
+<div id="customContextMenu" class="custom-context-menu" style="display: none;">
+    <div class="context-menu-item" id="ctxFavAction">⭐ Add to Favourites</div>
 </div>
 
 <!-- MAIN ASTROLOGY PORTAL CONTAINER -->
-<div class="container main-portal-container" style="margin-top: 2rem;">
+<div class="container main-portal-container" style="margin-top: 5.5rem;">
 
     <!-- 1. Traditional Status Info Header Card -->
     <div class="glass-card status-header-card" style="margin-bottom: 1.5rem; border: 2.5px solid #a23922; background: var(--card-bg); position: relative; padding: 20px;">
@@ -274,7 +245,10 @@ gtag('config','G-DZ2CM1SBWW');
                 <div>
                     <h2 id="headerMonthTithi" style="margin: 0; font-size: 1.4rem; font-weight: 800; color: var(--title-color);">Loading today's panchang...</h2>
                     <p id="headerPakshaSamvat" style="margin: 3px 0 0 0; font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Calculating Samvatsara and Paksha...</p>
-                    <p id="headerPlaceDisplay" style="margin: 2px 0 0 0; font-size: 0.8rem; color: var(--accent-color); font-weight: 700;">📍 New Delhi, India</p>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px; position: relative;">
+                        <input type="text" id="panchangPlaceInput" value="New Delhi, India" placeholder="Search city..." autocomplete="off" style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); color: var(--text-color); padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; width: 220px; outline: none; transition: all 0.2s;">
+                        <button id="btnSavePanchangPlace" title="Save Location for this Session" style="background: rgba(0,0,0,0.25); border: var(--card-border); color: var(--accent-color); font-size: 0.9rem; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(162,57,34,0.1)'" onmouseout="this.style.background='rgba(0,0,0,0.25)'">💾</button>
+                    </div>
                 </div>
             </div>
             <div style="text-align: right; min-width: 140px;">
@@ -284,24 +258,7 @@ gtag('config','G-DZ2CM1SBWW');
             </div>
         </div>
         
-        <!-- Saffron top festival bar link -->
-        <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed rgba(162, 57, 34, 0.3); font-size: 0.85rem; text-align: center; font-weight: 700; color: var(--title-color);" id="headerFestivalBar">
-            Loading major auspicious transits and fasts...
-        </div>
-    </div>
 
-    <!-- 2. Controls & Search Bar Row -->
-    <div class="glass-card controls-card" style="padding: 15px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; background: rgba(0,0,0,0.22); border: var(--card-border);">
-        <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 280px; position: relative;">
-            <span style="font-size: 1.1rem; color: var(--accent-color);">📍</span>
-            <input type="text" id="panchangPlaceInput" value="New Delhi, India" placeholder="Search any city worldwide..." autocomplete="off" style="flex: 1; background: rgba(0, 0, 0, 0.2); border: var(--card-border); color: var(--text-color); padding: 8px 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 600;">
-            <button id="btnSavePanchangPlace" title="Save Location for this Session" style="background: rgba(0,0,0,0.25); border: var(--card-border); color: var(--accent-color); font-size: 1.1rem; padding: 6px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(162,57,34,0.1)'" onmouseout="this.style.background='rgba(0,0,0,0.25)'">💾</button>
-        </div>
-        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;" class="controls-action-buttons">
-            <button class="ph-today-btn" id="btnAmantaPurnimanta" onclick="toggleAmantaPurnimanta()" style="background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.15); color: var(--text-color); padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">Switch to Amanta</button>
-            <button class="ph-today-btn" id="btnHideChart" onclick="toggleMainChart()" style="background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.15); color: var(--text-color); padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">Hide Chart</button>
-            <button class="ph-today-btn" id="btnThemeSelectorTrigger" style="background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.15); color: var(--title-color); padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px;">🎨 Theme Selector</button>
-        </div>
     </div>
 
     <!-- Main SPA Viewport -->
@@ -314,6 +271,8 @@ gtag('config','G-DZ2CM1SBWW');
             <div class="ph-subtitle" id="phSubDaik" style="font-size: 0.78rem; color: rgba(255,255,255,0.75);">Loading today's panchang...</div>
         </div>
         <div class="ph-controls" style="display: flex; align-items: center; gap: 8px;">
+            <button class="ph-today-btn" id="btnAmantaPurnimanta" onclick="toggleAmantaPurnimanta()" style="background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.15); color: var(--text-color); padding: 5px 12px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">Switch to Amanta</button>
+            <button class="ph-today-btn" id="btnHideChart" onclick="toggleMainChart()" style="background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.15); color: var(--text-color); padding: 5px 12px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">Hide Chart</button>
             <div class="ph-view-toggle" style="display: flex; background: rgba(0,0,0,0.25); border-radius: 6px; overflow: hidden; border: 1.5px solid rgba(255,255,255,0.15);">
                 <button class="ph-view-btn active" id="phViewDayBtn" onclick="switchPancView('day')" style="padding: 5px 12px; border: none; background: transparent; color: #fff; font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;">Day</button>
                 <button class="ph-view-btn" id="phViewMonthBtn" onclick="switchPancView('month')" style="padding: 5px 12px; border: none; background: transparent; color: rgba(255,255,255,0.7); font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;">Month</button>
@@ -331,7 +290,7 @@ gtag('config','G-DZ2CM1SBWW');
         <!-- Timeline and Vedic Time side-by-side row -->
         <div class="timeline-clock-row">
             <!-- Visual Timeline Container -->
-            <div id="drikTimelineContainer" style="background: #ebd9b4; border: 2px solid #a23922; padding: 20px; border-radius: 8px; color: #2d3748; font-family: 'Noto Serif', serif; position: relative; overflow-x: auto; box-shadow: var(--shadow); display: flex; align-items: center; justify-content: center; min-height: 480px; box-sizing: border-box; width: 100%;">
+            <div id="drikTimelineContainer" style="background: #ebd9b4; border: 2px solid #a23922; padding: 20px; border-radius: 8px; color: #2d3748; font-family: 'Noto Serif', serif; position: relative; overflow-x: auto; box-shadow: var(--shadow); box-sizing: border-box; width: 100%;">
                 <div style="text-align: center; padding: 2rem; color: #7c2d12; font-weight: 700;">Loading Panchang for today...</div>
             </div>
 
@@ -530,21 +489,12 @@ gtag('config','G-DZ2CM1SBWW');
     <!-- 7. Portal Welcome & Directory Grid -->
     <div id="homeWelcomeSection" style="display: block;">
         <div class="homepage-three-column-grid">
-            <!-- Left Sidebar for Google Ad -->
-            <aside class="left-ad-sidebar glass-card" style="padding: 15px; background: var(--card-bg); border: var(--card-border); border-radius: 8px;">
-                <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; text-align:center; margin-bottom:8px; font-weight:700;">Advertisement</div>
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1342189574858672"
-                     crossorigin="anonymous"></script>
-                <!-- Left SIdeBar -->
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-1342189574858672"
-                     data-ad-slot="6128623753"
-                     data-ad-format="vertical"
-                     data-full-width-responsive="false"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
+            <!-- Left Menu Sidebar NavBar -->
+            <aside class="left-ad-sidebar glass-card" id="leftMenuSidebar" style="padding: 15px; background: var(--card-bg); border: var(--card-border); border-radius: 8px; overflow-y: auto; max-height: calc(100vh - 150px); transition: all 0.3s ease;">
+                <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; text-align:center; margin-bottom:8px; font-weight:700; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 6px;">Navigation Menu</div>
+                <div class="drawer-content" id="sidebarAccordion" style="padding: 0;">
+                    <!-- Filled dynamically by JavaScript -->
+                </div>
             </aside>
             
             <!-- Center Content: Feature Showcase -->
@@ -771,6 +721,26 @@ gtag('config','G-DZ2CM1SBWW');
         <meta itemprop="dateModified" content="2026-07-19">
     </article>
 
+    <!-- Google AdSense Main Content Ad Box -->
+    <div class="glass-card ad-main-box" style="margin-top: 2rem; padding: 15px; text-align: center; border: var(--card-border); background: var(--card-bg); border-radius: 8px;">
+        <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px; font-weight:700;">Advertisement</div>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1342189574858672" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-1342189574858672"
+             data-ad-slot="6128623753"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             window.addEventListener('load', () => {
+                 const ins = document.querySelector('.ad-main-box ins.adsbygoogle');
+                 if (ins && ins.offsetWidth > 0) {
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                 }
+             });
+        </script>
+    </div>
+
     <!-- 9. Footer copyright / Diagnostic test panel -->
     <footer style="margin-top: 3rem; padding-top: 2rem; border-top: var(--card-border); text-align: center; font-size: 0.9rem; color: var(--text-muted);">
         <p>© 2026 Sanskrit AI Astrological Suite. Enterprise Grade.</p>
@@ -881,7 +851,7 @@ overlay.classList.remove("active");
 
  <script src="/UserLog/auth.js"></script>
 <script src="./geocomplete.js?v=1.0"></script>
-<script src="./jyotish_modal.js?v=1.1.9"></script>
+<script src="./api_helper.js" defer></script>
 <script src="./Features/Astrology/astrology.js?v=1.2.0" defer></script>
 <script src="./Features/Astrology/astrologyView.js" defer></script>
 <script src="./Features/Dictionary/dictionaryView.js" defer></script>
@@ -892,21 +862,7 @@ overlay.classList.remove("active");
 <script src="./Features/Dictionary/guide.js" defer></script>
 <script src="./Features/Dictionary/sanskrit-ai.js" defer></script>
 <script>
-// Open general modal utility
-function openGeneralJyotishModal(feature) {
-    if (typeof openJyotishModal === 'function') {
-        const featureNames = {
-            'kundli': 'Personalised Kundli D1/D9',
-            'gemstone': 'Gemstone Recommendation',
-            'rudraksha': 'Rudraksha Suggestion',
-            'milan': 'Kundli Matching (Milan)',
-            'prashna': 'Prashna Kundali'
-        };
-        openJyotishModal(feature, 'D1', featureNames[feature] || 'Vedic Astrology');
-    }
-}
-
-// Initialise city autocomplete for modal place inputs and API test events
+// Initialise city autocomplete and directory loading
 document.addEventListener('DOMContentLoaded', function() {
     // Fetch and populate Jyotish directory box from JSON
     fetch('Features/Astrology/jyotish_directory.json')
@@ -919,7 +875,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 ).join('');
             }
         })
-        .catch(err => console.error("Failed to load Jyotish directory:", err));
+        .catch(err => {
+            console.warn("Failed to load Jyotish directory from JSON, using fallback:", err);
+            const listEl = document.getElementById('jyotishLinksList');
+            if (listEl) {
+                const fallbackLinks = [
+                    { "name": "Personalised Kundli D1/D9", "url": "Features/Astrology/astrology.html?tab=kundli" },
+                    { "name": "Gemstone Recommendation", "url": "Features/Astrology/astrology.html?tab=gemstone" },
+                    { "name": "Rudraksha Suggestion", "url": "Features/Astrology/astrology.html?tab=rudraksha" },
+                    { "name": "Kundli Matching (Milan)", "url": "Features/Astrology/astrology.html?tab=milan" },
+                    { "name": "Prashna Kundali", "url": "Features/Astrology/astrology.html?tab=prashna" },
+                    { "name": "Daily Rashifal Predictions", "url": "Features/Astrology/astrology.html?tab=rashifal" },
+                    { "name": "Weekly Horoscope Signs", "url": "Features/Astrology/astrology.html?tab=weekly" },
+                    { "name": "Monthly Rashi Transits", "url": "Features/Astrology/astrology.html?tab=maasik" },
+                    { "name": "Yearly Predictions 2026", "url": "Features/Astrology/astrology.html?tab=yearly" }
+                ];
+                listEl.innerHTML = fallbackLinks.map(link => 
+                    `<li><a href="${link.url}">${link.name}</a></li>`
+                ).join('');
+            }
+        });
 
     if (typeof initGeoComplete === 'function') {
         if (document.getElementById('panchangPlaceInput')) {
@@ -928,72 +903,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (document.getElementById('maasikPlaceInput')) {
             initGeoComplete('maasikPlaceInput', { defaultPlace: 'New Delhi, India' });
         }
-        if (document.getElementById('apiTestPlace')) {
-            initGeoComplete('apiTestPlace', { defaultPlace: 'New Delhi, India' });
-        }
-        initGeoComplete('mPlace',    { defaultPlace: 'Patna, Bihar, India' });
-        initGeoComplete('mBoyPlace', { defaultPlace: 'Patna, Bihar, India' });
-        initGeoComplete('mGirlPlace',{ defaultPlace: 'Patna, Bihar, India' });
-    }
-
-    // Open/Run API Test Panel
-    const btnOpenApiTest = document.getElementById('btnOpenApiTest');
-    const apiTestPanel = document.getElementById('apiTestPanel');
-    if (btnOpenApiTest && apiTestPanel) {
-        btnOpenApiTest.addEventListener('click', () => {
-            apiTestPanel.style.display = apiTestPanel.style.display === 'none' ? 'block' : 'none';
-        });
-    }
-    
-    const btnRunApiTest = document.getElementById('btnRunApiTest');
-    if (btnRunApiTest) {
-        btnRunApiTest.addEventListener('click', async () => {
-            const testDate = document.getElementById('apiTestDate').value;
-            const testPlace = document.getElementById('apiTestPlace').value;
-            const output = document.getElementById('apiTestOutput');
-            if (!testDate || !testPlace) {
-                alert("Please select Date and Place for API test.");
-                return;
-            }
-            output.innerHTML = "Fetching dynamic calculation from API...";
-            const apiUrl = (window.location.hostname.includes('github.io') || window.location.protocol.startsWith('file'))
-                ? 'https://sanskritai.vercel.app/api/calculate'
-                : '/api/calculate';
-            try {
-                const res = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        date: testDate.replace(/-/g, '/'),
-                        time: '12:00',
-                        place: testPlace
-                    })
-                });
-                const resJson = await res.json();
-                if (resJson.status === 'success') {
-                    let html = `<table style="width:100%; border-collapse:collapse; color:#fff; font-family:monospace; font-size:0.85rem;">`;
-                    html += `<tr style="border-bottom:1.5px solid rgba(255,255,255,0.1); color:#fbbf24; font-weight:700;"><td style="padding:6px;">Returned Key/Variable</td><td style="padding:6px;">Calculated Value</td></tr>`;
-                    
-                    function printJson(obj, prefix = "") {
-                        for (let k in obj) {
-                            if (typeof obj[k] === 'object' && obj[k] !== null) {
-                                printJson(obj[k], prefix + k + ".");
-                            } else {
-                                html += `<tr><td style="color:#93c5fd; padding: 4px; border-bottom: 1px solid rgba(255,255,255,0.05);">${prefix}${k}</td><td style="padding: 4px; color:#cbd5e1; border-bottom: 1px solid rgba(255,255,255,0.05);">${obj[k]}</td></tr>`;
-                            }
-                        }
-                    }
-                    printJson(resJson);
-                    html += `</table>`;
-                    output.innerHTML = html;
-                } else {
-                    output.innerHTML = `<span style="color:#f87171;">Calculation error: ${resJson.detail}</span>`;
-                }
-            } catch (err) {
-                console.error(err);
-                output.innerHTML = `<span style="color:#f87171;">Failed to connect to API server.</span>`;
-            }
-        });
     }
 });
 </script>

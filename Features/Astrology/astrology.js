@@ -573,8 +573,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        const prms = new URLSearchParams(window.location.search);
-        const activeTab = prms.get('tab') || '';
+        const activeTab = (window.currentSPAState && window.currentSPAState.tab) || "";
         const curToday = new Date().toISOString().split('T')[0];
         
         const pDateInput = document.getElementById('panchangDateInput');
@@ -2863,10 +2862,10 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     const horaData = (lastCalculatedData && lastCalculatedData.hora) ? lastCalculatedData.hora : null;
     if (horaData && horaData.day && horaData.night) {
         horaData.day.forEach(h => {
-            horaParts.push({ start: h.start_time, end: h.end_time, name: h.name });
+            horaParts.push({ start: h.start, end: h.end, name: h.indian || h.lord });
         });
         horaData.night.forEach(h => {
-            horaParts.push({ start: h.start_time, end: h.end_time, name: h.name });
+            horaParts.push({ start: h.start, end: h.end, name: h.indian || h.lord });
         });
     }
     
@@ -2930,7 +2929,34 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     });
     notesHTML += `</div>`;
 
-    container.innerHTML = svg + notesHTML;
+    let legendsHTML = `
+        <div style="margin-top: 15px; border-top: 1px dashed rgba(124,45,18,0.15); padding-top: 12px; font-size: 0.8rem; color: #7c2d12;">
+            <div style="font-weight: 800; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">📋 Timeline Legends & Quality Guides:</div>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 10px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <strong style="color: #7c2d12;">Choghadiya:</strong>
+                    <span style="background: rgba(21,128,61,0.15); color: #15803d; padding: 2px 6px; border-radius: 4px; font-weight: 700;">🟢 Auspicious (Amrit, Shubh, Labh, Chal)</span>
+                    <span style="background: rgba(185,28,28,0.15); color: #b91c1c; padding: 2px 6px; border-radius: 4px; font-weight: 700;">🔴 Inauspicious (Udveg, Rog, Kaal)</span>
+                </div>
+            </div>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; font-weight: 700;">
+                <div><strong>Hora Planetary Lords:</strong></div>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    <span style="background: rgba(124,45,18,0.06); padding: 2px 6px; border-radius: 4px;">☀️ Sun (सूर्य)</span>
+                    <span style="background: rgba(124,45,18,0.06); padding: 2px 6px; border-radius: 4px;">🌙 Moon (चन्द्र)</span>
+                    <span style="background: rgba(124,45,18,0.06); padding: 2px 6px; border-radius: 4px;">☄️ Mars (मंगल)</span>
+                    <span style="background: rgba(124,45,18,0.06); padding: 2px 6px; border-radius: 4px;">☿ Mercury (बुध)</span>
+                    <span style="background: rgba(124,45,18,0.06); padding: 2px 6px; border-radius: 4px;">♃ Jupiter (गुरु)</span>
+                    <span style="background: rgba(124,45,18,0.06); padding: 2px 6px; border-radius: 4px;">♀ Venus (शुक्र)</span>
+                    <span style="background: rgba(124,45,18,0.06); padding: 2px 6px; border-radius: 4px;">♄ Saturn (शनि)</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    container.innerHTML = svg + notesHTML + legendsHTML;
 }
 
 // ── Scroll Reveal Animations helper ──────────────────────────────────────
@@ -2977,9 +3003,13 @@ function populatePanchangUI(data, dateStr, place) {
         pakshaSamvatEl.textContent = `${p.paksha || 'Shukla'} Paksha | Vikrama Samvata ${ext.vikrama_samvat || '2083 Siddharthi'}`;
     }
 
-    const placeDisplayEl = document.getElementById('headerPlaceDisplay');
+    const placeDisplayEl = document.getElementById('panchangPlaceInput') || document.getElementById('headerPlaceDisplay');
     if (placeDisplayEl) {
-        placeDisplayEl.textContent = `📍 ${place || 'New Delhi, India'}`;
+        if (placeDisplayEl.tagName === 'INPUT') {
+            placeDisplayEl.value = place || 'New Delhi, India';
+        } else {
+            placeDisplayEl.textContent = `📍 ${place || 'New Delhi, India'}`;
+        }
     }
 
     const dateObj = new Date(dateStr);
@@ -3053,6 +3083,11 @@ async function loadDainikPanchang(dateStr, place) {
     if (timelineContainer) timelineContainer.innerHTML = '<div style="text-align:center;padding:2rem;color:#7c2d12;font-weight:700;">⏳ Loading Panchang for ' + dateStr + '...</div>';
     if (panchangBody) panchangBody.innerHTML = '';
     if (phSubDaik) phSubDaik.textContent = 'Loading...';
+
+    const pDateInput = document.getElementById('panchangDateInput');
+    if (pDateInput) {
+        pDateInput.value = dateStr;
+    }
 
     const reqPlace = place || 'New Delhi, India';
     const todayStr = new Date().toISOString().split('T')[0];
@@ -3215,11 +3250,35 @@ function switchPancView(view) {
     
     const dayViewHome = document.getElementById('dayViewContainer');
     const maasikViewHome = document.getElementById('maasikViewContainer');
+    const muhurtasViewHome = document.getElementById('muhurtasViewContainer');
     
-    // Update URL query parameter without page reload
-    const url = new URL(window.location);
-    url.searchParams.set('tab', view === 'day' ? 'panchang' : 'maasik');
-    window.history.pushState({}, '', url);
+    // Update URL without page reload
+    let tabVal = 'panchang';
+    if (view === 'month') tabVal = 'maasik';
+    else if (view === 'muhurtas') tabVal = 'muhurtas';
+    
+    if (window.location.protocol !== 'file:') {
+        try {
+            if (typeof window.buildUrlPath === 'function') {
+                const prettyUrl = window.buildUrlPath('home', tabVal, {});
+                window.history.pushState({}, '', prettyUrl);
+            } else {
+                const url = new URL(window.location);
+                url.searchParams.set('tab', tabVal);
+                window.history.pushState({}, '', url);
+            }
+        } catch (e) {
+            console.warn("pushState blocked under CORS context:", e);
+        }
+    }
+
+    // Hide welcome section if on index.html
+    const welcome = document.getElementById('homeWelcomeSection');
+    if (welcome) welcome.style.display = 'none';
+    const controlsCard = document.querySelector('.controls-card');
+    const routerHeader = document.querySelector('.panchang-unified-header');
+    if (controlsCard) controlsCard.style.display = 'flex';
+    if (routerHeader) routerHeader.style.display = 'flex';
 
     if (view === 'day') {
         if (personalSection) { personalSection.classList.add('active'); personalSection.style.display = 'block'; }
@@ -3227,6 +3286,7 @@ function switchPancView(view) {
         
         if (dayViewHome) dayViewHome.style.display = 'block';
         if (maasikViewHome) maasikViewHome.style.display = 'none';
+        if (muhurtasViewHome) muhurtasViewHome.style.display = 'none';
 
         // Update Title & Subtitle in Red Header
         const phTitle = document.getElementById('phTitleDaik') || document.querySelector('.ph-title');
@@ -3237,14 +3297,8 @@ function switchPancView(view) {
         // Sync state buttons
         ['phViewDayBtn','phViewDayBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.add('active'); });
         ['phViewMonthBtn','phViewMonthBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
-        
-        // Hide welcome section if on index.html
-        const welcome = document.getElementById('homeWelcomeSection');
-        if (welcome) welcome.style.display = 'none';
-        const controlsCard = document.querySelector('.controls-card');
-        const routerHeader = document.querySelector('.panchang-unified-header');
-        if (controlsCard) controlsCard.style.display = 'flex';
-        if (routerHeader) routerHeader.style.display = 'flex';
+        const mBtn = document.getElementById('phViewMuhurtasBtn');
+        if(mBtn) mBtn.classList.remove('active');
 
         // Load if needed
         const pDateInput = document.getElementById('panchangDateInput');
@@ -3253,12 +3307,14 @@ function switchPancView(view) {
         const today = new Date().toISOString().split('T')[0];
         const dateVal = pDateInput ? pDateInput.value || today : today;
         loadDainikPanchang(dateVal, place);
-    } else {
+        
+    } else if (view === 'month') {
         if (personalSection) { personalSection.classList.remove('active'); personalSection.style.display = 'none'; }
         if (maasikSection) { maasikSection.classList.add('active'); maasikSection.style.display = 'block'; }
         
         if (dayViewHome) dayViewHome.style.display = 'none';
         if (maasikViewHome) maasikViewHome.style.display = 'block';
+        if (muhurtasViewHome) muhurtasViewHome.style.display = 'none';
 
         // Update Title & Subtitle in Red Header
         const phTitle = document.getElementById('phTitleDaik') || document.querySelector('.ph-title');
@@ -3269,14 +3325,8 @@ function switchPancView(view) {
         // Sync state buttons
         ['phViewMonthBtn','phViewMonthBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.add('active'); });
         ['phViewDayBtn','phViewDayBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
-        
-        // Hide welcome section if on index.html
-        const welcome = document.getElementById('homeWelcomeSection');
-        if (welcome) welcome.style.display = 'none';
-        const controlsCard = document.querySelector('.controls-card');
-        const routerHeader = document.querySelector('.panchang-unified-header');
-        if (controlsCard) controlsCard.style.display = 'flex';
-        if (routerHeader) routerHeader.style.display = 'flex';
+        const mBtn = document.getElementById('phViewMuhurtasBtn');
+        if(mBtn) mBtn.classList.remove('active');
 
         // Initialize month input to today if empty
         const maasikMonthInput = document.getElementById('maasikMonthInput');
@@ -3292,6 +3342,30 @@ function switchPancView(view) {
             if (!maasikPlaceInput.value) maasikPlaceInput.value = pPlaceInput.value || saved;
         }
         loadMaasikCalendar();
+        
+    } else if (view === 'muhurtas') {
+        if (personalSection) { personalSection.classList.remove('active'); personalSection.style.display = 'none'; }
+        if (maasikSection) { maasikSection.classList.remove('active'); maasikSection.style.display = 'none'; }
+        
+        if (dayViewHome) dayViewHome.style.display = 'none';
+        if (maasikViewHome) maasikViewHome.style.display = 'none';
+        if (muhurtasViewHome) muhurtasViewHome.style.display = 'block';
+
+        // Update Title & Subtitle in Red Header
+        const phTitle = document.getElementById('phTitleDaik') || document.querySelector('.ph-title');
+        const phSub = document.getElementById('phSubDaik') || document.querySelector('.ph-subtitle');
+        if (phTitle) phTitle.textContent = "Daily Muhurtas";
+        if (phSub) phSub.textContent = "Auspicious and inauspicious daily timing windows";
+
+        // Sync state buttons
+        ['phViewMonthBtn','phViewMonthBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
+        ['phViewDayBtn','phViewDayBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
+        const mBtn = document.getElementById('phViewMuhurtasBtn');
+        if(mBtn) mBtn.classList.add('active');
+
+        if (typeof loadMuhurtasDashboard === 'function') {
+            loadMuhurtasDashboard();
+        }
     }
 }
 

@@ -80,6 +80,52 @@ function renderCategories() {
     });
 }
 
+const OFFLINE_WISDOM_DATA = {
+    "puja-vidhi": {
+        items: [
+            { id: "pv001", name: "Ganesha Puja Vidhi", deity: "Lord Ganesha", description: "Complete step-by-step rituals to worship Lord Ganesha for removing obstacles.", benefits: ["Removes obstacles", "Brings prosperity", "Success in new ventures"] },
+            { id: "pv002", name: "Shiva Puja Vidhi", deity: "Lord Shiva", description: "Sanskrit mantras and water/bilva offering procedures for Shiva worship.", benefits: ["Inner peace", "Spiritual growth", "Destruction of negativity"] }
+        ]
+    },
+    "vrat": {
+        items: [
+            { id: "vr001", name: "Satyanarayana Vrat", deity: "Lord Vishnu", description: "Fast and narration ceremony of Satyanarayana stories for truth and devotion.", benefits: ["Family harmony", "Wealth and health", "Cleanses karma"] },
+            { id: "vr002", name: "Ekadashi Vrat", deity: "Lord Vishnu", description: "Bi-monthly fasting ritual observed on the 11th lunar day of Moon cycles.", benefits: ["Detoxification", "Mental clarity", "Spiritual purification"] }
+        ]
+    },
+    "upavas": {
+        items: [
+            { id: "up001", name: "Pradosha Upavas", deity: "Lord Shiva", description: "Fasting during twilight period on the 13th day of lunar fortnight.", benefits: ["Removes sins", "Fulfills desires", "Liberates from fears"] }
+        ]
+    },
+    "mantra": {
+        items: [
+            { id: "mn001", name: "Gayatri Mantra", deity: "Savitar (Sun)", text: "ॐ भूर्भुवः स्वः तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि धियो यो नः प्रचोदयात्", meaning: "We meditate on the divine light of the Sun. May it illuminate our intellect.", benefits: ["Mental focus", "Vibrant health", "Spiritual awakening"] },
+            { id: "mn002", name: "Mahamrityunjaya Mantra", deity: "Lord Shiva", text: "ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम् उर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय मामृतात्", meaning: "We worship the three-eyed Lord Shiva who nourishes all. Deliver us from death.", benefits: ["Longevity", "Healing", "Overcomes fear of death"] }
+        ]
+    },
+    "stotra": {
+        items: [
+            { id: "st001", name: "Shiva Tandava Stotra", deity: "Lord Shiva", description: "Powerful hymn composed by Ravana describing Shiva's cosmic dance.", benefits: ["Strength", "Creativity", "Removes depression"] }
+        ]
+    },
+    "ashtakam": {
+        items: [
+            { id: "as001", name: "Madhurashtakam", deity: "Lord Krishna", description: "Devotional eight-stanza hymn praising the sweetness of Lord Krishna.", benefits: ["Pure love", "Happiness", "Inner joy"] }
+        ]
+    },
+    "yantra": {
+        items: [
+            { id: "yn001", name: "Sri Yantra", deity: "Goddess Lalita Tripurasundari", description: "Sacred geometry diagram representing the cosmic union of Shiva and Shakti.", benefits: ["Abundance", "Cosmic alignment", "Material success"] }
+        ]
+    },
+    "paath": {
+        items: [
+            { id: "pt001", name: "Sundarkand Paath", deity: "Lord Hanuman", description: "Detailed narration of Hanuman's search for Sita and his devotion.", benefits: ["Protection", "Courage", "Confidence in adversity"] }
+        ]
+    }
+};
+
 // ===== LOAD CATEGORY DATA =====
 async function loadCategoryData(categoryId) {
     // Return from cache if available
@@ -99,7 +145,9 @@ async function loadCategoryData(categoryId) {
     };
     
     try {
-        const response = await fetch(fileMap[categoryId]);
+        const isRoot = !window.location.pathname.includes('/Static/') && !window.location.pathname.includes('/Features/');
+        const fetchPath = isRoot ? `./Static/data/${categoryId}.json` : `./data/${categoryId}.json`;
+        const response = await fetch(fetchPath);
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}: Failed to load ${categoryId}`);
         }
@@ -114,25 +162,33 @@ async function loadCategoryData(categoryId) {
         return data;
         
     } catch (error) {
-        console.error(`❌ Error loading ${categoryId}:`, error.message);
+        console.warn(`⚠️ Error loading ${categoryId} from JSON, using offline local copy:`, error.message);
         
-        // SIMPLE FALLBACK - Show error message with minimal data
         const category = categories.find(c => c.id === categoryId);
+        const offlineData = OFFLINE_WISDOM_DATA[categoryId] || { items: [] };
+        
         const fallbackData = {
             category: category ? category.name : categoryId,
             icon: category ? category.icon : '📿',
             color: category ? category.color : '#5856D6',
-            items: [
-                {
-                    id: `${categoryId.substring(0, 2)}001`,
-                    name: `⚠️ Unable to Load Data`,
-                    deity: 'Please check file path',
-                    description: `The data file for "${categoryId}" could not be loaded. Make sure the JSON file exists at: data/${categoryId}.json`,
-                    benefits: ['Check console for details', 'Verify file exists', 'Check JSON syntax'],
-                    error: true
-                }
-            ]
+            items: offlineData.items.map(item => ({
+                ...item,
+                benefits: item.benefits || [],
+                description: item.description || ''
+            }))
         };
+        
+        if (fallbackData.items.length === 0) {
+            fallbackData.items.push({
+                id: `${categoryId.substring(0, 2)}001`,
+                name: `⚠️ Unable to Load Data`,
+                deity: 'Please check file path',
+                description: `The data file for "${categoryId}" could not be loaded. Make sure the JSON file exists at: data/${categoryId}.json`,
+                benefits: ['Check console for details', 'Verify file exists', 'Check JSON syntax'],
+                error: true
+            });
+        }
+        
         dataStore[categoryId] = fallbackData;
         return fallbackData;
     }

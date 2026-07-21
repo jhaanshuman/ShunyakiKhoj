@@ -5,29 +5,210 @@
 
 // DOMContentLoaded is handled at the bottom of nav.js
 
+// Pretty routing helper functions
+function buildUrlPath(page, tab, queryParams) {
+    if (window.location.protocol === 'file:') {
+        const searchParams = new URLSearchParams();
+        if (page) searchParams.set('page', page);
+        if (tab) searchParams.set('tab', tab);
+        for (let k in queryParams) {
+            if (k !== 'page' && k !== 'tab') {
+                searchParams.set(k, queryParams[k]);
+            }
+        }
+        const searchStr = searchParams.toString();
+        const currentFile = window.location.pathname.split('/').pop() || 'index.html';
+        return currentFile + (searchStr ? '?' + searchStr : '');
+    }
+
+    let path = '/';
+    if (page && page !== 'home') {
+        path += page;
+        if (tab) {
+            path += '/' + tab;
+        }
+    } else if (tab) {
+        path += 'home/' + tab;
+    }
+    
+    const searchParams = new URLSearchParams();
+    for (let k in queryParams) {
+        if (k !== 'page' && k !== 'tab') {
+            searchParams.set(k, queryParams[k]);
+        }
+    }
+    const searchStr = searchParams.toString();
+    return path + (searchStr ? '?' + searchStr : '');
+}
+
+function parseUrlPath(urlObj) {
+    if (window.location.protocol === 'file:') {
+        const page = urlObj.searchParams.get('page') || 'home';
+        const tab = urlObj.searchParams.get('tab') || '';
+        const queryParams = {};
+        urlObj.searchParams.forEach((val, key) => {
+            if (key !== 'page' && key !== 'tab') {
+                queryParams[key] = val;
+            }
+        });
+        return { page, tab, queryParams };
+    }
+
+    let pathname = urlObj.pathname;
+    pathname = pathname.replace(/^\/+|\/+$/g, '');
+    const parts = pathname.split('/');
+    
+    let page = 'home';
+    let tab = '';
+    
+    if (parts.length > 0 && parts[0] !== '') {
+        if (parts[0] === 'home') {
+            page = 'home';
+            if (parts.length > 1) {
+                tab = parts[1];
+            }
+        } else {
+            page = parts[0];
+            if (parts.length > 1) {
+                tab = parts[1];
+            }
+        }
+    }
+    
+    const queryParams = {};
+    urlObj.searchParams.forEach((val, key) => {
+        queryParams[key] = val;
+    });
+    
+    return { page, tab, queryParams };
+}
+
+window.buildUrlPath = buildUrlPath;
+window.parseUrlPath = parseUrlPath;
+
+const DEFAULT_NAV_CONFIG = {
+  "menu": [
+    {
+      "label": "Panchang",
+      "type": "megamenu",
+      "icon": "📅",
+      "columns": [
+        {
+          "title": "Core & East India",
+          "items": [
+            { "label": "Month Panchang", "url": "./Features/Astrology/astrology.html?tab=maasik", "icon": "🗓️" },
+            { "label": "Dainik Panchang", "url": "./Features/Astrology/astrology.html?tab=panchang", "icon": "☀️" },
+            { "label": "Assamese Panjika", "url": "./Features/Astrology/astrology.html?tab=panchang&region=assamese", "icon": "🌸" },
+            { "label": "Bengali Panjika", "url": "./Features/Astrology/astrology.html?tab=panchang&region=bengali", "icon": "🎷" },
+            { "label": "Tamil Panchangam", "url": "./Features/Astrology/astrology.html?tab=panchang&region=tamil", "icon": "🐚" }
+          ]
+        },
+        {
+          "title": "West & North India",
+          "items": [
+            { "label": "Odia Panji", "url": "./Features/Astrology/astrology.html?tab=panchang&region=odia", "icon": "🎨" },
+            { "label": "Malayalam Panchangam", "url": "./Features/Astrology/astrology.html?tab=panchang&region=malayalam", "icon": "🌴" },
+            { "label": "Marathi Panchang", "url": "./Features/Astrology/astrology.html?tab=panchang&region=marathi", "icon": "🚩" },
+            { "label": "Gujarati Panchang", "url": "./Features/Astrology/astrology.html?tab=panchang&region=gujarati", "icon": "☀️" },
+            { "label": "Kannada Panchangam", "url": "./Features/Astrology/astrology.html?tab=panchang&region=kannada", "icon": "🌿" }
+          ]
+        },
+        {
+          "title": "South & Miscellaneous",
+          "items": [
+            { "label": "Telugu Panchangam", "url": "./Features/Astrology/astrology.html?tab=panchang&region=telugu", "icon": "🌺" },
+            { "label": "Nepali Patro", "url": "./Features/Astrology/astrology.html?tab=panchang&region=nepali", "icon": "🏔️" },
+            { "label": "ISKCON Panchang", "url": "./Features/Astrology/astrology.html?tab=panchang&region=iskcon", "icon": "🕉️" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Muhurta",
+      "type": "dropdown",
+      "icon": "✨",
+      "items": [
+        { "label": "Abhijit Muhurta", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "☀️" },
+        { "label": "Brahma Muhurta", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "🧘" },
+        { "label": "Rahukaal Duration", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "⚠️" },
+        { "label": "Gulikai Duration", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "⏳" },
+        { "label": "Planetary Horas", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "🔮" },
+        { "label": "Choghadiya Shifts", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "⏱️" }
+      ]
+    },
+    {
+      "label": "Kundli",
+      "type": "megamenu",
+      "icon": "☸️",
+      "columns": [
+        {
+          "title": "Core Chart Analysis",
+          "items": [
+            { "label": "Personalized Kundli", "url": "./Features/Astrology/astrology.html?tab=personal", "icon": "🧘" },
+            { "label": "Birth Chart (D1)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D1", "icon": "☸️" },
+            { "label": "Planetary Positions", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D1", "icon": "🪐" }
+          ]
+        },
+        {
+          "title": "Divisional Charts (Vargas)",
+          "items": [
+            { "label": "D2 Hora (Wealth)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D2", "icon": "💰" },
+            { "label": "D9 Navamsa (Marriage)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D9", "icon": "❤️" },
+            { "label": "D10 Dasamsa (Career)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D10", "icon": "💼" },
+            { "label": "D60 Shastiamsa (Karma)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D60", "icon": "☸️" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Gochar",
+      "type": "dropdown",
+      "icon": "☄️",
+      "items": [
+        { "label": "Graha Gochar (Transits)", "url": "./Features/Astrology/astrology.html?tab=gochar", "icon": "🪐" },
+        { "label": "Planet Transits", "url": "./Features/Astrology/astrology.html?tab=gochar", "icon": "📈" },
+        { "label": "Transit Charts", "url": "./Features/Astrology/astrology.html?tab=gochar", "icon": "📊" }
+      ]
+    },
+    {
+      "label": "Matching",
+      "type": "dropdown",
+      "icon": "💞",
+      "items": [
+        { "label": "Match Making (Milan)", "url": "./Features/Astrology/astrology.html?tab=milan", "icon": "💞" },
+        { "label": "Ashtakoot (36 Guna)", "url": "./Features/Astrology/astrology.html?tab=milan", "icon": "📊" }
+      ]
+    },
+    {
+      "label": "Wisdom Library",
+      "url": "./Static/index.html",
+      "icon": "📿"
+    }
+  ]
+};
+
 let menuConfig = null;
 let currentActiveItem = null;
 
 async function initNavigation() {
     try {
-        // Find if config path needs context prefix
         const configPath = window.location.pathname.includes('/Features/') ? '../../nav_config.json' : './nav_config.json';
         const res = await fetch(configPath);
         menuConfig = await res.json();
-        
-        // Render menus
-        // renderDesktopNav(menuConfig.menu);
-        renderMobileNav(menuConfig.menu);
-        
-        // Setup Search, Theme Toggle, Breadcrumbs & Accessibility
-        setupSearch(menuConfig.menu);
-        setupThemeToggle();
-        setupBreadcrumbs(menuConfig.menu);
-        setupKeyboardAccessibility();
-        highlightActiveMenu();
     } catch (e) {
-        console.error("Failed to load navigation configuration:", e);
+        console.warn("Failed to load navigation configuration from JSON, falling back to local copy.", e);
+        menuConfig = DEFAULT_NAV_CONFIG;
     }
+    
+    // Render menus
+    renderMobileNav(menuConfig.menu);
+    
+    // Setup Search, Theme Toggle, Breadcrumbs & Accessibility
+    setupSearch(menuConfig.menu);
+    setupThemeToggle();
+    setupBreadcrumbs(menuConfig.menu);
+    setupKeyboardAccessibility();
+    highlightActiveMenu();
 }
 
 // ==========================================
@@ -168,25 +349,143 @@ function renderDesktopNav(menuItems) {
 // ==========================================
 // MOBILE ACCORDION HAMBURGER MENU RENDERING
 // ==========================================
-function renderMobileNav(menuItems) {
-    const mobileMenuContainer = document.querySelector('.mobile-menu');
-    if (!mobileMenuContainer) return;
+// ==========================================
+// MOBILE ACCORDION HAMBURGER MENU RENDERING
+// ==========================================
+let favorites = JSON.parse(localStorage.getItem('shunya-favorites')) || [
+    { label: "Dainik Panchang", url: "/home/panchang", icon: "☀️" },
+    { label: "Month Panchang", url: "/home/maasik", icon: "🗓️" },
+    { label: "Personalized Kundli", url: "/astrology/personal", icon: "🧘" }
+];
 
-    // Clear existing static items
-    mobileMenuContainer.innerHTML = '';
+function getPrettyUrl(rawUrl) {
+    if (!rawUrl || rawUrl === '#') return '#';
+    try {
+        const base = window.location.protocol === 'file:' ? window.location.href : window.location.origin;
+        let cleanUrl = rawUrl;
+        if (window.location.protocol === 'file:' && rawUrl.startsWith('/')) {
+            cleanUrl = '.' + rawUrl;
+        }
+        const url = new URL(cleanUrl, base);
+        const path = url.pathname;
+        const tab = url.searchParams.get('tab') || '';
+        const region = url.searchParams.get('region') || '';
+        const varga = url.searchParams.get('varga') || '';
+        
+        if (window.location.protocol === 'file:') {
+            if (path.includes('Static') && path.includes('index.html')) {
+                return 'Static/index.html';
+            }
+            if (path.includes('Dictionary.html')) {
+                return 'Features/Dictionary/Dictionary.html';
+            }
+            let query = '';
+            if (tab) {
+                query = `?tab=${tab}`;
+            } else if (path.includes('astrology.html')) {
+                query = `?tab=panchang`;
+            }
+            if (region) query += (query ? '&' : '?') + `region=${region}`;
+            if (varga) query += (query ? '&' : '?') + `varga=${varga}`;
+            return 'index.html' + query;
+        }
 
-    const header = document.createElement('div');
-    header.className = 'mobile-menu-header';
-    header.innerHTML = `
-        <h3>Navigation Menu</h3>
-        <button id="mobileMenuClose" aria-label="Close mobile menu">✕</button>
-    `;
-    mobileMenuContainer.appendChild(header);
+        let pretty = '/';
+        if (path.includes('astrology.html')) {
+            if (tab === 'panchang' || tab === 'maasik' || tab === 'muhurtas') {
+                pretty = `/home/${tab}`;
+            } else {
+                pretty = `/astrology/${tab || 'personal'}`;
+            }
+        } else if (path.includes('Dictionary.html')) {
+            pretty = '/dictionary';
+        } else if (path.includes('/Static/') && path.includes('index.html')) {
+            pretty = '/wisdom';
+        }
+        
+        const q = [];
+        if (region) q.push(`region=${region}`);
+        if (varga) q.push(`varga=${varga}`);
+        if (q.length > 0) {
+            pretty += '?' + q.join('&');
+        }
+        return pretty;
+    } catch(e) {
+        return rawUrl;
+    }
+}
 
-    const accordion = document.createElement('div');
-    accordion.className = 'mobile-accordion';
+function saveFavorites() {
+    localStorage.setItem('shunya-favorites', JSON.stringify(favorites));
+}
 
-    menuItems.forEach((item, idx) => {
+function isFavorite(url) {
+    return favorites.some(f => f.url === url);
+}
+
+function toggleFavorite(item) {
+    const idx = favorites.findIndex(f => f.url === item.url);
+    if (idx > -1) {
+        favorites.splice(idx, 1);
+    } else {
+        favorites.push({ label: item.label, url: item.url, icon: item.icon });
+    }
+    saveFavorites();
+    const accordion = document.getElementById('drawerAccordion');
+    if (accordion && window.lastMenuItems) {
+        renderDrawerContent(accordion, window.lastMenuItems);
+    }
+    const sidebarAccordion = document.getElementById('sidebarAccordion');
+    if (sidebarAccordion && window.lastMenuItems) {
+        renderDrawerContent(sidebarAccordion, window.lastMenuItems);
+    }
+}
+
+function renderDrawerContent(accordionContainer, menuItems) {
+    accordionContainer.innerHTML = '';
+
+    // 1. Favourites Section
+    const favGroup = document.createElement('div');
+    favGroup.className = 'accordion-group active'; // Expand by default
+
+    const favTrigger = document.createElement('button');
+    favTrigger.className = 'accordion-trigger';
+    favTrigger.style.background = 'rgba(251,191,36,0.06)';
+    favTrigger.innerHTML = `<span style="color:#fbbf24; font-weight:800;">⭐ Favourites</span> <span class="arrow">▼</span>`;
+    favGroup.appendChild(favTrigger);
+
+    const favContent = document.createElement('div');
+    favContent.className = 'accordion-content';
+    favContent.style.display = 'block';
+
+    if (favorites.length === 0) {
+        favContent.innerHTML = `<div style="padding:12px 15px; font-size:0.8rem; color:var(--text-muted); font-style:italic;">No favorites added yet. Right-click any link or tap the star icon to add.</div>`;
+    } else {
+        const ul = document.createElement('ul');
+        ul.className = 'favorites-list';
+        favorites.forEach(f => {
+            const li = document.createElement('li');
+            li.className = 'fav-draggable-item';
+            li.setAttribute('draggable', 'true');
+            li.setAttribute('data-url', f.url);
+            li.style.cssText = 'display:flex; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px 12px; margin-bottom:6px; border-radius:6px; cursor:grab;';
+            
+            li.innerHTML = `
+                <span class="drag-handle" style="margin-right:8px; cursor:move; color:rgba(255,255,255,0.25); user-select:none;">☰</span>
+                <a href="${f.url}" class="accordion-subitem-link" data-label="${f.label}" data-icon="${f.icon}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:var(--text-color); font-size:0.85rem; font-weight:600;">
+                    <span style="margin-right:6px;">${f.icon}</span> ${f.label}
+                </a>
+                <span class="star-toggle" data-url="${f.url}" data-label="${f.label}" data-icon="${f.icon}" style="cursor:pointer; color:#fbbf24; font-size:1.15rem; padding: 2px 5px;">★</span>
+            `;
+            ul.appendChild(li);
+        });
+        favContent.appendChild(ul);
+    }
+    favGroup.appendChild(favContent);
+    accordionContainer.appendChild(favGroup);
+
+    // 2. Add Regular Categories
+    menuItems.forEach((item) => {
         const group = document.createElement('div');
         group.className = 'accordion-group';
 
@@ -202,11 +501,16 @@ function renderMobileNav(menuItems) {
             const ul = document.createElement('ul');
             item.items.forEach(sub => {
                 const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.href = adjustUrlPath(sub.url);
-                a.target = '_blank';
-                a.innerHTML = `${sub.icon || '🔸'} ${sub.label}`;
-                li.appendChild(a);
+                const pretty = getPrettyUrl(sub.url);
+                const isFav = isFavorite(pretty);
+                
+                li.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:4px 0;';
+                li.innerHTML = `
+                    <a href="${pretty}" class="accordion-subitem-link" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:var(--text-color); font-size:0.85rem; font-weight:600; padding:6px 0;">
+                        <span style="margin-right:6px;">${sub.icon || '🔸'}</span> ${sub.label}
+                    </a>
+                    <span class="star-toggle" data-url="${pretty}" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.15)'}; font-size:1.15rem; padding: 2px 5px;">${isFav ? '★' : '☆'}</span>
+                `;
                 ul.appendChild(li);
             });
             content.appendChild(ul);
@@ -214,65 +518,240 @@ function renderMobileNav(menuItems) {
             item.columns.forEach(col => {
                 const colTitle = document.createElement('div');
                 colTitle.className = 'accordion-col-title';
+                colTitle.style.cssText = 'font-size:0.75rem; text-transform:uppercase; color:var(--accent-color); font-weight:800; padding:8px 0 4px; border-bottom:1px solid rgba(255,255,255,0.05); margin-bottom:6px;';
                 colTitle.innerText = col.title || '';
                 content.appendChild(colTitle);
 
                 const ul = document.createElement('ul');
                 col.items.forEach(sub => {
                     const li = document.createElement('li');
-                    const a = document.createElement('a');
-                    a.href = adjustUrlPath(sub.url);
-                    a.target = '_blank';
-                    a.innerHTML = `${sub.icon || '🔸'} ${sub.label}`;
-                    li.appendChild(a);
+                    const pretty = getPrettyUrl(sub.url);
+                    const isFav = isFavorite(pretty);
+                    
+                    li.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:4px 0;';
+                    li.innerHTML = `
+                        <a href="${pretty}" class="accordion-subitem-link" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:var(--text-color); font-size:0.85rem; font-weight:600; padding:6px 0;">
+                            <span style="margin-right:6px;">${sub.icon || '🔸'}</span> ${sub.label}
+                        </a>
+                        <span class="star-toggle" data-url="${pretty}" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.15)'}; font-size:1.15rem; padding: 2px 5px;">${isFav ? '★' : '☆'}</span>
+                    `;
                     ul.appendChild(li);
                 });
                 content.appendChild(ul);
             });
         } else {
             // direct link
-            trigger.onclick = () => { window.location.href = adjustUrlPath(item.url); };
+            const pretty = getPrettyUrl(item.url);
+            const isFav = isFavorite(pretty);
+            trigger.innerHTML = `
+                <a href="${pretty}" class="accordion-subitem-link" data-label="${item.label}" data-icon="${item.icon}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:var(--title-color); font-weight:800;">
+                    <span style="margin-right:8px;">${item.icon}</span> ${item.label}
+                </a>
+                <span class="star-toggle" data-url="${pretty}" data-label="${item.label}" data-icon="${item.icon}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.15)'}; font-size:1.15rem; padding: 2px 5px; margin-left:auto;">${isFav ? '★' : '☆'}</span>
+            `;
+            trigger.style.display = 'flex';
+            trigger.style.alignItems = 'center';
         }
 
         group.appendChild(content);
-        accordion.appendChild(group);
+        accordionContainer.appendChild(group);
 
-        // Toggle Accordion Click
-        trigger.addEventListener('click', () => {
+        // Accordion Header Toggle logic
+        trigger.addEventListener('click', (e) => {
+            if (e.target.closest('.star-toggle') || e.target.closest('a')) return;
             const isActive = group.classList.contains('active');
-            // collapse others
-            document.querySelectorAll('.accordion-group').forEach(g => g.classList.remove('active'));
-            if (!isActive) {
+            
+            // Collapse other accordion groups (excluding favorites if it's the target)
+            accordionContainer.querySelectorAll('.accordion-group').forEach(g => {
+                if (g !== group) {
+                    g.classList.remove('active');
+                    const c = g.querySelector('.accordion-content');
+                    if (c) c.style.display = 'none';
+                }
+            });
+            
+            if (isActive) {
+                group.classList.remove('active');
+                content.style.display = 'none';
+            } else {
                 group.classList.add('active');
+                content.style.display = 'block';
             }
         });
     });
 
-    mobileMenuContainer.appendChild(accordion);
+    // Attach click triggers to star-toggles
+    accordionContainer.querySelectorAll('.star-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const url = btn.getAttribute('data-url');
+            const label = btn.getAttribute('data-label');
+            const icon = btn.getAttribute('data-icon');
+            toggleFavorite({ label, url, icon });
+        });
+    });
 
-    // Setup hamburger trigger toggle
+    // Attach Drag and Drop handlers
+    const dragItems = accordionContainer.querySelectorAll('.fav-draggable-item');
+    dragItems.forEach(item => {
+        item.addEventListener('dragstart', handleDragStart, false);
+        item.addEventListener('dragenter', handleDragEnter, false);
+        item.addEventListener('dragover', handleDragOver, false);
+        item.addEventListener('dragleave', handleDragLeave, false);
+        item.addEventListener('drop', handleDrop, false);
+        item.addEventListener('dragend', handleDragEnd, false);
+    });
+}
+
+function handleDragStart(e) {
+    window.dragSrcEl = this;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.innerHTML);
+    this.style.opacity = '0.4';
+}
+
+function handleDragOver(e) {
+    if (e.preventDefault) e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    return false;
+}
+
+function handleDragEnter(e) {
+    this.classList.add('over');
+}
+
+function handleDragLeave(e) {
+    this.classList.remove('over');
+}
+
+function handleDrop(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    if (window.dragSrcEl !== this) {
+        const srcUrl = window.dragSrcEl.getAttribute('data-url');
+        const targetUrl = this.getAttribute('data-url');
+        
+        const srcIdx = favorites.findIndex(f => f.url === srcUrl);
+        const targetIdx = favorites.findIndex(f => f.url === targetUrl);
+        
+        if (srcIdx > -1 && targetIdx > -1) {
+            const temp = favorites[srcIdx];
+            favorites.splice(srcIdx, 1);
+            favorites.splice(targetIdx, 0, temp);
+            saveFavorites();
+            const accordion = document.getElementById('drawerAccordion');
+            if (accordion && window.lastMenuItems) {
+                renderDrawerContent(accordion, window.lastMenuItems);
+            }
+            const sidebarAccordion = document.getElementById('sidebarAccordion');
+            if (sidebarAccordion && window.lastMenuItems) {
+                renderDrawerContent(sidebarAccordion, window.lastMenuItems);
+            }
+        }
+    }
+    return false;
+}
+
+function handleDragEnd(e) {
+    this.style.opacity = '1.0';
+    document.querySelectorAll('.fav-draggable-item').forEach(item => {
+        item.classList.remove('over');
+    });
+}
+
+function renderMobileNav(menuItems) {
+    window.lastMenuItems = menuItems;
+    const accordion = document.getElementById('drawerAccordion');
+    if (accordion) {
+        renderDrawerContent(accordion, menuItems);
+    }
+
+    const sidebarAccordion = document.getElementById('sidebarAccordion');
+    if (sidebarAccordion) {
+        renderDrawerContent(sidebarAccordion, menuItems);
+    }
+
+    // Setup Hamburger and Drawer triggers
     const hamburgerBtn = document.querySelector('.menu-icon');
-    const overlay = document.querySelector('.menu-overlay');
+    const drawerMenu = document.getElementById('leftDrawerMenu');
+    const overlay = document.getElementById('leftDrawerOverlay');
+    const closeBtn = document.getElementById('leftDrawerCloseBtn');
 
-    if (hamburgerBtn && overlay) {
-        hamburgerBtn.onclick = () => {
-            mobileMenuContainer.classList.add('active');
-            overlay.classList.add('active');
+    if (hamburgerBtn && drawerMenu && overlay) {
+        hamburgerBtn.onclick = (e) => {
+            e.preventDefault();
+            if (window.innerWidth > 900) {
+                const grid = document.querySelector('.homepage-three-column-grid');
+                const sidebar = document.getElementById('leftMenuSidebar');
+                if (grid && sidebar) {
+                    const isCollapsed = sidebar.classList.toggle('collapsed');
+                    grid.classList.toggle('sidebar-collapsed', isCollapsed);
+                    localStorage.setItem('sidebar-collapsed', isCollapsed ? 'true' : 'false');
+                }
+            } else {
+                drawerMenu.classList.add('active');
+                overlay.classList.add('active');
+            }
         };
 
-        overlay.onclick = () => {
-            mobileMenuContainer.classList.remove('active');
+        const closeDrawer = () => {
+            drawerMenu.classList.remove('active');
             overlay.classList.remove('active');
         };
 
-        const closeBtn = document.getElementById('mobileMenuClose');
-        if (closeBtn) {
-            closeBtn.onclick = () => {
-                mobileMenuContainer.classList.remove('active');
-                overlay.classList.remove('active');
-            };
+        overlay.onclick = closeDrawer;
+        if (closeBtn) closeBtn.onclick = closeDrawer;
+    }
+
+    // Persistent sidebar collapse state on load for desktop
+    if (window.innerWidth > 900) {
+        const grid = document.querySelector('.homepage-three-column-grid');
+        const sidebar = document.getElementById('leftMenuSidebar');
+        if (grid && sidebar) {
+            const savedCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+            if (savedCollapsed) {
+                sidebar.classList.add('collapsed');
+                grid.classList.add('sidebar-collapsed');
+            }
         }
     }
+    
+    // Right Click Custom Context Menu for Desktop
+    document.addEventListener('contextmenu', (e) => {
+        const link = e.target.closest('.accordion-subitem-link');
+        if (link && drawerMenu.classList.contains('active')) {
+            e.preventDefault();
+            const url = link.getAttribute('href');
+            const label = link.dataset.label;
+            const icon = link.dataset.icon;
+            
+            const ctxMenu = document.getElementById('customContextMenu');
+            if (ctxMenu) {
+                ctxMenu.style.display = 'block';
+                ctxMenu.style.left = `${e.clientX}px`;
+                ctxMenu.style.top = `${e.clientY}px`;
+                
+                const isFav = isFavorite(url);
+                const act = document.getElementById('ctxFavAction');
+                if (act) {
+                    act.textContent = isFav ? '⭐ Remove from Favourites' : '⭐ Add to Favourites';
+                    act.onclick = () => {
+                        toggleFavorite({ label, url, icon });
+                        ctxMenu.style.display = 'none';
+                    };
+                }
+            }
+        } else {
+            const ctxMenu = document.getElementById('customContextMenu');
+            if (ctxMenu) ctxMenu.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('click', () => {
+        const ctxMenu = document.getElementById('customContextMenu');
+        if (ctxMenu) ctxMenu.style.display = 'none';
+    });
 }
 
 // Adjust URL path dynamically depending on current page level (root vs Features/Astrology/)
@@ -655,26 +1134,22 @@ function navigateToPage(page, tab = '', queryParams = {}) {
     const viewport = document.getElementById('spaViewport');
     if (!viewport) return;
     
+    window.currentSPAState = { page, tab, queryParams };
+    
     // Save original home HTML on first run
     if (!originalHomeHTML) {
         originalHomeHTML = viewport.innerHTML;
     }
     
-    // Update URL query parameters for bookmarking & reload support
-    const url = new URL(window.location);
-    url.searchParams.delete('tab');
-    url.searchParams.delete('region');
-    url.searchParams.delete('varga');
-    url.searchParams.delete('page');
-    
-    url.searchParams.set('page', page);
-    if (tab) url.searchParams.set('tab', tab);
-    for (let k in queryParams) {
-        if (k !== 'page' && k !== 'tab') {
-            url.searchParams.set(k, queryParams[k]);
+    // Update URL query parameters for pretty URL routing
+    const prettyUrl = buildUrlPath(page, tab, queryParams);
+    if (window.location.protocol !== 'file:') {
+        try {
+            window.history.pushState({}, '', prettyUrl);
+        } catch (e) {
+            console.warn("pushState blocked under CORS context:", e);
         }
     }
-    window.history.pushState({}, '', url);
     
     // Toggle displays
     const leftSidebar = document.querySelector('.left-ad-sidebar');
@@ -719,7 +1194,24 @@ function navigateToPage(page, tab = '', queryParams = {}) {
         
         viewport.innerHTML = originalHomeHTML;
         
-        // Initialize/Restore default home panchang views if tab is set
+        // Re-bind autocomplete inputs and API test events
+        if (typeof initGeoComplete === 'function') {
+            if (document.getElementById('panchangPlaceInput')) {
+                initGeoComplete('panchangPlaceInput', { defaultPlace: 'New Delhi, India' });
+            }
+            if (document.getElementById('maasikPlaceInput')) {
+                initGeoComplete('maasikPlaceInput', { defaultPlace: 'New Delhi, India' });
+            }
+        }
+        if (typeof initApiHelper === 'function') {
+            initApiHelper();
+        }
+        
+        // Re-run astrology features binding for panchang on home page
+        if (typeof initAstrology === 'function') {
+            initAstrology(tab, queryParams);
+        }
+        
         if (tab === 'panchang' || tab === 'maasik' || tab === 'muhurtas') {
             const welcome = document.getElementById('homeWelcomeSection');
             if (welcome) welcome.style.display = 'none';
@@ -757,31 +1249,18 @@ function navigateToPage(page, tab = '', queryParams = {}) {
 
 // Global popstate history back/forward support
 window.addEventListener('popstate', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const page = urlParams.get('page') || 'home';
-    const tab = urlParams.get('tab') || '';
-    const queryParams = {};
-    urlParams.forEach((value, key) => {
-        queryParams[key] = value;
-    });
-    navigateToPage(page, tab, queryParams);
+    const parsed = parseUrlPath(new URL(window.location.href));
+    navigateToPage(parsed.page, parsed.tab, parsed.queryParams);
 });
 
 document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
     
-    // Read page from search query on load
-    const urlParams = new URLSearchParams(window.location.search);
-    const initialPage = urlParams.get('page') || 'home';
-    const initialTab = urlParams.get('tab') || '';
-    
-    const queryParams = {};
-    urlParams.forEach((value, key) => {
-        queryParams[key] = value;
-    });
+    // Read page from URL path on load
+    const parsed = parseUrlPath(new URL(window.location.href));
     
     setTimeout(() => {
-        navigateToPage(initialPage, initialTab, queryParams);
+        navigateToPage(parsed.page, parsed.tab, parsed.queryParams);
     }, 100);
 });
 
@@ -793,46 +1272,41 @@ document.addEventListener('click', (e) => {
     const href = anchor.getAttribute('href');
     if (!href) return;
     
-    if (href.includes('astrology.html') || href.includes('Dictionary.html') || 
-        href.includes('Static/index.html') || href.includes('index.html') || 
-        href.startsWith('./index.html') || href === '#') {
+    // Skip external links or target=_blank links
+    if (anchor.getAttribute('target') === '_blank') return;
+
+    // Check if it's an internal link managed by our SPA pretty URLs
+    let isInternal = false;
+    try {
+        const base = window.location.protocol === 'file:' ? window.location.href : window.location.origin;
+        const parsed = new URL(href, base);
+        const parsedOrigin = parsed.protocol === 'file:' ? 'file:' : parsed.origin;
+        const localOrigin = window.location.protocol === 'file:' ? 'file:' : window.location.origin;
         
-        // Skip external links or target=_blank links
-        if (anchor.getAttribute('target') === '_blank') return;
-        
-        e.preventDefault();
-        
-        let page = 'home';
-        let tab = '';
-        let queryParams = {};
-        
-        try {
-            const parsed = new URL(href, window.location.origin);
-            const path = parsed.pathname;
-            
-            if (path.includes('astrology.html')) {
-                page = 'astrology';
-            } else if (path.includes('Dictionary.html')) {
-                page = 'dictionary';
-            } else if (path.includes('index.html') && path.includes('/Static/')) {
-                page = 'wisdom';
-            } else if (path.includes('index.html') || path === '/' || path === '') {
-                page = 'home';
+        if (parsedOrigin === localOrigin) {
+            const path = parsed.pathname.toLowerCase();
+            // Exclude assets, robots, sitemap, auth, and list_events
+            if (!path.includes('.') || path.endsWith('.html') || path.endsWith('.htm')) {
+                if (!path.includes('/api/') && !path.includes('/userlog/') && !path.includes('list_events.html')) {
+                    isInternal = true;
+                }
             }
-            
-            tab = parsed.searchParams.get('tab') || '';
-            parsed.searchParams.forEach((val, k) => {
-                queryParams[k] = val;
-            });
-        } catch (err) {
-            if (href.includes('astrology.html')) page = 'astrology';
-            else if (href.includes('Dictionary.html')) page = 'dictionary';
-            else if (href.includes('Static/index.html')) page = 'wisdom';
-            
-            const matchTab = href.match(/tab=([^&]+)/);
-            if (matchTab) tab = matchTab[1];
         }
-        
-        navigateToPage(page, tab, queryParams);
+    } catch(err) {
+        if (!href.startsWith('http') && !href.startsWith('mailto:') && !href.startsWith('tel:') && href !== '#') {
+            isInternal = true;
+        }
+    }
+    
+    if (isInternal) {
+        e.preventDefault();
+        try {
+            const base = window.location.protocol === 'file:' ? window.location.href : window.location.origin;
+            const parsed = new URL(href, base);
+            const { page, tab, queryParams } = parseUrlPath(parsed);
+            navigateToPage(page, tab, queryParams);
+        } catch(err) {
+            console.error("Navigation click handling failed:", err);
+        }
     }
 });
