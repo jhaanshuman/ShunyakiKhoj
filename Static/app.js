@@ -1,13 +1,12 @@
 // ===== DATA STORE =====
 const categories = [
-    { id: 'puja-vidhi', name: 'Puja Vidhi', icon: '🙏', color: '#FF6B35', glow: 'rgba(255, 107, 53, 0.2)', description: 'Sacred worship rituals and procedures for various deities and occasions' },
-    { id: 'vrat', name: 'Vrat', icon: '🪔', color: '#FF9500', glow: 'rgba(255, 149, 0, 0.2)', description: 'Fasting rituals observed for spiritual purification and divine blessings' },
-    { id: 'upavas', name: 'Upavas', icon: '🌿', color: '#34C759', glow: 'rgba(52, 199, 89, 0.2)', description: 'Complete or partial fasting practices for spiritual discipline' },
-    { id: 'mantra', name: 'Mantra', icon: '📿', color: '#5856D6', glow: 'rgba(88, 86, 214, 0.2)', description: 'Sacred Sanskrit chants and hymns for meditation and spiritual power' },
-    { id: 'stotra', name: 'Stotra', icon: '🕉️', color: '#AF52DE', glow: 'rgba(175, 82, 222, 0.2)', description: 'Devotional hymns and praises composed for various deities' },
-    { id: 'ashtakam', name: 'Ashtakam', icon: '✨', color: '#5AC8FA', glow: 'rgba(90, 200, 250, 0.2)', description: 'Eight-verse devotional hymns dedicated to divine beings' },
-    { id: 'yantra', name: 'Yantra', icon: '🔯', color: '#FF2D55', glow: 'rgba(255, 45, 85, 0.2)', description: 'Sacred geometric diagrams used for meditation and spiritual practices' },
-    { id: 'paath', name: 'Paath', icon: '📖', color: '#FFD700', glow: 'rgba(255, 215, 0, 0.2)', description: 'Sacred recitations and readings of holy scriptures and texts' }
+    { id: 'festival', name: 'Festival Calendar', icon: '📅', color: '#FF6B35', glow: 'rgba(255, 107, 53, 0.2)', description: 'Sacred festivals, auspicious timings, and historical celebrations of Sanatana Dharma' },
+    { id: 'vrat', name: 'Vrat & Upavaas', icon: '🪔', color: '#FF9500', glow: 'rgba(255, 149, 0, 0.2)', description: 'Fasting rituals and spiritual observances for purification and divine grace' },
+    { id: 'vrat_katha', name: 'Vrat Katha', icon: '📖', color: '#FFD700', glow: 'rgba(255, 215, 0, 0.2)', description: 'Sacred stories, recitations, stotras, and readings of holy scriptures' },
+    { id: 'puja', name: 'Puja Vidhi', icon: '🙏', color: '#AF52DE', glow: 'rgba(175, 82, 222, 0.2)', description: 'Sacred worship rituals and procedures for various deities and occasions' },
+    { id: 'mantra', name: 'Vedic Mantra', icon: '📿', color: '#5856D6', glow: 'rgba(88, 86, 214, 0.2)', description: 'Sacred Sanskrit chants and hymns for meditation and spiritual power' },
+    { id: 'yantra', name: 'Deity Yantra', icon: '🔯', color: '#FF2D55', glow: 'rgba(255, 45, 85, 0.2)', description: 'Sacred geometric diagrams used for meditation and spiritual practices' },
+    { id: 'ritual', name: 'Sanatana Rituals', icon: '🕉️', color: '#34C759', glow: 'rgba(52, 199, 89, 0.2)', description: 'Traditional rites of passage, twilight prayers, and custom rituals' }
 ];
 
 // Store for loaded data
@@ -34,25 +33,40 @@ window.initWisdom = function() {
     renderCategories();
     setupEventListeners();
     setupScrollEffects();
+
+    // Check for category query parameters to automatically open that category
+    const spaState = window.currentSPAState || {};
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryCat = (spaState.queryParams && spaState.queryParams.category) || urlParams.get('category');
+    if (queryCat) {
+        setTimeout(() => {
+            loadCategory(queryCat);
+        }, 150);
+    }
 };
 
 // ===== PARTICLES =====
 function createParticles() {
-    for (let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
-        particle.style.animationDelay = Math.random() * 10 + 's';
-        particle.style.width = (Math.random() * 4 + 2) + 'px';
-        particle.style.height = particle.style.width;
-        particle.style.opacity = Math.random() * 0.5 + 0.2;
-        particlesContainer.appendChild(particle);
+    if (particlesContainer) {
+        particlesContainer.innerHTML = '';
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.width = (Math.random() * 4 + 2) + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.opacity = Math.random() * 0.5 + 0.2;
+            particlesContainer.appendChild(particle);
+        }
     }
 }
 
 // ===== RENDER CATEGORIES =====
 function renderCategories() {
+    if (!categoryGrid) return;
+    
     categoryGrid.innerHTML = categories.map((cat, index) => `
         <div class="category-tile fade-in-up stagger-${(index % 6) + 1}" 
              style="--tile-color: ${cat.color}; --tile-glow: ${cat.glow}"
@@ -66,7 +80,7 @@ function renderCategories() {
         </div>
     `).join('');
     
-    // Load counts for each category
+    // Load counts for each category from window.WisdomDatabase
     categories.forEach(cat => {
         loadCategoryData(cat.id).then(data => {
             const tile = document.querySelector(`[data-category="${cat.id}"] .tile-count`);
@@ -80,118 +94,38 @@ function renderCategories() {
     });
 }
 
-const OFFLINE_WISDOM_DATA = {
-    "puja-vidhi": {
-        items: [
-            { id: "pv001", name: "Ganesha Puja Vidhi", deity: "Lord Ganesha", description: "Complete step-by-step rituals to worship Lord Ganesha for removing obstacles.", benefits: ["Removes obstacles", "Brings prosperity", "Success in new ventures"] },
-            { id: "pv002", name: "Shiva Puja Vidhi", deity: "Lord Shiva", description: "Sanskrit mantras and water/bilva offering procedures for Shiva worship.", benefits: ["Inner peace", "Spiritual growth", "Destruction of negativity"] }
-        ]
-    },
-    "vrat": {
-        items: [
-            { id: "vr001", name: "Satyanarayana Vrat", deity: "Lord Vishnu", description: "Fast and narration ceremony of Satyanarayana stories for truth and devotion.", benefits: ["Family harmony", "Wealth and health", "Cleanses karma"] },
-            { id: "vr002", name: "Ekadashi Vrat", deity: "Lord Vishnu", description: "Bi-monthly fasting ritual observed on the 11th lunar day of Moon cycles.", benefits: ["Detoxification", "Mental clarity", "Spiritual purification"] }
-        ]
-    },
-    "upavas": {
-        items: [
-            { id: "up001", name: "Pradosha Upavas", deity: "Lord Shiva", description: "Fasting during twilight period on the 13th day of lunar fortnight.", benefits: ["Removes sins", "Fulfills desires", "Liberates from fears"] }
-        ]
-    },
-    "mantra": {
-        items: [
-            { id: "mn001", name: "Gayatri Mantra", deity: "Savitar (Sun)", text: "ॐ भूर्भुवः स्वः तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि धियो यो नः प्रचोदयात्", meaning: "We meditate on the divine light of the Sun. May it illuminate our intellect.", benefits: ["Mental focus", "Vibrant health", "Spiritual awakening"] },
-            { id: "mn002", name: "Mahamrityunjaya Mantra", deity: "Lord Shiva", text: "ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम् उर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय मामृतात्", meaning: "We worship the three-eyed Lord Shiva who nourishes all. Deliver us from death.", benefits: ["Longevity", "Healing", "Overcomes fear of death"] }
-        ]
-    },
-    "stotra": {
-        items: [
-            { id: "st001", name: "Shiva Tandava Stotra", deity: "Lord Shiva", description: "Powerful hymn composed by Ravana describing Shiva's cosmic dance.", benefits: ["Strength", "Creativity", "Removes depression"] }
-        ]
-    },
-    "ashtakam": {
-        items: [
-            { id: "as001", name: "Madhurashtakam", deity: "Lord Krishna", description: "Devotional eight-stanza hymn praising the sweetness of Lord Krishna.", benefits: ["Pure love", "Happiness", "Inner joy"] }
-        ]
-    },
-    "yantra": {
-        items: [
-            { id: "yn001", name: "Sri Yantra", deity: "Goddess Lalita Tripurasundari", description: "Sacred geometry diagram representing the cosmic union of Shiva and Shakti.", benefits: ["Abundance", "Cosmic alignment", "Material success"] }
-        ]
-    },
-    "paath": {
-        items: [
-            { id: "pt001", name: "Sundarkand Paath", deity: "Lord Hanuman", description: "Detailed narration of Hanuman's search for Sita and his devotion.", benefits: ["Protection", "Courage", "Confidence in adversity"] }
-        ]
-    }
-};
-
 // ===== LOAD CATEGORY DATA =====
 async function loadCategoryData(categoryId) {
-    // Return from cache if available
     if (dataStore[categoryId]) {
         return dataStore[categoryId];
     }
     
-    const fileMap = {
-        'puja-vidhi': './data/puja-vidhi.json',
-        'vrat': './data/vrat.json',
-        'upavas': './data/upavas.json',
-        'mantra': './data/mantra.json',
-        'stotra': './data/stotra.json',
-        'ashtakam': './data/ashtakam.json',
-        'yantra': './data/yantra.json',
-        'paath': './data/paath.json'
-    };
-    
-    try {
-        const isRoot = !window.location.pathname.includes('/Static/') && !window.location.pathname.includes('/Features/');
-        const fetchPath = isRoot ? `./Static/data/${categoryId}.json` : `./data/${categoryId}.json`;
-        const response = await fetch(fetchPath);
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: Failed to load ${categoryId}`);
-        }
-        const data = await response.json();
-        
-        // Validate data structure
-        if (!data || !data.items || !Array.isArray(data.items) || data.items.length === 0) {
-            throw new Error('Invalid or empty data structure');
-        }
-        
-        dataStore[categoryId] = data;
-        return data;
-        
-    } catch (error) {
-        console.warn(`⚠️ Error loading ${categoryId} from JSON, using offline local copy:`, error.message);
-        
-        const category = categories.find(c => c.id === categoryId);
-        const offlineData = OFFLINE_WISDOM_DATA[categoryId] || { items: [] };
-        
-        const fallbackData = {
-            category: category ? category.name : categoryId,
-            icon: category ? category.icon : '📿',
-            color: category ? category.color : '#5856D6',
-            items: offlineData.items.map(item => ({
-                ...item,
-                benefits: item.benefits || [],
-                description: item.description || ''
-            }))
-        };
-        
-        if (fallbackData.items.length === 0) {
-            fallbackData.items.push({
-                id: `${categoryId.substring(0, 2)}001`,
-                name: `⚠️ Unable to Load Data`,
-                deity: 'Please check file path',
-                description: `The data file for "${categoryId}" could not be loaded. Make sure the JSON file exists at: data/${categoryId}.json`,
-                benefits: ['Check console for details', 'Verify file exists', 'Check JSON syntax'],
-                error: true
-            });
-        }
-        
-        dataStore[categoryId] = fallbackData;
-        return fallbackData;
+    // Read directly from window.WisdomDatabase without fetch API
+    if (window.WisdomDatabase && window.WisdomDatabase[categoryId]) {
+        dataStore[categoryId] = window.WisdomDatabase[categoryId];
+        return window.WisdomDatabase[categoryId];
     }
+    
+    // Fallback if database script failed to load
+    console.warn(`⚠️ window.WisdomDatabase not loaded, using offline fallback schema for ${categoryId}`);
+    const category = categories.find(c => c.id === categoryId);
+    const fallbackData = {
+        category: category ? category.name : categoryId,
+        icon: category ? category.icon : '📿',
+        color: category ? category.color : '#5856D6',
+        items: [
+            {
+                id: `${categoryId.substring(0, 2)}001`,
+                name: `⚠️ Failed to Load Database`,
+                deity: 'Check script loading',
+                description: `Consolidated wisdom_database.js was not found or failed to register on the window object.`,
+                benefits: ['Verify wisdom_database.js script tag in index.html', 'Check script path exists under Static/data/'],
+                error: true
+            }
+        ]
+    };
+    dataStore[categoryId] = fallbackData;
+    return fallbackData;
 }
 
 // ===== LOAD CATEGORY =====
@@ -200,50 +134,56 @@ async function loadCategory(categoryId) {
     if (!category) return;
     
     // Show loading state
-    itemsGrid.innerHTML = `
-        <div class="loading-shimmer" style="height: 200px; border-radius: 20px;"></div>
-    `.repeat(6);
+    if (itemsGrid) {
+        itemsGrid.innerHTML = `
+            <div class="loading-shimmer" style="height: 200px; border-radius: 20px;"></div>
+        `.repeat(6);
+    }
     
     // Hide categories, show items
-    document.querySelector('.categories-section').style.display = 'none';
-    document.querySelector('.hero-section').style.display = 'none';
-    itemsSection.classList.add('active');
+    const catSection = document.querySelector('.categories-section');
+    const heroSection = document.querySelector('.hero-section');
+    if (catSection) catSection.style.display = 'none';
+    if (heroSection) heroSection.style.display = 'none';
+    if (itemsSection) itemsSection.classList.add('active');
     
     // Update header
-    itemsTitle.textContent = `${category.icon} ${category.name}`;
-    itemsTitle.style.color = category.color;
+    if (itemsTitle) {
+        itemsTitle.textContent = `${category.icon} ${category.name}`;
+        itemsTitle.style.color = category.color;
+    }
     
     try {
         const data = await loadCategoryData(categoryId);
-        
         if (data && data.items && data.items.length > 0) {
-            // Check if it's an error fallback
             if (data.items[0] && data.items[0].error) {
-                itemsCount.textContent = '⚠️ Data Load Error';
+                if (itemsCount) itemsCount.textContent = '⚠️ Data Load Error';
                 renderItems(data.items, category);
             } else {
-                itemsCount.textContent = `${data.items.length} Sacred Entries`;
+                if (itemsCount) itemsCount.textContent = `${data.items.length} Sacred Entries`;
                 renderItems(data.items, category);
             }
         } else {
-            itemsGrid.innerHTML = `
-                <div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.6);">
-                    <div style="font-size: 48px; margin-bottom: 20px;">📂</div>
-                    <h3 style="color: white; margin-bottom: 10px;">No entries found</h3>
-                    <p>The data file loaded but contained no items.</p>
-                </div>
-            `;
+            if (itemsGrid) {
+                itemsGrid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.6);">
+                        <div style="font-size: 48px; margin-bottom: 20px;">📂</div>
+                        <h3 style="color: white; margin-bottom: 10px;">No entries found</h3>
+                    </div>
+                `;
+            }
         }
     } catch (error) {
         console.error('Error loading category:', error);
-        itemsGrid.innerHTML = `
-            <div class="error-state" style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.6);">
-                <div style="font-size: 48px; margin-bottom: 20px;">⚠️</div>
-                <h3 style="color: white; margin-bottom: 10px;">Unable to load content</h3>
-                <p>Error: ${error.message}</p>
-                <p style="margin-top: 10px; font-size: 12px; color: rgba(255,255,255,0.4);">Please check the console for details.</p>
-            </div>
-        `;
+        if (itemsGrid) {
+            itemsGrid.innerHTML = `
+                <div class="error-state" style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.6);">
+                    <div style="font-size: 48px; margin-bottom: 20px;">⚠️</div>
+                    <h3 style="color: white; margin-bottom: 10px;">Unable to load content</h3>
+                    <p>Error: ${error.message}</p>
+                </div>
+            `;
+        }
     }
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -251,6 +191,7 @@ async function loadCategory(categoryId) {
 
 // ===== RENDER ITEMS =====
 function renderItems(items, category) {
+    if (!itemsGrid) return;
     if (!items || items.length === 0) {
         itemsGrid.innerHTML = `
             <div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.6);">
@@ -288,27 +229,7 @@ function renderItems(items, category) {
 // ===== GET ITEM PREVIEW =====
 function getItemPreview(item, categoryId) {
     if (item.error) return item.description || '⚠️ Data loading error';
-    
-    switch(categoryId) {
-        case 'puja-vidhi': 
-            return item.purpose || item.description || 'Sacred worship ritual';
-        case 'vrat': 
-            return item.story ? item.story.substring(0, 80) + '...' : (item.purpose || 'Divine fasting ritual');
-        case 'upavas': 
-            return item.purpose || 'Spiritual fasting practice';
-        case 'mantra': 
-            return item.meaning ? item.meaning.substring(0, 100) + '...' : 'Sacred Sanskrit chant';
-        case 'stotra': 
-            return item.description ? item.description.substring(0, 100) + '...' : 'Devotional hymn';
-        case 'ashtakam': 
-            return item.description ? item.description.substring(0, 100) + '...' : 'Eight-verse hymn';
-        case 'yantra': 
-            return item.description ? item.description.substring(0, 100) + '...' : 'Sacred geometric diagram';
-        case 'paath': 
-            return item.description ? item.description.substring(0, 100) + '...' : 'Sacred recitation';
-        default: 
-            return 'Sacred spiritual content';
-    }
+    return item.hover || item.description || item.purpose || 'Sacred spiritual content';
 }
 
 // ===== GET ITEM TAGS =====
@@ -316,50 +237,14 @@ function getItemTags(item, categoryId) {
     if (item.error) return `<span class="item-tag">⚠️ Error</span>`;
     
     const tags = [];
+    if (item.deity) tags.push(`🙏 ${item.deity}`);
+    if (item.duration) tags.push(`⏱ ${item.duration}`);
+    if (item.verses) tags.push(`📖 ${item.verses} V`);
+    if (item.author) tags.push(`✍️ ${item.author}`);
+    if (item.best_time) tags.push(`🌅 ${item.best_time.split(',')[0]}`);
+    if (item.type) tags.push(`✨ ${item.type}`);
     
-    switch(categoryId) {
-        case 'puja-vidhi':
-            if (item.duration) tags.push(`⏱ ${item.duration}`);
-            if (item.best_time) tags.push(`🌅 ${item.best_time.split(',')[0]}`);
-            if (item.steps) tags.push(`📋 ${item.steps} Steps`);
-            break;
-        case 'vrat':
-            if (item.type) tags.push(`📅 ${item.type}`);
-            if (item.duration) tags.push(`⏱ ${item.duration}`);
-            if (item.best_day) tags.push(`📆 ${item.best_day.substring(0, 15)}...`);
-            break;
-        case 'upavas':
-            if (item.type) tags.push(`🌿 ${item.type}`);
-            if (item.duration) tags.push(`⏱ ${item.duration}`);
-            if (item.water_allowed !== undefined) tags.push(item.water_allowed ? '💧 Water OK' : '💧 No Water');
-            break;
-        case 'mantra':
-            if (item.chant_count) tags.push(`📿 ${item.chant_count}x`);
-            if (item.origin) tags.push(`📜 ${item.origin.split(' ')[0]}`);
-            if (item.rishi) tags.push(`🧘 ${item.rishi}`);
-            break;
-        case 'stotra':
-            if (item.verses) tags.push(`📖 ${item.verses} V`);
-            if (item.author) tags.push(`✍️ ${item.author}`);
-            if (item.language) tags.push(`🗣️ ${item.language}`);
-            break;
-        case 'ashtakam':
-            if (item.verses) tags.push(`📖 ${item.verses} V`);
-            if (item.author) tags.push(`✍️ ${item.author}`);
-            if (item.best_time) tags.push(`🌅 ${item.best_time.split(',')[0]}`);
-            break;
-        case 'yantra':
-            if (item.type) tags.push(`🔯 ${item.type}`);
-            if (item.material) tags.push(`🪵 ${item.material.split(',')[0]}`);
-            if (item.placement) tags.push(`📍 ${item.placement}`);
-            break;
-        case 'paath':
-            if (item.duration) tags.push(`⏱ ${item.duration}`);
-            if (item.frequency) tags.push(`📅 ${item.frequency}`);
-            break;
-    }
-    
-    return tags.slice(0, 4).map(tag => `<span class="item-tag">${tag}</span>`).join('');
+    return tags.slice(0, 3).map(tag => `<span class="item-tag">${tag}</span>`).join('');
 }
 
 // ===== SHOW DETAIL MODAL =====
@@ -373,9 +258,11 @@ async function showDetail(itemId, categoryId) {
         }
         
         const category = categories.find(c => c.id === categoryId);
-        modalBody.innerHTML = generateDetailHTML(item, category);
-        detailModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        if (modalBody && detailModal) {
+            modalBody.innerHTML = generateDetailHTML(item, category);
+            detailModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
     } catch (error) {
         console.error('Error showing detail:', error);
     }
@@ -389,7 +276,6 @@ function generateDetailHTML(item, category) {
                 <div style="font-size: 48px; margin-bottom: 20px;">⚠️</div>
                 <h2 style="color: #FF4444; margin-bottom: 10px;">Data Load Error</h2>
                 <p style="color: rgba(255,255,255,0.7);">${item.description || 'Unable to load data'}</p>
-                <p style="color: rgba(255,255,255,0.4); font-size: 12px; margin-top: 20px;">Please check the console for details.</p>
             </div>
         `;
     }
@@ -415,22 +301,26 @@ function generateDetailHTML(item, category) {
         `);
     };
     
-    const addList = (title, items) => {
-        if (items && items.length) sections.push(`
+    const addList = (title, listItems) => {
+        if (listItems && listItems.length) sections.push(`
             <div class="detail-section" style="margin-bottom: 16px; padding: 12px 16px; background: rgba(255,255,255,0.05); border-radius: 12px; border-left: 3px solid rgba(255,255,255,0.2);">
                 <h4 style="font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.6); margin-bottom: 6px;">${title}</h4>
                 <ul style="list-style: none; padding: 0; margin: 0;">
-                    ${items.map(i => `<li style="padding: 4px 0; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 8px; font-size: 15px;"><span style="color: rgba(255,215,0,0.6);">✦</span> ${i}</li>`).join('')}
+                    ${listItems.map(i => `<li style="padding: 4px 0; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 8px; font-size: 15px;"><span style="color: rgba(255,215,0,0.6);">✦</span> ${i}</li>`).join('')}
                 </ul>
             </div>
         `);
     };
     
     // Display all item fields dynamically
-    const displayOrder = ['description', 'purpose', 'meaning', 'text', 'origin', 'author', 'verses', 'language', 'best_time', 'duration', 'frequency', 'method', 'steps', 'material', 'placement', 'activation', 'type', 'food_rule', 'best_day', 'story', 'procedure', 'chant_count', 'rishi', 'ideal_for'];
+    const displayOrder = [
+        'description', 'since_when', 'why_reason', 'belief', 'where', 'how', 
+        'text', 'meaning', 'origin', 'author', 'verses', 'language', 'best_time', 
+        'duration', 'frequency', 'material', 'placement', 'activation', 'type'
+    ];
     
     displayOrder.forEach(key => {
-        if (item[key] && typeof item[key] === 'string' && item[key].length > 0) {
+        if (item[key] && typeof item[key] === 'string' && item[key].trim().length > 0) {
             const label = key.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
             addSection(label, item[key]);
         }
@@ -441,42 +331,23 @@ function generateDetailHTML(item, category) {
         addList('Benefits', item.benefits);
     }
     
-    // Handle items as list (for puja vidhi)
-    if (item.items && item.items.length && typeof item.items[0] === 'string') {
-        addList('Required Items', item.items);
-    }
-    
-    // Handle allowed food as list
-    if (item.allowed_food && item.allowed_food.length) {
-        addList('Allowed Food', item.allowed_food);
-    }
-    
-    // Handle mantra text specially
-    if (item.text && item.text.length > 0) {
-        sections.push(`
-            <div class="detail-section" style="margin-bottom: 16px; padding: 16px; background: rgba(255,215,0,0.08); border-radius: 12px; border-left: 3px solid #FFD700;">
-                <h4 style="font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #FFD700; margin-bottom: 6px;">Sacred Mantra</h4>
-                <p style="font-size: 18px; color: #FFD700; font-weight: 600; line-height: 1.6; margin-bottom: 8px;">${item.text}</p>
-                ${item.meaning ? `<p style="color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.6;">📖 ${item.meaning}</p>` : ''}
-            </div>
-        `);
-    }
-    
     return sections.join('');
 }
 
 // ===== CLOSE MODAL =====
 function closeModal() {
-    detailModal.classList.remove('active');
+    if (detailModal) detailModal.classList.remove('active');
     document.body.style.overflow = '';
 }
 
 // ===== GO BACK =====
 function goBack() {
-    itemsSection.classList.remove('active');
-    document.querySelector('.categories-section').style.display = 'block';
-    document.querySelector('.hero-section').style.display = 'flex';
-    searchInput.value = '';
+    if (itemsSection) itemsSection.classList.remove('active');
+    const catSection = document.querySelector('.categories-section');
+    const heroSection = document.querySelector('.hero-section');
+    if (catSection) catSection.style.display = 'block';
+    if (heroSection) heroSection.style.display = 'flex';
+    if (searchInput) searchInput.value = '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -485,8 +356,7 @@ function handleSearch(query) {
     const trimmedQuery = query.trim().toLowerCase();
     
     if (!trimmedQuery) {
-        // Reset view
-        if (itemsSection.classList.contains('active')) {
+        if (itemsSection && itemsSection.classList.contains('active')) {
             const categoryTitle = itemsTitle.textContent.replace(/[^a-zA-Z\s]/g, '').trim();
             const category = categories.find(c => c.name === categoryTitle);
             if (category) loadCategory(category.id);
@@ -498,7 +368,7 @@ function handleSearch(query) {
         return;
     }
     
-    if (itemsSection.classList.contains('active')) {
+    if (itemsSection && itemsSection.classList.contains('active')) {
         const cards = document.querySelectorAll('.item-card');
         let visibleCount = 0;
         cards.forEach(card => {
@@ -507,7 +377,7 @@ function handleSearch(query) {
             card.style.display = isVisible ? 'flex' : 'none';
             if (isVisible) visibleCount++;
         });
-        itemsCount.textContent = visibleCount === 0 ? 'No matches found' : `${visibleCount} matching entries`;
+        if (itemsCount) itemsCount.textContent = visibleCount === 0 ? 'No matches found' : `${visibleCount} matching entries`;
     } else {
         document.querySelectorAll('.category-tile').forEach(tile => {
             const text = tile.textContent.toLowerCase();
@@ -518,21 +388,25 @@ function handleSearch(query) {
 
 // ===== EVENT LISTENERS =====
 function setupEventListeners() {
-    backBtn.addEventListener('click', goBack);
-    modalClose.addEventListener('click', closeModal);
-    detailModal.addEventListener('click', (e) => {
-        if (e.target === detailModal) closeModal();
-    });
+    if (backBtn) backBtn.addEventListener('click', goBack);
+    if (modalClose) modalClose.addEventListener('click', closeModal);
+    if (detailModal) {
+        detailModal.addEventListener('click', (e) => {
+            if (e.target === detailModal) closeModal();
+        });
+    }
     
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeModal();
     });
     
     let searchTimeout;
-    searchInput.addEventListener('input', (e) => {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => handleSearch(e.target.value), 300);
-    });
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => handleSearch(e.target.value), 300);
+        });
+    }
     
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', (e) => {
@@ -543,9 +417,11 @@ function setupEventListeners() {
             
             if (target === '#home' || target === '#categories') {
                 goBack();
-                document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
+                const categoriesSec = document.getElementById('categories');
+                if (categoriesSec) categoriesSec.scrollIntoView({ behavior: 'smooth' });
             } else if (target === '#about') {
-                document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+                const aboutSec = document.getElementById('about');
+                if (aboutSec) aboutSec.scrollIntoView({ behavior: 'smooth' });
             }
         });
     });
@@ -554,6 +430,7 @@ function setupEventListeners() {
 // ===== SCROLL EFFECTS =====
 function setupScrollEffects() {
     const header = document.querySelector('.glass-header');
+    if (!header) return;
     
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {

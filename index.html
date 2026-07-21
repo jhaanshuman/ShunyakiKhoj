@@ -156,6 +156,7 @@ gtag('config','G-DZ2CM1SBWW');
 <script src="./nav.js" defer></script>
 <script src="./Features/Astrology/vedic_data.js?v=1.1.8"></script>
 <script src="./Features/Astrology/vedic_database.js?v=1.1.8"></script>
+<script src="./Static/data/wisdom_database.js?v=1.0.0" defer></script>
 </head>
 
 <body class="homepage-layout">
@@ -193,21 +194,19 @@ gtag('config','G-DZ2CM1SBWW');
 </header>
 
     <div id="authModal" class="auth-modal">
-  <div class="auth-card">
+  <div class="auth-card" style="text-align: center; max-width: 360px; padding: 30px;">
     <button class="auth-close" onclick="closeAuth()">✕</button>
-    <h2 id="authTitle">Login</h2>
-    <div class="social-buttons">
-      <button class="google-btn" onclick="loginWithGoogle()">Continue with Google</button>
-      <button class="facebook-btn" onclick="alert('Facebook Login coming soon. Please use Continue with Google.')">Continue with Facebook</button>
-      <button class="instagram-btn" onclick="alert('Instagram Login coming soon. Please use Continue with Google.')">Continue with Instagram</button>
-    </div>
-    <div class="divider"><span>or</span></div>
-    <input id="loginEmail" placeholder="Email">
-    <input id="loginPassword" type="password" placeholder="Password">
-    <button class="primary-btn" onclick="login()">Login</button>
-    <div class="auth-links">
-      <span onclick="showSignup()">Create account</span>
-      <span onclick="forgotPassword()">Forgot password?</span>
+    <h2 id="authTitle" style="margin-bottom: 20px; color: var(--accent-color);">Login</h2>
+    <div class="social-buttons" style="margin-bottom: 10px;">
+      <button class="google-btn" onclick="loginWithGoogle()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; background: #fff; color: #1f2937; border: 1.5px solid #d1d5db; border-radius: 8px; font-weight: 700; cursor: pointer; transition: background 0.2s;">
+        <svg style="width:18px; height:18px;" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v3.92h6.69a5.74 5.74 0 0 1-2.49 3.77v3.12h4.02c2.35-2.16 3.7-5.34 3.7-9.21z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.97-1.08 7.96-2.91l-4.02-3.12c-1.12.75-2.55 1.19-3.94 1.19-3.04 0-5.61-2.05-6.53-4.82H1.32v3.23A12 12 0 0 0 12 24z"/>
+          <path fill="#FBBC05" d="M5.47 14.34a7.16 7.16 0 0 1 0-2.68V8.43H1.32a12 12 0 0 0 0 7.14l4.15-3.23z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.22 0 12 0A12 12 0 0 0 1.32 8.43l4.15 3.23c.92-2.77 3.49-4.82 6.53-4.82z"/>
+        </svg>
+        Continue with Google
+      </button>
     </div>
   </div>
 </div>
@@ -646,7 +645,7 @@ gtag('config','G-DZ2CM1SBWW');
             </div>
             <div style="min-width:180px;">
                 <div style="font-weight:700; color:var(--title-color); margin-bottom:8px;">🌐 Resources</div>
-                <a href="/list_events.html" style="display:block; color:var(--text-muted); text-decoration:none; margin-bottom:4px;">Festivals Directory</a>
+                <a href="index.html?page=wisdom&category=festival" style="display:block; color:var(--text-muted); text-decoration:none; margin-bottom:4px;">Festivals Directory</a>
                 <a href="/sitemap.xml" style="display:block; color:var(--text-muted); text-decoration:none; margin-bottom:4px;">Sitemap</a>
                 <a href="/robots.txt" style="display:block; color:var(--text-muted); text-decoration:none;">Robots.txt</a>
             </div>

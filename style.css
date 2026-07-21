@@ -1641,7 +1641,7 @@ button:hover{
 
 .about-panchang-box:hover,
 .about-panchang-box.expanded {
-    height: 200px;
+    height: 400px;
     overflow-y: auto;
     opacity: 1;
     background: rgba(15, 18, 29, 0.96) !important;

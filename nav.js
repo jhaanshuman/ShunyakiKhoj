@@ -104,13 +104,13 @@ const DEFAULT_NAV_CONFIG = {
       "type": "dropdown",
       "icon": "📿",
       "items": [
-        { "label": "Festival Calendar", "url": "list_events.html?category=festival", "icon": "📅" },
-        { "label": "Vrat and Upavas", "url": "list_events.html?category=vrat", "icon": "🛐" },
-        { "label": "Vrat Katha", "url": "list_events.html?category=vrat_katha", "icon": "📜" },
-        { "label": "Puja Vidhi", "url": "list_events.html?category=puja", "icon": "🔥" },
-        { "label": "Vedic Mantra", "url": "list_events.html?category=mantra", "icon": "☀️" },
-        { "label": "Deity Yantra", "url": "list_events.html?category=yantra", "icon": "🛡️" },
-        { "label": "Sanatana Rituals", "url": "list_events.html?category=ritual", "icon": "🌊" }
+        { "label": "Festival Calendar", "url": "index.html?page=wisdom&category=festival", "icon": "📅" },
+        { "label": "Vrat and Upavas", "url": "index.html?page=wisdom&category=vrat", "icon": "🛐" },
+        { "label": "Vrat Katha", "url": "index.html?page=wisdom&category=vrat_katha", "icon": "📜" },
+        { "label": "Puja Vidhi", "url": "index.html?page=wisdom&category=puja", "icon": "🔥" },
+        { "label": "Vedic Mantra", "url": "index.html?page=wisdom&category=mantra", "icon": "☀️" },
+        { "label": "Deity Yantra", "url": "index.html?page=wisdom&category=yantra", "icon": "🛡️" },
+        { "label": "Sanatana Rituals", "url": "index.html?page=wisdom&category=ritual", "icon": "🌊" }
       ]
     }
   ]
@@ -1085,7 +1085,8 @@ function navigateToPage(page, tab = '', queryParams = {}) {
     const rightSidebar = document.querySelector('.right-widgets-sidebar');
     
     // Render the view
-    if (page === 'astrology') {
+    const isAstrology = (page === 'astrology') || ['kundli', 'milan', 'prashna', 'rashifal', 'dasha', 'gemstone', 'rudraksha'].includes(tab.toLowerCase());
+    if (isAstrology) {
         if (leftSidebar) leftSidebar.style.display = 'none';
         if (rightSidebar) rightSidebar.style.display = 'none';
         
