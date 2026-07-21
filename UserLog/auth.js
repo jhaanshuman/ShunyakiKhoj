@@ -89,7 +89,7 @@
 
     // Trigger Google Sign-In GSI popup
     function loginWithGoogle() {
-        if (tokenClient) {
+        if (tokenClient && !CLIENT_ID.includes('dummy')) {
             tokenClient.requestAccessToken();
         } else {
             // Simulated login flow if GSI block/offline

@@ -1208,6 +1208,28 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // Bind Home Icon click
+    const headerSpans = document.querySelectorAll('.header-icons span');
+    headerSpans.forEach(span => {
+        if (span.innerText === '🏠') {
+            span.style.cursor = 'pointer';
+            span.addEventListener('click', (e) => {
+                e.preventDefault();
+                navigateToPage('home', '', {});
+            });
+        }
+    });
+
+    // Bind Logo Area click
+    const logoArea = document.querySelector('.logo-area');
+    if (logoArea) {
+        logoArea.style.cursor = 'pointer';
+        logoArea.addEventListener('click', (e) => {
+            e.preventDefault();
+            navigateToPage('home', '', {});
+        });
+    }
 });
 
 // Intercept clicks on links for SPA

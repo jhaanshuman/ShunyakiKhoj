@@ -1626,7 +1626,7 @@ button:hover{
 
 /* ── Dynamic SEO About Panchang Box ── */
 .about-panchang-box {
-    height: 35px;
+    height: 50px;
     overflow: hidden;
     opacity: 0.6;
     padding: 8px 16px !important;
@@ -4522,4 +4522,63 @@ font-size:15px;
     border-bottom: 1px solid rgba(255,255,255,0.08);
     padding-bottom: 10px;
     font-size: 1.1rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PERSONALIZED ASTROLOGY CALCULATIONS & MOBILE SIDEBAR/DROPDOWN
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rep-tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-align: left;
+    transition: all 0.2s;
+    opacity: 0.75;
+}
+.rep-tab-btn:hover {
+    background: rgba(255,255,255,0.05);
+    color: var(--accent-color);
+    opacity: 1;
+}
+.rep-tab-btn.active {
+    background: rgba(234, 88, 12, 0.15);
+    border-left: 3px solid #ea580c;
+    color: #fbbf24;
+    opacity: 1;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.12); opacity: 0.85; }
+}
+
+@media (max-width: 900px) {
+    .astrology-container .dashboard-grid {
+        flex-direction: column !important;
+    }
+    .astrology-container .birth-details-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+    }
+    .astrology-container #outputCard {
+        width: 100% !important;
+        min-width: 100% !important;
+        margin-top: 20px;
+        padding: 15px !important;
+    }
+    .astrology-container .report-sidebar-list {
+        display: none !important;
+    }
+    .astrology-container .mobile-report-selector-container {
+        display: block !important;
+    }
+    .astrology-container .report-dashboard-layout {
+        flex-direction: column !important;
+    }
 }
