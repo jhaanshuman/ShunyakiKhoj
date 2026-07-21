@@ -279,26 +279,30 @@ function renderAstrologyView() {
                     </div>
                     <div style="flex: 1.8; min-width: 300px;">
                         <h4 style="color: var(--accent-color); margin-bottom: 10px;">Transiting Planetary Positions</h4>
-                        <div style="overflow-x: auto; background: rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; max-height: 380px; overflow-y: auto;">
-                            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem;">
-                                <thead>
-                                    <tr style="border-bottom: 1.5px solid var(--border-color); color: var(--accent-color);">
-                                        <th style="padding: 6px;">Planet</th>
-                                        <th style="padding: 6px;">Sign</th>
-                                        <th style="padding: 6px;">Longitude</th>
-                                        <th style="padding: 6px;">Nakshatra</th>
-                                        <th style="padding: 6px;">Pada</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="gocharPlanets"></tbody>
-                            </table>
-                        </div>
+                        <div id="gocharPlanets" style="overflow-x: auto; background: rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; max-height: 380px; overflow-y: auto;"></div>
                     </div>
                 </div>
 
                 <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 15px;">
                     <h4 style="color: var(--accent-color); margin-bottom: 10px;">Transit Panchanga</h4>
                     <div id="gocharPanchangBody" style="font-size: 0.85rem; line-height: 1.6; color: var(--text-color); display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;"></div>
+                </div>
+
+                <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 15px;">
+                    <h4 style="color: var(--accent-color); margin-bottom: 10px;">Transit Choghadiya (Auspicious Muhurtas)</h4>
+                    <div style="overflow-x: auto; background: rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem; line-height: 1.6;">
+                            <thead>
+                                <tr style="border-bottom: 1.5px solid var(--border-color); color: var(--accent-color); font-weight: 800;">
+                                    <th style="padding: 6px;">Part</th>
+                                    <th style="padding: 6px;">Time Range</th>
+                                    <th style="padding: 6px;">Choghadiya</th>
+                                    <th style="padding: 6px;">Quality</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gocharChoghadiyaBody"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

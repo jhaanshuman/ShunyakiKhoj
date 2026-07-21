@@ -610,14 +610,12 @@ function renderMobileNav(menuItems) {
     if (hamburgerBtn && drawerMenu && overlay) {
         hamburgerBtn.onclick = (e) => {
             e.preventDefault();
-            if (window.innerWidth > 900) {
+            const sidebar = document.getElementById('leftMenuSidebar');
+            if (sidebar) {
                 const grid = document.querySelector('.homepage-three-column-grid');
-                const sidebar = document.getElementById('leftMenuSidebar');
-                if (grid && sidebar) {
-                    const isCollapsed = sidebar.classList.toggle('collapsed');
-                    grid.classList.toggle('sidebar-collapsed', isCollapsed);
-                    localStorage.setItem('sidebar-collapsed', isCollapsed ? 'true' : 'false');
-                }
+                const isCollapsed = sidebar.classList.toggle('collapsed');
+                if (grid) grid.classList.toggle('sidebar-collapsed', isCollapsed);
+                localStorage.setItem('sidebar-collapsed', isCollapsed ? 'true' : 'false');
             } else {
                 drawerMenu.classList.add('active');
                 overlay.classList.add('active');
@@ -1059,11 +1057,120 @@ function setupKeyboardAccessibility() {
 // ==========================================
 let originalHomeHTML = null;
 
+function updatePageSEO(page, tab = '', queryParams = {}) {
+    let title = "ShunyakiKhoj – Vedic Panchang, Kundli & Sanskrit AI Platform";
+    let description = "ShunyakiKhoj is India's premier AI-powered Sanskrit & Vedic platform. Get today's Panchang, Kundli (birth chart), Gochar (transit), Maasik calendar, Muhurta timings, Rashifal, and Sanskrit dictionary — all free online.";
+    let canonical = "https://shunyakikhoj.co.in/";
+    let schemaJson = {};
+
+    const cleanTab = tab.toLowerCase();
+
+    if (page === 'home') {
+        if (cleanTab === 'panchang') {
+            title = "Today's Dainik Panchang - Aaj Ka Panchang - ShunyakiKhoj";
+            description = "Get accurate today's Dainik Panchang, Aaj Ka Panchang, Hindu calendar, Tithi, Nakshatra, Yoga, Karana, and auspicious Shubh Muhurta timings for your location.";
+            canonical += "?page=home&tab=panchang";
+            schemaJson = {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "Dainik Panchang Calculator",
+                "operatingSystem": "All",
+                "applicationCategory": "Astrology & Reference",
+                "description": description,
+                "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
+            };
+        } else if (cleanTab === 'maasik') {
+            title = "Maasik Hindu Calendar - Monthly Panchang - ShunyakiKhoj";
+            description = "Explore the monthly Hindu calendar with all major fasts, festivals, Vrats, tithis, and auspicious dates for this month.";
+            canonical += "?page=home&tab=maasik";
+        } else if (cleanTab === 'muhurtas') {
+            title = "Auspicious Muhurta Finder - Choghadiya & Shubh Muhurta - ShunyakiKhoj";
+            description = "Calculate shubh muhurta timings, Choghadiya cycles, Rahu Kalam, and Abhijit Muhurta timings dynamically for any place and time.";
+            canonical += "?page=home&tab=muhurtas";
+        } else {
+            schemaJson = {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "ShunyakiKhoj",
+                "url": "https://shunyakikhoj.co.in/",
+                "description": description
+            };
+        }
+    } else if (page === 'astrology' || ['kundli', 'milan', 'prashna', 'rashifal', 'dasha', 'gemstone', 'rudraksha'].includes(cleanTab)) {
+        title = "Free Janam Kundli - Online Birth Chart & Horoscope - ShunyakiKhoj";
+        description = "Generate your free Janam Kundli online. Detailed 40+ birthchart calculations, Vimshottari Dasha, planetary strength, Ashtakavarga, and personalized gemstone recommendations.";
+        canonical += `?page=astrology${tab ? '&tab=' + tab : ''}`;
+        schemaJson = {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Free Janam Kundli Calculator",
+            "operatingSystem": "All",
+            "applicationCategory": "Astrology & Horoscope",
+            "description": description,
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
+        };
+    } else if (page === 'dictionary') {
+        title = "Sanskrit AI Dictionary & Grammar Analyzer - ShunyakiKhoj";
+        description = "Search our advanced Sanskrit dictionary and analyze Sanskrit grammar rules, word roots, and declensions instantly.";
+        canonical += "?page=dictionary";
+        schemaJson = {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Sanskrit AI Dictionary",
+            "operatingSystem": "All",
+            "applicationCategory": "Educational & Reference",
+            "description": description,
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
+        };
+    } else if (page === 'wisdom') {
+        const cat = queryParams.category || '';
+        title = `Spiritual Wisdom${cat ? ' - ' + cat.charAt(0).toUpperCase() + cat.slice(1) : ''} - ShunyakiKhoj`;
+        description = "Explore Vedic scriptures, deity yantras, powerful mantras, step-by-step puja vidhi, and traditional Vrat Kathas.";
+        canonical += `?page=wisdom${cat ? '&category=' + cat : ''}`;
+    }
+
+    // Apply document title
+    document.title = title;
+
+    // Apply meta description
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+        metaDesc.setAttribute('content', description);
+    }
+
+    // Apply Open Graph details
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', description);
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', title);
+
+    // Apply canonical link tag
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+        canonicalLink = document.createElement('link');
+        canonicalLink.setAttribute('rel', 'canonical');
+        document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.setAttribute('href', canonical);
+
+    // Apply JSON-LD Schema
+    let schemaScript = document.getElementById('dynamic-jsonld-schema');
+    if (schemaScript) schemaScript.remove();
+    if (Object.keys(schemaJson).length > 0) {
+        schemaScript = document.createElement('script');
+        schemaScript.id = 'dynamic-jsonld-schema';
+        schemaScript.type = 'application/ld+json';
+        schemaScript.text = JSON.stringify(schemaJson);
+        document.head.appendChild(schemaScript);
+    }
+}
+
 function navigateToPage(page, tab = '', queryParams = {}) {
     const viewport = document.getElementById('spaViewport');
     if (!viewport) return;
     
     window.currentSPAState = { page, tab, queryParams };
+    updatePageSEO(page, tab, queryParams);
     
     // Save original home HTML on first run
     if (!originalHomeHTML) {
@@ -1230,6 +1337,26 @@ document.addEventListener('DOMContentLoaded', () => {
             navigateToPage('home', '', {});
         });
     }
+
+    // Call Visitor Count API
+    async function loadVisitorStats() {
+        try {
+            const apiBase = (window.location.hostname.includes('github.io') || window.location.protocol.startsWith('file'))
+                ? 'https://sanskritai.vercel.app/api/visitor_count'
+                : '/api/visitor_count';
+            const res = await fetch(apiBase, { method: 'POST' });
+            const data = await res.json();
+            if (data.status === 'success') {
+                const totalEl = document.getElementById('valTotalVisits');
+                const uniqueEl = document.getElementById('valUniqueVisitors');
+                if (totalEl) totalEl.innerText = Number(data.total_visits).toLocaleString();
+                if (uniqueEl) uniqueEl.innerText = Number(data.unique_visitors).toLocaleString();
+            }
+        } catch (e) {
+            console.warn("Failed to load visitor statistics", e);
+        }
+    }
+    loadVisitorStats();
 });
 
 // Intercept clicks on links for SPA

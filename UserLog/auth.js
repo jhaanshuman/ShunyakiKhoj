@@ -12,7 +12,8 @@
     let settingsModal = null;
 
     // Google API Configuration
-    const CLIENT_ID = '134218957485-dummy.apps.googleusercontent.com'; // Dummy client ID for GSI initialization
+    const metaClient = document.querySelector('meta[name="google-signin-client-id"]');
+    const CLIENT_ID = metaClient ? metaClient.content : '134218957485-dummy.apps.googleusercontent.com';
     let tokenClient = null;
 
     // Retrieve active session profile from localStorage

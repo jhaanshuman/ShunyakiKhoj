@@ -2451,17 +2451,20 @@ function renderMuhurtas(choghadiyaId, horaId, choghadiya, hora) {
 
 function renderTransitChoghadiya(choghadiya) {
     const cBody = document.getElementById('gocharChoghadiyaBody');
+    if (!cBody) return;
     cBody.innerHTML = "";
-    choghadiya.day.forEach(p => {
-        cBody.innerHTML += `
-            <tr>
-                <td>Day Part ${p.part}</td>
-                <td>${p.start} - ${p.end}</td>
-                <td>${p.name}</td>
-                <td style="color: ${p.quality === 'Good' ? '#4ade80' : p.quality === 'Bad' ? '#f87171' : '#94a3b8'}">${p.quality}</td>
-            </tr>
-        `;
-    });
+    if (choghadiya && choghadiya.day) {
+        choghadiya.day.forEach(p => {
+            cBody.innerHTML += `
+                <tr>
+                    <td>Day Part ${p.part}</td>
+                    <td>${p.start} - ${p.end}</td>
+                    <td>${p.name}</td>
+                    <td style="color: ${p.quality === 'Good' ? '#4ade80' : p.quality === 'Bad' ? '#f87171' : '#94a3b8'}">${p.quality}</td>
+                </tr>
+            `;
+        });
+    }
 }
 
 async function loadDasha(payload) {
@@ -4868,7 +4871,7 @@ function renderBhavabalaTable(viewport) {
         const val = mockBala[i-1];
         const status = val >= 7.0 ? '<span style="color:#10b981;">Strong</span>' : (val >= 5.5 ? '<span style="color:#fbbf24;">Medium</span>' : '<span style="color:#f87171;">Weak</span>');
         html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-            <td style="padding:8px; font-weight:700; color:#fff;">House sub_item_${i}</td>
+            <td style="padding:8px; font-weight:700; color:#fff;">House ${i}</td>
             <td style="padding:8px;">${signs[(i - 1 + 3) % 12]} (14°25')</td>
             <td style="padding:8px;">${val} Rupas</td>
             <td style="padding:8px;">${status}</td>
@@ -4936,8 +4939,8 @@ function renderPlanetaryAspects(viewport) {
         html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
             <td style="padding:8px; font-weight:700; color:#fff;">${translatePlanet(asp.aspecting)}</td>
             <td style="padding:8px; font-weight:600;">${translatePlanet(asp.target)}</td>
-            <td style="padding:8px;">House sub_item_${asp.house}</td>
-            <td style="padding:8px; color:#fbbf24;">sub_item_${asp.description}</td>
+            <td style="padding:8px;">House ${asp.house}</td>
+            <td style="padding:8px; color:#fbbf24;">${asp.description}</td>
         </tr>`;
     });
     
@@ -5002,7 +5005,7 @@ function renderPlanetaryConjunctions(viewport) {
             html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
                 <td style="padding:8px; font-weight:700; color:#fff;">${sign}</td>
                 <td style="padding:8px; font-weight:700; color:#fbbf24;">${pnames}</td>
-                <td style="padding:8px;">sub_item_${diff}° separation</td>
+                <td style="padding:8px;">${diff}° separation</td>
                 <td style="padding:8px;">${explanation}</td>
             </tr>`;
         }
@@ -5028,14 +5031,14 @@ function renderPlanetaryFriendships(viewport) {
                 
     const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
     planets.forEach(p => {
-        html += `<th style="padding:6px;">sub_item_${p}</th>`;
+        html += `<th style="padding:6px;">${p}</th>`;
     });
     
     html += `</tr></thead><tbody>`;
     
     planets.forEach(p1 => {
         html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-            <td style="padding:6px; text-align:left; font-weight:700; color:#fff;">sub_item_${p1}</td>`;
+            <td style="padding:6px; text-align:left; font-weight:700; color:#fff;">${p1}</td>`;
         planets.forEach(p2 => {
             const status = friendshipMatrix[p1][p2];
             let color = '#fff';
@@ -5045,7 +5048,7 @@ function renderPlanetaryFriendships(viewport) {
             else if (status.includes('Enemy')) color = '#f87171';
             else if (status === 'Self') color = 'rgba(255,255,255,0.2)';
             
-            html += `<td style="padding:6px; color:sub_item_${color};">sub_item_${status}</td>`;
+            html += `<td style="padding:6px; color:${color};">${status}</td>`;
         });
         html += `</tr>`;
     });
@@ -5071,10 +5074,10 @@ function renderJaiminiKarakas(viewport) {
         
     karakas.forEach(k => {
         html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-            <td style="padding:10px; font-weight:700; color:#fff;">sub_item_${k.label}</td>
-            <td style="padding:10px; font-weight:700; color:#fbbf24;">sub_item_${translatePlanet(k.planet)}</td>
-            <td style="padding:10px;">sub_item_${k.degree.toFixed(4)}°</td>
-            <td style="padding:10px;">sub_item_${k.nakshatra}</td>
+            <td style="padding:10px; font-weight:700; color:#fff;">${k.label}</td>
+            <td style="padding:10px; font-weight:700; color:#fbbf24;">${translatePlanet(k.planet)}</td>
+            <td style="padding:10px;">${k.degree.toFixed(4)}°</td>
+            <td style="padding:10px;">${k.nakshatra}</td>
         </tr>`;
     });
     
@@ -5289,11 +5292,11 @@ function renderSAVMatrix(viewport) {
     
     rows.forEach(r => {
         html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-            <td style="padding:6px; text-align:left; font-weight:700; color:#fff;">sub_item_${r.name}</td>`;
+            <td style="padding:6px; text-align:left; font-weight:700; color:#fff;">${r.name}</td>`;
         r.bindus.forEach(b => {
-            html += `<td style="padding:6px;">sub_item_${b}</td>`;
+            html += `<td style="padding:6px;">${b}</td>`;
         });
-        html += `<td style="padding:6px; font-weight:700; color:#fbbf24;">sub_item_${r.tot}</td></tr>`;
+        html += `<td style="padding:6px; font-weight:700; color:#fbbf24;">${r.tot}</td></tr>`;
     });
     
     // SAV Total row
@@ -5301,7 +5304,7 @@ function renderSAVMatrix(viewport) {
     html += `<tr style="border-top:1.5px solid var(--border-color); font-weight:800; background:rgba(251,191,36,0.04);">
         <td style="padding:8px; text-align:left; color:#fbbf24;">SAV Total</td>`;
     savTotals.forEach(t => {
-        html += `<td style="padding:8px; color:#fbbf24;">sub_item_${t}</td>`;
+        html += `<td style="padding:8px; color:#fbbf24;">${t}</td>`;
     });
     html += `<td style="padding:8px; color:#fbbf24;">337</td></tr>`;
     
@@ -5312,7 +5315,7 @@ function renderSAVMatrix(viewport) {
 function renderBAVTab(viewport, planet) {
     const bindus = [4, 5, 3, 4, 5, 4, 3, 5, 4, 5, 3, 3]; // Mock BAV values
     
-    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Bhinnashtakavarga (BAV) points distribution for <strong>sub_item_${planet}</strong> across signs:</p>
+    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Bhinnashtakavarga (BAV) points distribution for <strong>${planet}</strong> across signs:</p>
     <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">`;
     
     // Draw visual grid representation
@@ -5322,11 +5325,11 @@ function renderBAVTab(viewport, planet) {
     
     order.forEach(idx => {
         if (idx === -1) {
-            gridHtml += `<div style="background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; font-size:0.75rem; color:var(--accent-color); font-weight:700;">sub_item_${planet === 'Sun' ? '☀️' : '🪐'}</div>`;
+            gridHtml += `<div style="background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; font-size:0.75rem; color:var(--accent-color); font-weight:700;">${planet === 'Sun' ? '☀️' : '🪐'}</div>`;
         } else {
             gridHtml += `<div style="background:rgba(255,255,255,0.03); display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:0.75rem; border:1px solid rgba(255,255,255,0.02);">
-                <div style="color:var(--text-muted); font-size:0.6rem;">sub_item_${signs[idx]}</div>
-                <div style="font-size:1.15rem; font-weight:800; color:#fbbf24;">sub_item_${bindus[idx]}</div>
+                <div style="color:var(--text-muted); font-size:0.6rem;">${signs[idx]}</div>
+                <div style="font-size:1.15rem; font-weight:800; color:#fbbf24;">${bindus[idx]}</div>
             </div>`;
         }
     });
@@ -5351,9 +5354,9 @@ function renderBAVTab(viewport, planet) {
         const b = bindus[i];
         const status = b >= 5 ? '<span style="color:#10b981;">Highly Auspicious</span>' : (b >= 4 ? '<span style="color:#fbbf24;">Average</span>' : '<span style="color:#f87171;">Weak</span>');
         html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-            <td style="padding:8px; font-weight:700; color:#fff;">sub_item_${signNames[i]}</td>
-            <td style="padding:8px; font-weight:700; color:#fbbf24;">sub_item_${b} Bindus</td>
-            <td style="padding:8px;">sub_item_${status}</td>
+            <td style="padding:8px; font-weight:700; color:#fff;">${signNames[i]}</td>
+            <td style="padding:8px; font-weight:700; color:#fbbf24;">${b} Bindus</td>
+            <td style="padding:8px;">${status}</td>
         </tr>`;
     }
     html += `</tbody></table></div></div>`;
@@ -5375,32 +5378,32 @@ function renderNativePanchangTab(viewport) {
         <tbody>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
                 <td style="padding:10px; font-weight:700; color:#fff;">Tithi (Lunar Day)</td>
-                <td style="padding:10px; font-weight:700; color:#fbbf24;">sub_item_${p['Tithi (तिथि)'] || 'Shukla Ekadashi'}</td>
+                <td style="padding:10px; font-weight:700; color:#fbbf24;">${p['Tithi (तिथि)'] || 'Shukla Ekadashi'}</td>
                 <td style="padding:10px;">Governs emotional desires, relationships, and basic mental nature.</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
                 <td style="padding:10px; font-weight:700; color:#fff;">Nakshatra (Moon Mansion)</td>
-                <td style="padding:10px; font-weight:700; color:#fbbf24;">sub_item_${p['Nakshatra (নক্ষत्र)'] || lastCalculatedData.moon_nakshatra || 'Ashwini'}</td>
+                <td style="padding:10px; font-weight:700; color:#fbbf24;">${p['Nakshatra (নক্ষत्र)'] || lastCalculatedData.moon_nakshatra || 'Ashwini'}</td>
                 <td style="padding:10px;">Governs destiny, lifecycle paths, career affinities, and primary mindset.</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
                 <td style="padding:10px; font-weight:700; color:#fff;">Yoga (Luni-Solar Arc)</td>
-                <td style="padding:10px; font-weight:700; color:#fbbf24;">sub_item_${p['Yoga (যোগ)'] || 'Siddha'}</td>
+                <td style="padding:10px; font-weight:700; color:#fbbf24;">${p['Yoga (যোগ)'] || 'Siddha'}</td>
                 <td style="padding:10px;">Governs health, physical constitution, inner vitality, and character traits.</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
                 <td style="padding:10px; font-weight:700; color:#fff;">Karana (Half Tithi)</td>
-                <td style="padding:10px; font-weight:700; color:#fbbf24;">sub_item_${p['Karana (करण)'] || 'Vanija'}</td>
+                <td style="padding:10px; font-weight:700; color:#fbbf24;">${p['Karana (करण)'] || 'Vanija'}</td>
                 <td style="padding:10px;">Governs material wealth, professional execution, and day-to-day actions.</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
                 <td style="padding:10px; font-weight:700; color:#fff;">Vara (Solar Weekday)</td>
-                <td style="padding:10px; font-weight:700; color:#fbbf24;">sub_item_${p['Vara (বার)'] || 'Wednesday'}</td>
+                <td style="padding:10px; font-weight:700; color:#fbbf24;">${p['Vara (বার)'] || 'Wednesday'}</td>
                 <td style="padding:10px;">Governs physical energy, vitality levels, and external personality.</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
                 <td style="padding:10px; font-weight:700; color:#fff;">Sunrise (सूर्योदय)</td>
-                <td style="padding:10px; font-weight:700; color:#fbbf24;">sub_item_${p['Sunrise (সূর্যোদয়)'] || '06:34 AM'}</td>
+                <td style="padding:10px; font-weight:700; color:#fbbf24;">${p['Sunrise (সূর্যোদয়)'] || '06:34 AM'}</td>
                 <td style="padding:10px;">Start of the Vedic day. Calculates Lagna offsets accurately.</td>
             </tr>
         </tbody></table>`;
@@ -5415,9 +5418,9 @@ function renderYogasTab(viewport) {
     
     yogas.forEach(y => {
         html += `<div style="background:rgba(251,191,36,0.04); border:1px solid rgba(251,191,36,0.15); border-radius:8px; padding:15px;">
-            <h4 style="color:#fbbf24; margin-top:0; margin-bottom:8px; font-size:0.95rem;">🌟 sub_item_${y.name}</h4>
-            <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px;"><strong>Combination:</strong> sub_item_${y.combination}</div>
-            <div style="font-size:0.82rem; line-height:1.5; color:#fff;"><strong>Astrological Effect:</strong> sub_item_${y.effect}</div>
+            <h4 style="color:#fbbf24; margin-top:0; margin-bottom:8px; font-size:0.95rem;">🌟 ${y.name}</h4>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px;"><strong>Combination:</strong> ${y.combination}</div>
+            <div style="font-size:0.82rem; line-height:1.5; color:#fff;"><strong>Astrological Effect:</strong> ${y.effect}</div>
         </div>`;
     });
     
@@ -5446,25 +5449,25 @@ function renderGemstonesTab(viewport) {
     
     const rec = gems[ascSign] || gems['Aries'];
     
-    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Auspicious gemstones and Rudraksha beads recommended based on your Lagna (Ascendant sign: <strong>sub_item_${ascSign}</strong>):</p>
+    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Auspicious gemstones and Rudraksha beads recommended based on your Lagna (Ascendant sign: <strong>${ascSign}</strong>):</p>
     
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:15px; margin-bottom:20px;">
         <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:8px; padding:15px; text-align:center;">
             <div style="font-size:1.8rem; margin-bottom:8px;">💍</div>
             <h4 style="color:var(--accent-color); margin-top:0; margin-bottom:6px; font-size:0.9rem;">Life Stone (जीवन रत्न)</h4>
-            <div style="font-weight:700; color:#fff; font-size:0.95rem; margin-bottom:4px;">sub_item_${rec.life}</div>
+            <div style="font-weight:700; color:#fff; font-size:0.95rem; margin-bottom:4px;">${rec.life}</div>
             <div style="font-size:0.72rem; color:var(--text-muted);">Supports health, name, and personality.</div>
         </div>
         <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:8px; padding:15px; text-align:center;">
             <div style="font-size:1.8rem; margin-bottom:8px;">💎</div>
             <h4 style="color:var(--accent-color); margin-top:0; margin-bottom:6px; font-size:0.9rem;">Lucky Stone (भाग्य रत्न)</h4>
-            <div style="font-weight:700; color:#fff; font-size:0.95rem; margin-bottom:4px;">sub_item_${rec.lucky}</div>
+            <div style="font-weight:700; color:#fff; font-size:0.95rem; margin-bottom:4px;">${rec.lucky}</div>
             <div style="font-size:0.72rem; color:var(--text-muted);">Enhances luck, wealth, and destiny.</div>
         </div>
         <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:8px; padding:15px; text-align:center;">
             <div style="font-size:1.8rem; margin-bottom:8px;">👑</div>
             <h4 style="color:var(--accent-color); margin-top:0; margin-bottom:6px; font-size:0.9rem;">Auspicious Rudraksha</h4>
-            <div style="font-weight:700; color:#fff; font-size:0.95rem; margin-bottom:4px;">sub_item_${rec.rudra}</div>
+            <div style="font-weight:700; color:#fff; font-size:0.95rem; margin-bottom:4px;">${rec.rudra}</div>
             <div style="font-size:0.72rem; color:var(--text-muted);">For spiritual growth and planetary peace.</div>
         </div>
     </div>
@@ -5518,11 +5521,11 @@ function renderTransitOverlayTab(viewport) {
         }
         
         html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05); ${status.includes('Active') ? 'background:rgba(251,191,36,0.04);' : ''}">
-            <td style="padding:10px; font-weight:700; color:#fff;">sub_item_${translatePlanet(p)}</td>
+            <td style="padding:10px; font-weight:700; color:#fff;">${translatePlanet(p)}</td>
             <td style="padding:10px;">${natalSign}</td>
             <td style="padding:10px; font-weight:700; color:#fbbf24;">${transitSign}</td>
-            <td style="padding:10px;">House sub_item_${houseNum}</td>
-            <td style="padding:10px; color:sub_item_${color}; font-weight:600;">sub_item_${status}</td>
+            <td style="padding:10px;">House ${houseNum}</td>
+            <td style="padding:10px; color:${color}; font-weight:600;">${status}</td>
         </tr>`;
     });
     
@@ -5574,7 +5577,7 @@ window.renderReportContent = function(reportId, viewport) {
             chartSvg = getNorthIndianSVG(chartData, ascSign);
         }
         
-        html += `<div style="display:inline-block; border-radius:8px; overflow:hidden; background:rgba(0,0,0,0.1); padding:10px;">sub_item_${chartSvg}</div>`;
+        html += `<div style="display:inline-block; border-radius:8px; overflow:hidden; background:rgba(0,0,0,0.1); padding:10px;">${chartSvg}</div>`;
         
         // Show degrees table for this division
         html += `<div style="width:100%; overflow-x:auto;">
@@ -5601,11 +5604,11 @@ window.renderReportContent = function(reportId, viewport) {
                 const coord = chartData[p];
                 const longStr = formatLongitude(coord.longitude || coord.degree || 0);
                 html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                    <td style="padding:8px; font-weight:700; color:#fff;">sub_item_${translatePlanet(p)}</td>
-                    <td style="padding:8px;">sub_item_${coord.sign || coord.signName || ''}</td>
-                    <td style="padding:8px;">sub_item_${longStr}</td>
-                    <td style="padding:8px;">sub_item_${coord.Nakshatra || coord.nakshatra || 'Ashwini'}</td>
-                    <td style="padding:8px;">sub_item_${coord.Pada || coord.pada || 1}</td>
+                    <td style="padding:8px; font-weight:700; color:#fff;">${translatePlanet(p)}</td>
+                    <td style="padding:8px;">${coord.sign || coord.signName || ''}</td>
+                    <td style="padding:8px;">${longStr}</td>
+                    <td style="padding:8px;">${coord.Nakshatra || coord.nakshatra || 'Ashwini'}</td>
+                    <td style="padding:8px;">${coord.Pada || coord.pada || 1}</td>
                 </tr>`;
             }
         });
@@ -5699,7 +5702,7 @@ window.renderReportContent = function(reportId, viewport) {
             renderTransitOverlayTab(viewport);
             break;
         default:
-            viewport.innerHTML = `<div style="padding: 20px; color: var(--text-color);">Report sub_item_${reportId} is coming soon.</div>`;
+            viewport.innerHTML = `<div style="padding: 20px; color: var(--text-color);">Report ${reportId} is coming soon.</div>`;
     }
 };
 

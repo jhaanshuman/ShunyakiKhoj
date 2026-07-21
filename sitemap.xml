@@ -124,34 +124,46 @@
 
   <!-- Directory / Events Listings -->
   <url>
-    <loc>https://shunyakikhoj.co.in/list_events.html</loc>
-    <lastmod>2026-07-19</lastmod>
+    <loc>https://shunyakikhoj.co.in/?page=wisdom&amp;category=festival</loc>
+    <lastmod>2026-07-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.82</priority>
   </url>
   <url>
-    <loc>https://shunyakikhoj.co.in/list_events.html?category=festival</loc>
-    <lastmod>2026-07-19</lastmod>
+    <loc>https://shunyakikhoj.co.in/?page=wisdom&amp;category=vrat</loc>
+    <lastmod>2026-07-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=wisdom&amp;category=vrat_katha</loc>
+    <lastmod>2026-07-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.78</priority>
   </url>
   <url>
-    <loc>https://shunyakikhoj.co.in/list_events.html?category=puja</loc>
-    <lastmod>2026-07-19</lastmod>
+    <loc>https://shunyakikhoj.co.in/?page=wisdom&amp;category=puja</loc>
+    <lastmod>2026-07-22</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.78</priority>
   </url>
   <url>
-    <loc>https://shunyakikhoj.co.in/list_events.html?category=mantra</loc>
-    <lastmod>2026-07-19</lastmod>
+    <loc>https://shunyakikhoj.co.in/?page=wisdom&amp;category=mantra</loc>
+    <lastmod>2026-07-22</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.78</priority>
   </url>
   <url>
-    <loc>https://shunyakikhoj.co.in/list_events.html?category=ritual</loc>
-    <lastmod>2026-07-19</lastmod>
+    <loc>https://shunyakikhoj.co.in/?page=wisdom&amp;category=yantra</loc>
+    <lastmod>2026-07-22</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.78</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/?page=wisdom&amp;category=ritual</loc>
+    <lastmod>2026-07-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.78</priority>
   </url>
 
 </urlset>
