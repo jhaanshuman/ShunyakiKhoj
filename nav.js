@@ -89,94 +89,173 @@ window.parseUrlPath = parseUrlPath;
 const DEFAULT_NAV_CONFIG = {
   "menu": [
     {
-      "label": "Panchang",
-      "type": "megamenu",
+      "label": "Hindu Panchang",
+      "type": "dropdown",
+      "icon": "🕉️",
+      "items": [
+        { "label": "Dainik Panchang", "url": "index.html?tab=panchang", "icon": "☀️" },
+        { "label": "Bengali Panjika", "url": "index.html?tab=panchang&region=bengali", "icon": "🎷" },
+        { "label": "Tamil Panchangam", "url": "index.html?tab=panchang&region=tamil", "icon": "🐚" },
+        { "label": "Telugu Panchangam", "url": "index.html?tab=panchang&region=telugu", "icon": "🌺" },
+        { "label": "Malayalam Panchangam", "url": "index.html?tab=panchang&region=malayalam", "icon": "🌴" }
+      ]
+    },
+    {
+      "label": "Vedic Calendars",
+      "type": "dropdown",
       "icon": "📅",
-      "columns": [
-        {
-          "title": "Core & East India",
-          "items": [
-            { "label": "Month Panchang", "url": "./Features/Astrology/astrology.html?tab=maasik", "icon": "🗓️" },
-            { "label": "Dainik Panchang", "url": "./Features/Astrology/astrology.html?tab=panchang", "icon": "☀️" },
-            { "label": "Assamese Panjika", "url": "./Features/Astrology/astrology.html?tab=panchang&region=assamese", "icon": "🌸" },
-            { "label": "Bengali Panjika", "url": "./Features/Astrology/astrology.html?tab=panchang&region=bengali", "icon": "🎷" },
-            { "label": "Tamil Panchangam", "url": "./Features/Astrology/astrology.html?tab=panchang&region=tamil", "icon": "🐚" }
-          ]
-        },
-        {
-          "title": "West & North India",
-          "items": [
-            { "label": "Odia Panji", "url": "./Features/Astrology/astrology.html?tab=panchang&region=odia", "icon": "🎨" },
-            { "label": "Malayalam Panchangam", "url": "./Features/Astrology/astrology.html?tab=panchang&region=malayalam", "icon": "🌴" },
-            { "label": "Marathi Panchang", "url": "./Features/Astrology/astrology.html?tab=panchang&region=marathi", "icon": "🚩" },
-            { "label": "Gujarati Panchang", "url": "./Features/Astrology/astrology.html?tab=panchang&region=gujarati", "icon": "☀️" },
-            { "label": "Kannada Panchangam", "url": "./Features/Astrology/astrology.html?tab=panchang&region=kannada", "icon": "🌿" }
-          ]
-        },
-        {
-          "title": "South & Miscellaneous",
-          "items": [
-            { "label": "Telugu Panchangam", "url": "./Features/Astrology/astrology.html?tab=panchang&region=telugu", "icon": "🌺" },
-            { "label": "Nepali Patro", "url": "./Features/Astrology/astrology.html?tab=panchang&region=nepali", "icon": "🏔️" },
-            { "label": "ISKCON Panchang", "url": "./Features/Astrology/astrology.html?tab=panchang&region=iskcon", "icon": "🕉️" }
-          ]
-        }
-      ]
-    },
-    {
-      "label": "Muhurta",
-      "type": "dropdown",
-      "icon": "✨",
       "items": [
-        { "label": "Abhijit Muhurta", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "☀️" },
-        { "label": "Brahma Muhurta", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "🧘" },
-        { "label": "Rahukaal Duration", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "⚠️" },
-        { "label": "Gulikai Duration", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "⏳" },
-        { "label": "Planetary Horas", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "🔮" },
-        { "label": "Choghadiya Shifts", "url": "./Features/Astrology/astrology.html?tab=muhurtas", "icon": "⏱️" }
+        { "label": "Maasik Hindu Calendar", "url": "index.html?tab=maasik", "icon": "🗓️" },
+        { "label": "National Indian Calendar", "url": "index.html?tab=maasik", "icon": "🇮🇳" },
+        { "label": "Tamil Calendar", "url": "index.html?tab=maasik", "icon": "🐚" },
+        { "label": "Telugu Calendar", "url": "index.html?tab=maasik", "icon": "🌿" }
       ]
     },
     {
-      "label": "Kundli",
-      "type": "megamenu",
-      "icon": "☸️",
-      "columns": [
-        {
-          "title": "Core Chart Analysis",
-          "items": [
-            { "label": "Personalized Kundli", "url": "./Features/Astrology/astrology.html?tab=personal", "icon": "🧘" },
-            { "label": "Birth Chart (D1)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D1", "icon": "☸️" },
-            { "label": "Planetary Positions", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D1", "icon": "🪐" }
-          ]
-        },
-        {
-          "title": "Divisional Charts (Vargas)",
-          "items": [
-            { "label": "D2 Hora (Wealth)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D2", "icon": "💰" },
-            { "label": "D9 Navamsa (Marriage)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D9", "icon": "❤️" },
-            { "label": "D10 Dasamsa (Career)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D10", "icon": "💼" },
-            { "label": "D60 Shastiamsa (Karma)", "url": "./Features/Astrology/astrology.html?tab=divisional&varga=D60", "icon": "☸️" }
-          ]
-        }
-      ]
-    },
-    {
-      "label": "Gochar",
+      "label": "Jyotish Utilities",
       "type": "dropdown",
-      "icon": "☄️",
+      "icon": "🔮",
       "items": [
-        { "label": "Graha Gochar (Transits)", "url": "./Features/Astrology/astrology.html?tab=gochar", "icon": "🪐" },
-        { "label": "Planet Transits", "url": "./Features/Astrology/astrology.html?tab=gochar", "icon": "📈" },
-        { "label": "Transit Charts", "url": "./Features/Astrology/astrology.html?tab=gochar", "icon": "📊" }
+        { "label": "Personalised Kundli D1/D9", "url": "Features/Astrology/astrology.html?tab=kundli", "icon": "🧘" },
+        { "label": "Gemstone Recommendation", "url": "Features/Astrology/astrology.html?tab=gemstone", "icon": "💎" },
+        { "label": "Rudraksha Suggestion", "url": "Features/Astrology/astrology.html?tab=rudraksha", "icon": "📿" },
+        { "label": "Kundli Matching (Milan)", "url": "Features/Astrology/astrology.html?tab=milan", "icon": "💞" },
+        { "label": "Prashna Kundali", "url": "Features/Astrology/astrology.html?tab=prashna", "icon": "❓" },
+        { "label": "Daily Rashifal Predictions", "url": "Features/Astrology/astrology.html?tab=rashifal", "icon": "🦁" },
+        { "label": "Weekly Horoscope Signs", "url": "Features/Astrology/astrology.html?tab=weekly", "icon": "📈" },
+        { "label": "Monthly Rashi Transits", "url": "Features/Astrology/astrology.html?tab=maasik", "icon": "🪐" },
+        { "label": "Yearly Predictions 2026", "url": "Features/Astrology/astrology.html?tab=yearly", "icon": "📅" }
       ]
     },
     {
-      "label": "Matching",
+      "label": "Hindu Festivals",
       "type": "dropdown",
-      "icon": "💞",
+      "icon": "🎉",
       "items": [
-        { "label": "Match Making (Milan)", "url": "./Features/Astrology/astrology.html?tab=milan", "icon": "💞" },
-        { "label": "Ashtakoot (36 Guna)", "url": "./Features/Astrology/astrology.html?tab=milan", "icon": "📊" }
+        { "label": "Diwali Shubh Muhurtas", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🪔" },
+        { "label": "Raksha Bandhan Thread Time", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🎗️" },
+        { "label": "Maha Shivaratri Nishita", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🔱" },
+        { "label": "Ganesha Chaturthi Murti Sthapna", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🐘" }
+      ]
+    },
+    {
+      "label": "Panchang Utilities",
+      "type": "dropdown",
+      "icon": "🌾",
+      "items": [
+        { "label": "Rahu Kala Timings", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "⚠️" },
+        { "label": "Panchak Boundary Times", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🚫" },
+        { "label": "Bhadra Vishti Karana Span", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "⏳" },
+        { "label": "Ganda Mool constellations", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "⭐" }
+      ]
+    },
+    {
+      "label": "Yoga in Astrology",
+      "type": "dropdown",
+      "icon": "🎗️",
+      "items": [
+        { "label": "Gurupushyamrut Yoga", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🌟" },
+        { "label": "Sarvarthasiddhi Yoga", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🕉️" },
+        { "label": "Dwipushkar Yoga", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "💫" },
+        { "label": "Ravi Pushya Yoga", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "☀️" }
+      ]
+    },
+    {
+      "label": "Vrat and Upavas",
+      "type": "dropdown",
+      "icon": "🛐",
+      "items": [
+        { "label": "Sankashti Chaturthi moonrise", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🌙" },
+        { "label": "Vinayaka Chaturthi timings", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🐘" },
+        { "label": "Ekadashi Dates list", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🥦" },
+        { "label": "Pradosham Fasting slots", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🔱" }
+      ]
+    },
+    {
+      "label": "Vrat Katha",
+      "type": "dropdown",
+      "icon": "📜",
+      "items": [
+        { "label": "Satyanarayana Vrat Katha", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "📖" },
+        { "label": "Ekadashi Vrat Katha", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🥬" },
+        { "label": "Karwa Chauth Vrat Katha", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🪔" },
+        { "label": "Ahoi Ashtami Vrat Katha", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "✨" }
+      ]
+    },
+    {
+      "label": "Hindu Astronomy",
+      "type": "dropdown",
+      "icon": "🔭",
+      "items": [
+        { "label": "Solar Eclipse calculations", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🌑" },
+        { "label": "Lunar Eclipse timings", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🌖" },
+        { "label": "Eclipse Dates database", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "📅" },
+        { "label": "Winter Solstice alignment", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "❄️" }
+      ]
+    },
+    {
+      "label": "Puja Vidhi",
+      "type": "dropdown",
+      "icon": "🔥",
+      "items": [
+        { "label": "Ganesha Puja Vidhi steps", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🐘" },
+        { "label": "Lakshmi Puja Vidhi Deepavali", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🪔" },
+        { "label": "Shivaratri Abhishekam Vidhi", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🔱" }
+      ]
+    },
+    {
+      "label": "Vedic Mantras",
+      "type": "dropdown",
+      "icon": "☀️",
+      "items": [
+        { "label": "Maha Lakshmi Ashtakam", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🌸" },
+        { "label": "Navdurga forms list", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🛡️" },
+        { "label": "Dasha Mahavidya sadhana", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🔥" },
+        { "label": "Saraswati stotrams", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🎼" },
+        { "label": "Gayatri Mantra meaning", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "☀️" },
+        { "label": "Mahamrityunjaya Mantra", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "💀" },
+        { "label": "Shanti Path translations", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🕊️" }
+      ]
+    },
+    {
+      "label": "Deities Yantra",
+      "type": "dropdown",
+      "icon": "🛡️",
+      "items": [
+        { "label": "Shri Yantra geometric logic", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "☸️" },
+        { "label": "Kubera Yantra installation", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "💰" },
+        { "label": "Mahavidya Yantra protection", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🛡️" }
+      ]
+    },
+    {
+      "label": "Hindu Rituals",
+      "type": "dropdown",
+      "icon": "🌊",
+      "items": [
+        { "label": "Kumbha Mela bathing dates", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🌊" },
+        { "label": "Shradh Karma Pitru Paksha", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🕯️" },
+        { "label": "Vivah Sanskar 7 rounds", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🤝" }
+      ]
+    },
+    {
+      "label": "Devotional Lyrics",
+      "type": "dropdown",
+      "icon": "🎼",
+      "items": [
+        { "label": "Ganesh Aarti & Chalisa", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🐘" },
+        { "label": "Sundarkand Paath lyrics", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "📖" },
+        { "label": "Vishnu Sahasranama Stotram", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🕉️" },
+        { "label": "Shri Durga Saptashati text", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🛡️" }
+      ]
+    },
+    {
+      "label": "Art Gallery",
+      "type": "dropdown",
+      "icon": "🎨",
+      "items": [
+        { "label": "Rangoli Collection designs", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🎨" },
+        { "label": "Mehandi Designs traditional", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "🌿" },
+        { "label": "Festivals greetings templates", "url": "Features/Astrology/astrology.html?tab=panchang", "icon": "✉️" }
       ]
     },
     {
@@ -1212,6 +1291,10 @@ function navigateToPage(page, tab = '', queryParams = {}) {
             initAstrology(tab, queryParams);
         }
         
+        if (menuConfig && menuConfig.menu) {
+            renderMobileNav(menuConfig.menu);
+        }
+        
         if (tab === 'panchang' || tab === 'maasik' || tab === 'muhurtas') {
             const welcome = document.getElementById('homeWelcomeSection');
             if (welcome) welcome.style.display = 'none';
@@ -1262,6 +1345,18 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         navigateToPage(parsed.page, parsed.tab, parsed.queryParams);
     }, 100);
+
+    // Dynamic SEO about-panchang-box click bindings
+    document.addEventListener('click', (e) => {
+        const aboutBox = document.querySelector('.about-panchang-box');
+        if (aboutBox) {
+            if (aboutBox.contains(e.target)) {
+                aboutBox.classList.add('expanded');
+            } else {
+                aboutBox.classList.remove('expanded');
+            }
+        }
+    });
 });
 
 // Intercept clicks on links for SPA
