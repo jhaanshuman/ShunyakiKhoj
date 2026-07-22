@@ -1271,8 +1271,8 @@ button:hover{
 }
 .accordion-trigger {
     width: 100%;
-    background: transparent;
-    border: none;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     color: var(--text-color);
     padding: 12px 20px;
     font-size: 0.95rem;
@@ -1284,9 +1284,10 @@ button:hover{
     cursor: pointer;
     border-radius: 6px;
     transition: background 0.2s;
+    margin-bottom: 6px;
 }
 .accordion-trigger:hover {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.08);
 }
 .accordion-trigger .arrow {
     font-size: 0.7rem;
@@ -2690,16 +2691,17 @@ button:hover{
  display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; 
 }
 .astrology-container .cal-cell {
-    background: var(--tile-bg);
-    border: 1.5px solid rgba(162, 57, 34, 0.55);
+    background: #FFF192;
+    border: 1.5px solid #d4af37;
+    color: #000000;
     border-radius: 8px;
     padding: 8px;
     cursor: pointer;
-    min-height: 100px;
+    min-height: 140px;
     height: auto;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
     transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
@@ -2720,16 +2722,16 @@ button:hover{
  background: transparent; border-color: transparent; cursor: default; pointer-events: none; 
 }
 .astrology-container .cell-day-num {
- font-size: 1.15rem; font-weight: 800; color: var(--text-color); line-height: 1; 
+ font-size: 1.15rem; font-weight: 800; color: #000000; line-height: 1; 
 }
 .astrology-container .cell-tithi {
- font-size: 0.72rem; font-weight: 700; color: var(--title-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+ font-size: 0.72rem; font-weight: 700; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
 }
 .astrology-container .cell-nakshatra {
- font-size: 0.68rem; color: #a78bfa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+ font-size: 0.68rem; color: #4b5563; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
 }
 .astrology-container .cell-sun-moon {
- margin-top: auto; display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--text-muted); 
+ margin-top: auto; display: flex; justify-content: space-between; font-size: 0.65rem; color: #4b5563; 
 }
 .astrology-container .cal-month-loading {
  text-align: center; padding: 2rem; color: var(--text-muted); font-size: 1rem; 

@@ -1,15 +1,15 @@
 {
   "title": "🔮 Jyotish Utilities",
-  "more_link": "Features/Astrology/astrology.html",
+  "more_link": "/?page=astrology",
   "links": [
-    { "name": "Personalised Kundli D1/D9", "url": "Features/Astrology/astrology.html?tab=kundli" },
-    { "name": "Gemstone Recommendation", "url": "Features/Astrology/astrology.html?tab=gemstone" },
-    { "name": "Rudraksha Suggestion", "url": "Features/Astrology/astrology.html?tab=rudraksha" },
-    { "name": "Kundli Matching (Milan)", "url": "Features/Astrology/astrology.html?tab=milan" },
-    { "name": "Prashna Kundali", "url": "Features/Astrology/astrology.html?tab=prashna" },
-    { "name": "Daily Rashifal Predictions", "url": "Features/Astrology/astrology.html?tab=rashifal" },
-    { "name": "Weekly Horoscope Signs", "url": "Features/Astrology/astrology.html?tab=weekly" },
-    { "name": "Monthly Rashi Transits", "url": "Features/Astrology/astrology.html?tab=maasik" },
-    { "name": "Yearly Predictions 2026", "url": "Features/Astrology/astrology.html?tab=yearly" }
+    { "name": "Personalised Kundli D1/D9", "url": "/?page=astrology&tab=kundli" },
+    { "name": "Gemstone Recommendation", "url": "/?page=astrology&tab=gemstone" },
+    { "name": "Rudraksha Suggestion", "url": "/?page=astrology&tab=rudraksha" },
+    { "name": "Kundli Matching (Milan)", "url": "/?page=astrology&tab=milan" },
+    { "name": "Prashna Kundali", "url": "/?page=astrology&tab=prashna" },
+    { "name": "Daily Rashifal Predictions", "url": "/?page=astrology&tab=rashifal" },
+    { "name": "Weekly Horoscope Signs", "url": "/?page=astrology&tab=weekly" },
+    { "name": "Monthly Rashi Transits", "url": "/?page=astrology&tab=maasik" },
+    { "name": "Yearly Predictions 2026", "url": "/?page=astrology&tab=yearly" }
   ]
 }

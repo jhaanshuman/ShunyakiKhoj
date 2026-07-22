@@ -109,8 +109,7 @@ const DEFAULT_NAV_CONFIG = {
         { "label": "Vrat Katha", "url": "index.html?page=wisdom&category=vrat_katha", "icon": "📜" },
         { "label": "Puja Vidhi", "url": "index.html?page=wisdom&category=puja", "icon": "🔥" },
         { "label": "Vedic Mantra", "url": "index.html?page=wisdom&category=mantra", "icon": "☀️" },
-        { "label": "Deity Yantra", "url": "index.html?page=wisdom&category=yantra", "icon": "🛡️" },
-        { "label": "Sanatana Rituals", "url": "index.html?page=wisdom&category=ritual", "icon": "🌊" }
+        { "label": "Deity Yantra", "url": "index.html?page=wisdom&category=yantra", "icon": "🛡️" }
       ]
     }
   ]
@@ -121,7 +120,9 @@ let currentActiveItem = null;
 
 async function initNavigation() {
     try {
-        const configPath = window.location.pathname.includes('/Features/') ? '../../nav_config.json' : './nav_config.json';
+        const configPath = window.location.protocol === 'file:'
+            ? (window.location.pathname.includes('/Features/') ? '../../nav_config.json' : './nav_config.json')
+            : '/nav_config.json';
         const res = await fetch(configPath);
         menuConfig = await res.json();
     } catch (e) {
@@ -233,9 +234,9 @@ function renderDesktopNav(menuItems) {
             sidebar.className = 'megamenu-sidebar';
             sidebar.innerHTML = `
                 <h5>💡 Recommended Tools</h5>
-                <a href="${adjustUrlPath('./Features/Astrology/astrology.html?tab=panchang')}" class="rec-tool">☀️ Dainik Panchang</a>
-                <a href="${adjustUrlPath('./Features/Astrology/astrology.html?tab=divisional&varga=D9')}" class="rec-tool">❤️ D9 Navamsa Chart</a>
-                <a href="${adjustUrlPath('./Features/Astrology/astrology.html?tab=muhurtas')}" class="rec-tool">✨ Abhijit Muhurta</a>
+                <a href="/index.html?tab=panchang" class="rec-tool">☀️ Dainik Panchang</a>
+                <a href="/index.html?tab=divisional&varga=D9" class="rec-tool">❤️ D9 Navamsa Chart</a>
+                <a href="/index.html?tab=muhurtas" class="rec-tool">✨ Abhijit Muhurta</a>
             `;
             megamenu.appendChild(sidebar);
             li.appendChild(megamenu);
@@ -402,6 +403,17 @@ function renderDrawerContent(accordionContainer, menuItems) {
     const favContent = document.createElement('div');
     favContent.className = 'accordion-content';
     favContent.style.display = 'block';
+
+    favTrigger.addEventListener('click', () => {
+        const isActive = favGroup.classList.contains('active');
+        if (isActive) {
+            favGroup.classList.remove('active');
+            favContent.style.display = 'none';
+        } else {
+            favGroup.classList.add('active');
+            favContent.style.display = 'block';
+        }
+    });
 
     if (favorites.length === 0) {
         favContent.innerHTML = `<div style="padding:12px 15px; font-size:0.8rem; color:var(--text-muted); font-style:italic;">No favorites added yet. Right-click any link or tap the star icon to add.</div>`;
@@ -847,11 +859,11 @@ function setupSearch(menuItems) {
 
     // Add extra commonly searched terms to improve matches
     flatItems.push(
-        { label: "Rahu Kalam", url: "./Features/Astrology/astrology.html?tab=muhurtas", category: "Muhurta", description: "Vedic daily Rahu duration periods" },
-        { label: "Brahma Muhurta", url: "./Features/Astrology/astrology.html?tab=muhurtas", category: "Muhurta", description: "Vedic spiritual hours before dawn" },
-        { label: "Abhijit Muhurta", url: "./Features/Astrology/astrology.html?tab=muhurtas", category: "Muhurta", description: "Most auspicious midday solar hour" },
-        { label: "D9 Navamsa Chart", url: "./Features/Astrology/astrology.html?tab=divisional&varga=D9", category: "Kundli (Divisional Charts)", description: "Marriage, spouse & path of destiny" },
-        { label: "Vimshottari Dasha", url: "./Features/Astrology/astrology.html?tab=dasha", category: "Dasha", description: "120-year planetary progression cycle calculations" }
+        { label: "Rahu Kalam", url: "index.html?tab=muhurtas", category: "Muhurta", description: "Vedic daily Rahu duration periods" },
+        { label: "Brahma Muhurta", url: "index.html?tab=muhurtas", category: "Muhurta", description: "Vedic spiritual hours before dawn" },
+        { label: "Abhijit Muhurta", url: "index.html?tab=muhurtas", category: "Muhurta", description: "Most auspicious midday solar hour" },
+        { label: "D9 Navamsa Chart", url: "index.html?tab=divisional&varga=D9", category: "Kundli (Divisional Charts)", description: "Marriage, spouse & path of destiny" },
+        { label: "Vimshottari Dasha", url: "index.html?tab=dasha", category: "Dasha", description: "120-year planetary progression cycle calculations" }
     );
 
     // Bind Search input keyup
@@ -1221,9 +1233,22 @@ function navigateToPage(page, tab = '', queryParams = {}) {
         
         if (typeof renderAstrologyView === 'function') {
             viewport.innerHTML = renderAstrologyView();
-            // Bind all event listeners inside astrology.js
             if (typeof initAstrology === 'function') {
                 initAstrology(tab, queryParams);
+            }
+            if (typeof initGeoComplete === 'function') {
+                if (document.getElementById('birthPlace')) {
+                    initGeoComplete('birthPlace', { defaultPlace: 'Patna, Bihar, India' });
+                }
+                if (document.getElementById('gocharPlace')) {
+                    initGeoComplete('gocharPlace', { defaultPlace: 'New Delhi, India' });
+                }
+                if (document.getElementById('boyPlace')) {
+                    initGeoComplete('boyPlace', { defaultPlace: 'New Delhi, India' });
+                }
+                if (document.getElementById('girlPlace')) {
+                    initGeoComplete('girlPlace', { defaultPlace: 'New Delhi, India' });
+                }
             }
         }
     } else if (page === 'dictionary') {

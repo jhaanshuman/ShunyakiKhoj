@@ -1125,7 +1125,7 @@ if (btnCalculate) {
         }
 
         // Render default view (Chart tab D1 / Planets table)
-        window.switchKundliTab(null, 'tabChart');
+        if (typeof window.switchReportTab === 'function') window.switchReportTab('tabD1');
     });
 }
 
@@ -1176,7 +1176,7 @@ if (btnGochar) {
                 lastGocharData = data;
                 document.getElementById('gocharOutputCard').style.display = 'block';
                 
-                updateGocharVargaCharts();
+                if (typeof window.updateGocharVargaCharts === 'function') window.updateGocharVargaCharts();
                 
                 renderPlacementsGrid('gocharPlanets', data.d1_chart);
                 renderPanchang('gocharPanchangBody', data.panchang, data.regional);
@@ -1189,20 +1189,6 @@ if (btnGochar) {
             alert("Error executing Gochar API.");
         }
     });
-}
-
-function updateGocharVargaCharts() {
-    if (!lastGocharData) return;
-    const select = document.getElementById('gocharVargaSelect');
-    const varga = select.value;
-    const chartData = (varga === 'D1') ? lastGocharData.d1_chart : lastGocharData.divisional_charts[varga];
-    const ascSign = (varga === 'D1') ? lastGocharData.ascendant.sign : lastGocharData.divisional_charts[varga].Asc.sign;
-
-    document.getElementById('gocharVargaNorthTitle').innerText = `Gochar North Indian (${varga})`;
-    document.getElementById('gocharVargaSouthTitle').innerText = `Gochar South Indian (${varga})`;
-
-    document.getElementById('gocharNorth').innerHTML = getNorthIndianSVG(chartData, ascSign);
-    document.getElementById('gocharSouth').innerHTML = getSouthIndianSVG(chartData, ascSign);
 }
 
 // 3. Match Making Guna Milan
@@ -3496,7 +3482,8 @@ async function loadMaasikCalendar() {
         const dateStr = `${year}-${String(month).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
         const cellData = maasikCalendarData[dateStr];
         const isToday = dateStr === todayStr;
-        let tithi = '', nakshatra = '', sunrise = '', moonrise = '';
+        let tithi = '', nakshatra = '', sunrise = '', moonrise = '', sunset = '', moonset = '';
+        let paksha = '', maas = '', suryaNak = '';
 
         if (cellData && cellData.panchang) {
             const p = cellData.panchang;
@@ -3504,6 +3491,18 @@ async function loadMaasikCalendar() {
             nakshatra = p.nakshatra || '';
             sunrise = p.sunrise || '';
             moonrise = p.moonrise || '';
+            sunset = p.sunset || '';
+            moonset = p.moonset || '';
+            
+            if (cellData.panchang_extended) {
+                paksha = cellData.panchang_extended.paksha || '';
+            }
+            if (cellData.regional) {
+                maas = cellData.regional.chandramasa || cellData.regional.lunar_month || '';
+            }
+            if (cellData.d1_chart && cellData.d1_chart.Sun) {
+                suryaNak = cellData.d1_chart.Sun.nakshatra || '';
+            }
         }
 
         let tithiDisplay = '—';
@@ -3514,37 +3513,78 @@ async function loadMaasikCalendar() {
             tithiDisplay = pName ? `${tName} - ${pName}` : tName;
         }
 
-        const nakDisplay = nakshatra ? translate(nakshatra.split(' ')[0]) : '';
-        const srDisplay = sunrise ? `☀️${sunrise}` : '';
-        const mrDisplay = moonrise ? `🌙${moonrise.replace(' AM','').replace(' PM','')}` : '';
+        // Nakshatras extraction
+        let nak1 = '', nak1End = '', nak2 = '';
+        if (cellData && cellData.panchang && cellData.panchang.nakshatras_list && cellData.panchang.nakshatras_list.length > 0) {
+            const nList = cellData.panchang.nakshatras_list;
+            nak1 = translate(nList[0].name);
+            nak1End = nList[0].end_time || '';
+            if (nList.length > 1) {
+                nak2 = translate(nList[1].name);
+            }
+        } else {
+            nak1 = nakshatra ? translate(nakshatra.split(' ')[0]) : '';
+        }
 
-        let festHTML = '';
+        let festPart = '';
         if (cellData && cellData.panchang && window.VEDIC_DATA && typeof window.VEDIC_DATA.getFestivalsForDay === 'function') {
             const lunarMonth = (cellData.regional && cellData.regional.lunar_month) || '';
-            const paksha = (cellData.panchang_extended && cellData.panchang_extended.paksha) || '';
-            const fests = window.VEDIC_DATA.getFestivalsForDay(lunarMonth, paksha, tithi);
+            const pk = (cellData.panchang_extended && cellData.panchang_extended.paksha) || '';
+            const fests = window.VEDIC_DATA.getFestivalsForDay(lunarMonth, pk, tithi);
             if (fests && fests.length > 0) {
-                festHTML = `<div class="cell-festivals" style="font-size:0.7rem; color:#fbbf24; margin-top:2px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${fests.map(f => f.name).join(', ')}">
-                    ${fests.map(f => `${f.icon} ${f.name}`).join(', ')}
-                </div>`;
+                festPart = fests.map(f => f.icon + ' ' + translate(f.name)).join(', ');
             }
         }
+
+        const actualFestHTML = festPart ? `<div class="cell-festivals" style="font-size:0.65rem; color:#a23922; margin-top:2px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:center;">${festPart}</div>` : '';
 
         gridHTML += `
             <div class="cal-cell${isToday ? ' today-cell' : ''}" 
                  data-date="${dateStr}" 
                  onclick="selectMaasikDate('${dateStr}')">
-                <div class="cell-day-num">${d}</div>
-                <div class="cell-tithi">${tithiDisplay}</div>
-                ${nakDisplay ? `<div class="cell-nakshatra">${nakDisplay}</div>` : ''}
-                ${festHTML}
-                <div class="cell-sun-moon">
-                    <span>${srDisplay}</span>
-                    <span>${mrDisplay}</span>
+                
+                <!-- Top / Center Row: Nakshatras & Date -->
+                <div class="cell-top-middle" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                    <!-- Left center: Nakshatra 1 till ... -->
+                    <div class="cell-left-nak" style="font-size: 0.6rem; font-weight: 700; color: #4b5563; max-width: 35%; text-align: left; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${nak1} ${nak1End ? 'till ' + nak1End : ''}">
+                        ${nak1}<br>${nak1End ? `${nak1End}` : ''}
+                    </div>
+                    
+                    <!-- Center center: Date mention -->
+                    <div class="cell-day-num" style="font-size: 1.6rem; font-weight: 900; color: #000; text-align: center; flex: 1;">
+                        ${d}
+                    </div>
+                    
+                    <!-- Center right: Nakshatra 2 -->
+                    <div class="cell-right-nak" style="font-size: 0.6rem; font-weight: 700; color: #4b5563; max-width: 35%; text-align: right; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${nak2 ? 'then ' + nak2 : ''}">
+                        ${nak2 ? `then<br>${nak2}` : ''}
+                    </div>
+                </div>
+
+                <!-- Tithi - Paksha - Surya Nakshatra/ Maas -->
+                <div class="cell-info-row" style="font-size: 0.65rem; font-weight: 800; color: #1e293b; text-align: center; width: 100%; line-height: 1.25; margin-top: 4px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 4px;">
+                    ${tithiDisplay}<br>
+                    ${paksha ? translate(paksha.replace(' Paksha','')) : ''} - ${suryaNak ? translate(suryaNak) : ''}/${maas ? translate(maas) : ''}
+                </div>
+
+                <!-- Festivals -->
+                ${actualFestHTML}
+
+                <!-- Bottom Row: Sunrise, Sunset, Moonrise, Moonset with Icons -->
+                <div class="cell-bottom-times" style="display: flex; justify-content: space-between; font-size: 0.6rem; color: #4b5563; width: 100%; margin-top: auto; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 4px;">
+                    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 1px;">
+                        <span title="Suryodaya (Sunrise)">🌅${sunrise || '--:--'}</span>
+                        <span title="Chandrodaya (Moonrise)">🌙${moonrise ? moonrise.replace(' AM','').replace(' PM','') : '--:--'}</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 1px;">
+                        <span title="Suryast (Sunset)">🌇${sunset || '--:--'}</span>
+                        <span title="Chandrast (Moonset)">🌑${moonset ? moonset.replace(' AM','').replace(' PM','') : '--:--'}</span>
+                    </div>
                 </div>
             </div>
         `;
     }
+
 
     calGrid.innerHTML = gridHTML;
     if (phSubMaasik) phSubMaasik.textContent = `${place} — ${MONTH_NAMES[month-1]} ${year}`;
@@ -4388,13 +4428,55 @@ window.toggleRawPayloadModal = function() {
 // ═══════════════════════════════════════════════════════════════════════════
 // NEW UNIFIED REPORT TABS SYSTEM (40+ ASTROLOGICAL TABS)
 // ═══════════════════════════════════════════════════════════════════════════
+window.switchReportCategory = function(catName) {
+    // 1. Deactivate all category tab buttons
+    document.querySelectorAll('.cat-tab-btn').forEach(btn => {
+        btn.style.background = 'transparent';
+        btn.style.border = '1px solid transparent';
+        btn.style.color = 'var(--text-muted)';
+        btn.classList.remove('active');
+    });
+    // 2. Activate the selected category tab button
+    const activeBtn = Array.from(document.querySelectorAll('.cat-tab-btn')).find(btn => btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(catName));
+    if (activeBtn) {
+        activeBtn.style.background = 'rgba(255,255,255,0.04)';
+        activeBtn.style.border = '1px solid rgba(255,255,255,0.1)';
+        activeBtn.style.color = '#fff';
+        activeBtn.classList.add('active');
+    }
+    
+    // 3. Hide all sub-tabs groups
+    document.querySelectorAll('.sub-tabs-group').forEach(group => group.style.display = 'none');
+    // 4. Show the selected sub-tabs group
+    const targetGroup = document.getElementById(`subTabs-${catName}`);
+    if (targetGroup) {
+        targetGroup.style.display = 'flex';
+        // 5. Auto-click the first sub-tab button in this group to switch report view if none is active
+        const activeSubBtn = targetGroup.querySelector('.rep-tab-btn.active');
+        if (activeSubBtn) {
+            activeSubBtn.click();
+        } else {
+            const firstSubBtn = targetGroup.querySelector('.rep-tab-btn');
+            if (firstSubBtn) firstSubBtn.click();
+        }
+    }
+};
+
 window.switchReportTab = function(reportId) {
-    // 1. Highlight sidebar tab button
-    document.querySelectorAll('.report-sidebar-list .rep-tab-btn').forEach(btn => {
+    // 1. Highlight sub-tab button
+    document.querySelectorAll('.rep-tab-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     const activeBtn = document.getElementById('btn-' + reportId);
-    if (activeBtn) activeBtn.classList.add('active');
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+        // Auto-show parent category group if not visible
+        const parentGroup = activeBtn.closest('.sub-tabs-group');
+        if (parentGroup && parentGroup.style.display === 'none') {
+            const catName = parentGroup.id.replace('subTabs-', '');
+            switchReportCategory(catName);
+        }
+    }
 
     // 2. Sync mobile dropdown selector
     const mobileSel = document.getElementById('mobileReportSelector');
@@ -4509,7 +4591,7 @@ window.triggerAdvancedCalc = async function() {
             lastCalculatedData = generateLocalClientEphemerisFallback(payload);
         }
 
-        const activeBtn = document.querySelector('.report-sidebar-list .rep-tab-btn.active');
+        const activeBtn = document.querySelector('.rep-tab-btn.active');
         const currentTab = activeBtn ? activeBtn.id.replace('btn-', '') : 'tabD1';
         window.switchReportTab(currentTab);
     } else {
@@ -5638,20 +5720,14 @@ window.renderReportContent = function(reportId, viewport) {
                         padaVal = coord.pada !== undefined ? coord.pada : 1;
                     }
                 } else {
-                    const d1Planet = lastCalculatedData.d1_chart && lastCalculatedData.d1_chart[p];
-                    if (p === 'Asc' && lastCalculatedData.ascendant) {
-                        const signNames = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
-                        const signIdx = signNames.indexOf(lastCalculatedData.ascendant.sign || 'Aries');
-                        const absLon = (signIdx >= 0 ? signIdx : 0) * 30 + (lastCalculatedData.ascendant.degree || 0);
-                        const nakIndex = Math.floor(absLon / (13 + 1/3));
-                        const pada = Math.floor((absLon % (13 + 1/3)) / (13 + 1/3 / 4)) + 1;
-                        const nakshatras = ['Ashwini','Bharani','Krittika','Rohini','Mrigashirsha','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Svati','Vishakha','Anuradha','Jyeshtha','Moola','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishta','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
-                        nakVal = nakshatras[nakIndex % 27] || 'Ashwini';
-                        padaVal = (pada >= 1 && pada <= 4) ? pada : 1;
-                    } else if (d1Planet) {
-                        nakVal = d1Planet.nakshatra || 'Ashwini';
-                        padaVal = d1Planet.pada !== undefined ? d1Planet.pada : 1;
-                    }
+                    const signNames = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+                    const signIdx = signNames.indexOf(coord.sign || 'Aries');
+                    const absLon = (signIdx >= 0 ? signIdx : 0) * 30 + longVal;
+                    const nakIndex = Math.floor(absLon / (13 + 1/3));
+                    const pada = Math.floor((absLon % (13 + 1/3)) / (13 + 1/3 / 4)) + 1;
+                    const nakshatras = ['Ashwini','Bharani','Krittika','Rohini','Mrigashirsha','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Svati','Vishakha','Anuradha','Jyeshtha','Moola','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishta','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+                    nakVal = nakshatras[nakIndex % 27] || 'Ashwini';
+                    padaVal = (pada >= 1 && pada <= 4) ? pada : 1;
                 }
                 
                 html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">

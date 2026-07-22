@@ -65,6 +65,7 @@ function renderAstrologyView() {
     <!-- Top Tabs for switching sections -->
     <div class="top-nav-tabs" style="margin-bottom: 20px;">
         <button class="top-tab-btn active" onclick="switchTopTab(event, 'personalKundliSection')">Personalized Kundli</button>
+        <button class="top-tab-btn" onclick="switchTopTab(event, 'milanSection')">Kundli Milan</button>
         <button class="top-tab-btn" onclick="switchTopTab(event, 'gocharSection')">Graha Gochar (Transits)</button>
     </div>
 
@@ -176,64 +177,72 @@ function renderAstrologyView() {
                     </select>
                 </div>
 
+                <div class="report-category-tabs" style="display: flex; gap: 8px; margin-bottom: 15px; border-bottom: 2px solid rgba(255,255,255,0.06); padding-bottom: 8px; overflow-x: auto; width: 100%; white-space: nowrap; -webkit-overflow-scrolling: touch;">
+                    <button class="cat-tab-btn active" style="padding: 8px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('charts')">🗺️ Divisional Charts</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('dasha')">⏳ Dasha Cycles</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('strength')">⚖️ Strengths &amp; Aspects</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('ashtakavarga')">📊 Ashtakavarga</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('panchanga')">🕉️ Panchanga &amp; Yogas</button>
+                </div>
+
+                <div id="subTabs-charts" class="sub-tabs-group" style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="rep-tab-btn active" id="btn-tabD1" onclick="switchReportTab('tabD1')">D1 (Lagna)</button>
+                    <button class="rep-tab-btn" id="btn-tabD9" onclick="switchReportTab('tabD9')">D9 (Navamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD2" onclick="switchReportTab('tabD2')">D2 (Hora)</button>
+                    <button class="rep-tab-btn" id="btn-tabD3" onclick="switchReportTab('tabD3')">D3 (Drekkana)</button>
+                    <button class="rep-tab-btn" id="btn-tabD4" onclick="switchReportTab('tabD4')">D4 (Chaturthamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD7" onclick="switchReportTab('tabD7')">D7 (Saptamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD10" onclick="switchReportTab('tabD10')">D10 (Dasamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD12" onclick="switchReportTab('tabD12')">D12 (Dwadasamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD16" onclick="switchReportTab('tabD16')">D16 (Shodasamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD20" onclick="switchReportTab('tabD20')">D20 (Vimsamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD24" onclick="switchReportTab('tabD24')">D24 (Chaturvimsamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD30" onclick="switchReportTab('tabD30')">D30 (Trimsamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD40" onclick="switchReportTab('tabD40')">D40 (Khavedamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD45" onclick="switchReportTab('tabD45')">D45 (Akshavedamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD60" onclick="switchReportTab('tabD60')">D60 (Shastiamsa)</button>
+                </div>
+
+                <div id="subTabs-dasha" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="rep-tab-btn" id="btn-tabVimshottari" onclick="switchReportTab('tabVimshottari')">Vimshottari Dasha</button>
+                    <button class="rep-tab-btn" id="btn-tabAshtottari" onclick="switchReportTab('tabAshtottari')">Ashtottari Dasha</button>
+                    <button class="rep-tab-btn" id="btn-tabYogini" onclick="switchReportTab('tabYogini')">Yogini Dasha</button>
+                    <button class="rep-tab-btn" id="btn-tabChara" onclick="switchReportTab('tabChara')">Chara Dasha</button>
+                </div>
+
+                <div id="subTabs-strength" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="rep-tab-btn" id="btn-tabShadbala" onclick="switchReportTab('tabShadbala')">Shadbala Strengths</button>
+                    <button class="rep-tab-btn" id="btn-tabBhavabala" onclick="switchReportTab('tabBhavabala')">Bhavabala Strengths</button>
+                    <button class="rep-tab-btn" id="btn-tabVimsopaka" onclick="switchReportTab('tabVimsopaka')">Vimsopaka Strength</button>
+                    <button class="rep-tab-btn" id="btn-tabAspects" onclick="switchReportTab('tabAspects')">Planetary Aspects</button>
+                    <button class="rep-tab-btn" id="btn-tabConjunctions" onclick="switchReportTab('tabConjunctions')">Conjunctions</button>
+                    <button class="rep-tab-btn" id="btn-tabFriendships" onclick="switchReportTab('tabFriendships')">Planetary Friendships</button>
+                    <button class="rep-tab-btn" id="btn-tabJaimini" onclick="switchReportTab('tabJaimini')">Jaimini Karakas</button>
+                    <button class="rep-tab-btn" id="btn-tabSpecialLagnas" onclick="switchReportTab('tabSpecialLagnas')">Special Lagnas</button>
+                    <button class="rep-tab-btn" id="btn-tabUpagrahas" onclick="switchReportTab('tabUpagrahas')">Upagrahas &amp; Gulika</button>
+                    <button class="rep-tab-btn" id="btn-tabArudhas" onclick="switchReportTab('tabArudhas')">Arudha Padas</button>
+                    <button class="rep-tab-btn" id="btn-tabSpecialSphutas" onclick="switchReportTab('tabSpecialSphutas')">Special Sphutas</button>
+                </div>
+
+                <div id="subTabs-ashtakavarga" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="rep-tab-btn" id="btn-tabSAV" onclick="switchReportTab('tabSAV')">SAV Matrix</button>
+                    <button class="rep-tab-btn" id="btn-tabBAVSun" onclick="switchReportTab('tabBAVSun')">Surya BAV</button>
+                    <button class="rep-tab-btn" id="btn-tabBAVMoon" onclick="switchReportTab('tabBAVMoon')">Chandra BAV</button>
+                    <button class="rep-tab-btn" id="btn-tabBAVMars" onclick="switchReportTab('tabBAVMars')">Mangal BAV</button>
+                    <button class="rep-tab-btn" id="btn-tabBAVBudha" onclick="switchReportTab('tabBAVBudha')">Budha BAV</button>
+                    <button class="rep-tab-btn" id="btn-tabBAVGuru" onclick="switchReportTab('tabBAVGuru')">Guru BAV</button>
+                    <button class="rep-tab-btn" id="btn-tabBAVShukra" onclick="switchReportTab('tabBAVShukra')">Shukra BAV</button>
+                    <button class="rep-tab-btn" id="btn-tabBAVShani" onclick="switchReportTab('tabBAVShani')">Shani BAV</button>
+                </div>
+
+                <div id="subTabs-panchanga" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="rep-tab-btn" id="btn-tabPanchanga" onclick="switchReportTab('tabPanchanga')">Birth Panchanga</button>
+                    <button class="rep-tab-btn" id="btn-tabYogas" onclick="switchReportTab('tabYogas')">Yogas &amp; Predictions</button>
+                    <button class="rep-tab-btn" id="btn-tabGemstones" onclick="switchReportTab('tabGemstones')">Gemstone &amp; Rudraksha</button>
+                    <button class="rep-tab-btn" id="btn-tabTransitOverlay" onclick="switchReportTab('tabTransitOverlay')">Transit Overlay</button>
+                </div>
+
                 <div class="report-dashboard-layout" style="display: flex; width: 100%; gap: 15px; min-height: 550px;">
-                    <!-- Desktop Sidebar List (Hidden on Mobile) -->
-                    <div class="report-sidebar-list" style="width: 220px; flex-shrink: 0; border-right: 1px solid rgba(255,255,255,0.08); padding-right: 10px; max-height: 600px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px;">
-                        <div style="font-weight: 800; color: var(--accent-color); font-size: 0.72rem; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">Divisional Charts</div>
-                        <button class="rep-tab-btn active" id="btn-tabD1" onclick="switchReportTab('tabD1')">D1 - Rashi Chart</button>
-                        <button class="rep-tab-btn" id="btn-tabD9" onclick="switchReportTab('tabD9')">D9 - Navamsa Chart</button>
-                        <button class="rep-tab-btn" id="btn-tabD2" onclick="switchReportTab('tabD2')">D2 - Hora Chart</button>
-                        <button class="rep-tab-btn" id="btn-tabD3" onclick="switchReportTab('tabD3')">D3 - Drekkana Chart</button>
-                        <button class="rep-tab-btn" id="btn-tabD4" onclick="switchReportTab('tabD4')">D4 - Chaturthamsa</button>
-                        <button class="rep-tab-btn" id="btn-tabD7" onclick="switchReportTab('tabD7')">D7 - Saptamsa Chart</button>
-                        <button class="rep-tab-btn" id="btn-tabD10" onclick="switchReportTab('tabD10')">D10 - Dasamsa Chart</button>
-                        <button class="rep-tab-btn" id="btn-tabD12" onclick="switchReportTab('tabD12')">D12 - Dwadasamsa</button>
-                        <button class="rep-tab-btn" id="btn-tabD16" onclick="switchReportTab('tabD16')">D16 - Shodasamsa</button>
-                        <button class="rep-tab-btn" id="btn-tabD20" onclick="switchReportTab('tabD20')">D20 - Vimsamsa Chart</button>
-                        <button class="rep-tab-btn" id="btn-tabD24" onclick="switchReportTab('tabD24')">D24 - Chaturvimsamsa</button>
-                        <button class="rep-tab-btn" id="btn-tabD30" onclick="switchReportTab('tabD30')">D30 - Trimsamsa Chart</button>
-                        <button class="rep-tab-btn" id="btn-tabD40" onclick="switchReportTab('tabD40')">D40 - Khavedamsa</button>
-                        <button class="rep-tab-btn" id="btn-tabD45" onclick="switchReportTab('tabD45')">D45 - Akshavedamsa</button>
-                        <button class="rep-tab-btn" id="btn-tabD60" onclick="switchReportTab('tabD60')">D60 - Shastiamsa</button>
-
-                        <div style="font-weight: 800; color: var(--accent-color); font-size: 0.72rem; text-transform: uppercase; margin: 12px 0 6px 0; letter-spacing: 0.5px;">Dasha Cycles</div>
-                        <button class="rep-tab-btn" id="btn-tabVimshottari" onclick="switchReportTab('tabVimshottari')">Vimshottari Dasha</button>
-                        <button class="rep-tab-btn" id="btn-tabAshtottari" onclick="switchReportTab('tabAshtottari')">Ashtottari Dasha</button>
-                        <button class="rep-tab-btn" id="btn-tabYogini" onclick="switchReportTab('tabYogini')">Yogini Dasha</button>
-                        <button class="rep-tab-btn" id="btn-tabChara" onclick="switchReportTab('tabChara')">Chara Dasha</button>
-
-                        <div style="font-weight: 800; color: var(--accent-color); font-size: 0.72rem; text-transform: uppercase; margin: 12px 0 6px 0; letter-spacing: 0.5px;">Strengths &amp; Aspects</div>
-                        <button class="rep-tab-btn" id="btn-tabShadbala" onclick="switchReportTab('tabShadbala')">Shadbala Strengths</button>
-                        <button class="rep-tab-btn" id="btn-tabBhavabala" onclick="switchReportTab('tabBhavabala')">Bhavabala Strengths</button>
-                        <button class="rep-tab-btn" id="btn-tabVimsopaka" onclick="switchReportTab('tabVimsopaka')">Vimsopaka Strength</button>
-                        <button class="rep-tab-btn" id="btn-tabAspects" onclick="switchReportTab('tabAspects')">Planetary Aspects</button>
-                        <button class="rep-tab-btn" id="btn-tabConjunctions" onclick="switchReportTab('tabConjunctions')">Conjunctions</button>
-                        <button class="rep-tab-btn" id="btn-tabFriendships" onclick="switchReportTab('tabFriendships')">Planetary Friendships</button>
-
-                        <div style="font-weight: 800; color: var(--accent-color); font-size: 0.72rem; text-transform: uppercase; margin: 12px 0 6px 0; letter-spacing: 0.5px;">Special Calculations</div>
-                        <button class="rep-tab-btn" id="btn-tabJaimini" onclick="switchReportTab('tabJaimini')">Jaimini Karakas</button>
-                        <button class="rep-tab-btn" id="btn-tabSpecialLagnas" onclick="switchReportTab('tabSpecialLagnas')">Special Lagnas</button>
-                        <button class="rep-tab-btn" id="btn-tabUpagrahas" onclick="switchReportTab('tabUpagrahas')">Upagrahas &amp; Gulika</button>
-                        <button class="rep-tab-btn" id="btn-tabArudhas" onclick="switchReportTab('tabArudhas')">Arudha Padas</button>
-                        <button class="rep-tab-btn" id="btn-tabSpecialSphutas" onclick="switchReportTab('tabSpecialSphutas')">Special Sphutas</button>
-
-                        <div style="font-weight: 800; color: var(--accent-color); font-size: 0.72rem; text-transform: uppercase; margin: 12px 0 6px 0; letter-spacing: 0.5px;">Ashtakavarga</div>
-                        <button class="rep-tab-btn" id="btn-tabSAV" onclick="switchReportTab('tabSAV')">SAV Matrix</button>
-                        <button class="rep-tab-btn" id="btn-tabBAVSun" onclick="switchReportTab('tabBAVSun')">Surya BAV</button>
-                        <button class="rep-tab-btn" id="btn-tabBAVMoon" onclick="switchReportTab('tabBAVMoon')">Chandra BAV</button>
-                        <button class="rep-tab-btn" id="btn-tabBAVMars" onclick="switchReportTab('tabBAVMars')">Mangal BAV</button>
-                        <button class="rep-tab-btn" id="btn-tabBAVBudha" onclick="switchReportTab('tabBAVBudha')">Budha BAV</button>
-                        <button class="rep-tab-btn" id="btn-tabBAVGuru" onclick="switchReportTab('tabBAVGuru')">Guru BAV</button>
-                        <button class="rep-tab-btn" id="btn-tabBAVShukra" onclick="switchReportTab('tabBAVShukra')">Shukra BAV</button>
-                        <button class="rep-tab-btn" id="btn-tabBAVShani" onclick="switchReportTab('tabBAVShani')">Shani BAV</button>
-
-                        <div style="font-weight: 800; color: var(--accent-color); font-size: 0.72rem; text-transform: uppercase; margin: 12px 0 6px 0; letter-spacing: 0.5px;">Astrological Analysis</div>
-                        <button class="rep-tab-btn" id="btn-tabPanchanga" onclick="switchReportTab('tabPanchanga')">Birth Panchanga</button>
-                        <button class="rep-tab-btn" id="btn-tabYogas" onclick="switchReportTab('tabYogas')">Yogas &amp; Predictions</button>
-                        <button class="rep-tab-btn" id="btn-tabGemstones" onclick="switchReportTab('tabGemstones')">Gemstone &amp; Rudraksha</button>
-                        <button class="rep-tab-btn" id="btn-tabTransitOverlay" onclick="switchReportTab('tabTransitOverlay')">Transit Overlay</button>
-                    </div>
-
                     <!-- Right Display Pane -->
                     <div class="report-content-pane" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 15px;">
                         <!-- Heading of selected view -->
@@ -304,6 +313,89 @@ function renderAstrologyView() {
                         </table>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Kundli Milan Section -->
+    <div id="milanSection" class="main-section" style="display: none;">
+        <div class="dashboard-grid" style="display: flex; gap: 20px; align-items: start; box-sizing: border-box; width: 100%; flex-wrap: wrap;">
+            
+            <!-- Milan Inputs Form Card -->
+            <div class="birth-details-card" style="flex: 1; max-width: 450px; background: var(--card-bg); border: var(--card-border); border-radius: 12px; padding: 25px; box-sizing: border-box;">
+                <h3 style="color: var(--accent-purple); margin-top:0; margin-bottom: 1.5rem;">💞 Kundli Milan Matching</h3>
+                
+                <!-- Groom (Boy) Details -->
+                <div style="background: rgba(0,0,0,0.12); padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05);">
+                    <h4 style="margin: 0 0 10px 0; color: var(--accent-color); font-size: 0.95rem;">🤵 Groom (Boy) Details</h4>
+                    <div class="form-group" style="margin-bottom: 10px;">
+                        <label style="display:block; margin-bottom:4px; font-size:0.78rem; color:var(--text-color);">Date of Birth</label>
+                        <input type="date" id="boyDate" value="1994-01-05" style="width:100%; padding:8px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); font-size:0.85rem;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 10px;">
+                        <label style="display:block; margin-bottom:4px; font-size:0.78rem; color:var(--text-color);">Time of Birth</label>
+                        <input type="time" id="boyTime" value="20:00" style="width:100%; padding:8px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); font-size:0.85rem;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 5px;">
+                        <label style="display:block; margin-bottom:4px; font-size:0.78rem; color:var(--text-color);">Place of Birth</label>
+                        <input type="text" id="boyPlace" value="New Delhi, India" style="width:100%; padding:8px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); font-size:0.85rem;">
+                    </div>
+                </div>
+
+                <!-- Bride (Girl) Details -->
+                <div style="background: rgba(0,0,0,0.12); padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05);">
+                    <h4 style="margin: 0 0 10px 0; color: var(--accent-color); font-size: 0.95rem;">👰 Bride (Girl) Details</h4>
+                    <div class="form-group" style="margin-bottom: 10px;">
+                        <label style="display:block; margin-bottom:4px; font-size:0.78rem; color:var(--text-color);">Date of Birth</label>
+                        <input type="date" id="girlDate" value="1995-03-10" style="width:100%; padding:8px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); font-size:0.85rem;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 10px;">
+                        <label style="display:block; margin-bottom:4px; font-size:0.78rem; color:var(--text-color);">Time of Birth</label>
+                        <input type="time" id="girlTime" value="08:30" style="width:100%; padding:8px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); font-size:0.85rem;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 5px;">
+                        <label style="display:block; margin-bottom:4px; font-size:0.78rem; color:var(--text-color);">Place of Birth</label>
+                        <input type="text" id="girlPlace" value="New Delhi, India" style="width:100%; padding:8px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); font-size:0.85rem;">
+                    </div>
+                </div>
+
+                <button class="btn-submit" id="btnMatch" style="width:100%; padding:12px; font-size:1rem; font-weight:700; border-radius:8px;">💞 Calculate Guna Milan</button>
+            </div>
+
+            <!-- Milan Outputs Display Card -->
+            <div class="glass-card" id="milanOutputCard" style="display: none; flex: 1.5; min-width: 320px; background: var(--card-bg); border: var(--card-border); border-radius: 12px; padding: 25px; box-shadow: var(--shadow);">
+                <h3 style="color: var(--title-color); margin-top: 0; border-bottom: 1.5px solid rgba(255,255,255,0.06); padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <span>Guna Milan Report</span>
+                    <span id="milanScoreBadge" class="result-badge" style="font-size: 0.95rem; font-weight: 800; padding: 4px 12px; border-radius: 99px;">0 / 36</span>
+                </h3>
+
+                <!-- Boy / Girl Nakshatra Rashi Info -->
+                <div style="display: flex; justify-content: space-between; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; background: rgba(0,0,0,0.15); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.05);">
+                        <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 4px;">Groom Nakshatra &amp; Rashi</div>
+                        <div id="boyResultInfo" style="font-weight: 700; color: #fff; font-size: 0.95rem;">--</div>
+                    </div>
+                    <div style="flex: 1; background: rgba(0,0,0,0.15); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.05);">
+                        <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 4px;">Bride Nakshatra &amp; Rashi</div>
+                        <div id="girlResultInfo" style="font-weight: 700; color: #fff; font-size: 0.95rem;">--</div>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto; background: rgba(0,0,0,0.12); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; line-height: 1.6;">
+                        <thead>
+                            <tr style="border-bottom: 1.5px solid var(--border-color); color: var(--accent-color); font-weight: 800;">
+                                <th style="padding: 8px 10px;">Koota (Factor)</th>
+                                <th style="padding: 8px 10px;">Max Points</th>
+                                <th style="padding: 8px 10px;">Obtained Points</th>
+                            </tr>
+                        </thead>
+                        <tbody id="milanTableBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Deep Analysis Container populated dynamically -->
+                <div id="milanDeepAnalysisBlock"></div>
             </div>
         </div>
     </div>

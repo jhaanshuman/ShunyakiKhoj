@@ -21,8 +21,7 @@
         { "label": "Vrat Katha", "url": "index.html?page=wisdom&category=vrat_katha", "icon": "📜" },
         { "label": "Puja Vidhi", "url": "index.html?page=wisdom&category=puja", "icon": "🔥" },
         { "label": "Vedic Mantra", "url": "index.html?page=wisdom&category=mantra", "icon": "☀️" },
-        { "label": "Deity Yantra", "url": "index.html?page=wisdom&category=yantra", "icon": "🛡️" },
-        { "label": "Sanatana Rituals", "url": "index.html?page=wisdom&category=ritual", "icon": "🌊" }
+        { "label": "Deity Yantra", "url": "index.html?page=wisdom&category=yantra", "icon": "🛡️" }
       ]
     }
   ]
