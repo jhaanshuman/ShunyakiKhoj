@@ -4568,13 +4568,17 @@ font-size:15px;
         max-width: 100% !important;
         min-width: 100% !important;
     }
-    .astrology-container #outputCard {
+    .astrology-container #outputCard,
+    .astrology-container #milanOutputCard,
+    .astrology-container #gocharOutputCard {
         width: 100% !important;
         min-width: 100% !important;
         margin-top: 20px;
         padding: 15px !important;
     }
-    .astrology-container .report-sidebar-list {
+    .astrology-container .report-sidebar-list,
+    .astrology-container .report-category-tabs,
+    .astrology-container .sub-tabs-group {
         display: none !important;
     }
     .astrology-container .mobile-report-selector-container {
@@ -4582,5 +4586,14 @@ font-size:15px;
     }
     .astrology-container .report-dashboard-layout {
         flex-direction: column !important;
+    }
+    /* Maasik Calendar mobile swipability */
+    .astrology-container .monthly-cal-main {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+    .astrology-container .cal-grid-header,
+    .astrology-container .cal-grid {
+        min-width: 700px !important;
     }
 }
