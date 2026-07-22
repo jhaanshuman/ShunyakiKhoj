@@ -5564,7 +5564,22 @@ window.renderReportContent = function(reportId, viewport) {
     if (reportId.startsWith('tabD') && reportId.length <= 6) {
         const division = reportId.substring(3); // e.g. "D1", "D9", "D2", etc.
         const chartStyle = document.getElementById('selChartStyle').value;
-        const chartData = (lastCalculatedData.divisional_charts && lastCalculatedData.divisional_charts[division]) || lastCalculatedData.d1_chart;
+        
+        let chartData = {};
+        if (division === 'D1') {
+            chartData = { ...lastCalculatedData.d1_chart };
+            if (lastCalculatedData.divisional_charts && lastCalculatedData.divisional_charts.D1 && lastCalculatedData.divisional_charts.D1.Asc) {
+                chartData.Asc = lastCalculatedData.divisional_charts.D1.Asc;
+            } else if (lastCalculatedData.ascendant) {
+                chartData.Asc = {
+                    sign: lastCalculatedData.ascendant.sign,
+                    lon: lastCalculatedData.ascendant.degree
+                };
+            }
+        } else {
+            chartData = (lastCalculatedData.divisional_charts && lastCalculatedData.divisional_charts[division]) || {};
+        }
+
         const ascSign = (chartData && chartData.Asc) ? chartData.Asc.sign : 'Aries';
         
         let html = `<div style="display:flex; flex-direction:column; gap:20px; align-items:center; width:100%;">`;
@@ -5592,7 +5607,7 @@ window.renderReportContent = function(reportId, viewport) {
                     </tr>
                 </thead>
                 <tbody>`;
-                
+                 
         // Get planets degrees table
         const planetsList = ['Asc', 'Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
         if (document.getElementById('selOuterPlanets').value === 'Visible') {
@@ -5602,13 +5617,49 @@ window.renderReportContent = function(reportId, viewport) {
         planetsList.forEach(p => {
             if (chartData && chartData[p]) {
                 const coord = chartData[p];
-                const longStr = formatLongitude(coord.longitude || coord.degree || 0);
+                const longVal = coord.lon !== undefined ? coord.lon : (coord.longitude || coord.degree || 0);
+                const longStr = formatLongitude(longVal);
+                
+                let nakVal = 'Ashwini';
+                let padaVal = 1;
+                
+                if (division === 'D1') {
+                    if (p === 'Asc') {
+                        const signNames = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+                        const signIdx = signNames.indexOf(coord.sign || 'Aries');
+                        const absLon = (signIdx >= 0 ? signIdx : 0) * 30 + longVal;
+                        const nakIndex = Math.floor(absLon / (13 + 1/3));
+                        const pada = Math.floor((absLon % (13 + 1/3)) / (13 + 1/3 / 4)) + 1;
+                        const nakshatras = ['Ashwini','Bharani','Krittika','Rohini','Mrigashirsha','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Svati','Vishakha','Anuradha','Jyeshtha','Moola','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishta','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+                        nakVal = nakshatras[nakIndex % 27] || 'Ashwini';
+                        padaVal = (pada >= 1 && pada <= 4) ? pada : 1;
+                    } else {
+                        nakVal = coord.nakshatra || 'Ashwini';
+                        padaVal = coord.pada !== undefined ? coord.pada : 1;
+                    }
+                } else {
+                    const d1Planet = lastCalculatedData.d1_chart && lastCalculatedData.d1_chart[p];
+                    if (p === 'Asc' && lastCalculatedData.ascendant) {
+                        const signNames = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+                        const signIdx = signNames.indexOf(lastCalculatedData.ascendant.sign || 'Aries');
+                        const absLon = (signIdx >= 0 ? signIdx : 0) * 30 + (lastCalculatedData.ascendant.degree || 0);
+                        const nakIndex = Math.floor(absLon / (13 + 1/3));
+                        const pada = Math.floor((absLon % (13 + 1/3)) / (13 + 1/3 / 4)) + 1;
+                        const nakshatras = ['Ashwini','Bharani','Krittika','Rohini','Mrigashirsha','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Svati','Vishakha','Anuradha','Jyeshtha','Moola','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishta','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+                        nakVal = nakshatras[nakIndex % 27] || 'Ashwini';
+                        padaVal = (pada >= 1 && pada <= 4) ? pada : 1;
+                    } else if (d1Planet) {
+                        nakVal = d1Planet.nakshatra || 'Ashwini';
+                        padaVal = d1Planet.pada !== undefined ? d1Planet.pada : 1;
+                    }
+                }
+                
                 html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
                     <td style="padding:8px; font-weight:700; color:#fff;">${translatePlanet(p)}</td>
                     <td style="padding:8px;">${coord.sign || coord.signName || ''}</td>
                     <td style="padding:8px;">${longStr}</td>
-                    <td style="padding:8px;">${coord.Nakshatra || coord.nakshatra || 'Ashwini'}</td>
-                    <td style="padding:8px;">${coord.Pada || coord.pada || 1}</td>
+                    <td style="padding:8px;">${nakVal}</td>
+                    <td style="padding:8px;">${padaVal}</td>
                 </tr>`;
             }
         });
