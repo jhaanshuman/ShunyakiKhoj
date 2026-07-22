@@ -1,8 +1,11 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import sys
 import os
+import json
+import hashlib
+import threading
 from datetime import datetime
 
 # Append local path so we can import from kundli_utils
@@ -366,9 +369,6 @@ def get_cached_panchang():
         raise HTTPException(status_code=500, detail="Failed to retrieve or compute cached Panchang.")
 
 
-import hashlib
-from fastapi import Request
-
 if os.environ.get('VERCEL') or os.path.exists("/tmp"):
     VISITOR_FILE = "/tmp/visitors.json"
 else:
@@ -427,9 +427,7 @@ def get_visitor_count(request: Request):
     }
 
 
-import threading
 import time
-from datetime import datetime
 
 def run_cache_pregenerator():
     print("Pregenerator thread started. Waiting to refresh New Delhi cache daily at 12:01 AM...")
