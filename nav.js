@@ -297,7 +297,9 @@ function getPrettyUrl(rawUrl) {
         }
         const url = new URL(cleanUrl, base);
         const path = url.pathname;
-        const tab = url.searchParams.get('tab') || '';
+        const pageParam = url.searchParams.get('page') || '';
+        const tabParam = url.searchParams.get('tab') || '';
+        const categoryParam = url.searchParams.get('category') || '';
         const region = url.searchParams.get('region') || '';
         const varga = url.searchParams.get('varga') || '';
         
@@ -309,30 +311,44 @@ function getPrettyUrl(rawUrl) {
                 return 'Features/Dictionary/Dictionary.html';
             }
             let query = '';
-            if (tab) {
-                query = `?tab=${tab}`;
-            } else if (path.includes('astrology.html')) {
-                query = `?tab=panchang`;
+            if (pageParam) {
+                query = `page=${pageParam}`;
             }
-            if (region) query += (query ? '&' : '?') + `region=${region}`;
-            if (varga) query += (query ? '&' : '?') + `varga=${varga}`;
-            return 'index.html' + query;
+            if (tabParam) {
+                query += (query ? '&' : '') + `tab=${tabParam}`;
+            }
+            if (categoryParam) {
+                query += (query ? '&' : '') + `category=${categoryParam}`;
+            }
+            if (region) query += (query ? '&' : '') + `region=${region}`;
+            if (varga) query += (query ? '&' : '') + `varga=${varga}`;
+            return 'index.html' + (query ? '?' + query : '');
         }
 
         let pretty = '/';
-        if (path.includes('astrology.html')) {
-            if (tab === 'panchang' || tab === 'maasik' || tab === 'muhurtas') {
-                pretty = `/home/${tab}`;
+        const isAstrologyTab = ['kundli', 'milan', 'prashna', 'rashifal', 'dasha', 'gemstone', 'rudraksha', 'gochar', 'transit'].includes(tabParam.toLowerCase());
+        const isHomeTab = ['panchang', 'maasik', 'muhurtas'].includes(tabParam.toLowerCase());
+
+        if (pageParam === 'wisdom' || path.includes('/Static/') || path.includes('wisdom')) {
+            pretty = '/wisdom';
+        } else if (pageParam === 'dictionary' || path.includes('Dictionary.html') || path.includes('dictionary')) {
+            pretty = '/dictionary';
+        } else if (pageParam === 'astrology' || isAstrologyTab) {
+            pretty = `/astrology/${tabParam || 'personal'}`;
+        } else if (isHomeTab) {
+            pretty = `/home/${tabParam}`;
+        } else if (path.includes('astrology.html')) {
+            if (isHomeTab) {
+                pretty = `/home/${tabParam}`;
             } else {
-                pretty = `/astrology/${tab || 'personal'}`;
+                pretty = `/astrology/${tabParam || 'personal'}`;
             }
         } else if (path.includes('Dictionary.html')) {
             pretty = '/dictionary';
-        } else if (path.includes('/Static/') && path.includes('index.html')) {
-            pretty = '/wisdom';
         }
         
         const q = [];
+        if (categoryParam) q.push(`category=${categoryParam}`);
         if (region) q.push(`region=${region}`);
         if (varga) q.push(`varga=${varga}`);
         if (q.length > 0) {
@@ -1171,6 +1187,12 @@ function navigateToPage(page, tab = '', queryParams = {}) {
     
     window.currentSPAState = { page, tab, queryParams };
     updatePageSEO(page, tab, queryParams);
+
+    // Automatically close the mobile/left drawer menu on navigation
+    const drawerMenu = document.getElementById('leftDrawerMenu');
+    const drawerOverlay = document.getElementById('leftDrawerOverlay');
+    if (drawerMenu) drawerMenu.classList.remove('active');
+    if (drawerOverlay) drawerOverlay.classList.remove('active');
     
     // Save original home HTML on first run
     if (!originalHomeHTML) {
