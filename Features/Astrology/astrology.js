@@ -2568,12 +2568,26 @@ function initSaffronControls() {
             const outputCard = document.getElementById('outputCard');
             if (outputCard) outputCard.style.display = 'block';
             loadDainikPanchang(pDateInput.value, place);
+
+            // Sync to Maasik calendar
+            const maasikMonthInput = document.getElementById('maasikMonthInput');
+            if (maasikMonthInput) {
+                maasikMonthInput.value = pDateInput.value.substring(0, 7);
+                if (typeof loadMaasikCalendar === 'function') loadMaasikCalendar();
+            }
         });
     }
     if (pPlaceInput) {
         pPlaceInput.addEventListener('change', () => {
             if (pDateInput) {
                 loadDainikPanchang(pDateInput.value, pPlaceInput.value);
+            }
+
+            // Sync to Maasik calendar
+            const maasikPlaceInput = document.getElementById('maasikPlaceInput');
+            if (maasikPlaceInput) {
+                maasikPlaceInput.value = pPlaceInput.value;
+                if (typeof loadMaasikCalendar === 'function') loadMaasikCalendar();
             }
         });
     }
