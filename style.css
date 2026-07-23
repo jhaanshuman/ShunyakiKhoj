@@ -291,8 +291,11 @@ button:hover{
     background: linear-gradient(135deg, var(--glass-bg) 0%, var(--glass-bg-light) 100%);
     border: 2px solid rgba(162, 57, 34, 0.3);
     position: relative;
-    overflow: visible;
-    margin-left: 20px;padding:25px;width:95%;
+    overflow: hidden;
+    margin: 0 0 1.5rem 0;
+    padding: 25px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 #headerFestivalBar {

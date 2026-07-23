@@ -635,14 +635,19 @@ function renderMobileNav(menuItems) {
     const overlay = document.getElementById('leftDrawerOverlay');
     const closeBtn = document.getElementById('leftDrawerCloseBtn');
 
+    console.log("Drawer elements found:", { hamburgerBtn: !!hamburgerBtn, drawerMenu: !!drawerMenu, overlay: !!overlay });
+
     if (hamburgerBtn && drawerMenu && overlay) {
         hamburgerBtn.onclick = (e) => {
+            console.log("Hamburger clicked! Opening drawer menu...");
             e.preventDefault();
             drawerMenu.classList.add('active');
             overlay.classList.add('active');
+            console.log("Drawer classes:", drawerMenu.className, overlay.className);
         };
 
         const closeDrawer = () => {
+            console.log("Closing drawer menu...");
             drawerMenu.classList.remove('active');
             overlay.classList.remove('active');
         };
