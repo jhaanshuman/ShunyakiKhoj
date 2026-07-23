@@ -62,31 +62,8 @@ body{
     --transition-slow: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* ── THEME: DARK (Night Puja) ─────────────────────────────────────────── */
-body.theme-dark {
-    --bg-color:       #0a0a0f;
-    --bg-gradient:    radial-gradient(ellipse at 20% 0%, rgba(26, 35, 126, 0.15) 0%, transparent 50%),
-                      radial-gradient(ellipse at 80% 100%, rgba(255, 153, 51, 0.08) 0%, transparent 50%),
-                      linear-gradient(160deg, #0a0a0f 0%, #111118 50%, #0d0d14 100%);
-    --text-color:     #f0f0f5;
-    --text-muted:     #8b8b9a;
-    --text-gold:      #D4AF37;
-    --card-bg:        var(--glass-bg);
-    --card-border:    1px solid var(--glass-border);
-    --accent-color:   var(--saffron);
-    --accent-gradient: linear-gradient(135deg, var(--saffron) 0%, var(--temple-gold) 100%);
-    --header-bg:      rgba(10, 10, 15, 0.85);
-    --shadow:         var(--glass-shadow);
-    --tile-bg:        rgba(22, 27, 34, 0.6);
-    --sidebar-bg:     rgba(13, 17, 23, 0.75);
-    --minicard-bg:    rgba(30, 41, 59, 0.5);
-    --glass-bg:       rgba(13, 17, 23, 0.65);
-    --glass-bg-light: rgba(22, 27, 34, 0.45);
-}
-
-
-/* ── THEME: BRIGHT (Morning Aarti) ──────────────────────────────────────── */
-body.theme-bright {
+/* ── THEME CONFIG: SURYA AARTI YELLOW-ORANGE STYLE (ALWAYS ACTIVE) ── */
+body.theme-dark, body.theme-bright {
     --bg-color:       #fff8dc; /* Turmeric Yellow Glow */
     --bg-gradient:    radial-gradient(ellipse at 20% 0%, rgba(255, 153, 81, 0.15) 0%, transparent 50%),
                       radial-gradient(ellipse at 80% 100%, rgba(212, 175, 55, 0.2) 0%, transparent 50%),
@@ -4441,7 +4418,7 @@ font-size:15px;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     z-index: -2;
-    background: radial-gradient(circle at 50% 50%, #080312 0%, #030107 100%) !important;
+    background: linear-gradient(135deg, #fff8dc 0%, #ffe4b5 50%, #ffd700 100%) !important;
     overflow: hidden;
     pointer-events: none;
 }
