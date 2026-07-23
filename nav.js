@@ -638,19 +638,8 @@ function renderMobileNav(menuItems) {
     if (hamburgerBtn && drawerMenu && overlay) {
         hamburgerBtn.onclick = (e) => {
             e.preventDefault();
-            const sidebar = document.getElementById('leftMenuSidebar');
-            if (window.innerWidth <= 900) {
-                drawerMenu.classList.add('active');
-                overlay.classList.add('active');
-            } else if (sidebar) {
-                const grid = document.querySelector('.homepage-three-column-grid');
-                const isCollapsed = sidebar.classList.toggle('collapsed');
-                if (grid) grid.classList.toggle('sidebar-collapsed', isCollapsed);
-                localStorage.setItem('sidebar-collapsed', isCollapsed ? 'true' : 'false');
-            } else {
-                drawerMenu.classList.add('active');
-                overlay.classList.add('active');
-            }
+            drawerMenu.classList.add('active');
+            overlay.classList.add('active');
         };
 
         const closeDrawer = () => {
@@ -660,19 +649,6 @@ function renderMobileNav(menuItems) {
 
         overlay.onclick = closeDrawer;
         if (closeBtn) closeBtn.onclick = closeDrawer;
-    }
-
-    // Persistent sidebar collapse state on load for desktop
-    if (window.innerWidth > 900) {
-        const grid = document.querySelector('.homepage-three-column-grid');
-        const sidebar = document.getElementById('leftMenuSidebar');
-        if (grid && sidebar) {
-            const savedCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
-            if (savedCollapsed) {
-                sidebar.classList.add('collapsed');
-                grid.classList.add('sidebar-collapsed');
-            }
-        }
     }
     
     // Right Click Custom Context Menu for Desktop
