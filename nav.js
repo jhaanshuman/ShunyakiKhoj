@@ -641,6 +641,7 @@ function renderMobileNav(menuItems) {
         hamburgerBtn.onclick = (e) => {
             console.log("Hamburger clicked! Opening drawer menu...");
             e.preventDefault();
+            e.stopPropagation(); // Prevent click from bubbling up to logo-area click event
             drawerMenu.classList.add('active');
             overlay.classList.add('active');
             
@@ -1383,6 +1384,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoArea) {
         logoArea.style.cursor = 'pointer';
         logoArea.addEventListener('click', (e) => {
+            if (e.target.closest('.menu-icon')) return; // Ignore if hamburger menu was clicked!
             e.preventDefault();
             navigateToPage('home', '', {});
         });
