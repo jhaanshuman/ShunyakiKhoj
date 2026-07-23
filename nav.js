@@ -639,7 +639,10 @@ function renderMobileNav(menuItems) {
         hamburgerBtn.onclick = (e) => {
             e.preventDefault();
             const sidebar = document.getElementById('leftMenuSidebar');
-            if (sidebar) {
+            if (window.innerWidth <= 900) {
+                drawerMenu.classList.add('active');
+                overlay.classList.add('active');
+            } else if (sidebar) {
                 const grid = document.querySelector('.homepage-three-column-grid');
                 const isCollapsed = sidebar.classList.toggle('collapsed');
                 if (grid) grid.classList.toggle('sidebar-collapsed', isCollapsed);

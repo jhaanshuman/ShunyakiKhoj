@@ -527,8 +527,8 @@ button:hover{
 
 .header.scrolled {
     padding: 8px 28px;
-    background: rgba(10, 10, 15, 0.95);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    background: var(--header-bg);
+    box-shadow: 0 8px 30px rgba(255, 153, 51, 0.15);
 }
 
 .logo-area {
@@ -4270,7 +4270,7 @@ font-size:15px;
     
 }
 }
-@media (max-width: 480px) {
+@media (max-width: 768px) {
 #wisdomViewContainer .hero-section {
 
         padding: 7rem 1rem 2rem;
@@ -4358,21 +4358,24 @@ font-size:15px;
 }
 
 /* ── MOBILE HEADER SCROLL & FONT SCALING ADJUSTMENTS ── */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .header {
         padding: 8px 12px !important;
-        background: rgba(10, 10, 15, 0.95) !important;
+        background: var(--header-bg) !important;
     }
     .logo-area img.logo {
         height: 28px !important;
     }
     .logo-area h1 {
-        font-size: 1.1rem !important;
+        font-size: 0.95rem !important;
+    }
+    .logo-area {
+        gap: 6px !important;
     }
     .header-icons {
         overflow-x: auto !important;
         white-space: nowrap !important;
-        max-width: 65% !important;
+        max-width: 50% !important;
         gap: 4px !important;
         display: flex !important;
         align-items: center !important;
