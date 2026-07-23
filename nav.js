@@ -643,6 +643,14 @@ function renderMobileNav(menuItems) {
             e.preventDefault();
             drawerMenu.classList.add('active');
             overlay.classList.add('active');
+            
+            // Programmatically force positioning/visibility to bypass any browser cache or specificity bugs
+            drawerMenu.style.setProperty('left', '0', 'important');
+            drawerMenu.style.setProperty('z-index', '999999', 'important');
+            overlay.style.setProperty('opacity', '1', 'important');
+            overlay.style.setProperty('visibility', 'visible', 'important');
+            overlay.style.setProperty('z-index', '999998', 'important');
+            
             console.log("Drawer classes:", drawerMenu.className, overlay.className);
         };
 
@@ -650,6 +658,10 @@ function renderMobileNav(menuItems) {
             console.log("Closing drawer menu...");
             drawerMenu.classList.remove('active');
             overlay.classList.remove('active');
+            
+            drawerMenu.style.setProperty('left', '-100%', 'important');
+            overlay.style.setProperty('opacity', '0', 'important');
+            overlay.style.setProperty('visibility', 'hidden', 'important');
         };
 
         overlay.onclick = closeDrawer;
@@ -1187,8 +1199,15 @@ function navigateToPage(page, tab = '', queryParams = {}) {
     // Automatically close the mobile/left drawer menu on navigation
     const drawerMenu = document.getElementById('leftDrawerMenu');
     const drawerOverlay = document.getElementById('leftDrawerOverlay');
-    if (drawerMenu) drawerMenu.classList.remove('active');
-    if (drawerOverlay) drawerOverlay.classList.remove('active');
+    if (drawerMenu) {
+        drawerMenu.classList.remove('active');
+        drawerMenu.style.setProperty('left', '-100%', 'important');
+    }
+    if (drawerOverlay) {
+        drawerOverlay.classList.remove('active');
+        drawerOverlay.style.setProperty('opacity', '0', 'important');
+        drawerOverlay.style.setProperty('visibility', 'hidden', 'important');
+    }
     
     // Save original home HTML on first run
     if (!originalHomeHTML) {
@@ -1257,7 +1276,7 @@ function navigateToPage(page, tab = '', queryParams = {}) {
         }
     } else {
         // 'home' page
-        if (leftSidebar) leftSidebar.style.display = 'block';
+        if (leftSidebar) leftSidebar.style.display = 'none';
         if (rightSidebar) rightSidebar.style.display = 'block';
         
         viewport.innerHTML = originalHomeHTML;
