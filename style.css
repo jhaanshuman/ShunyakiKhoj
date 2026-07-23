@@ -1177,7 +1177,7 @@ button:hover{
     box-shadow: 6px 0 40px rgba(0, 0, 0, 0.4);
     transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     padding-top: 80px;
-    z-index: 10005;
+    z-index: 999999 !important;
     border-right: 2px solid rgba(255, 153, 51, 0.4);
 }
 
@@ -1235,7 +1235,7 @@ button:hover{
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
-    z-index: 998;
+    z-index: 999998 !important;
 }
 
 .menu-overlay.active {
