@@ -166,7 +166,9 @@ def generate_seo_system():
 
     categories = manifest.get("categories", [])
     sitemap_urls = [
-        {"loc": DOMAIN, "priority": "1.0", "changefreq": "daily"}
+        {"loc": DOMAIN, "priority": "1.0", "changefreq": "daily"},
+        {"loc": f"{DOMAIN}/index.html", "priority": "1.0", "changefreq": "daily"},
+        {"loc": f"{DOMAIN}/jyotish_window.html", "priority": "0.9", "changefreq": "daily"}
     ]
 
     for cat in categories:
