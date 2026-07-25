@@ -351,12 +351,12 @@ function renderAstrologyView() {
 
                 <div class="report-dashboard-layout" style="display: flex; width: 100%; gap: 15px; min-height: 550px;">
                     <!-- Right Display Pane -->
-                    <div class="report-content-pane" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 15px;">
+                    <div class="report-content-pane" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 15px; background: #192333;">
                         <!-- Heading of selected view -->
-                        <h3 id="reportTitle" style="color: var(--title-color); margin-top: 0; border-bottom: 1.5px solid rgba(255,255,255,0.06); padding-bottom: 8px;">D1 - Rashi Chart</h3>
+                        <h3 id="reportTitle" style="color: #fbbf24; margin-top: 0; border-bottom: 2px solid #334155; padding-bottom: 8px; font-weight: 800; font-size: 1.2rem;">D1 - Rashi Chart</h3>
                         
                         <!-- Content injection viewport -->
-                        <div id="reportViewport" style="flex: 1; min-height: 480px; overflow-y: auto;"></div>
+                        <div id="reportViewport" style="flex: 1; min-height: 480px; overflow-y: auto; background: #192333; padding: 15px; border-radius: 8px; border: 1px solid #334155; color: #f8fafc;"></div>
                     </div>
                 </div>
             </div>

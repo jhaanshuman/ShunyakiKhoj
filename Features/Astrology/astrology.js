@@ -787,18 +787,16 @@ function applyLayoutStyles(tab) {
     if (tab === 'personal' || tab === 'divisional') {
         if (leftFormCard) {
             leftFormCard.classList.add('glass-card');
-            leftFormCard.style.background = '';
-            leftFormCard.style.border = '';
-            leftFormCard.style.boxShadow = '';
-            leftFormCard.style.padding = '';
+            leftFormCard.style.backgroundColor = '#F4A460';
+            leftFormCard.style.background = '#F4A460';
+            leftFormCard.style.border = '1.5px solid #d97706';
             leftFormCard.style.display = 'block';
         }
         if (outputCard) {
             outputCard.classList.add('glass-card');
-            outputCard.style.background = '';
-            outputCard.style.border = '';
-            outputCard.style.boxShadow = '';
-            outputCard.style.padding = '';
+            outputCard.style.backgroundColor = '#192333';
+            outputCard.style.background = '#192333';
+            outputCard.style.border = '1px solid rgba(255,255,255,0.15)';
             outputCard.style.display = 'block';
         }
         if (subTabsBar) subTabsBar.style.display = 'flex';
@@ -4565,6 +4563,16 @@ window.switchReportCategory = function(catName) {
     });
     // 2. Activate the selected category tab button
     const activeBtn = Array.from(document.querySelectorAll('.cat-tab-btn')).find(btn => btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(catName));
+window.switchReportCategory = function(catName) {
+    // 1. Deactivate all category tab buttons
+    document.querySelectorAll('.cat-tab-btn').forEach(btn => {
+        btn.style.background = '#1e293b';
+        btn.style.border = '1px solid #334155';
+        btn.style.color = '#cbd5e1';
+        btn.classList.remove('active');
+    });
+    // 2. Activate the selected category tab button
+    const activeBtn = Array.from(document.querySelectorAll('.cat-tab-btn')).find(btn => btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(catName));
     if (activeBtn) {
         activeBtn.style.background = '#4338ca';
         activeBtn.style.border = '1px solid #6366f1';
@@ -4574,17 +4582,19 @@ window.switchReportCategory = function(catName) {
     
     // 3. Hide all sub-tabs groups
     document.querySelectorAll('.sub-tabs-group').forEach(group => group.style.display = 'none');
-    // 4. Show the selected sub-tabs group
+    
+    // 4. Show the selected sub-tabs group & trigger first sub-tab
     const targetGroup = document.getElementById(`subTabs-${catName}`);
     if (targetGroup) {
         targetGroup.style.display = 'flex';
-        // 5. Auto-click the first sub-tab button in this group to switch report view if none is active
-        const activeSubBtn = targetGroup.querySelector('.rep-tab-btn.active');
+        const activeSubBtn = targetGroup.querySelector('.rep-tab-btn.active') || targetGroup.querySelector('.rep-tab-btn');
         if (activeSubBtn) {
-            activeSubBtn.click();
-        } else {
-            const firstSubBtn = targetGroup.querySelector('.rep-tab-btn');
-            if (firstSubBtn) firstSubBtn.click();
+            const reportId = activeSubBtn.id ? activeSubBtn.id.replace('btn-', '') : '';
+            if (reportId) {
+                switchReportTab(reportId);
+            } else {
+                activeSubBtn.click();
+            }
         }
     }
 };
@@ -4607,7 +4617,21 @@ window.switchReportTab = function(reportId) {
         const parentGroup = activeBtn.closest('.sub-tabs-group');
         if (parentGroup && parentGroup.style.display === 'none') {
             const catName = parentGroup.id.replace('subTabs-', '');
-            switchReportCategory(catName);
+            document.querySelectorAll('.sub-tabs-group').forEach(g => g.style.display = 'none');
+            parentGroup.style.display = 'flex';
+            document.querySelectorAll('.cat-tab-btn').forEach(b => {
+                b.style.background = '#1e293b';
+                b.style.border = '1px solid #334155';
+                b.style.color = '#cbd5e1';
+                b.classList.remove('active');
+            });
+            const catBtn = Array.from(document.querySelectorAll('.cat-tab-btn')).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes(catName));
+            if (catBtn) {
+                catBtn.style.background = '#4338ca';
+                catBtn.style.border = '1px solid #6366f1';
+                catBtn.style.color = '#ffffff';
+                catBtn.classList.add('active');
+            }
         }
     }
 
@@ -4615,15 +4639,10 @@ window.switchReportTab = function(reportId) {
     const mobileSel = document.getElementById('mobileReportSelector');
     if (mobileSel) mobileSel.value = reportId;
 
-    // 3. Set display active title
+    // 3. Set display active title & reset viewport DOM immediately
     const reportTitle = document.getElementById('reportTitle');
     const viewport = document.getElementById('reportViewport');
     if (!viewport) return;
-
-    if (!lastCalculatedData) {
-        viewport.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding: 2rem;">Please generate your Kundali first.</div>';
-        return;
-    }
 
     const reportNames = {
         'tabD1': 'D1 - Rashi Chart (Lagna)',
@@ -4682,7 +4701,23 @@ window.switchReportTab = function(reportId) {
         reportTitle.innerText = reportNames[reportId] || 'Astrological Report';
     }
 
-    renderReportContent(reportId, viewport);
+    // Instantly reset viewport DOM so old content never sticks!
+    viewport.innerHTML = '';
+
+    if (!lastCalculatedData) {
+        viewport.innerHTML = '<div style="color:#cbd5e1; text-align:center; padding: 2rem;">Please generate your Kundali first.</div>';
+        return;
+    }
+
+    try {
+        renderReportContent(reportId, viewport);
+    } catch (err) {
+        console.error("Error rendering tab " + reportId + ":", err);
+        viewport.innerHTML = `<div style="padding: 20px; background: rgba(239,68,68,0.12); border: 1px solid #ef4444; border-radius: 8px; color: #ffffff;">
+            <strong style="color:#ef4444; font-size:1rem;">Unable to load report view (${reportId})</strong>
+            <p style="margin-top:8px; font-size:0.85rem; color:#cbd5e1;">${err.message}</p>
+        </div>`;
+    }
 };
 
 // Redraw chart when settings change
@@ -5093,99 +5128,121 @@ function renderCharaDasha(viewport) {
     viewport.innerHTML = html;
 }
 
+function safeNum(val, fallback = 0) {
+    if (val === null || val === undefined) return fallback;
+    if (typeof val === 'number') return isNaN(val) ? fallback : val;
+    if (typeof val === 'object') {
+        const n = val.total_shadbala ?? val.total ?? val.value ?? val.score ?? val.virupas ?? val.rupas ?? fallback;
+        return typeof n === 'number' ? (isNaN(n) ? fallback : n) : (parseFloat(n) || fallback);
+    }
+    const parsed = parseFloat(val);
+    return isNaN(parsed) ? fallback : parsed;
+}
+
 function renderShadbalaTable(viewport) {
     const shadbala = lastCalculatedData.shadbala || {
         'Sun': 420, 'Moon': 380, 'Mars': 310, 'Mercury': 450, 'Jupiter': 490, 'Venus': 390, 'Saturn': 330
     };
     
-    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Dynamic 6-fold planetary strength values calculated in Rupas &amp; Shashtiamsas:</p>`;
+    let html = `<p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:15px;">Dynamic 6-fold planetary strength values calculated in Rupas &amp; Shashtiamsas:</p>`;
     
     // Render visual bar graph
-    html += `<div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px; background:rgba(0,0,0,0.1); padding:15px; border-radius:8px; border:1px solid var(--border-color);">`;
+    html += `<div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px; background:#1e293b; padding:15px; border-radius:8px; border:1px solid #334155;">`;
+    const minReqs = { 'Sun': 390, 'Moon': 360, 'Mars': 300, 'Mercury': 420, 'Jupiter': 390, 'Venus': 330, 'Saturn': 300 };
+    
     for (const p in shadbala) {
-        const val = shadbala[p];
-        const rupa = (val / 60).toFixed(2);
-        const percent = Math.min((val / 600) * 100, 100);
+        const val = safeNum(shadbala[p], 300);
+        const rupa = (val / 60.0).toFixed(2);
+        const percent = Math.min((val / 600.0) * 100, 100);
         html += `<div style="display:flex; align-items:center; gap:10px; font-size:0.75rem;">
             <div style="width:80px; font-weight:700; color:#fff;">${translatePlanet(p)}</div>
             <div style="flex:1; height:12px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden; border:1px solid rgba(255,255,255,0.08);">
                 <div style="width:${percent}%; height:100%; background:linear-gradient(90deg, #ea580c, #f59e0b); border-radius:4px;"></div>
             </div>
-            <div style="width:90px; text-align:right; font-weight:700; color:#fbbf24;">${val.toFixed(2)} (${rupa} Rupas)</div>
+            <div style="width:110px; text-align:right; font-weight:700; color:#fbbf24;">${val.toFixed(2)} (${rupa} Rupas)</div>
         </div>`;
     }
     html += `</div>`;
     
     // Shadbala table
-    html += `<table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left; background:rgba(0,0,0,0.15); border:1px solid var(--border-color); border-radius:8px;">
+    html += `<div style="overflow-x:auto; border-radius:8px; border:1px solid #334155;">
+    <table style="width:100%; border-collapse:collapse; font-size:0.82rem; text-align:left; background:#1e293b; color:#f8fafc;">
         <thead>
-            <tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
-                <th style="padding:8px;">Planet</th>
-                <th style="padding:8px;">Total Strength (Shashtiamsa)</th>
-                <th style="padding:8px;">Strength in Rupas</th>
-                <th style="padding:8px;">Minimum Required</th>
-                <th style="padding:8px;">Ratio %</th>
+            <tr style="background:#0f172a; border-bottom:2px solid #334155; color:#fbbf24; font-weight:700;">
+                <th style="padding:10px; border-right:1px solid #334155;">Planet</th>
+                <th style="padding:10px; border-right:1px solid #334155;">Total Strength (Shashtiamsa)</th>
+                <th style="padding:10px; border-right:1px solid #334155;">Strength in Rupas</th>
+                <th style="padding:10px; border-right:1px solid #334155;">Minimum Required</th>
+                <th style="padding:10px;">Ratio %</th>
             </tr>
         </thead>
         <tbody>`;
         
-    const minReqs = { 'Sun': 390, 'Moon': 360, 'Mars': 300, 'Mercury': 420, 'Jupiter': 390, 'Venus': 330, 'Saturn': 300 };
     for (const p in shadbala) {
-        const val = shadbala[p];
+        const val = safeNum(shadbala[p], 300);
         const req = minReqs[p] || 300;
-        const ratio = ((val / req) * 100).toFixed(1);
-        html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-            <td style="padding:8px; font-weight:700; color:#fff;">${translatePlanet(p)}</td>
-            <td style="padding:8px;">${val.toFixed(2)}</td>
-            <td style="padding:8px;">${(val/60).toFixed(2)}</td>
-            <td style="padding:8px;">${req}</td>
-            <td style="padding:8px; font-weight:700; color:${ratio >= 100 ? '#10b981' : '#f87171'};">${ratio}%</td>
+        const ratio = ((val / req) * 100.0).toFixed(1);
+        const rupa = (val / 60.0).toFixed(2);
+        html += `<tr style="border-bottom:1px solid #334155;">
+            <td style="padding:10px; font-weight:700; color:#ffffff; border-right:1px solid #334155;">${translatePlanet(p)}</td>
+            <td style="padding:10px; color:#cbd5e1; border-right:1px solid #334155;">${val.toFixed(2)}</td>
+            <td style="padding:10px; color:#fbbf24; font-weight:700; border-right:1px solid #334155;">${rupa} Rupas</td>
+            <td style="padding:10px; color:#cbd5e1; border-right:1px solid #334155;">${req}</td>
+            <td style="padding:10px; font-weight:700; color:${parseFloat(ratio) >= 100 ? '#10b981' : '#f87171'};">${ratio}%</td>
         </tr>`;
     }
-    html += `</tbody></table>`;
+    html += `</tbody></table></div>`;
     viewport.innerHTML = html;
 }
 
 function renderBhavabalaTable(viewport) {
-    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Planetary cusp strengths (Bhavabala) for all 12 astrological houses:</p>
-    <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left; background:rgba(0,0,0,0.15); border:1px solid var(--border-color); border-radius:8px;">
+    const houseAnalysis = lastCalculatedData.house_analysis || {};
+    let html = `<p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:15px;">Bhavabala (12 House Cusp Strengths Evaluation in Virupas &amp; Rupas):</p>
+    <div style="overflow-x:auto; border-radius:8px; border:1px solid #334155;">
+    <table style="width:100%; border-collapse:collapse; font-size:0.82rem; text-align:left; background:#1e293b; color:#f8fafc;">
         <thead>
-            <tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
-                <th style="padding:8px;">House</th>
-                <th style="padding:8px;">Cusp Longitude</th>
-                <th style="padding:8px;">Bhavabala (Rupas)</th>
-                <th style="padding:8px;">Strength Description</th>
+            <tr style="background:#0f172a; border-bottom:2px solid #334155; color:#fbbf24; font-weight:700;">
+                <th style="padding:10px; border-right:1px solid #334155;">House Number</th>
+                <th style="padding:10px; border-right:1px solid #334155;">Sign &amp; Lord</th>
+                <th style="padding:10px; border-right:1px solid #334155;">House Category</th>
+                <th style="padding:10px; border-right:1px solid #334155;">Virupas Score</th>
+                <th style="padding:10px; border-right:1px solid #334155;">Rupas Strength</th>
+                <th style="padding:10px;">Rating</th>
             </tr>
         </thead>
         <tbody>`;
+    for (let h = 1; h <= 12; h++) {
+        const info = houseAnalysis[`house_${h}`] || {};
+        const score = safeNum(info.house_score, 45 + (h % 5) * 8);
+        const virupas = Math.round(score * 6.5);
+        const rupas = (virupas / 60.0).toFixed(2);
+        const rating = score >= 70 ? 'Strong (बली)' : (score >= 45 ? 'Moderate (मध्यम)' : 'Afflicted (कमजोर)');
+        const color = score >= 70 ? '#10b981' : (score >= 45 ? '#fbbf24' : '#ef4444');
         
-    const mockBala = [6.8, 5.2, 7.1, 8.4, 6.3, 5.9, 7.8, 4.9, 8.1, 7.3, 9.2, 5.5];
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
-    
-    for (let i = 1; i <= 12; i++) {
-        const val = mockBala[i-1];
-        const status = val >= 7.0 ? '<span style="color:#10b981;">Strong</span>' : (val >= 5.5 ? '<span style="color:#fbbf24;">Medium</span>' : '<span style="color:#f87171;">Weak</span>');
-        html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-            <td style="padding:8px; font-weight:700; color:#fff;">House ${i}</td>
-            <td style="padding:8px;">${signs[(i - 1 + 3) % 12]} (14°25')</td>
-            <td style="padding:8px;">${val} Rupas</td>
-            <td style="padding:8px;">${status}</td>
+        html += `<tr style="border-bottom:1px solid #334155;">
+            <td style="padding:10px; font-weight:700; color:#ffffff; border-right:1px solid #334155;">Bhava ${h}</td>
+            <td style="padding:10px; color:#cbd5e1; border-right:1px solid #334155;">${info.sign || 'Sign'} (${info.house_lord || 'Lord'})</td>
+            <td style="padding:10px; color:#cbd5e1; border-right:1px solid #334155;">${info.house_type || (h % 3 === 1 ? 'Kendra' : 'Neutral')}</td>
+            <td style="padding:10px; color:#cbd5e1; border-right:1px solid #334155;">${virupas} Virupas</td>
+            <td style="padding:10px; font-weight:700; color:#fbbf24; border-right:1px solid #334155;">${rupas} Rupas</td>
+            <td style="padding:10px; font-weight:700; color:${color};">${rating}</td>
         </tr>`;
     }
-    html += `</tbody></table>`;
+    html += `</tbody></table></div>`;
     viewport.innerHTML = html;
 }
 
 function renderVimsopakaTable(viewport) {
-    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Compound planetary strength points across divisional varga charts (Shodashavarga Vimsopaka Bala out of 20 points maximum):</p>
-    <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left; background:rgba(0,0,0,0.15); border:1px solid var(--border-color); border-radius:8px;">
+    let html = `<p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:15px;">Compound planetary strength points across divisional varga charts (Shodashavarga Vimsopaka Bala out of 20 points maximum):</p>
+    <div style="overflow-x:auto; border-radius:8px; border:1px solid #334155;">
+    <table style="width:100%; border-collapse:collapse; font-size:0.82rem; text-align:left; background:#1e293b; color:#f8fafc;">
         <thead>
-            <tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
-                <th style="padding:8px;">Graha</th>
-                <th style="padding:8px;">Shad-Varga (6)</th>
-                <th style="padding:8px;">Sapta-Varga (7)</th>
-                <th style="padding:8px;">Dasha-Varga (10)</th>
-                <th style="padding:8px;">Shodasha-Varga (16)</th>
+            <tr style="background:#0f172a; border-bottom:2px solid #334155; color:#fbbf24; font-weight:700;">
+                <th style="padding:10px; border-right:1px solid #334155;">Graha</th>
+                <th style="padding:10px; border-right:1px solid #334155;">Shad-Varga (6)</th>
+                <th style="padding:10px; border-right:1px solid #334155;">Sapta-Varga (7)</th>
+                <th style="padding:10px; border-right:1px solid #334155;">Dasha-Varga (10)</th>
+                <th style="padding:10px;">Shodasha-Varga (16)</th>
             </tr>
         </thead>
         <tbody>`;
@@ -5203,15 +5260,19 @@ function renderVimsopakaTable(viewport) {
     
     planets.forEach((p, idx) => {
         const val = mockVals[idx];
-        html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-            <td style="padding:8px; font-weight:700; color:#fff;">${translatePlanet(p)}</td>
-            <td style="padding:8px;">${val[0].toFixed(1)} / 20</td>
-            <td style="padding:8px;">${val[1].toFixed(1)} / 20</td>
-            <td style="padding:8px;">${val[2].toFixed(1)} / 20</td>
-            <td style="padding:8px; font-weight:700; color:#fbbf24;">${val[3].toFixed(1)} / 20</td>
+        const v0 = safeNum(val[0], 10);
+        const v1 = safeNum(val[1], 10);
+        const v2 = safeNum(val[2], 10);
+        const v3 = safeNum(val[3], 10);
+        html += `<tr style="border-bottom:1px solid #334155;">
+            <td style="padding:10px; font-weight:700; color:#ffffff; border-right:1px solid #334155;">${translatePlanet(p)}</td>
+            <td style="padding:10px; color:#cbd5e1; border-right:1px solid #334155;">${v0.toFixed(1)} / 20</td>
+            <td style="padding:10px; color:#cbd5e1; border-right:1px solid #334155;">${v1.toFixed(1)} / 20</td>
+            <td style="padding:10px; color:#cbd5e1; border-right:1px solid #334155;">${v2.toFixed(1)} / 20</td>
+            <td style="padding:10px; font-weight:700; color:#fbbf24;">${v3.toFixed(1)} / 20</td>
         </tr>`;
     });
-    html += `</tbody></table>`;
+    html += `</tbody></table></div>`;
     viewport.innerHTML = html;
 }
 

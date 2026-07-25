@@ -4757,3 +4757,77 @@ table {
     min-width: 650px;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   SHUNYAKI ASTROLOGY UI/UX OVERRIDES v5.2.5
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Sandy brown background for birth details card without shine animation */
+.birth-details-card, 
+.birth-details-card.glass-card,
+.astrology-container .birth-details-card {
+    background-color: #F4A460 !important;
+    background: #F4A460 !important;
+    color: #1e1b18 !important;
+    border: 1.5px solid #d97706 !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+}
+.birth-details-card::before, 
+.birth-details-card::after,
+.birth-details-card.glass-card::before, 
+.birth-details-card.glass-card::after {
+    display: none !important;
+    content: none !important;
+    animation: none !important;
+}
+.birth-details-card label,
+.birth-details-card .form-group label,
+.birth-details-card h3,
+.birth-details-card h4,
+.birth-details-card legend {
+    color: #1e1b18 !important;
+}
+
+/* Bluish dark slate background for reportViewport, outputCard & content pane without shiny animation */
+#outputCard, 
+#reportViewport, 
+.report-content-pane,
+.astrology-container #outputCard {
+    background-color: #192333 !important;
+    background: #192333 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+#outputCard::before, #outputCard::after,
+#reportViewport::before, #reportViewport::after,
+.report-content-pane::before, .report-content-pane::after {
+    display: none !important;
+    content: none !important;
+    animation: none !important;
+}
+
+/* Report Category Tabs Spacing & Alignment (Item 1) */
+.report-category-tabs {
+    margin-top: 10px !important;
+    margin-bottom: 25px !important;
+    padding: 10px 4px !important;
+    border-bottom: 2px solid #334155 !important;
+    overflow-x: auto !important;
+    display: flex !important;
+    gap: 10px !important;
+    align-items: center !important;
+}
+.report-category-tabs .cat-tab-btn {
+    padding: 10px 18px !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    border-radius: 6px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+.sub-tabs-group {
+    margin-top: 15px !important;
+    margin-bottom: 25px !important;
+    clear: both !important;
+}
+
