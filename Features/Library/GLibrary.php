@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="google-adsense-account" content="ca-pub-1342189574858672">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1342189574858672" crossorigin="anonymous"></script>
 <title>Global Library</title>
 <style>
 body{
