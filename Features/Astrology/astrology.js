@@ -407,13 +407,14 @@ let lastGocharData = null;
 let maasikCalendarData = {}; // Cache: key = 'YYYY-MM-DD' => API response
 let maasikLoadingMonth = null;
 
-// API URL: Use local Python server when running on localhost/127.0.0.1.
-// Use Vercel remote API when accessed via GitHub Pages or direct file:// protocol.
+// API URL: Use local Python server when running on localhost/127.0.0.1 or direct vercel host.
+// Use live Vercel remote API when accessed via custom domain (www.shunyakikhoj.co.in), GitHub Pages, or file:// protocol.
 const _hostname = window.location.hostname;
-const _isLocalServer = (_hostname === 'localhost' || _hostname === '127.0.0.1' || _hostname === '');
-const API_URL = (window.location.protocol.startsWith('file') || _hostname.includes('github.io'))
-    ? 'https://sanskritai.vercel.app/api/calculate'
-    : '/api/calculate';
+const _isLocalServer = (_hostname === 'localhost' || _hostname === '127.0.0.1');
+const _isVercelHost = _hostname.includes('vercel.app');
+const API_URL = (_isLocalServer || _isVercelHost)
+    ? '/api/calculate'
+    : 'https://shunyakikhoj.vercel.app/api/calculate';
 
 function parseAstrologyTimeStr(tStr) {
     if (!tStr) return 0;

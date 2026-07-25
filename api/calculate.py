@@ -1,6 +1,7 @@
+from typing import List, Optional, Dict, Any
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 import sys
 import os
 import json
@@ -35,9 +36,9 @@ class CalculationOptions(BaseModel):
     node_type: str = "True"
     house_system: str = "Whole Sign"
     zodiac: str = "Sidereal"
-    dasha_systems: List[str] = ["ALL"]
+    dasha_systems: List[str] = Field(default_factory=lambda: ["ALL"])
     yoga_depth: str = "Full"
-    varga_list: List[int] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 20, 24, 27, 30, 40, 45, 60]
+    varga_list: List[int] = Field(default_factory=lambda: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 20, 24, 27, 30, 40, 45, 60])
     include_source_texts: bool = True
 
 class BirthDetails(BaseModel):
@@ -56,8 +57,8 @@ class BirthDetails(BaseModel):
 
 class UniversalCalculateRequest(BaseModel):
     birth_details: Optional[BirthDetails] = None
-    calculation_options: Optional[CalculationOptions] = CalculationOptions()
-    requested_modules: List[str] = ["ALL"]
+    calculation_options: Optional[CalculationOptions] = Field(default_factory=CalculationOptions)
+    requested_modules: List[str] = Field(default_factory=lambda: ["ALL"])
     partner_birth_details: Optional[BirthDetails] = None
     # Backward compatibility for direct flat parameters
     name: Optional[str] = None
@@ -134,6 +135,7 @@ def calculate_chart(request: Request, body: Dict[str, Any]):
 
         # Backward-compatible d1_chart flat object
         master_obj['status'] = 'success'
+        master_obj['engine_version'] = '5.0.0'
         asc_sign_idx = int(master_obj['houses']['ascendant_sidereal_lon'] / 30.0) % 12
         d1_flat = {}
         for p_name, p_data in master_obj['planets'].items():

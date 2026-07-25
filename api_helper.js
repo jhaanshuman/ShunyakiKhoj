@@ -47,9 +47,12 @@
                 `;
 
                 // URL resolution
-                const apiUrl = (window.location.hostname.includes('github.io') || window.location.protocol.startsWith('file'))
-                    ? 'https://sanskritai.vercel.app/api/calculate'
-                    : '/api/calculate';
+                const _hn = window.location.hostname;
+                const _isLocal = (_hn === 'localhost' || _hn === '127.0.0.1');
+                const _isVercel = _hn.includes('vercel.app');
+                const apiUrl = (_isLocal || _isVercel)
+                    ? '/api/calculate'
+                    : 'https://shunyakikhoj.vercel.app/api/calculate';
 
                 try {
                     const res = await fetch(apiUrl, {

@@ -138,8 +138,10 @@ async function triggerModalCalculation() {
     const resultsContainer = document.getElementById('modalResults');
     resultsContainer.innerHTML = "<div style='text-align:center; padding: 3rem; color: #6366f1; font-weight:700;'>🕉️ Generating Calculations...</div>";
     
-    // Use absolute backend server routes to resolve local file:/// protocol blocks
-    const HOST_API = window.location.protocol.startsWith('http') ? "" : "https://sanskritai.vercel.app";
+    const _hn = window.location.hostname;
+    const _isLocal = (_hn === 'localhost' || _hn === '127.0.0.1');
+    const _isVercel = _hn.includes('vercel.app');
+    const HOST_API = (_isLocal || _isVercel) ? "" : "https://shunyakikhoj.vercel.app";
     
     if (currentModalTab === 'milan') {
         const payload = {
@@ -1663,7 +1665,10 @@ async function initDefaultVedicData() {
     // Read the current city from the input (default is Patna set in HTML)
     const currentPlace = (mPlaceEl && mPlaceEl.value.trim()) ? mPlaceEl.value.trim() : 'Patna, Bihar, India';
     
-    const HOST_API = window.location.protocol.startsWith('http') ? "" : "https://sanskritai.vercel.app";
+    const _hn = window.location.hostname;
+    const _isLocal = (_hn === 'localhost' || _hn === '127.0.0.1');
+    const _isVercel = _hn.includes('vercel.app');
+    const HOST_API = (_isLocal || _isVercel) ? "" : "https://shunyakikhoj.vercel.app";
     const payload = {
         date: dateStr.replace(/-/g, '/'),
         time: timeStr,

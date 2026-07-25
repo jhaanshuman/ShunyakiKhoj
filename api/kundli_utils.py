@@ -11,10 +11,25 @@ from dataclasses import dataclass, field
 from datetime import datetime, date, timedelta
 import logging
 from typing import Any, Dict, List, Optional, Tuple
-from geopy.geocoders import Nominatim
-import pytz
-import swisseph as swe
-from timezonefinder import TimezoneFinder
+try:
+    from geopy.geocoders import Nominatim
+except ImportError:
+    Nominatim = None
+
+try:
+    import pytz
+except ImportError:
+    pytz = None
+
+try:
+    import swisseph as swe
+except ImportError:
+    swe = None
+
+try:
+    from timezonefinder import TimezoneFinder
+except ImportError:
+    TimezoneFinder = None
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -86,23 +101,26 @@ HOUSE_SYSTEM_MAP = {
     "Equal": b'A'
 }
 
-AYANAMSA_MAP = {
-    "Lahiri": swe.SIDM_LAHIRI,
-    "Krishnamurti": swe.SIDM_KRISHNAMURTI,
-    "Raman": swe.SIDM_RAMAN,
-    "ukteshwar": swe.SIDM_YUKTESHWAR,
-    "Fagan Bradley": swe.SIDM_FAGAN_BRADLEY
-}
-
-SWE_PLANET_MAP = {
-    'Sun': swe.SUN,
-    'Moon': swe.MOON,
-    'Mercury': swe.MERCURY,
-    'Venus': swe.VENUS,
-    'Mars': swe.MARS,
-    'Jupiter': swe.JUPITER,
-    'Saturn': swe.SATURN
-}
+if swe is not None:
+    AYANAMSA_MAP = {
+        "Lahiri": getattr(swe, 'SIDM_LAHIRI', 1),
+        "Krishnamurti": getattr(swe, 'SIDM_KRISHNAMURTI', 5),
+        "Raman": getattr(swe, 'SIDM_RAMAN', 3),
+        "Yukteshwar": getattr(swe, 'SIDM_YUKTESHWAR', 7),
+        "Fagan Bradley": getattr(swe, 'SIDM_FAGAN_BRADLEY', 0)
+    }
+    SWE_PLANET_MAP = {
+        'Sun': getattr(swe, 'SUN', 0),
+        'Moon': getattr(swe, 'MOON', 1),
+        'Mercury': getattr(swe, 'MERCURY', 2),
+        'Venus': getattr(swe, 'VENUS', 3),
+        'Mars': getattr(swe, 'MARS', 4),
+        'Jupiter': getattr(swe, 'JUPITER', 5),
+        'Saturn': getattr(swe, 'SATURN', 6)
+    }
+else:
+    AYANAMSA_MAP = {"Lahiri": 1, "Krishnamurti": 5, "Raman": 3, "Yukteshwar": 7, "Fagan Bradley": 0}
+    SWE_PLANET_MAP = {'Sun': 0, 'Moon': 1, 'Mercury': 2, 'Venus': 3, 'Mars': 4, 'Jupiter': 5, 'Saturn': 6}
 
 
 @dataclass(frozen=True)
