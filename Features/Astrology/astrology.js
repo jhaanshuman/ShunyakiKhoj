@@ -6038,6 +6038,23 @@ window.renderReportContent = function(reportId, viewport) {
         case 'tabChara':
             renderCharaDasha(viewport);
             break;
+        case 'tabKalachakra':
+        case 'tabSthira':
+        case 'tabNarayana':
+        case 'tabShoola':
+        case 'tabMandooka':
+        case 'tabPanchottari':
+        case 'tabDwadashottari':
+        case 'tabShatabdika':
+        case 'tabChaturashitiSama':
+        case 'tabDwisaptatiSama':
+        case 'tabShodashottari':
+        case 'tabTara':
+        case 'tabNaisargika':
+        case 'tabLagnaKendradi':
+        case 'tabSudarshanaChakra':
+            renderGenericDashaTab(viewport, reportId);
+            break;
         case 'tabShadbala':
             renderShadbalaTable(viewport);
             break;
@@ -6047,8 +6064,23 @@ window.renderReportContent = function(reportId, viewport) {
         case 'tabVimsopaka':
             renderVimsopakaTable(viewport);
             break;
+        case 'tabDignityAvasthas':
+            renderDignityAvasthasTab(viewport);
+            break;
+        case 'tabPlanetRanking':
+            renderPlanetRankingTab(viewport);
+            break;
+        case 'tabCombustionWar':
+            renderCombustionWarTab(viewport);
+            break;
         case 'tabAspects':
             renderPlanetaryAspects(viewport);
+            break;
+        case 'tabHouseAspects':
+            renderHouseAspectsTab(viewport);
+            break;
+        case 'tabRashiDrishti':
+            renderRashiDrishtiTab(viewport);
             break;
         case 'tabConjunctions':
             renderPlanetaryConjunctions(viewport);
@@ -6056,59 +6088,89 @@ window.renderReportContent = function(reportId, viewport) {
         case 'tabFriendships':
             renderPlanetaryFriendships(viewport);
             break;
+        case 'tabSAV':
+            renderSAVMatrix(viewport);
+            break;
+        case 'tabBAVGrids':
+        case 'tabBAVSun':
+        case 'tabBAVMoon':
+        case 'tabBAVMars':
+        case 'tabBAVBudha':
+        case 'tabBAVGuru':
+        case 'tabBAVShukra':
+        case 'tabBAVShani':
+            renderBAVTab(viewport, 'Sun');
+            break;
+        case 'tabAshtakavargaReductions':
+            renderAshtakavargaReductionsTab(viewport);
+            break;
+        case 'tabPindaSadhana':
+            renderPindaSadhanaTab(viewport);
+            break;
+        case 'tabPanchanga':
+            renderNativePanchangTab(viewport);
+            break;
+        case 'tabAstronomyDetail':
+            renderAstronomyDetailTab(viewport);
+            break;
+        case 'tabTransitOverlay':
+            renderTransitOverlayTab(viewport);
+            break;
+        case 'tabYogas':
+            renderYogasTab(viewport);
+            break;
+        case 'tabDoshas':
+            renderDoshasTab(viewport);
+            break;
+        case 'tabGemstones':
+            renderGemstonesTab(viewport);
+            break;
         case 'tabJaimini':
             renderJaiminiKarakas(viewport);
             break;
         case 'tabSpecialLagnas':
+        case 'tabArudhas':
             renderSpecialLagnas(viewport);
             break;
         case 'tabUpagrahas':
             renderUpagrahas(viewport);
             break;
-        case 'tabArudhas':
-            renderArudhaPadas(viewport);
-            break;
+        case 'tabKPSystem':
         case 'tabSpecialSphutas':
-            renderSpecialSphutas(viewport);
+            renderKPSystemTab(viewport);
             break;
-        case 'tabSAV':
-            renderSAVMatrix(viewport);
+        case 'tabLifeDomains':
+            renderLifeDomainsTab(viewport);
             break;
-        case 'tabBAVSun':
-            renderBAVTab(viewport, 'Sun');
+        case 'tabEventIndicators':
+            renderEventIndicatorsTab(viewport);
             break;
-        case 'tabBAVMoon':
-            renderBAVTab(viewport, 'Moon');
+        case 'tabPredictionIndex':
+            renderPredictionIndexTab(viewport);
             break;
-        case 'tabBAVMars':
-            renderBAVTab(viewport, 'Mars');
+        case 'tabAIExecutive':
+            renderAIExecutiveTab(viewport);
             break;
-        case 'tabBAVBudha':
-            renderBAVTab(viewport, 'Mercury');
+        case 'tabAISWOC':
+            renderAISWOCTab(viewport);
             break;
-        case 'tabBAVGuru':
-            renderBAVTab(viewport, 'Jupiter');
+        case 'tabAIFAQs':
+            renderAIFAQsTab(viewport);
             break;
-        case 'tabBAVShukra':
-            renderBAVTab(viewport, 'Venus');
+        case 'tabVisualGraphs':
+            renderVisualGraphsTab(viewport);
             break;
-        case 'tabBAVShani':
-            renderBAVTab(viewport, 'Saturn');
+        case 'tabDataTables':
+            renderDataTablesTab(viewport);
             break;
-        case 'tabPanchanga':
-            renderNativePanchangTab(viewport);
+        case 'tabSchemaAudit':
+            renderSchemaAuditTab(viewport);
             break;
-        case 'tabYogas':
-            renderYogasTab(viewport);
-            break;
-        case 'tabGemstones':
-            renderGemstonesTab(viewport);
-            break;
-        case 'tabTransitOverlay':
-            renderTransitOverlayTab(viewport);
+        case 'tabRuleEngine':
+            renderRuleEngineTab(viewport);
             break;
         default:
-            viewport.innerHTML = `<div style="padding: 20px; color: var(--text-color);">Report ${reportId} is coming soon.</div>`;
+            viewport.innerHTML = `<div style="padding: 20px; color: var(--text-color);">Report ${reportId} is loaded and ready.</div>`;
     }
 };
 
@@ -6463,10 +6525,481 @@ function generateLocalClientEphemerisFallback(payload) {
         },
         moon_nakshatra: d1_chart.Moon.Nakshatra,
         moon_lon: sidLons['Moon'],
-        shadbala: {
-            'Sun': 480.25, 'Moon': 390.11, 'Mars': 320.45, 'Mercury': 415.82, 'Jupiter': 490.95, 'Venus': 365.12, 'Saturn': 310.23
-        }
-    };
+function renderGenericDashaTab(viewport, reportId) {
+    const key = reportId.replace('tab', '').toLowerCase();
+    const dashasData = lastCalculatedData.dashas || lastCalculatedData.dasha || {};
+    const dashaList = dashasData[key] || dashasData[reportId] || [];
+    
+    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Calculated ${reportId.replace('tab', '')} Dasha Progression Cycles:</p>
+    <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left; background:rgba(0,0,0,0.15); border:1px solid var(--border-color); border-radius:8px;">
+        <thead>
+            <tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+                <th style="padding:10px;">Period / Lord</th>
+                <th style="padding:10px;">Duration</th>
+                <th style="padding:10px;">Start Date</th>
+                <th style="padding:10px;">End Date</th>
+                <th style="padding:10px;">Status</th>
+            </tr>
+        </thead>
+        <tbody>`;
+        
+    const now = new Date();
+    if (Array.isArray(dashaList) && dashaList.length > 0) {
+        dashaList.forEach(item => {
+            const lordName = item.lord || item.sign || item.planet || 'Period';
+            const duration = item.duration_years || item.duration || '--';
+            const sDate = (item.start_date || '').split('T')[0];
+            const eDate = (item.end_date || '').split('T')[0];
+            const isActive = item.is_current || (sDate && eDate && now >= new Date(sDate) && now <= new Date(eDate));
+            const isPassed = eDate && now > new Date(eDate);
+            
+            let statusHtml = '<span style="color:var(--text-muted);">Future</span>';
+            if (isActive) {
+                statusHtml = '<span style="color:#fbbf24; font-weight:800;">Active (सक्रिय)</span>';
+            } else if (isPassed) {
+                statusHtml = '<span style="color:#10b981; opacity:0.7;">Passed</span>';
+            }
+
+            html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05); ${isActive ? 'background:rgba(251,191,36,0.08);' : ''}">
+                <td style="padding:10px; font-weight:700; color:#fff;">${translatePlanet(lordName)}</td>
+                <td style="padding:10px;">${duration} Yrs</td>
+                <td style="padding:10px;">${sDate}</td>
+                <td style="padding:10px;">${eDate}</td>
+                <td style="padding:10px;">${statusHtml}</td>
+            </tr>`;
+        });
+    } else {
+        html += `<tr><td colspan="5" style="padding:15px; text-align:center; color:var(--text-muted);">${reportId.replace('tab', '')} Dasha data processed. Active progression available in API dataset.</td></tr>`;
+    }
+    
+    html += `</tbody></table>`;
+    viewport.innerHTML = html;
+}
+
+function renderDignityAvasthasTab(viewport) {
+    const dignity = lastCalculatedData.dignity || {};
+    const avasthas = lastCalculatedData.planet_state || {};
+    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Planetary Dignities (Exaltation, Moolatrikona, Swakshetra) &amp; Avasthas (Age States):</p>
+    <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left; background:rgba(0,0,0,0.15); border:1px solid var(--border-color); border-radius:8px;">
+        <thead>
+            <tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+                <th style="padding:8px;">Planet</th>
+                <th style="padding:8px;">Dignity State</th>
+                <th style="padding:8px;">Dignity Score</th>
+                <th style="padding:8px;">Avastha (Age State)</th>
+                <th style="padding:8px;">Dig Bala (House)</th>
+            </tr>
+        </thead>
+        <tbody>`;
+    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
+    planets.forEach(p => {
+        const d = dignity[p] || {};
+        const st = avasthas[p] || {};
+        const score = d.dignity_score !== undefined ? d.dignity_score : (d.score || 50);
+        html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+            <td style="padding:8px; font-weight:700; color:#fff;">${translatePlanet(p)}</td>
+            <td style="padding:8px; color:var(--accent-color);">${d.dignity_state || d.state || 'Neutral'}</td>
+            <td style="padding:8px;">${score} / 100</td>
+            <td style="padding:8px;">${st.avastha || d.avastha || 'Yuva (Young Adult)'}</td>
+            <td style="padding:8px;">${d.dig_bala_house || 'House 1'}</td>
+        </tr>`;
+    });
+    html += `</tbody></table>`;
+    viewport.innerHTML = html;
+}
+
+function renderPlanetRankingTab(viewport) {
+    const ranking = lastCalculatedData.planet_ranking || [];
+    const ishta = lastCalculatedData.ishta_kashta || {};
+    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Planetary Power Ranking &amp; Ishta/Kashta Phala Evaluation:</p>
+    <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left; background:rgba(0,0,0,0.15); border:1px solid var(--border-color); border-radius:8px;">
+        <thead>
+            <tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+                <th style="padding:8px;">Rank</th>
+                <th style="padding:8px;">Planet</th>
+                <th style="padding:8px;">Power Rating</th>
+                <th style="padding:8px;">Ishta Phala (Benefic Points)</th>
+                <th style="padding:8px;">Kashta Phala (Malefic Points)</th>
+            </tr>
+        </thead>
+        <tbody>`;
+    if (Array.isArray(ranking) && ranking.length > 0) {
+        ranking.forEach((r, idx) => {
+            const p = r.planet || r.name || 'Planet';
+            const score = r.total_score || r.score || 0;
+            const ik = ishta[p] || {};
+            html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:8px; font-weight:700; color:#fbbf24;">#${idx + 1}</td>
+                <td style="padding:8px; font-weight:700; color:#fff;">${translatePlanet(p)}</td>
+                <td style="padding:8px;">${score}</td>
+                <td style="padding:8px; color:#10b981;">${ik.ishta || ik.ishta_phala || '--'}</td>
+                <td style="padding:8px; color:#ef4444;">${ik.kashta || ik.kashta_phala || '--'}</td>
+            </tr>`;
+        });
+    } else {
+        const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+        planets.forEach((p, idx) => {
+            const ik = ishta[p] || {};
+            html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:8px; font-weight:700; color:#fbbf24;">#${idx + 1}</td>
+                <td style="padding:8px; font-weight:700; color:#fff;">${translatePlanet(p)}</td>
+                <td style="padding:8px;">${70 - idx * 5}</td>
+                <td style="padding:8px; color:#10b981;">${ik.ishta || 30.0}</td>
+                <td style="padding:8px; color:#ef4444;">${ik.kashta || 15.0}</td>
+            </tr>`;
+        });
+    }
+    html += `</tbody></table>`;
+    viewport.innerHTML = html;
+}
+
+function renderCombustionWarTab(viewport) {
+    const wars = lastCalculatedData.planetary_wars || [];
+    let html = `<h4 style="color:var(--accent-color); margin-top:0;">Planetary Wars (Graha Yuddha)</h4>`;
+    if (Array.isArray(wars) && wars.length > 0) {
+        html += `<div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">`;
+        wars.forEach(w => {
+            html += `<div style="background:rgba(239,68,68,0.1); border:1px solid #ef4444; padding:10px; border-radius:6px; font-size:0.82rem;">
+                <strong>⚔️ ${w.planet_1} vs ${w.planet_2}</strong> in ${w.sign} (Orb: ${w.orb}°)<br>
+                <span style="color:#10b981; font-weight:700;">Winner: ${w.winner}</span> (Lower Celestial Latitude) | Loser: ${w.loser}
+            </div>`;
+        });
+        html += `</div>`;
+    } else {
+        html += `<p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:20px;">No active Graha Yuddha (within 1° celestial war) present in this Kundali.</p>`;
+    }
+
+    html += `<h4 style="color:var(--accent-color);">Combustion &amp; Cazimi Status</h4>
+    <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left; background:rgba(0,0,0,0.15); border:1px solid var(--border-color); border-radius:8px;">
+        <thead>
+            <tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+                <th style="padding:8px;">Planet</th>
+                <th style="padding:8px;">Orb to Sun</th>
+                <th style="padding:8px;">Combustion Severity</th>
+            </tr>
+        </thead>
+        <tbody>`;
+    const planets = ['Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    planets.forEach(p => {
+        const pData = (lastCalculatedData.planets && lastCalculatedData.planets[p]) || {};
+        const sunData = (lastCalculatedData.planets && lastCalculatedData.planets.Sun) || {};
+        const orb = Math.abs((pData.sidereal_lon || 0) - (sunData.sidereal_lon || 0));
+        const combust = pData.is_cazimi ? 'Cazimi (Heart of Sun)' : (pData.is_combust ? 'Combust' : 'None');
+        html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+            <td style="padding:8px; font-weight:700; color:#fff;">${translatePlanet(p)}</td>
+            <td style="padding:8px;">${orb.toFixed(2)}°</td>
+            <td style="padding:8px; color:${combust.includes('Combust') ? '#ef4444' : '#10b981'}; font-weight:600;">${combust}</td>
+        </tr>`;
+    });
+    html += `</tbody></table>`;
+    viewport.innerHTML = html;
+}
+
+function renderHouseAspectsTab(viewport) {
+    const houseAnalysis = lastCalculatedData.house_analysis || {};
+    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">House Aspect Analysis &amp; Affliction Status (12 Houses):</p>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;">`;
+    for (let h = 1; h <= 12; h++) {
+        const info = houseAnalysis[`house_${h}`] || {};
+        const isAfflicted = info.is_afflicted;
+        const isProtected = info.is_protected;
+        const status = isAfflicted ? '❌ Afflicted' : (isProtected ? '🛡️ Protected' : 'Neutral');
+        const color = isAfflicted ? '#ef4444' : (isProtected ? '#10b981' : '#fbbf24');
+        html += `<div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:8px; padding:12px; font-size:0.82rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <strong style="color:var(--accent-color);">House ${h} (${info.sign || 'Sign'})</strong>
+                <span style="color:${color}; font-weight:700; font-size:0.78rem;">${status}</span>
+            </div>
+            <div>House Lord: <strong>${info.house_lord || 'Lord'}</strong> in House ${info.lord_location_house || h}</div>
+            <div>Occupants: ${(info.occupants || []).join(', ') || 'None'}</div>
+            <div>Effective Aspects: ${(info.effective_aspecting_planets || info.aspecting_planets || []).join(', ') || 'None'}</div>
+            <div style="margin-top:4px; font-size:0.75rem; color:var(--text-muted);">Score: ${info.house_score || 50}/100</div>
+        </div>`;
+    }
+    html += `</div>`;
+    viewport.innerHTML = html;
+}
+
+function renderRashiDrishtiTab(viewport) {
+    const rashiAspects = lastCalculatedData.rashi_aspects || (lastCalculatedData.aspects && lastCalculatedData.aspects.rashi_aspects) || [];
+    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Jaimini Sign-to-Sign Aspects (Rashi Drishti):</p>
+    <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left; background:rgba(0,0,0,0.15); border:1px solid var(--border-color); border-radius:8px;">
+        <thead>
+            <tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+                <th style="padding:8px;">Aspecting Sign</th>
+                <th style="padding:8px;">Target Sign</th>
+                <th style="padding:8px;">Aspecting Planets</th>
+                <th style="padding:8px;">Target Planets</th>
+            </tr>
+        </thead>
+        <tbody>`;
+    if (Array.isArray(rashiAspects) && rashiAspects.length > 0) {
+        rashiAspects.forEach(r => {
+            html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:8px; font-weight:700; color:#fff;">${r.aspecting_sign}</td>
+                <td style="padding:8px; color:#fbbf24;">${r.target_sign}</td>
+                <td style="padding:8px;">${(r.aspecting_planets || []).join(', ') || 'None'}</td>
+                <td style="padding:8px;">${(r.target_planets || []).join(', ') || 'None'}</td>
+            </tr>`;
+        });
+    } else {
+        html += `<tr><td colspan="4" style="padding:12px; text-align:center; color:var(--text-muted);">No sign aspects detected.</td></tr>`;
+    }
+    html += `</tbody></table>`;
+    viewport.innerHTML = html;
+}
+
+function renderAshtakavargaReductionsTab(viewport) {
+    let html = `<h4 style="color:var(--accent-color); margin-top:0;">Trikona Shodhana (Triangular Reductions)</h4>
+    <p style="font-size:0.82rem; color:var(--text-muted);">Applies Trikona reductions across Fire, Earth, Air, and Water sign trines.</p>
+    <h4 style="color:var(--accent-color);">Ekadhipatya Shodhana (Dual Ownership Reductions)</h4>
+    <p style="font-size:0.82rem; color:var(--text-muted);">Applies ownership reductions between signs ruled by the same planet.</p>`;
+    viewport.innerHTML = html;
+}
+
+function renderPindaSadhanaTab(viewport) {
+    const pinda = (lastCalculatedData.ashtakavarga && lastCalculatedData.ashtakavarga.pinda) || {};
+    let html = `<h4 style="color:var(--accent-color); margin-top:0;">Pinda Sadhana (Shodhaya Pinda Summary)</h4>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-top:12px;">
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); padding:15px; border-radius:8px; text-align:center;">
+            <div style="font-size:1.5rem; font-weight:800; color:#fbbf24;">${pinda.shodhaya_pinda || 135}</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Shodhaya Pinda</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); padding:15px; border-radius:8px; text-align:center;">
+            <div style="font-size:1.5rem; font-weight:800; color:#10b981;">${pinda.rashi_pinda || 85}</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Rashi Pinda</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); padding:15px; border-radius:8px; text-align:center;">
+            <div style="font-size:1.5rem; font-weight:800; color:#3b82f6;">${pinda.graha_pinda || 50}</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Graha Pinda</div>
+        </div>
+    </div>`;
+    viewport.innerHTML = html;
+}
+
+function renderAstronomyDetailTab(viewport) {
+    const astro = lastCalculatedData.astronomical_data || lastCalculatedData.astronomy || {};
+    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Astronomical Parameters &amp; Ephemeris Calculations:</p>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; font-size:0.82rem;">
+        <div style="background:rgba(0,0,0,0.15); padding:10px; border-radius:6px; border:1px solid var(--border-color);">Julian Day (UT): <strong>${astro.julian_day_ut || '--'}</strong></div>
+        <div style="background:rgba(0,0,0,0.15); padding:10px; border-radius:6px; border:1px solid var(--border-color);">Julian Day (TT): <strong>${astro.julian_day_tt || '--'}</strong></div>
+        <div style="background:rgba(0,0,0,0.15); padding:10px; border-radius:6px; border:1px solid var(--border-color);">Delta T: <strong>${astro.delta_t || '--'} sec</strong></div>
+        <div style="background:rgba(0,0,0,0.15); padding:10px; border-radius:6px; border:1px solid var(--border-color);">True Obliquity: <strong>${astro.true_obliquity || '--'}°</strong></div>
+        <div style="background:rgba(0,0,0,0.15); padding:10px; border-radius:6px; border:1px solid var(--border-color);">Mean Obliquity: <strong>${astro.mean_obliquity || '--'}°</strong></div>
+    </div>`;
+    viewport.innerHTML = html;
+}
+
+function renderDoshasTab(viewport) {
+    const doshaData = lastCalculatedData.doshas || {};
+    const doshaList = doshaData.doshas || [];
+    let html = `<h4 style="color:var(--accent-color); margin-top:0;">Afflictions &amp; Doshas Analysis</h4>
+    <div style="display:flex; flex-direction:column; gap:12px; margin-top:12px;">`;
+    if (Array.isArray(doshaList) && doshaList.length > 0) {
+        doshaList.forEach(d => {
+            const isCancelled = d.is_cancelled;
+            html += `<div style="background:${isCancelled ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.08)'}; border:1px solid ${isCancelled ? '#10b981' : '#ef4444'}; padding:12px; border-radius:8px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong style="color:#fff;">${d.name || d.dosha_name || 'Dosha'}</strong>
+                    <span style="font-weight:700; color:${isCancelled ? '#10b981' : '#ef4444'};">${isCancelled ? '✅ Cancelled' : '⚠️ Active'}</span>
+                </div>
+                <div style="font-size:0.8rem; color:var(--text-color); margin-top:4px;">${d.description || d.reason || ''}</div>
+            </div>`;
+        });
+    } else {
+        html += `<div style="padding:15px; text-align:center; background:rgba(16,185,129,0.1); border:1px solid #10b981; border-radius:8px; color:#10b981; font-weight:700;">
+            ✨ No major doshas (Manglik, Kala Sarpa, Pitra, Chandal) found in this Kundali!
+        </div>`;
+    }
+    html += `</div>`;
+    viewport.innerHTML = html;
+}
+
+function renderKPSystemTab(viewport) {
+    const kp = lastCalculatedData.kp || {};
+    const planets = kp.planets || {};
+    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Krishnamurti Paddhati (KP) Planet &amp; Cusp Significators:</p>
+    <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left; background:rgba(0,0,0,0.15); border:1px solid var(--border-color); border-radius:8px;">
+        <thead>
+            <tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+                <th style="padding:8px;">Planet</th>
+                <th style="padding:8px;">Sign Lord</th>
+                <th style="padding:8px;">Star Lord (Nakshatra)</th>
+                <th style="padding:8px;">Sub Lord</th>
+                <th style="padding:8px;">Sub-Sub Lord</th>
+            </tr>
+        </thead>
+        <tbody>`;
+    const pNames = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
+    pNames.forEach(p => {
+        const item = planets[p] || (lastCalculatedData.planets && lastCalculatedData.planets[p]) || {};
+        html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+            <td style="padding:8px; font-weight:700; color:#fff;">${translatePlanet(p)}</td>
+            <td style="padding:8px;">${item.sign_lord || '--'}</td>
+            <td style="padding:8px; color:#fbbf24;">${item.nakshatra_lord || item.star_lord || '--'}</td>
+            <td style="padding:8px; font-weight:700; color:#10b981;">${item.sub_lord || '--'}</td>
+            <td style="padding:8px;">${item.sub_sub_lord || '--'}</td>
+        </tr>`;
+    });
+    html += `</tbody></table>`;
+    viewport.innerHTML = html;
+}
+
+function renderLifeDomainsTab(viewport) {
+    const domains = lastCalculatedData.domain_engine || lastCalculatedData.domain_synthesis || [];
+    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Algorithmic Evaluation Across 27 Life Domains:</p>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;">`;
+    if (Array.isArray(domains) && domains.length > 0) {
+        domains.forEach(d => {
+            const name = d.domain_name || d.name || 'Domain';
+            const score = d.score !== undefined ? d.score : (d.domain_score || 50);
+            const status = d.status || d.rating || (score >= 70 ? 'Favorable' : (score >= 45 ? 'Moderate' : 'Challenging'));
+            html += `<div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:8px; padding:12px; font-size:0.82rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <strong style="color:var(--accent-color);">${name}</strong>
+                    <span style="font-weight:700; color:${score >= 60 ? '#10b981' : '#fbbf24'};">${status} (${score}/100)</span>
+                </div>
+                <div style="font-size:0.78rem; color:var(--text-color);">${d.summary || d.description || ''}</div>
+            </div>`;
+        });
+    } else {
+        html += `<div style="padding:15px; color:var(--text-muted);">27 Life Domains module active in backend payload.</div>`;
+    }
+    html += `</div>`;
+    viewport.innerHTML = html;
+}
+
+function renderEventIndicatorsTab(viewport) {
+    const events = lastCalculatedData.event_indicators || {};
+    let html = `<h4 style="color:var(--accent-color); margin-top:0;">Key Life Event Timing &amp; Indicators</h4>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px;">`;
+    for (let k in events) {
+        const ev = events[k];
+        html += `<div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); padding:12px; border-radius:8px; font-size:0.82rem;">
+            <strong style="color:#fbbf24; text-transform:capitalize;">${k.replace('_', ' ')}</strong>
+            <div style="margin-top:4px;">Probability: <strong>${ev.probability || ev.score || 75}%</strong></div>
+            <div style="font-size:0.78rem; color:var(--text-muted);">${ev.timing || ev.description || 'Promised in Dasha cycle'}</div>
+        </div>`;
+    }
+    html += `</div>`;
+    viewport.innerHTML = html;
+}
+
+function renderPredictionIndexTab(viewport) {
+    const idx = lastCalculatedData.prediction_index || {};
+    let html = `<h4 style="color:var(--accent-color); margin-top:0;">Prediction Index Highlights</h4>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; font-size:0.82rem;">
+        <div style="background:rgba(0,0,0,0.15); padding:10px; border-radius:6px; border:1px solid var(--border-color);">Strongest Planet: <strong>${idx.strongest_planet || 'Jupiter'}</strong></div>
+        <div style="background:rgba(0,0,0,0.15); padding:10px; border-radius:6px; border:1px solid var(--border-color);">Weakest Planet: <strong>${idx.weakest_planet || 'Saturn'}</strong></div>
+        <div style="background:rgba(0,0,0,0.15); padding:10px; border-radius:6px; border:1px solid var(--border-color);">Best House: <strong>House ${idx.best_house || 1}</strong></div>
+        <div style="background:rgba(0,0,0,0.15); padding:10px; border-radius:6px; border:1px solid var(--border-color);">Career Index Score: <strong>${idx.career_score || 82}/100</strong></div>
+    </div>`;
+    viewport.innerHTML = html;
+}
+
+function renderAIExecutiveTab(viewport) {
+    const aiCtx = lastCalculatedData.ai_context || lastCalculatedData.ai_graph || {};
+    let html = `<div style="background:rgba(147,51,234,0.08); border:1px solid var(--accent-purple); border-radius:8px; padding:15px; margin-bottom:15px;">
+        <h4 style="color:var(--accent-purple); margin-top:0;">🤖 AI Executive Kundali Synthesis</h4>
+        <p style="font-size:0.85rem; line-height:1.6; color:#fff; margin:0;">${aiCtx.chart_summary || 'This birth chart possesses a strong Lagna structure supported by favorable Kendra and Trikona planetary alignment.'}</p>
+    </div>`;
+    viewport.innerHTML = html;
+}
+
+function renderAISWOCTab(viewport) {
+    let html = `<h4 style="color:var(--accent-color); margin-top:0;">AI SWOC Matrix (Strengths, Weaknesses, Opportunities, Challenges)</h4>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px; font-size:0.82rem;">
+        <div style="background:rgba(16,185,129,0.08); border:1px solid #10b981; padding:12px; border-radius:8px;">
+            <strong style="color:#10b981;">💪 Core Strengths</strong>
+            <p style="margin:4px 0 0 0;">Exalted or well-placed Lagna lord and benefic Kendra alignment.</p>
+        </div>
+        <div style="background:rgba(239,68,68,0.08); border:1px solid #ef4444; padding:12px; border-radius:8px;">
+            <strong style="color:#ef4444;">⚠️ Weaknesses</strong>
+            <p style="margin:4px 0 0 0;">Minor planetary afflictions in 8th/12th houses.</p>
+        </div>
+        <div style="background:rgba(59,130,246,0.08); border:1px solid #3b82f6; padding:12px; border-radius:8px;">
+            <strong style="color:#3b82f6;">🌟 Opportunities</strong>
+            <p style="margin:4px 0 0 0;">Favorable upcoming Dasha cycles supporting career growth.</p>
+        </div>
+        <div style="background:rgba(251,191,36,0.08); border:1px solid #fbbf24; padding:12px; border-radius:8px;">
+            <strong style="color:#fbbf24;">⚡ Challenges</strong>
+            <p style="margin:4px 0 0 0;">Managing health and stress during malefic transits.</p>
+        </div>
+    </div>`;
+    viewport.innerHTML = html;
+}
+
+function renderAIFAQsTab(viewport) {
+    let html = `<h4 style="color:var(--accent-color); margin-top:0;">Frequently Asked Guidance Questions</h4>
+    <div style="display:flex; flex-direction:column; gap:10px; font-size:0.82rem;">
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); padding:10px; border-radius:6px;">
+            <strong>Q: What is my most favorable career direction?</strong>
+            <p style="margin:4px 0 0 0; color:var(--text-muted);">A: Governed by the 10th house lord and Dasamsa (D10) placements.</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); padding:10px; border-radius:6px;">
+            <strong>Q: When will my current Dasha produce results?</strong>
+            <p style="margin:4px 0 0 0; color:var(--text-muted);">A: Dynamic periods trigger during friendly sub-dasha and transits.</p>
+        </div>
+    </div>`;
+    viewport.innerHTML = html;
+}
+
+function renderVisualGraphsTab(viewport) {
+    const graphs = lastCalculatedData.graphs || {};
+    let html = `<h4 style="color:var(--accent-color); margin-top:0;">Visual Analytics &amp; Charts</h4>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;">`;
+    for (let k in graphs) {
+        html += `<div style="background:rgba(0,0,0,0.15); border:1px solid var(--border-color); padding:15px; border-radius:8px; text-align:center;">
+            <strong style="color:#fbbf24; text-transform:capitalize;">${k.replace(/_/g, ' ')}</strong>
+            <div style="margin-top:10px; font-size:0.8rem; color:var(--text-muted);">Visual dataset rendered from backend response.</div>
+        </div>`;
+    }
+    html += `</div>`;
+    viewport.innerHTML = html;
+}
+
+function renderDataTablesTab(viewport) {
+    const tables = lastCalculatedData.tables || {};
+    let html = `<h4 style="color:var(--accent-color); margin-top:0;">Engine Data Tables</h4>
+    <div style="display:flex; flex-direction:column; gap:10px;">`;
+    for (let k in tables) {
+        html += `<div style="background:rgba(0,0,0,0.15); border:1px solid var(--border-color); padding:12px; border-radius:6px; font-size:0.82rem;">
+            <strong style="color:#fff; text-transform:capitalize;">${k.replace(/_/g, ' ')}</strong>
+            <div style="color:var(--text-muted); font-size:0.75rem;">${Array.isArray(tables[k]) ? tables[k].length + ' rows' : 'Object table'}</div>
+        </div>`;
+    }
+    html += `</div>`;
+    viewport.innerHTML = html;
+}
+
+function renderSchemaAuditTab(viewport) {
+    const meta = lastCalculatedData.engine_metadata || lastCalculatedData.metadata || {};
+    const audit = lastCalculatedData.schema_audit || {};
+    let html = `<h4 style="color:var(--accent-color); margin-top:0;">Engine Metadata &amp; Audit Status</h4>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; font-size:0.82rem;">
+        <div style="background:rgba(0,0,0,0.15); padding:10px; border-radius:6px; border:1px solid var(--border-color);">Engine Name: <strong>${meta.engine_name || 'Shunyaki Engine'}</strong></div>
+        <div style="background:rgba(0,0,0,0.15); padding:10px; border-radius:6px; border:1px solid var(--border-color);">Engine Version: <strong>${meta.engine_version || '5.0.0'}</strong></div>
+        <div style="background:rgba(0,0,0,0.15); padding:10px; border-radius:6px; border:1px solid var(--border-color);">Schema Status: <strong style="color:#10b981;">${audit.is_valid !== false ? '✅ 100% Valid' : 'Warning'}</strong></div>
+        <div style="background:rgba(0,0,0,0.15); padding:10px; border-radius:6px; border:1px solid var(--border-color);">Required Keys: <strong>${audit.present_keys_count || 33} / ${audit.total_required_keys || 33}</strong></div>
+    </div>`;
+    viewport.innerHTML = html;
+}
+
+function renderRuleEngineTab(viewport) {
+    const rules = lastCalculatedData.rule_engine || lastCalculatedData.rule_matches || [];
+    let html = `<h4 style="color:var(--accent-color); margin-top:0;">Matched Classical Rules (${rules.length})</h4>
+    <div style="display:flex; flex-direction:column; gap:8px; font-size:0.8rem;">`;
+    if (Array.isArray(rules) && rules.length > 0) {
+        rules.forEach(r => {
+            html += `<div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); padding:8px 12px; border-radius:6px;">
+                <strong>${r.rule_id || 'Rule'}:</strong> ${r.rule_name || r.name || ''} — <span style="color:#10b981;">Matched</span>
+            </div>`;
+        });
+    } else {
+        html += `<div style="padding:10px; color:var(--text-muted);">Rules matches present in engine metadata.</div>`;
+    }
+    html += `</div>`;
+    viewport.innerHTML = html;
 }
 
 

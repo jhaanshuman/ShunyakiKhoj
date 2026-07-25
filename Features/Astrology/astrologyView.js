@@ -200,75 +200,152 @@ function renderAstrologyView() {
 
                 <div class="report-category-tabs" style="display: flex; gap: 8px; margin-bottom: 15px; border-bottom: 2px solid rgba(255,255,255,0.06); padding-bottom: 8px; overflow-x: auto; width: 100%; white-space: nowrap; -webkit-overflow-scrolling: touch;">
                     <button class="cat-tab-btn active" style="padding: 8px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('charts')">🗺️ Divisional Charts</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('dasha')">⏳ Dasha Cycles</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('strength')">⚖️ Strengths &amp; Aspects</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('dasha')">⏳ Dasha Cycles (19 Systems)</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('strength')">⚖️ Strengths &amp; Dignity</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('aspects')">👁️ Aspects &amp; Conjunctions</button>
                     <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('ashtakavarga')">📊 Ashtakavarga</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('panchanga')">🕉️ Panchanga &amp; Yogas</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('panchanga')">🕉️ Panchanga &amp; Astronomy</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('yogas')">🧘 Yogas &amp; Doshas</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('jaimini_kp')">🎯 Jaimini &amp; KP</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('domains')">🔮 27 Life Domains</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('ai_workspace')">🤖 AI Intelligence Workspace</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('graphs_tables')">📈 Graphs &amp; Tables</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('developer_tools')">🛠️ Developer Audit</button>
                 </div>
 
-                <div id="subTabs-charts" class="sub-tabs-group" style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
-                    <button class="rep-tab-btn active" id="btn-tabD1" onclick="switchReportTab('tabD1')">D1 (Lagna)</button>
-                    <button class="rep-tab-btn" id="btn-tabD2" onclick="switchReportTab('tabD2')">D2 (Hora)</button>
-                    <button class="rep-tab-btn" id="btn-tabD3" onclick="switchReportTab('tabD3')">D3 (Drekkana)</button>
-                    <button class="rep-tab-btn" id="btn-tabD4" onclick="switchReportTab('tabD4')">D4 (Chaturthamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD5" onclick="switchReportTab('tabD5')">D5 (Panchamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD6" onclick="switchReportTab('tabD6')">D6 (Shasthamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD7" onclick="switchReportTab('tabD7')">D7 (Saptamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD8" onclick="switchReportTab('tabD8')">D8 (Ashtamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD9" onclick="switchReportTab('tabD9')">D9 (Navamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD10" onclick="switchReportTab('tabD10')">D10 (Dasamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD11" onclick="switchReportTab('tabD11')">D11 (Rudramsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD12" onclick="switchReportTab('tabD12')">D12 (Dwadasamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD16" onclick="switchReportTab('tabD16')">D16 (Shodasamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD20" onclick="switchReportTab('tabD20')">D20 (Vimsamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD24" onclick="switchReportTab('tabD24')">D24 (Chaturvimsamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD27" onclick="switchReportTab('tabD27')">D27 (Saptavimsamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD30" onclick="switchReportTab('tabD30')">D30 (Trimsamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD40" onclick="switchReportTab('tabD40')">D40 (Khavedamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD45" onclick="switchReportTab('tabD45')">D45 (Akshavedamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD60" onclick="switchReportTab('tabD60')">D60 (Shastiamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD81" onclick="switchReportTab('tabD81')">D81 (Navanavamsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD108" onclick="switchReportTab('tabD108')">D108 (Ashtottaramsa)</button>
-                    <button class="rep-tab-btn" id="btn-tabD144" onclick="switchReportTab('tabD144')">D144 (Dwadasadvadasamsa)</button>
+                <!-- 1. Divisional Charts Sub-Group: Searchable Selector & Side Panel -->
+                <div id="subTabs-charts" class="sub-tabs-group" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                        <label for="selDivisionalChart" style="font-weight: 700; color: var(--accent-color); font-size: 0.88rem;">Select Divisional Chart (D1 to D144):</label>
+                        <select id="selDivisionalChart" style="flex: 1; min-width: 250px; padding: 8px 12px; background: var(--tile-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.85rem; font-weight: 700;" onchange="switchReportTab(this.value)">
+                            <option value="tabD1" selected>D1 - Rashi Chart (Lagna &amp; General Destiny)</option>
+                            <option value="tabD2">D2 - Hora Chart (Wealth, Treasury &amp; Financial Assets)</option>
+                            <option value="tabD3">D3 - Drekkana (Siblings, Courage &amp; Energy)</option>
+                            <option value="tabD4">D4 - Chaturthamsa (Properties, Assets &amp; Luck)</option>
+                            <option value="tabD5">D5 - Panchamsa (Power, Fame &amp; Intellect)</option>
+                            <option value="tabD6">D6 - Shasthamsa (Health, Debts &amp; Obstacles)</option>
+                            <option value="tabD7">D7 - Saptamsa (Progeny, Children &amp; Successors)</option>
+                            <option value="tabD8">D8 - Ashtamsa (Longevity, Sudden Events &amp; Transformation)</option>
+                            <option value="tabD9">D9 - Navamsa (Spouse, Dharma &amp; Micro Destiny)</option>
+                            <option value="tabD10">D10 - Dasamsa (Career, Profession &amp; Public Renown)</option>
+                            <option value="tabD11">D11 - Rudramsa (Gains, Victory &amp; Windfalls)</option>
+                            <option value="tabD12">D12 - Dwadasamsa (Parents &amp; Ancestral Lineage)</option>
+                            <option value="tabD16">D16 - Shodasamsa (Vehicles, Comforts &amp; Happiness)</option>
+                            <option value="tabD20">D20 - Vimsamsa (Spiritual Devotion &amp; Sadhana)</option>
+                            <option value="tabD24">D24 - Chaturvimsamsa (Higher Learning &amp; Wisdom)</option>
+                            <option value="tabD27">D27 - Saptavimsamsa (Physical Strengths &amp; Stamina)</option>
+                            <option value="tabD30">D30 - Trimsamsa (Evils, Misfortunes &amp; Karmic Liabilities)</option>
+                            <option value="tabD40">D40 - Khavedamsa (Maternal Lineage &amp; Auspiciousness)</option>
+                            <option value="tabD45">D45 - Akshavedamsa (Character Purity &amp; Integrity)</option>
+                            <option value="tabD60">D60 - Shastiamsa (Past Life Karma &amp; Root Destiny)</option>
+                            <option value="tabD81">D81 - Navanavamsa (Micro Karma Roots)</option>
+                            <option value="tabD108">D108 - Ashtottaramsa (Divine Blessing Matrix)</option>
+                            <option value="tabD144">D144 - Dwadasadvadasamsa (Ultimate Cosmic Matrix)</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div id="subTabs-dasha" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
-                    <button class="rep-tab-btn" id="btn-tabVimshottari" onclick="switchReportTab('tabVimshottari')">Vimshottari Dasha</button>
-                    <button class="rep-tab-btn" id="btn-tabAshtottari" onclick="switchReportTab('tabAshtottari')">Ashtottari Dasha</button>
-                    <button class="rep-tab-btn" id="btn-tabYogini" onclick="switchReportTab('tabYogini')">Yogini Dasha</button>
-                    <button class="rep-tab-btn" id="btn-tabChara" onclick="switchReportTab('tabChara')">Chara Dasha</button>
+                <!-- 2. Scalable Dasha Selector Sub-Group (All 19 Dashas) -->
+                <div id="subTabs-dasha" class="sub-tabs-group" style="display: none; flex-direction: column; gap: 12px; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                        <label for="selDashaSystem" style="font-weight: 700; color: var(--accent-color); font-size: 0.88rem;">Select Planetary Dasha System (19 Systems):</label>
+                        <select id="selDashaSystem" style="flex: 1; min-width: 250px; padding: 8px 12px; background: var(--tile-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.85rem; font-weight: 700;" onchange="switchReportTab(this.value)">
+                            <option value="tabVimshottari" selected>Vimshottari Dasha (120 Years - Universal)</option>
+                            <option value="tabYogini">Yogini Dasha (36 Years - Nakshatra Cycle)</option>
+                            <option value="tabAshtottari">Ashtottari Dasha (108 Years - Non-Rahu)</option>
+                            <option value="tabKalachakra">Kalachakra Dasha (Wheel of Time)</option>
+                            <option value="tabChara">Jaimini Chara Dasha (Sign Based)</option>
+                            <option value="tabSthira">Sthira Dasha (Fixed Sign Cycle)</option>
+                            <option value="tabNarayana">Narayana Dasha (Padakrama Progression)</option>
+                            <option value="tabShoola">Shoola Dasha (Trik House Hazard Cycle)</option>
+                            <option value="tabMandooka">Mandooka Dasha (Frog Leap Sign Cycle)</option>
+                            <option value="tabPanchottari">Panchottari Dasha (105 Years - Anuradha)</option>
+                            <option value="tabDwadashottari">Dwadashottari Dasha (112 Years - Sun Lagna)</option>
+                            <option value="tabShatabdika">Shatabdika Dasha (100 Years - Vargottama)</option>
+                            <option value="tabChaturashitiSama">Chaturashiti-sama Dasha (84 Years - 10th Lord)</option>
+                            <option value="tabDwisaptatiSama">Dwisaptati-sama Dasha (72 Years - Lagna Lord 7th)</option>
+                            <option value="tabShodashottari">Shodashottari Dasha (116 Years - Krishna Paksha)</option>
+                            <option value="tabTara">Tara Dasha (Nakshatra Tara Cycle)</option>
+                            <option value="tabNaisargika">Naisargika Dasha (Natural Age Maturation)</option>
+                            <option value="tabLagnaKendradi">Lagna Kendradi Dasha (Kendra Progression)</option>
+                            <option value="tabSudarshanaChakra">Sudarshana Chakra Dasha (Tri-Lagna Progression)</option>
+                        </select>
+                    </div>
                 </div>
 
+                <!-- 3. Strengths & Dignity Sub-Group -->
                 <div id="subTabs-strength" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
-                    <button class="rep-tab-btn" id="btn-tabShadbala" onclick="switchReportTab('tabShadbala')">Shadbala Strengths</button>
-                    <button class="rep-tab-btn" id="btn-tabBhavabala" onclick="switchReportTab('tabBhavabala')">Bhavabala Strengths</button>
-                    <button class="rep-tab-btn" id="btn-tabVimsopaka" onclick="switchReportTab('tabVimsopaka')">Vimsopaka Strength</button>
-                    <button class="rep-tab-btn" id="btn-tabAspects" onclick="switchReportTab('tabAspects')">Planetary Aspects</button>
-                    <button class="rep-tab-btn" id="btn-tabConjunctions" onclick="switchReportTab('tabConjunctions')">Conjunctions</button>
-                    <button class="rep-tab-btn" id="btn-tabFriendships" onclick="switchReportTab('tabFriendships')">Planetary Friendships</button>
-                    <button class="rep-tab-btn" id="btn-tabJaimini" onclick="switchReportTab('tabJaimini')">Jaimini Karakas</button>
-                    <button class="rep-tab-btn" id="btn-tabSpecialLagnas" onclick="switchReportTab('tabSpecialLagnas')">Special Lagnas</button>
-                    <button class="rep-tab-btn" id="btn-tabUpagrahas" onclick="switchReportTab('tabUpagrahas')">Upagrahas &amp; Gulika</button>
-                    <button class="rep-tab-btn" id="btn-tabArudhas" onclick="switchReportTab('tabArudhas')">Arudha Padas</button>
-                    <button class="rep-tab-btn" id="btn-tabSpecialSphutas" onclick="switchReportTab('tabSpecialSphutas')">Special Sphutas</button>
+                    <button class="rep-tab-btn active" id="btn-tabShadbala" onclick="switchReportTab('tabShadbala')">Shadbala (6-Fold Strength)</button>
+                    <button class="rep-tab-btn" id="btn-tabBhavabala" onclick="switchReportTab('tabBhavabala')">Bhavabala (House Strengths)</button>
+                    <button class="rep-tab-btn" id="btn-tabVimsopaka" onclick="switchReportTab('tabVimsopaka')">Vimsopaka Bala (Divisional Dignity)</button>
+                    <button class="rep-tab-btn" id="btn-tabDignityAvasthas" onclick="switchReportTab('tabDignityAvasthas')">Dignity &amp; Avasthas</button>
+                    <button class="rep-tab-btn" id="btn-tabPlanetRanking" onclick="switchReportTab('tabPlanetRanking')">Planet Ranking &amp; Power</button>
+                    <button class="rep-tab-btn" id="btn-tabCombustionWar" onclick="switchReportTab('tabCombustionWar')">Combustion &amp; Graha Yuddha</button>
+                    <button class="rep-tab-btn" id="btn-tabFriendships" onclick="switchReportTab('tabFriendships')">Panchadha Sambandha Matrix</button>
                 </div>
 
+                <!-- 4. Aspects & Conjunctions Sub-Group -->
+                <div id="subTabs-aspects" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="rep-tab-btn active" id="btn-tabAspects" onclick="switchReportTab('tabAspects')">Planetary Aspects (Graha Drishti)</button>
+                    <button class="rep-tab-btn" id="btn-tabHouseAspects" onclick="switchReportTab('tabHouseAspects')">House Aspects</button>
+                    <button class="rep-tab-btn" id="btn-tabRashiDrishti" onclick="switchReportTab('tabRashiDrishti')">Rashi Drishti (Jaimini)</button>
+                    <button class="rep-tab-btn" id="btn-tabConjunctions" onclick="switchReportTab('tabConjunctions')">Conjunctions &amp; Stelliums</button>
+                </div>
+
+                <!-- 5. Ashtakavarga Sub-Group -->
                 <div id="subTabs-ashtakavarga" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
-                    <button class="rep-tab-btn" id="btn-tabSAV" onclick="switchReportTab('tabSAV')">SAV Matrix</button>
-                    <button class="rep-tab-btn" id="btn-tabBAVSun" onclick="switchReportTab('tabBAVSun')">Surya BAV</button>
-                    <button class="rep-tab-btn" id="btn-tabBAVMoon" onclick="switchReportTab('tabBAVMoon')">Chandra BAV</button>
-                    <button class="rep-tab-btn" id="btn-tabBAVMars" onclick="switchReportTab('tabBAVMars')">Mangal BAV</button>
-                    <button class="rep-tab-btn" id="btn-tabBAVBudha" onclick="switchReportTab('tabBAVBudha')">Budha BAV</button>
-                    <button class="rep-tab-btn" id="btn-tabBAVGuru" onclick="switchReportTab('tabBAVGuru')">Guru BAV</button>
-                    <button class="rep-tab-btn" id="btn-tabBAVShukra" onclick="switchReportTab('tabBAVShukra')">Shukra BAV</button>
-                    <button class="rep-tab-btn" id="btn-tabBAVShani" onclick="switchReportTab('tabBAVShani')">Shani BAV</button>
+                    <button class="rep-tab-btn active" id="btn-tabSAV" onclick="switchReportTab('tabSAV')">SAV Matrix (Sarvashtakavarga)</button>
+                    <button class="rep-tab-btn" id="btn-tabBAVGrids" onclick="switchReportTab('tabBAVGrids')">BAV Grids (Individual Planets)</button>
+                    <button class="rep-tab-btn" id="btn-tabAshtakavargaReductions" onclick="switchReportTab('tabAshtakavargaReductions')">Trikona &amp; Ekadhipatya Shodhana</button>
+                    <button class="rep-tab-btn" id="btn-tabPindaSadhana" onclick="switchReportTab('tabPindaSadhana')">Pinda Sadhana (Shodhaya Pinda)</button>
                 </div>
 
+                <!-- 6. Panchanga & Astronomy Sub-Group -->
                 <div id="subTabs-panchanga" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
-                    <button class="rep-tab-btn" id="btn-tabPanchanga" onclick="switchReportTab('tabPanchanga')">Birth Panchanga</button>
-                    <button class="rep-tab-btn" id="btn-tabYogas" onclick="switchReportTab('tabYogas')">Yogas &amp; Predictions</button>
-                    <button class="rep-tab-btn" id="btn-tabGemstones" onclick="switchReportTab('tabGemstones')">Gemstone &amp; Rudraksha</button>
-                    <button class="rep-tab-btn" id="btn-tabTransitOverlay" onclick="switchReportTab('tabTransitOverlay')">Transit Overlay</button>
+                    <button class="rep-tab-btn active" id="btn-tabPanchanga" onclick="switchReportTab('tabPanchanga')">Birth Panchanga Limbs</button>
+                    <button class="rep-tab-btn" id="btn-tabAstronomyDetail" onclick="switchReportTab('tabAstronomyDetail')">Astronomical Data &amp; Obliquity</button>
+                    <button class="rep-tab-btn" id="btn-tabTransitOverlay" onclick="switchReportTab('tabTransitOverlay')">Transit Overlay &amp; Sade Sati</button>
+                </div>
+
+                <!-- 7. Yogas & Doshas Sub-Group -->
+                <div id="subTabs-yogas" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="rep-tab-btn active" id="btn-tabYogas" onclick="switchReportTab('tabYogas')">Categorized Yogas (300+)</button>
+                    <button class="rep-tab-btn" id="btn-tabDoshas" onclick="switchReportTab('tabDoshas')">Dosha Analysis &amp; Cancellations</button>
+                    <button class="rep-tab-btn" id="btn-tabGemstones" onclick="switchReportTab('tabGemstones')">Gemstone &amp; Rudraksha Remedies</button>
+                </div>
+
+                <!-- 8. Jaimini & KP Paddhati Sub-Group -->
+                <div id="subTabs-jaimini_kp" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="rep-tab-btn active" id="btn-tabJaimini" onclick="switchReportTab('tabJaimini')">Jaimini Karakas (7/8 Scheme)</button>
+                    <button class="rep-tab-btn" id="btn-tabSpecialLagnas" onclick="switchReportTab('tabSpecialLagnas')">Special Lagnas &amp; Arudhas</button>
+                    <button class="rep-tab-btn" id="btn-tabUpagrahas" onclick="switchReportTab('tabUpagrahas')">Upagrahas &amp; Gulika</button>
+                    <button class="rep-tab-btn" id="btn-tabKPSystem" onclick="switchReportTab('tabKPSystem')">KP System (Cusps &amp; Significators)</button>
+                </div>
+
+                <!-- 9. 27 Life Domains & Predictions Sub-Group -->
+                <div id="subTabs-domains" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="rep-tab-btn active" id="btn-tabLifeDomains" onclick="switchReportTab('tabLifeDomains')">27 Life Domains Explorer</button>
+                    <button class="rep-tab-btn" id="btn-tabEventIndicators" onclick="switchReportTab('tabEventIndicators')">Event Indicators &amp; Timing</button>
+                    <button class="rep-tab-btn" id="btn-tabPredictionIndex" onclick="switchReportTab('tabPredictionIndex')">Prediction Index Summary</button>
+                </div>
+
+                <!-- 10. AI Intelligence Workspace Sub-Group -->
+                <div id="subTabs-ai_workspace" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="rep-tab-btn active" id="btn-tabAIExecutive" onclick="switchReportTab('tabAIExecutive')">AI Executive Summary</button>
+                    <button class="rep-tab-btn" id="btn-tabAISWOC" onclick="switchReportTab('tabAISWOC')">SWOC Analysis (Strengths/Weaknesses)</button>
+                    <button class="rep-tab-btn" id="btn-tabAIFAQs" onclick="switchReportTab('tabAIFAQs')">AI Guidance FAQs</button>
+                </div>
+
+                <!-- 11. Graphs & Tables Sub-Group -->
+                <div id="subTabs-graphs_tables" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="rep-tab-btn active" id="btn-tabVisualGraphs" onclick="switchReportTab('tabVisualGraphs')">Visual Analytics Graphs</button>
+                    <button class="rep-tab-btn" id="btn-tabDataTables" onclick="switchReportTab('tabDataTables')">Structured Data Tables</button>
+                </div>
+
+                <!-- 12. Developer Audit Tools Sub-Group -->
+                <div id="subTabs-developer_tools" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="rep-tab-btn active" id="btn-tabSchemaAudit" onclick="switchReportTab('tabSchemaAudit')">Schema Audit &amp; Engine Metadata</button>
+                    <button class="rep-tab-btn" id="btn-tabRuleEngine" onclick="switchReportTab('tabRuleEngine')">Rule Engine Matches</button>
                 </div>
 
                 <div class="report-dashboard-layout" style="display: flex; width: 100%; gap: 15px; min-height: 550px;">
