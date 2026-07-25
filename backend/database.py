@@ -8,7 +8,10 @@ import os
 import sqlite3
 from typing import Dict, Any, Optional
 
-DB_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "astrology_engine.db")
+if os.access(os.path.dirname(os.path.abspath(__file__)), os.W_OK):
+    DB_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "astrology_engine.db")
+else:
+    DB_FILE = "/tmp/astrology_engine.db"
 
 ENGINE_VERSION = "2.2.0"
 CALCULATION_VERSION = "1.0"
@@ -18,7 +21,12 @@ class EngineDatabase:
     
     @classmethod
     def get_connection(cls) -> sqlite3.Connection:
-        conn = sqlite3.connect(DB_FILE)
+        try:
+            if DB_FILE != ":memory:":
+                os.makedirs(os.path.dirname(DB_FILE), exist_ok=True)
+            conn = sqlite3.connect(DB_FILE)
+        except Exception:
+            conn = sqlite3.connect(":memory:")
         conn.row_factory = sqlite3.Row
         return conn
 

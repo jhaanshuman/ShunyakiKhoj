@@ -609,156 +609,31 @@ def get_tithi_times(p):
     return times_info
 
 def init_festivals_db():
-    db_path = "/tmp/festivals.db"
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS festivals (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        date TEXT NOT NULL,
-        name TEXT NOT NULL,
-        classification TEXT NOT NULL,
-        paksha TEXT,
-        tithi TEXT,
-        nakshatra TEXT,
-        lunar_month TEXT,
-        timing_details TEXT,
-        icon TEXT
-    )
-    """)
-    cursor.execute("SELECT COUNT(*) FROM festivals")
-    if cursor.fetchone()[0] > 100:
-        conn.close()
-        return
-
-    from datetime import datetime, timedelta
-    start_date = datetime(2026, 1, 1)
-    end_date = datetime(2028, 12, 31)
-    current = start_date
-
-    while current <= end_date:
-        date_str_slash = current.strftime("%Y/%m/%d")
-        date_str_dash = current.strftime("%Y-%m-%d")
-        
-        try:
-            chart = kundli_utils.get_chart(
-                date_str=date_str_slash,
-                time_str="12:00",
-                place="New Delhi, India",
-                zodiac="Sidereal",
-                house_system="Whole Sign",
-                ayanamsa="Lahiri",
-                node_type="True"
-            )
-            sun_lon = chart.get('Sun').lon
-            moon_lon = chart.get('Moon').lon
-            
-            panchang = kundli_utils.get_panchang(sun_lon, moon_lon, current.date(), chart.lat, chart.lon, chart.utc_offset_hours)
-            panchang_ext = kundli_utils.get_extended_panchang(sun_lon, moon_lon, current.date(), chart.lat, chart.lon, chart.utc_offset_hours, chart.ayanamsa_val, chart.jd)
-            
-            sun_sign_idx = kundli_utils.SIGN_NAMES.index(kundli_utils.get_planet_positions(chart)['Sun']['sign'])
-            lunar_month = kundli_utils.LUNAR_MONTHS[sun_sign_idx]
-            sun_sign = kundli_utils.SIGN_NAMES[sun_sign_idx]
-            
-            tithi_at_noon = panchang.get('tithi', '')
-            paksha = panchang_ext.get('paksha', 'Shukla')
-            nakshatra = panchang.get('nakshatra', '')
-            weekday = current.strftime("%A")
-            
-            t_times = get_tithi_times(panchang)
-            
-            def add_event(name, classification, timing, icon, tithi_name=None):
-                cursor.execute("""
-                INSERT INTO festivals (date, name, classification, paksha, tithi, nakshatra, lunar_month, timing_details, icon)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """, (date_str_dash, name, classification, paksha, tithi_name or tithi_at_noon, nakshatra, lunar_month, timing, icon))
-
-            # 1. Match rules
-            for rule in FESTIVAL_RULES + RITUAL_RULES:
-                m_match = not rule.get('month') or rule['month'].lower() in lunar_month.lower()
-                p_match = not rule.get('paksha') or rule['paksha'].lower() in paksha.lower()
-                t_match = not rule.get('tithi') or rule['tithi'].lower() in tithi_at_noon.lower()
-                s_match = not rule.get('solar_sign') or rule['solar_sign'].lower() in sun_sign.lower()
-                
-                if m_match and p_match and t_match and s_match:
-                    timing_str = "All day"
-                    for t in t_times:
-                        if rule.get('tithi') and rule['tithi'].lower() in t['name'].lower():
-                            timing_str = f"Starts: {t['start']}, Ends: {t['end']}"
-                            break
-                    add_event(rule['name'], rule['type'], timing_str, rule['icon'], rule.get('tithi'))
-
-            # 2. General Vrats
-            if "Ekadashi" in tithi_at_noon:
-                timing_str = "All day"
-                for t in t_times:
-                    if "Ekadashi" in t['name']:
-                        timing_str = f"Starts: {t['start']}, Ends: {t['end']}"
-                add_event("Ekadashi Vrat", "Vrat", timing_str, "🔱", "Ekadashi")
-                
-            if "Trayodashi" in tithi_at_noon:
-                timing_str = "All day"
-                for t in t_times:
-                    if "Trayodashi" in t['name']:
-                        timing_str = f"Starts: {t['start']}, Ends: {t['end']}"
-                add_event("Pradosh Vrat", "Vrat", timing_str, "🔱", "Trayodashi")
-                
-            if "Chaturthi" in tithi_at_noon and paksha == "Krishna":
-                timing_str = "All day"
-                for t in t_times:
-                    if "Chaturthi" in t['name']:
-                        timing_str = f"Starts: {t['start']}, Ends: {t['end']}"
-                add_event("Sankashti Chaturthi", "Vrat", f"Observed on Krishna Chaturthi. {timing_str}", "🕉️", "Chaturthi")
-
-            if "Chaturthi" in tithi_at_noon and paksha == "Shukla":
-                timing_str = "All day"
-                for t in t_times:
-                    if "Chaturthi" in t['name']:
-                        timing_str = f"Starts: {t['start']}, Ends: {t['end']}"
-                add_event("Vinayaka Chaturthi", "Vrat", timing_str, "🐘", "Chaturthi")
-
-            if "Chaturdashi" in tithi_at_noon and paksha == "Krishna":
-                timing_str = "All day"
-                for t in t_times:
-                    if "Chaturdashi" in t['name']:
-                        timing_str = f"Starts: {t['start']}, Ends: {t['end']}"
-                add_event("Masik Shivaratri", "Vrat", timing_str, "🔱", "Chaturdashi")
-
-            if "Purnima" in tithi_at_noon:
-                timing_str = "All day"
-                for t in t_times:
-                    if "Purnima" in t['name']:
-                        timing_str = f"Starts: {t['start']}, Ends: {t['end']}"
-                add_event("Purnima Vrat & Satyanarayan Puja", "Vrat", timing_str, "🌕", "Purnima")
-
-            if "Amavasya" in tithi_at_noon:
-                timing_str = "All day"
-                for t in t_times:
-                    if "Amavasya" in t['name']:
-                        timing_str = f"Starts: {t['start']}, Ends: {t['end']}"
-                add_event("Amavasya Vrat & Pitru Tarpan", "Vrat", timing_str, "🌑", "Amavasya")
-
-            if "Pushya" in nakshatra:
-                if weekday == "Thursday":
-                    add_event("Gurupushyamrut Yoga", "Festival", "Auspicious planetary alignment for growth and learning", "⚡", "N/A")
-                elif weekday == "Sunday":
-                    add_event("Ravi Pushya Yoga", "Festival", "Highly auspicious alignment for purchasing metal and starting therapies", "☀️", "N/A")
-        except Exception as ex:
-            print(f"Skipping date {date_str_dash} due to error: {ex}")
-            
-        current += timedelta(days=1)
-        
-    conn.commit()
-    conn.close()
-
-# Start background DB initialization
-def run_db_initializer():
     try:
-        init_festivals_db()
+        db_path = "/tmp/festivals.db"
+        try:
+            conn = sqlite3.connect(db_path)
+        except Exception:
+            conn = sqlite3.connect(":memory:")
+        cursor = conn.cursor()
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS festivals (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            date TEXT NOT NULL,
+            name TEXT NOT NULL,
+            classification TEXT NOT NULL,
+            paksha TEXT,
+            tithi TEXT,
+            nakshatra TEXT,
+            lunar_month TEXT,
+            timing_details TEXT,
+            icon TEXT
+        )
+        """)
+        conn.commit()
+        conn.close()
     except Exception as e:
         print("Failed to initialize festivals db:", e)
-
-threading.Thread(target=run_db_initializer, daemon=True).start()
 
 class FestivalRequest(BaseModel):
     year: int = None
