@@ -1050,6 +1050,8 @@ document.addEventListener('DOMContentLoaded', function() {
 window.handleKundliCalculation = async function(e) {
     if (e && e.preventDefault) e.preventDefault();
 
+    console.log("🚀 [STEP 1/5] Generate Kundali button clicked!");
+
     const name = (document.getElementById('birthName') || {}).value || 'Native';
     const dateInput = (document.getElementById('birthDate') || {}).value || '1994-01-05';
     const timeInput = (document.getElementById('birthTime') || {}).value || '12:00';
@@ -1057,7 +1059,10 @@ window.handleKundliCalculation = async function(e) {
     const lat = parseFloat((document.getElementById('birthLat') || {}).value) || 25.5941;
     const lon = parseFloat((document.getElementById('birthLon') || {}).value) || 85.1376;
 
+    console.log(`📋 [STEP 2/5] Birth details extracted: Name="${name}", Date="${dateInput}", Time="${timeInput}", Place="${placeInput}", Lat=${lat}, Lon=${lon}`);
+
     if (!dateInput || !timeInput || !placeInput) {
+        console.error("❌ Birth details incomplete! Date, Time, and Place are required.");
         alert("Please enter birth details.");
         return;
     }
@@ -1129,6 +1134,8 @@ window.handleKundliCalculation = async function(e) {
         long_style: longStyle
     };
 
+    console.log(`📡 [STEP 3/5] Sending POST request to API URL: ${API_URL}`, payload);
+
     // Call API with fallback support
     try {
         const response = await fetch(API_URL, {
@@ -1136,15 +1143,17 @@ window.handleKundliCalculation = async function(e) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
+        console.log(`✅ [STEP 4/5] API response HTTP Status: ${response.status}`);
         const data = await response.json();
         if (data.status === 'success') {
+            console.log(`🎉 [STEP 4.1/5] API calculation success! Version: ${data.engine_version}`);
             lastCalculatedData = data;
         } else {
-            console.warn("API returned failure status, casting using local client ephemeris fallback...");
+            console.warn("⚠️ API returned failure status, casting using local client ephemeris fallback...");
             lastCalculatedData = generateLocalClientEphemerisFallback(payload);
         }
     } catch (e) {
-        console.warn("API request failed, casting using local client ephemeris fallback:", e.message);
+        console.warn("⚠️ API request failed, casting using local client ephemeris fallback:", e.message);
         lastCalculatedData = generateLocalClientEphemerisFallback(payload);
     }
 
@@ -1154,9 +1163,11 @@ window.handleKundliCalculation = async function(e) {
         rawBox.textContent = JSON.stringify(lastCalculatedData, null, 2);
     }
 
-    // Render default view (Chart tab D1 / Planets table)
+    console.log("🎨 [STEP 5/5] Switching report tab to D1 (Lagna Rashi)...");
     if (typeof window.switchReportTab === 'function') {
         window.switchReportTab('tabD1');
+    } else {
+        console.error("❌ switchReportTab function not found on window!");
     }
 };
 
