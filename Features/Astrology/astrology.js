@@ -1052,12 +1052,12 @@ window.initAstrologyCalculationListeners = function() {
 const btnCalculate = document.getElementById('btnCalculate');
 if (btnCalculate) {
     btnCalculate.addEventListener('click', async () => {
-        const name = document.getElementById('birthName').value || 'Native';
-        const dateInput = document.getElementById('birthDate').value;
-        const timeInput = document.getElementById('birthTime').value;
-        const placeInput = document.getElementById('birthPlace').value;
-        const lat = parseFloat(document.getElementById('birthLat').value) || 25.5941;
-        const lon = parseFloat(document.getElementById('birthLon').value) || 85.1376;
+        const name = (document.getElementById('birthName') || {}).value || 'Native';
+        const dateInput = (document.getElementById('birthDate') || {}).value || '1994-01-05';
+        const timeInput = (document.getElementById('birthTime') || {}).value || '12:00';
+        const placeInput = (document.getElementById('birthPlace') || {}).value || 'New Delhi, India';
+        const lat = parseFloat((document.getElementById('birthLat') || {}).value) || 25.5941;
+        const lon = parseFloat((document.getElementById('birthLon') || {}).value) || 85.1376;
 
         if (!dateInput || !timeInput || !placeInput) {
             alert("Please enter birth details.");
@@ -1065,13 +1065,13 @@ if (btnCalculate) {
         }
 
         // Extract settings values
-        const chartStyle = document.getElementById('selChartStyle').value;
-        const ayanamsa = document.getElementById('selAyanamsa').value;
-        const node = document.getElementById('selNode').value;
-        const rashiVis = document.getElementById('selRashiVisibility').value;
-        const outerPlanets = document.getElementById('selOuterPlanets').value;
-        const terminology = document.getElementById('selTerminology').value;
-        const longStyle = document.getElementById('selLongStyle').value;
+        const chartStyle = (document.getElementById('selChartStyle') || {}).value || 'North';
+        const ayanamsa = (document.getElementById('selAyanamsa') || {}).value || 'Lahiri';
+        const node = (document.getElementById('selNode') || {}).value || 'True';
+        const rashiVis = (document.getElementById('selRashiVisibility') || {}).value || 'Show';
+        const outerPlanets = (document.getElementById('selOuterPlanets') || {}).value || 'Hide';
+        const terminology = (document.getElementById('selTerminology') || {}).value || 'Sanskrit';
+        const longStyle = (document.getElementById('selLongStyle') || {}).value || 'Standard';
 
         // Slide Birth Details form to the left sidebar column
         const formCard = document.querySelector('.birth-details-card');
@@ -1161,6 +1161,17 @@ if (btnCalculate) {
         if (typeof window.switchReportTab === 'function') window.switchReportTab('tabD1');
     });
 }
+
+// Global Event Delegation fallback for #btnCalculate
+document.addEventListener('click', function(e) {
+    const targetBtn = e.target.closest('#btnCalculate');
+    if (targetBtn && typeof window.initAstrologyCalculationListeners === 'function') {
+        if (!targetBtn.dataset.listenerBound) {
+            targetBtn.dataset.listenerBound = "true";
+            window.initAstrologyCalculationListeners();
+        }
+    }
+});
 
 // Update Divisional Charts dynamically based on dropdown
 function updateVargaCharts() {
@@ -4790,23 +4801,44 @@ function translatePlanet(planet) {
 // RENDERING HELPERS FOR 40+ SECTIONS
 // ═══════════════════════════════════════════════════════════════════════════
 function renderVimshottariDasha(viewport) {
-    const moonLon = lastCalculatedData.moon_lon || 120.0;
-    const birthDate = new Date(document.getElementById('birthDate').value || '1994-01-05');
+    const birthDateInput = (document.getElementById('birthDate') || {}).value || '1994-01-05';
     
-    // Lord sequence and years
-    const lords = ['Ketu', 'Venus', 'Sun', 'Moon', 'Mars', 'Rahu', 'Jupiter', 'Saturn', 'Mercury'];
-    const years = [7, 20, 6, 10, 7, 18, 16, 19, 17];
+    let list = [];
+    if (lastCalculatedData && lastCalculatedData.dashas && Array.isArray(lastCalculatedData.dashas.vimshottari) && lastCalculatedData.dashas.vimshottari.length > 0) {
+        list = lastCalculatedData.dashas.vimshottari;
+    }
     
-    // Calculate nakshatra index
-    const nakIdx = Math.floor((moonLon * 3) / 40); // 1 Nakshatra = 13°20' = 13.3333°
-    const offsetInNak = (moonLon - (nakIdx * 13.3333)) / 13.3333;
-    
-    const startLordIdx = nakIdx % 9;
-    const elapsedYears = offsetInNak * years[startLordIdx];
-    
-    let currentDate = new Date(birthDate.getTime() - (elapsedYears * 365.25 * 24 * 60 * 60 * 1000));
-    
-    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Calculated Vimshottari Mahadasha sequences starting from the Moon nakshatra position at birth:</p>
+    if (list.length === 0) {
+        const moonData = (lastCalculatedData && lastCalculatedData.planets && lastCalculatedData.planets.Moon) || {};
+        const moonLon = (lastCalculatedData && lastCalculatedData.moon_lon !== undefined) ? lastCalculatedData.moon_lon : (moonData.sidereal_lon !== undefined ? moonData.sidereal_lon : 120.0);
+        const birthDate = new Date(birthDateInput);
+        const lords = ['Ketu', 'Venus', 'Sun', 'Moon', 'Mars', 'Rahu', 'Jupiter', 'Saturn', 'Mercury'];
+        const years = [7, 20, 6, 10, 7, 18, 16, 19, 17];
+        const nakIdx = Math.floor((moonLon * 3) / 40);
+        const offsetInNak = (moonLon - (nakIdx * 13.3333)) / 13.3333;
+        const startLordIdx = nakIdx % 9;
+        const elapsedYears = offsetInNak * years[startLordIdx];
+        let currentDate = new Date(birthDate.getTime() - (elapsedYears * 365.25 * 24 * 60 * 60 * 1000));
+        const today = new Date();
+        for (let i = 0; i < 9; i++) {
+            const idx = (startLordIdx + i) % 9;
+            const lord = lords[idx];
+            const yr = years[idx];
+            const startDate = new Date(currentDate);
+            currentDate.setFullYear(currentDate.getFullYear() + yr);
+            const endDate = new Date(currentDate);
+            const isActive = (today >= startDate && today <= endDate);
+            list.push({
+                lord: lord,
+                duration_years: yr,
+                start_date: startDate.toISOString().split('T')[0],
+                end_date: endDate.toISOString().split('T')[0],
+                is_current: isActive
+            });
+        }
+    }
+
+    let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Calculated Vimshottari Mahadasha (120 Years) starting from birth Moon Nakshatra position:</p>
     <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left; background:rgba(0,0,0,0.15); border:1px solid var(--border-color); border-radius:8px;">
         <thead>
             <tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
@@ -4819,42 +4851,62 @@ function renderVimshottariDasha(viewport) {
         </thead>
         <tbody>`;
         
-    const today = new Date();
-    for (let i = 0; i < 9; i++) {
-        const idx = (startLordIdx + i) % 9;
-        const lord = lords[idx];
-        const yr = years[idx];
+    const now = new Date();
+    list.forEach(item => {
+        const lordName = item.lord || item.planet || 'Planet';
+        const duration = item.duration_years || item.duration || 0;
+        const sDate = (item.start_date || '').split('T')[0];
+        const eDate = (item.end_date || '').split('T')[0];
+        const isActive = item.is_current || (now >= new Date(sDate) && now <= new Date(eDate));
+        const isPassed = now > new Date(eDate);
         
-        const startDate = new Date(currentDate);
-        currentDate.setFullYear(currentDate.getFullYear() + yr);
-        const endDate = new Date(currentDate);
-        
-        let status = '<span style="color:var(--text-muted);">Future</span>';
-        if (today >= startDate && today <= endDate) {
-            status = '<span style="color:#fbbf24; font-weight:800; text-shadow:0 0 10px rgba(251,191,36,0.3);">Active (सक्रिय)</span>';
-        } else if (today > endDate) {
-            status = '<span style="color:#10b981; opacity:0.7;">Passed</span>';
+        let statusHtml = '<span style="color:var(--text-muted);">Future</span>';
+        if (isActive) {
+            statusHtml = '<span style="color:#fbbf24; font-weight:800; text-shadow:0 0 10px rgba(251,191,36,0.3);">Active (सक्रिय)</span>';
+        } else if (isPassed) {
+            statusHtml = '<span style="color:#10b981; opacity:0.7;">Passed</span>';
         }
-        
-        html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05); ${status.includes('Active') ? 'background:rgba(251,191,36,0.04);' : ''}">
-            <td style="padding:10px; font-weight:700; color:#fff;">${translatePlanet(lord)}</td>
-            <td style="padding:10px;">${yr} Years</td>
-            <td style="padding:10px;">${startDate.toLocaleDateString()}</td>
-            <td style="padding:10px;">${endDate.toLocaleDateString()}</td>
-            <td style="padding:10px;">${status}</td>
+
+        html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05); ${isActive ? 'background:rgba(251,191,36,0.08);' : ''}">
+            <td style="padding:10px; font-weight:700; color:#fff;">${translatePlanet(lordName)}</td>
+            <td style="padding:10px;">${duration} Years</td>
+            <td style="padding:10px;">${sDate}</td>
+            <td style="padding:10px;">${eDate}</td>
+            <td style="padding:10px;">${statusHtml}</td>
         </tr>`;
-    }
+    });
     
     html += `</tbody></table>`;
     viewport.innerHTML = html;
 }
 
 function renderAshtottariDasha(viewport) {
-    const birthDate = new Date(document.getElementById('birthDate').value || '1994-01-05');
-    const lords = ['Sun', 'Moon', 'Mars', 'Mercury', 'Saturn', 'Jupiter', 'Rahu', 'Venus'];
-    const years = [6, 15, 8, 17, 10, 19, 12, 21]; // 108 total
+    const birthDateInput = (document.getElementById('birthDate') || {}).value || '1994-01-05';
+    let list = [];
+    if (lastCalculatedData && lastCalculatedData.dashas && Array.isArray(lastCalculatedData.dashas.ashtottari) && lastCalculatedData.dashas.ashtottari.length > 0) {
+        list = lastCalculatedData.dashas.ashtottari;
+    }
     
-    let currentDate = new Date(birthDate);
+    if (list.length === 0) {
+        const lords = ['Sun', 'Moon', 'Mars', 'Mercury', 'Saturn', 'Jupiter', 'Rahu', 'Venus'];
+        const years = [6, 15, 8, 17, 10, 19, 12, 21];
+        let currentDate = new Date(birthDateInput);
+        const today = new Date();
+        for (let i = 0; i < 8; i++) {
+            const lord = lords[i];
+            const yr = years[i];
+            const startDate = new Date(currentDate);
+            currentDate.setFullYear(currentDate.getFullYear() + yr);
+            const endDate = new Date(currentDate);
+            list.push({
+                lord: lord,
+                duration_years: yr,
+                start_date: startDate.toISOString().split('T')[0],
+                end_date: endDate.toISOString().split('T')[0],
+                is_current: (today >= startDate && today <= endDate)
+            });
+        }
+    }
     
     let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">Alternative 108-year Ashtottari planetary cycle from native birth date:</p>
     <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left; background:rgba(0,0,0,0.15); border:1px solid var(--border-color); border-radius:8px;">
@@ -4869,40 +4921,67 @@ function renderAshtottariDasha(viewport) {
         </thead>
         <tbody>`;
         
-    const today = new Date();
-    for (let i = 0; i < 8; i++) {
-        const lord = lords[i];
-        const yr = years[i];
-        const startDate = new Date(currentDate);
-        currentDate.setFullYear(currentDate.getFullYear() + yr);
-        const endDate = new Date(currentDate);
+    const now = new Date();
+    list.forEach(item => {
+        const lordName = item.lord || item.planet || 'Planet';
+        const duration = item.duration_years || item.duration || 0;
+        const sDate = (item.start_date || '').split('T')[0];
+        const eDate = (item.end_date || '').split('T')[0];
+        const isActive = item.is_current || (now >= new Date(sDate) && now <= new Date(eDate));
+        const isPassed = now > new Date(eDate);
         
         let status = '<span style="color:var(--text-muted);">Future</span>';
-        if (today >= startDate && today <= endDate) {
+        if (isActive) {
             status = '<span style="color:#fbbf24; font-weight:800;">Active</span>';
-        } else if (today > endDate) {
+        } else if (isPassed) {
             status = '<span style="color:#10b981; opacity:0.7;">Passed</span>';
         }
         
-        html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05); ${status.includes('Active') ? 'background:rgba(251,191,36,0.04);' : ''}">
-            <td style="padding:10px; font-weight:700; color:#fff;">${translatePlanet(lord)}</td>
-            <td style="padding:10px;">${yr} Years</td>
-            <td style="padding:10px;">${startDate.toLocaleDateString()}</td>
-            <td style="padding:10px;">${endDate.toLocaleDateString()}</td>
+        html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05); ${isActive ? 'background:rgba(251,191,36,0.04);' : ''}">
+            <td style="padding:10px; font-weight:700; color:#fff;">${translatePlanet(lordName)}</td>
+            <td style="padding:10px;">${duration} Years</td>
+            <td style="padding:10px;">${sDate}</td>
+            <td style="padding:10px;">${eDate}</td>
             <td style="padding:10px;">${status}</td>
         </tr>`;
-    }
+    });
     
     html += `</tbody></table>`;
     viewport.innerHTML = html;
 }
 
 function renderYoginiDasha(viewport) {
-    const birthDate = new Date(document.getElementById('birthDate').value || '1994-01-05');
-    const yoginis = ['Mangala', 'Pingala', 'Dhanya', 'Bhramari', 'Bhadrika', 'Ulka', 'Siddha', 'Sankata'];
-    const years = [1, 2, 3, 4, 5, 6, 7, 8]; // 36 years cycle
-    
-    let currentDate = new Date(birthDate);
+    const birthDateInput = (document.getElementById('birthDate') || {}).value || '1994-01-05';
+    let list = [];
+    if (lastCalculatedData && lastCalculatedData.dashas && Array.isArray(lastCalculatedData.dashas.yogini) && lastCalculatedData.dashas.yogini.length > 0) {
+        list = lastCalculatedData.dashas.yogini;
+    }
+
+    if (list.length === 0) {
+        const moonData = (lastCalculatedData && lastCalculatedData.planets && lastCalculatedData.planets.Moon) || {};
+        const moonLon = (lastCalculatedData && lastCalculatedData.moon_lon !== undefined) ? lastCalculatedData.moon_lon : (moonData.sidereal_lon !== undefined ? moonData.sidereal_lon : 120.0);
+        const nakIdx = Math.floor((moonLon * 3) / 40);
+        const startYoginiIdx = (nakIdx + 3) % 8;
+        const yoginis = ['Mangala', 'Pingala', 'Dhanya', 'Bhramari', 'Bhadrika', 'Ulka', 'Siddha', 'Sankata'];
+        const years = [1, 2, 3, 4, 5, 6, 7, 8];
+        let currentDate = new Date(birthDateInput);
+        const today = new Date();
+        for (let i = 0; i < 8; i++) {
+            const idx = (startYoginiIdx + i) % 8;
+            const yogini = yoginis[idx];
+            const yr = years[idx];
+            const startDate = new Date(currentDate);
+            currentDate.setFullYear(currentDate.getFullYear() + yr);
+            const endDate = new Date(currentDate);
+            list.push({
+                lord: yogini,
+                duration_years: yr,
+                start_date: startDate.toISOString().split('T')[0],
+                end_date: endDate.toISOString().split('T')[0],
+                is_current: (today >= startDate && today <= endDate)
+            });
+        }
+    }
     
     let html = `<p style="font-size:0.85rem; color:var(--text-color); margin-bottom:15px;">36-year Yogini planetary dasha progression:</p>
     <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left; background:rgba(0,0,0,0.15); border:1px solid var(--border-color); border-radius:8px;">
@@ -4917,29 +4996,30 @@ function renderYoginiDasha(viewport) {
         </thead>
         <tbody>`;
         
-    const today = new Date();
-    for (let i = 0; i < 8; i++) {
-        const yogini = yoginis[i];
-        const yr = years[i];
-        const startDate = new Date(currentDate);
-        currentDate.setFullYear(currentDate.getFullYear() + yr);
-        const endDate = new Date(currentDate);
+    const now = new Date();
+    list.forEach(item => {
+        const yoginiName = item.lord || item.yogini || 'Yogini';
+        const duration = item.duration_years || item.duration || 0;
+        const sDate = (item.start_date || '').split('T')[0];
+        const eDate = (item.end_date || '').split('T')[0];
+        const isActive = item.is_current || (now >= new Date(sDate) && now <= new Date(eDate));
+        const isPassed = now > new Date(eDate);
         
         let status = '<span style="color:var(--text-muted);">Future</span>';
-        if (today >= startDate && today <= endDate) {
+        if (isActive) {
             status = '<span style="color:#fbbf24; font-weight:800;">Active</span>';
-        } else if (today > endDate) {
+        } else if (isPassed) {
             status = '<span style="color:#10b981; opacity:0.7;">Passed</span>';
         }
         
-        html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05); ${status.includes('Active') ? 'background:rgba(251,191,36,0.04);' : ''}">
-            <td style="padding:10px; font-weight:700; color:#fff;">${yogini}</td>
-            <td style="padding:10px;">${yr} Year(s)</td>
-            <td style="padding:10px;">${startDate.toLocaleDateString()}</td>
-            <td style="padding:10px;">${endDate.toLocaleDateString()}</td>
+        html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05); ${isActive ? 'background:rgba(251,191,36,0.04);' : ''}">
+            <td style="padding:10px; font-weight:700; color:#fff;">${yoginiName}</td>
+            <td style="padding:10px;">${duration} Year(s)</td>
+            <td style="padding:10px;">${sDate}</td>
+            <td style="padding:10px;">${eDate}</td>
             <td style="padding:10px;">${status}</td>
         </tr>`;
-    }
+    });
     
     html += `</tbody></table>`;
     viewport.innerHTML = html;
