@@ -558,7 +558,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initialize saffron controls bar for Panchang tab
-    initSaffronControls();
+    if (typeof window.initSaffronControls === 'function') {
+        window.initSaffronControls();
+    } else if (typeof initSaffronControls === 'function') {
+        initSaffronControls();
+    }
 
     // Define routePageByTab inside or globally
     window.routePageByTab = function() {
@@ -2608,7 +2612,7 @@ function renderDashaTimeline(tree) {
     bar.innerHTML = html;
 }
 
-function initSaffronControls() {
+window.initSaffronControls = function initSaffronControls() {
     // Sync date from birthDate on initial load if applicable
     const dateInput = document.getElementById('birthDate');
     const placeInput = document.getElementById('birthPlace');
@@ -3060,7 +3064,7 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
 }
 
 // ── Scroll Reveal Animations helper ──────────────────────────────────────
-function initScrollAnimations() {
+window.initScrollAnimations = function initScrollAnimations() {
     if (!window.IntersectionObserver) {
         document.querySelectorAll('.dainik-layout-card, #panchangBody .drik-card').forEach(el => {
             el.classList.add('animated-in');
@@ -4463,7 +4467,7 @@ window.toggleBirthMap = function() {
     }
 };
 
-function initLeafletInstance() {
+window.initLeafletInstance = function initLeafletInstance() {
     const lat = parseFloat(document.getElementById('birthLat').value) || 25.5941;
     const lon = parseFloat(document.getElementById('birthLon').value) || 85.1376;
     

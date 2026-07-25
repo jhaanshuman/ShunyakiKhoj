@@ -1396,7 +1396,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         async function tryFetchStats(url) {
             try {
-                const res = await fetch(url, { method: 'POST' });
+                const res = await fetch(url, { method: 'GET', mode: 'cors' });
                 if (!res.ok) return null;
                 const contentType = res.headers.get('content-type') || '';
                 if (!contentType.includes('json')) return null;
