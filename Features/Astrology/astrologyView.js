@@ -123,7 +123,7 @@ function renderAstrologyView() {
                 
                 <!-- Raw Data & Extra Details (Hidden on load) -->
                 <div id="extraSidebarDetails" style="display:none; margin-top:20px; border-top:1px solid rgba(255,255,255,0.08); padding-top:15px;">
-                    <button class="ph-today-btn" id="btnShowRawData" onclick="toggleRawPayloadModal()" style="width:100%; font-size:0.8rem; padding:8px 12px; background:rgba(255,255,255,0.05); color:#fff; border:1px solid var(--border-color); margin-bottom:10px;">📋 Show Raw JSON Data</button>
+                    <button class="btn-submit" id="btnShowRawData" onclick="toggleRawPayloadModal()" style="width:100%; padding:10px; font-size:0.85rem; font-weight:700; border-radius:8px; cursor:pointer; margin-bottom:10px;">📋 Show Raw JSON Data</button>
                     <div id="rawPayloadBox" style="display:none; max-height:200px; overflow-y:auto; background:#0d1117; padding:10px; border-radius:6px; font-family:monospace; font-size:0.75rem; border:1px solid var(--border-color); color:#4ade80;"></div>
                 </div>
             </div>

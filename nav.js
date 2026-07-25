@@ -94,6 +94,8 @@ const DEFAULT_NAV_CONFIG = {
       "icon": "🔮",
       "items": [
         { "label": "Personalised Kundali", "url": "index.html?tab=kundli", "icon": "🧘" },
+        { "label": "Dainik Panchang", "url": "index.html?tab=panchang", "icon": "☀️" },
+        { "label": "Maasik Panchang", "url": "index.html?tab=maasik", "icon": "📆" },
         { "label": "Prashna Kundali", "url": "index.html?tab=prashna", "icon": "❓" },
         { "label": "Rashifal Predictions", "url": "index.html?tab=rashifal", "icon": "🦁" }
       ]

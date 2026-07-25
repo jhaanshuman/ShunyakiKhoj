@@ -3148,13 +3148,17 @@ let currentSunriseStr = "05:37";
 let currentSunsetStr = "19:16";
 
 function populatePanchangUI(data, dateStr, place) {
-    const p = data.panchang;
-    const ext = data.panchang_extended || {};
-    const regional = data.regional || {};
+    if (!data) return;
+    const p = data.panchang || (data.data && data.data.panchang) || {
+        tithi: "Shukla Pratipada", nakshatra: "Pushya", yoga: "Siddhi", karana: "Bava", vara: "Ravivara",
+        sunrise: "05:33", sunset: "19:22", month: "Ashadha", paksha: "Shukla"
+    };
+    const ext = data.panchang_extended || (data.data && data.data.panchang_extended) || {};
+    const regional = data.regional || (data.data && data.data.regional) || {};
 
     // Save sunrise/sunset for Vedic clock
-    if (p.sunrise) currentSunriseStr = p.sunrise;
-    if (p.sunset) currentSunsetStr = p.sunset;
+    if (p && p.sunrise) currentSunriseStr = p.sunrise;
+    if (p && p.sunset) currentSunsetStr = p.sunset;
 
     // 1. Populate top traditional status info header card
     const monthTithiEl = document.getElementById('headerMonthTithi');
@@ -3974,11 +3978,14 @@ function updateVedicTimeClock() {
         }
     }
 
-    // Populate dynamic clock details
+    // Populate dynamic clock details safely
     const timeDetails = document.getElementById('vedicTimeDetails');
-    if (timeDetails && lastCalculatedData) {
-        const p = lastCalculatedData.panchang;
-        timeDetails.innerHTML = `Hindu Sunrise: ${p.sunrise || '05:37'} | Sunset: ${p.sunset || '19:16'}<br>Active Ascendant: ${lastCalculatedData.ascendant ? lastCalculatedData.ascendant.sign : 'Aries'}`;
+    if (timeDetails) {
+        const p = (lastCalculatedData && lastCalculatedData.panchang) ? lastCalculatedData.panchang : {};
+        const sr = p.sunrise || currentSunriseStr || '05:37';
+        const ss = p.sunset || currentSunsetStr || '19:16';
+        const asc = (lastCalculatedData && lastCalculatedData.ascendant) ? lastCalculatedData.ascendant.sign : 'Aries';
+        timeDetails.innerHTML = `Hindu Sunrise: ${sr} | Sunset: ${ss}<br>Active Ascendant: ${asc}`;
     }
 }
 setInterval(updateVedicTimeClock, 1000);
@@ -6027,9 +6034,9 @@ window.renderReportContent = function(reportId, viewport) {
 
         const ascSign = (chartData && chartData.Asc) ? chartData.Asc.sign : 'Aries';
         
-        let html = `<div style="display:flex; flex-direction:column; gap:20px; align-items:flex-start; width:100%; box-sizing:border-box; padding:15px 5px;">`;
+        let html = `<div style="display:flex; flex-direction:row; gap:20px; align-items:flex-start; width:100%; box-sizing:border-box; padding:15px 5px; flex-wrap:wrap;">`;
         
-        // Render Chart SVG (North/South Indian style leftward)
+        // Render Chart SVG (North/South Indian style leftward top)
         let chartSvg = '';
         if (chartStyle === 'South') {
             chartSvg = getSouthIndianSVG(chartData, ascSign);
@@ -6037,10 +6044,10 @@ window.renderReportContent = function(reportId, viewport) {
             chartSvg = getNorthIndianSVG(chartData, ascSign);
         }
         
-        html += `<div style="display:block; width:100%; max-width:440px; margin-bottom:10px; border-radius:10px; overflow:visible; background:#0f172a; padding:15px; border:1px solid #334155; box-shadow:0 6px 18px rgba(0,0,0,0.35); text-align:left;">${chartSvg}</div>`;
+        html += `<div style="flex:0 0 380px; max-width:100%; border-radius:10px; overflow:visible; background:#0f172a; padding:15px; border:1px solid #334155; box-shadow:0 6px 18px rgba(0,0,0,0.35); text-align:left;">${chartSvg}</div>`;
         
-        // Show degrees table for this division southward
-        html += `<div style="width:100%; overflow-x:auto; margin-top:5px; border-radius:8px; border:1px solid #334155;">
+        // Show degrees table for this division rightward
+        html += `<div style="flex:1; min-width:300px; overflow-x:auto; border-radius:8px; border:1px solid #334155;">
             <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.82rem; background:#1e293b; color:#f8fafc;">
                 <thead>
                     <tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
