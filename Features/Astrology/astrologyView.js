@@ -119,7 +119,7 @@ function renderAstrologyView() {
                     </div>
                 </div>
                 
-                <button class="btn-submit" id="btnCalculate" style="width:100%; padding:12px; font-size:1rem; font-weight:700; border-radius:8px;">🔮 Generate Kundali</button>
+                <button class="btn-submit" id="btnCalculate" onclick="if(typeof window.handleKundliCalculation==='function'){window.handleKundliCalculation(event);}" style="width:100%; padding:12px; font-size:1rem; font-weight:700; border-radius:8px; cursor:pointer;">🔮 Generate Kundali</button>
                 
                 <!-- Raw Data & Extra Details (Hidden on load) -->
                 <div id="extraSidebarDetails" style="display:none; margin-top:20px; border-top:1px solid rgba(255,255,255,0.08); padding-top:15px;">

@@ -1047,129 +1047,132 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-window.initAstrologyCalculationListeners = function() {
-// 1. Personalized Kundli Calculation
-const btnCalculate = document.getElementById('btnCalculate');
-if (btnCalculate) {
-    btnCalculate.addEventListener('click', async () => {
-        const name = (document.getElementById('birthName') || {}).value || 'Native';
-        const dateInput = (document.getElementById('birthDate') || {}).value || '1994-01-05';
-        const timeInput = (document.getElementById('birthTime') || {}).value || '12:00';
-        const placeInput = (document.getElementById('birthPlace') || {}).value || 'New Delhi, India';
-        const lat = parseFloat((document.getElementById('birthLat') || {}).value) || 25.5941;
-        const lon = parseFloat((document.getElementById('birthLon') || {}).value) || 85.1376;
+window.handleKundliCalculation = async function(e) {
+    if (e && e.preventDefault) e.preventDefault();
 
-        if (!dateInput || !timeInput || !placeInput) {
-            alert("Please enter birth details.");
-            return;
+    const name = (document.getElementById('birthName') || {}).value || 'Native';
+    const dateInput = (document.getElementById('birthDate') || {}).value || '1994-01-05';
+    const timeInput = (document.getElementById('birthTime') || {}).value || '12:00';
+    const placeInput = (document.getElementById('birthPlace') || {}).value || 'New Delhi, India';
+    const lat = parseFloat((document.getElementById('birthLat') || {}).value) || 25.5941;
+    const lon = parseFloat((document.getElementById('birthLon') || {}).value) || 85.1376;
+
+    if (!dateInput || !timeInput || !placeInput) {
+        alert("Please enter birth details.");
+        return;
+    }
+
+    // Extract settings values
+    const chartStyle = (document.getElementById('selChartStyle') || {}).value || 'North';
+    const ayanamsa = (document.getElementById('selAyanamsa') || {}).value || 'Lahiri';
+    const node = (document.getElementById('selNode') || {}).value || 'True';
+    const rashiVis = (document.getElementById('selRashiVisibility') || {}).value || 'Show';
+    const outerPlanets = (document.getElementById('selOuterPlanets') || {}).value || 'Hide';
+    const terminology = (document.getElementById('selTerminology') || {}).value || 'Sanskrit';
+    const longStyle = (document.getElementById('selLongStyle') || {}).value || 'Standard';
+
+    // Slide Birth Details form to the left sidebar column
+    const formCard = document.querySelector('.birth-details-card');
+    if (formCard) {
+        formCard.classList.add('slid-left');
+        formCard.style.width = '320px';
+        formCard.style.minWidth = '320px';
+        formCard.style.maxWidth = '320px';
+        formCard.style.margin = '0';
+    }
+
+    // Display Output main center card & extra options
+    const outputCard = document.getElementById('outputCard');
+    const extraDetails = document.getElementById('extraSidebarDetails');
+    if (outputCard) {
+        outputCard.style.display = 'flex';
+        outputCard.style.flexDirection = 'column';
+        const parentGrid = document.querySelector('.astrology-container .dashboard-grid');
+        if (parentGrid) {
+            parentGrid.style.display = 'flex';
+            parentGrid.style.flexDirection = 'row';
+            parentGrid.style.width = '100%';
         }
+    }
+    if (extraDetails) extraDetails.style.display = 'block';
 
-        // Extract settings values
-        const chartStyle = (document.getElementById('selChartStyle') || {}).value || 'North';
-        const ayanamsa = (document.getElementById('selAyanamsa') || {}).value || 'Lahiri';
-        const node = (document.getElementById('selNode') || {}).value || 'True';
-        const rashiVis = (document.getElementById('selRashiVisibility') || {}).value || 'Show';
-        const outerPlanets = (document.getElementById('selOuterPlanets') || {}).value || 'Hide';
-        const terminology = (document.getElementById('selTerminology') || {}).value || 'Sanskrit';
-        const longStyle = (document.getElementById('selLongStyle') || {}).value || 'Standard';
+    // Show Cast loading spinner in viewport
+    const container = document.getElementById('reportViewport') || document.getElementById('chartListTableContainer');
+    if (container) {
+        container.innerHTML = `
+            <div style="text-align:center; padding:3rem; color:var(--accent-color); font-weight:bold; font-size:1.1rem;">
+                ⏳ Casting native birth chart from ephemeris database...
+            </div>
+        `;
+    }
 
-        // Slide Birth Details form to the left sidebar column
-        const formCard = document.querySelector('.birth-details-card');
-        if (formCard) {
-            formCard.classList.add('slid-left');
-            formCard.style.width = '320px';
-            formCard.style.minWidth = '320px';
-            formCard.style.maxWidth = '320px';
-            formCard.style.margin = '0';
-        }
+    const formattedDate = dateInput.replace(/-/g, '/');
+    const gender = (document.getElementById('birthGender') || {}).value || 'Unknown';
+    const houseSystem = (document.getElementById('selHouseSystem') || {}).value || 'Whole Sign';
+    const tzOffset = parseFloat((document.getElementById('birthTimezone') || {}).value) || 5.5;
 
-        // Display Output main center card & extra options
-        const outputCard = document.getElementById('outputCard');
-        const extraDetails = document.getElementById('extraSidebarDetails');
-        if (outputCard) {
-            outputCard.style.display = 'block';
-            // Adjust layout to flex row when slid active
-            const parentGrid = document.querySelector('.astrology-container .dashboard-grid');
-            if (parentGrid) {
-                parentGrid.style.display = 'flex';
-                parentGrid.style.flexDirection = 'row';
-                parentGrid.style.width = '100%';
-            }
-        }
-        if (extraDetails) extraDetails.style.display = 'block';
+    const payload = {
+        name: name,
+        gender: gender,
+        date: formattedDate,
+        time: timeInput,
+        place: placeInput,
+        lat: lat,
+        lon: lon,
+        tz_offset: tzOffset,
+        ayanamsa: ayanamsa,
+        node_type: node,
+        house_system: houseSystem,
+        rashi_visibility: rashiVis,
+        outer_planets: outerPlanets,
+        terminology: terminology,
+        long_style: longStyle
+    };
 
-        // Show Cast loading spinner
-        const container = document.getElementById('chartListTableContainer');
-        if (container) {
-            container.innerHTML = `
-                <div style="text-align:center; padding:2rem; color:var(--accent-color); font-weight:bold;">
-                    ⏳ Casting native birth chart from ephemeris database...
-                </div>
-            `;
-        }
-
-        const formattedDate = dateInput.replace(/-/g, '/');
-        // Read all engine settings from DOM, including house system and timezone
-        const gender = (document.getElementById('birthGender') || {}).value || 'Unknown';
-        const houseSystem = (document.getElementById('selHouseSystem') || {}).value || 'Whole Sign';
-        const tzOffset = parseFloat((document.getElementById('birthTimezone') || {}).value) || 5.5;
-
-        const payload = {
-            name: name,
-            gender: gender,
-            date: formattedDate,
-            time: timeInput,
-            place: placeInput,
-            lat: lat,
-            lon: lon,
-            tz_offset: tzOffset,
-            ayanamsa: ayanamsa,
-            node_type: node,
-            house_system: houseSystem,
-            rashi_visibility: rashiVis,
-            outer_planets: outerPlanets,
-            terminology: terminology,
-            long_style: longStyle
-        };
-
-        // Call API with fallback support
-        try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const data = await response.json();
-            if (data.status === 'success') {
-                lastCalculatedData = data;
-            } else {
-                console.warn("API returned failure status, casting using local client ephemeris fallback...");
-                lastCalculatedData = generateLocalClientEphemerisFallback(payload);
-            }
-        } catch (e) {
-            console.warn("API request failed, casting using local client ephemeris fallback:", e.message);
+    // Call API with fallback support
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        if (data.status === 'success') {
+            lastCalculatedData = data;
+        } else {
+            console.warn("API returned failure status, casting using local client ephemeris fallback...");
             lastCalculatedData = generateLocalClientEphemerisFallback(payload);
         }
+    } catch (e) {
+        console.warn("API request failed, casting using local client ephemeris fallback:", e.message);
+        lastCalculatedData = generateLocalClientEphemerisFallback(payload);
+    }
 
-        // Format raw data block
-        const rawBox = document.getElementById('rawPayloadBox');
-        if (rawBox) {
-            rawBox.textContent = JSON.stringify(lastCalculatedData, null, 2);
-        }
+    // Format raw data block
+    const rawBox = document.getElementById('rawPayloadBox');
+    if (rawBox) {
+        rawBox.textContent = JSON.stringify(lastCalculatedData, null, 2);
+    }
 
-        // Render default view (Chart tab D1 / Planets table)
-        if (typeof window.switchReportTab === 'function') window.switchReportTab('tabD1');
-    });
-}
+    // Render default view (Chart tab D1 / Planets table)
+    if (typeof window.switchReportTab === 'function') {
+        window.switchReportTab('tabD1');
+    }
+};
+
+window.initAstrologyCalculationListeners = function() {
+    const btnCalculate = document.getElementById('btnCalculate');
+    if (btnCalculate) {
+        btnCalculate.removeEventListener('click', window.handleKundliCalculation);
+        btnCalculate.addEventListener('click', window.handleKundliCalculation);
+    }
+};
 
 // Global Event Delegation fallback for #btnCalculate
 document.addEventListener('click', function(e) {
     const targetBtn = e.target.closest('#btnCalculate');
-    if (targetBtn && typeof window.initAstrologyCalculationListeners === 'function') {
-        if (!targetBtn.dataset.listenerBound) {
-            targetBtn.dataset.listenerBound = "true";
-            window.initAstrologyCalculationListeners();
-        }
+    if (targetBtn && typeof window.handleKundliCalculation === 'function') {
+        window.handleKundliCalculation(e);
     }
 });
 
@@ -6453,7 +6456,6 @@ function generateLocalClientEphemerisFallback(payload) {
             'Sun': 480.25, 'Moon': 390.11, 'Mars': 320.45, 'Mercury': 415.82, 'Jupiter': 490.95, 'Venus': 365.12, 'Saturn': 310.23
         }
     };
-}
 }
 
 
