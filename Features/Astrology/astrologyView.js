@@ -138,13 +138,13 @@ function renderAstrologyView() {
                 </div>
             </div>
 
-            <!-- Output Display Container (Hidden on load, flexes center) -->
-            <div class="glass-card" id="outputCard" style="display: none; flex: 1; min-width: 0; background: var(--card-bg); border: var(--card-border); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); flex-direction: column;">
+            <!-- Output Display Container (Scrollable & High Contrast Dark Theme) -->
+            <div class="glass-card" id="outputCard" style="display: none; flex: 1; min-width: 0; background: #0f172a; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); flex-direction: column; max-height: 82vh; overflow-y: auto; color: #f8fafc;">
                 
                 <!-- Mobile Report Selector (Visible on Mobile only) -->
                 <div class="mobile-report-selector-container" style="margin-bottom: 15px; display: none; width: 100%;">
-                    <label for="mobileReportSelector" style="font-weight: 700; color: var(--accent-color); font-size: 0.9rem; display: block; margin-bottom: 6px;">Select Astrological Report:</label>
-                    <select id="mobileReportSelector" style="width: 100%; padding: 10px; background: var(--tile-bg); color: var(--text-color); border: 1.5px solid var(--border-color); border-radius: 6px; font-weight: 600;" onchange="switchReportTab(this.value)">
+                    <label for="mobileReportSelector" style="font-weight: 700; color: #fbbf24; font-size: 0.9rem; display: block; margin-bottom: 6px;">Select Astrological Report:</label>
+                    <select id="mobileReportSelector" style="width: 100%; padding: 10px; background: #1e293b; color: #f8fafc; border: 1.5px solid #475569; border-radius: 6px; font-weight: 600; max-height: 300px; overflow-y: auto;" onchange="switchReportTab(this.value)">
                         <option value="tabD1">D1 - Rashi Chart (Lagna)</option>
                         <option value="tabD2">D2 - Hora Chart (Wealth)</option>
                         <option value="tabD3">D3 - Drekkana (Siblings)</option>
@@ -198,26 +198,26 @@ function renderAstrologyView() {
                     </select>
                 </div>
 
-                <div class="report-category-tabs" style="display: flex; gap: 8px; margin-bottom: 15px; border-bottom: 2px solid rgba(255,255,255,0.06); padding-bottom: 8px; overflow-x: auto; width: 100%; white-space: nowrap; -webkit-overflow-scrolling: touch;">
-                    <button class="cat-tab-btn active" style="padding: 8px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('charts')">🗺️ Divisional Charts</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('dasha')">⏳ Dasha Cycles (19 Systems)</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('strength')">⚖️ Strengths &amp; Dignity</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('aspects')">👁️ Aspects &amp; Conjunctions</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('ashtakavarga')">📊 Ashtakavarga</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('panchanga')">🕉️ Panchanga &amp; Astronomy</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('yogas')">🧘 Yogas &amp; Doshas</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('jaimini_kp')">🎯 Jaimini &amp; KP</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('domains')">🔮 27 Life Domains</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('ai_workspace')">🤖 AI Intelligence Workspace</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('graphs_tables')">📈 Graphs &amp; Tables</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('developer_tools')">🛠️ Developer Audit</button>
+                <div class="report-category-tabs" style="display: flex; gap: 8px; margin-bottom: 15px; border-bottom: 2px solid #334155; padding-bottom: 10px; overflow-x: auto; width: 100%; white-space: nowrap; -webkit-overflow-scrolling: touch;">
+                    <button class="cat-tab-btn active" style="padding: 8px 16px; background: #1e293b; border: 1px solid #475569; border-radius: 6px; color: #fbbf24; font-weight: 700; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('charts')">🗺️ Divisional Charts</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('dasha')">⏳ Dasha Cycles (19 Systems)</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('strength')">⚖️ Strengths &amp; Dignity</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('aspects')">👁️ Aspects &amp; Conjunctions</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('ashtakavarga')">📊 Ashtakavarga</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('panchanga')">🕉️ Panchanga &amp; Astronomy</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('yogas')">🧘 Yogas &amp; Doshas</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('jaimini_kp')">🎯 Jaimini &amp; KP</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('domains')">🔮 27 Life Domains</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('ai_workspace')">🤖 AI Intelligence Workspace</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('graphs_tables')">📈 Graphs &amp; Tables</button>
+                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('developer_tools')">🛠️ Developer Audit</button>
                 </div>
 
                 <!-- 1. Divisional Charts Sub-Group: Searchable Selector & Side Panel -->
-                <div id="subTabs-charts" class="sub-tabs-group" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                <div id="subTabs-charts" class="sub-tabs-group" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; background: #1e293b; padding: 15px; border-radius: 8px; border: 1px solid #334155;">
                     <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                        <label for="selDivisionalChart" style="font-weight: 700; color: var(--accent-color); font-size: 0.88rem;">Select Divisional Chart (D1 to D144):</label>
-                        <select id="selDivisionalChart" style="flex: 1; min-width: 250px; padding: 8px 12px; background: var(--tile-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.85rem; font-weight: 700;" onchange="switchReportTab(this.value)">
+                        <label for="selDivisionalChart" style="font-weight: 700; color: #fbbf24; font-size: 0.88rem;">Select Divisional Chart (D1 to D144):</label>
+                        <select id="selDivisionalChart" style="flex: 1; min-width: 250px; padding: 8px 12px; background: #0f172a; color: #f8fafc; border: 1px solid #475569; border-radius: 6px; font-size: 0.85rem; font-weight: 700; max-height: 300px; overflow-y: auto;" onchange="switchReportTab(this.value)">
                             <option value="tabD1" selected>D1 - Rashi Chart (Lagna &amp; General Destiny)</option>
                             <option value="tabD2">D2 - Hora Chart (Wealth, Treasury &amp; Financial Assets)</option>
                             <option value="tabD3">D3 - Drekkana (Siblings, Courage &amp; Energy)</option>
@@ -246,10 +246,10 @@ function renderAstrologyView() {
                 </div>
 
                 <!-- 2. Scalable Dasha Selector Sub-Group (All 19 Dashas) -->
-                <div id="subTabs-dasha" class="sub-tabs-group" style="display: none; flex-direction: column; gap: 12px; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                <div id="subTabs-dasha" class="sub-tabs-group" style="display: none; flex-direction: column; gap: 12px; margin-bottom: 20px; background: #1e293b; padding: 15px; border-radius: 8px; border: 1px solid #334155;">
                     <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                        <label for="selDashaSystem" style="font-weight: 700; color: var(--accent-color); font-size: 0.88rem;">Select Planetary Dasha System (19 Systems):</label>
-                        <select id="selDashaSystem" style="flex: 1; min-width: 250px; padding: 8px 12px; background: var(--tile-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.85rem; font-weight: 700;" onchange="switchReportTab(this.value)">
+                        <label for="selDashaSystem" style="font-weight: 700; color: #fbbf24; font-size: 0.88rem;">Select Planetary Dasha System (19 Systems):</label>
+                        <select id="selDashaSystem" style="flex: 1; min-width: 250px; padding: 8px 12px; background: #0f172a; color: #f8fafc; border: 1px solid #475569; border-radius: 6px; font-size: 0.85rem; font-weight: 700; max-height: 300px; overflow-y: auto;" onchange="switchReportTab(this.value)">
                             <option value="tabVimshottari" selected>Vimshottari Dasha (120 Years - Universal)</option>
                             <option value="tabYogini">Yogini Dasha (36 Years - Nakshatra Cycle)</option>
                             <option value="tabAshtottari">Ashtottari Dasha (108 Years - Non-Rahu)</option>
@@ -274,7 +274,7 @@ function renderAstrologyView() {
                 </div>
 
                 <!-- 3. Strengths & Dignity Sub-Group -->
-                <div id="subTabs-strength" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                <div id="subTabs-strength" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: #1e293b; padding: 10px; border-radius: 8px; border: 1px solid #334155;">
                     <button class="rep-tab-btn active" id="btn-tabShadbala" onclick="switchReportTab('tabShadbala')">Shadbala (6-Fold Strength)</button>
                     <button class="rep-tab-btn" id="btn-tabBhavabala" onclick="switchReportTab('tabBhavabala')">Bhavabala (House Strengths)</button>
                     <button class="rep-tab-btn" id="btn-tabVimsopaka" onclick="switchReportTab('tabVimsopaka')">Vimsopaka Bala (Divisional Dignity)</button>
@@ -285,7 +285,7 @@ function renderAstrologyView() {
                 </div>
 
                 <!-- 4. Aspects & Conjunctions Sub-Group -->
-                <div id="subTabs-aspects" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                <div id="subTabs-aspects" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: #1e293b; padding: 10px; border-radius: 8px; border: 1px solid #334155;">
                     <button class="rep-tab-btn active" id="btn-tabAspects" onclick="switchReportTab('tabAspects')">Planetary Aspects (Graha Drishti)</button>
                     <button class="rep-tab-btn" id="btn-tabHouseAspects" onclick="switchReportTab('tabHouseAspects')">House Aspects</button>
                     <button class="rep-tab-btn" id="btn-tabRashiDrishti" onclick="switchReportTab('tabRashiDrishti')">Rashi Drishti (Jaimini)</button>
@@ -293,7 +293,7 @@ function renderAstrologyView() {
                 </div>
 
                 <!-- 5. Ashtakavarga Sub-Group -->
-                <div id="subTabs-ashtakavarga" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                <div id="subTabs-ashtakavarga" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: #1e293b; padding: 10px; border-radius: 8px; border: 1px solid #334155;">
                     <button class="rep-tab-btn active" id="btn-tabSAV" onclick="switchReportTab('tabSAV')">SAV Matrix (Sarvashtakavarga)</button>
                     <button class="rep-tab-btn" id="btn-tabBAVGrids" onclick="switchReportTab('tabBAVGrids')">BAV Grids (Individual Planets)</button>
                     <button class="rep-tab-btn" id="btn-tabAshtakavargaReductions" onclick="switchReportTab('tabAshtakavargaReductions')">Trikona &amp; Ekadhipatya Shodhana</button>
@@ -301,21 +301,21 @@ function renderAstrologyView() {
                 </div>
 
                 <!-- 6. Panchanga & Astronomy Sub-Group -->
-                <div id="subTabs-panchanga" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                <div id="subTabs-panchanga" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: #1e293b; padding: 10px; border-radius: 8px; border: 1px solid #334155;">
                     <button class="rep-tab-btn active" id="btn-tabPanchanga" onclick="switchReportTab('tabPanchanga')">Birth Panchanga Limbs</button>
                     <button class="rep-tab-btn" id="btn-tabAstronomyDetail" onclick="switchReportTab('tabAstronomyDetail')">Astronomical Data &amp; Obliquity</button>
                     <button class="rep-tab-btn" id="btn-tabTransitOverlay" onclick="switchReportTab('tabTransitOverlay')">Transit Overlay &amp; Sade Sati</button>
                 </div>
 
                 <!-- 7. Yogas & Doshas Sub-Group -->
-                <div id="subTabs-yogas" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                <div id="subTabs-yogas" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: #1e293b; padding: 10px; border-radius: 8px; border: 1px solid #334155;">
                     <button class="rep-tab-btn active" id="btn-tabYogas" onclick="switchReportTab('tabYogas')">Categorized Yogas (300+)</button>
                     <button class="rep-tab-btn" id="btn-tabDoshas" onclick="switchReportTab('tabDoshas')">Dosha Analysis &amp; Cancellations</button>
                     <button class="rep-tab-btn" id="btn-tabGemstones" onclick="switchReportTab('tabGemstones')">Gemstone &amp; Rudraksha Remedies</button>
                 </div>
 
                 <!-- 8. Jaimini & KP Paddhati Sub-Group -->
-                <div id="subTabs-jaimini_kp" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                <div id="subTabs-jaimini_kp" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: #1e293b; padding: 10px; border-radius: 8px; border: 1px solid #334155;">
                     <button class="rep-tab-btn active" id="btn-tabJaimini" onclick="switchReportTab('tabJaimini')">Jaimini Karakas (7/8 Scheme)</button>
                     <button class="rep-tab-btn" id="btn-tabSpecialLagnas" onclick="switchReportTab('tabSpecialLagnas')">Special Lagnas &amp; Arudhas</button>
                     <button class="rep-tab-btn" id="btn-tabUpagrahas" onclick="switchReportTab('tabUpagrahas')">Upagrahas &amp; Gulika</button>
@@ -323,29 +323,30 @@ function renderAstrologyView() {
                 </div>
 
                 <!-- 9. 27 Life Domains & Predictions Sub-Group -->
-                <div id="subTabs-domains" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                <div id="subTabs-domains" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: #1e293b; padding: 10px; border-radius: 8px; border: 1px solid #334155;">
                     <button class="rep-tab-btn active" id="btn-tabLifeDomains" onclick="switchReportTab('tabLifeDomains')">27 Life Domains Explorer</button>
                     <button class="rep-tab-btn" id="btn-tabEventIndicators" onclick="switchReportTab('tabEventIndicators')">Event Indicators &amp; Timing</button>
                     <button class="rep-tab-btn" id="btn-tabPredictionIndex" onclick="switchReportTab('tabPredictionIndex')">Prediction Index Summary</button>
                 </div>
 
                 <!-- 10. AI Intelligence Workspace Sub-Group -->
-                <div id="subTabs-ai_workspace" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                <div id="subTabs-ai_workspace" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: #1e293b; padding: 10px; border-radius: 8px; border: 1px solid #334155;">
                     <button class="rep-tab-btn active" id="btn-tabAIExecutive" onclick="switchReportTab('tabAIExecutive')">AI Executive Summary</button>
                     <button class="rep-tab-btn" id="btn-tabAISWOC" onclick="switchReportTab('tabAISWOC')">SWOC Analysis (Strengths/Weaknesses)</button>
                     <button class="rep-tab-btn" id="btn-tabAIFAQs" onclick="switchReportTab('tabAIFAQs')">AI Guidance FAQs</button>
                 </div>
 
                 <!-- 11. Graphs & Tables Sub-Group -->
-                <div id="subTabs-graphs_tables" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                <div id="subTabs-graphs_tables" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: #1e293b; padding: 10px; border-radius: 8px; border: 1px solid #334155;">
                     <button class="rep-tab-btn active" id="btn-tabVisualGraphs" onclick="switchReportTab('tabVisualGraphs')">Visual Analytics Graphs</button>
                     <button class="rep-tab-btn" id="btn-tabDataTables" onclick="switchReportTab('tabDataTables')">Structured Data Tables</button>
                 </div>
 
                 <!-- 12. Developer Audit Tools Sub-Group -->
-                <div id="subTabs-developer_tools" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                <div id="subTabs-developer_tools" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: #1e293b; padding: 10px; border-radius: 8px; border: 1px solid #334155;">
                     <button class="rep-tab-btn active" id="btn-tabSchemaAudit" onclick="switchReportTab('tabSchemaAudit')">Schema Audit &amp; Engine Metadata</button>
                     <button class="rep-tab-btn" id="btn-tabRuleEngine" onclick="switchReportTab('tabRuleEngine')">Rule Engine Matches</button>
+                    <button class="rep-tab-btn" id="btn-tabDataFolder" onclick="switchReportTab('tabDataFolder')">Data/ Folder Datasets</button>
                 </div>
 
                 <div class="report-dashboard-layout" style="display: flex; width: 100%; gap: 15px; min-height: 550px;">
