@@ -1393,30 +1393,37 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadVisitorStats() {
         const totalEl = document.getElementById('valTotalVisits');
         const uniqueEl = document.getElementById('valUniqueVisitors');
-        
-        async function tryFetchStats(url) {
-            try {
-                const res = await fetch(url, { method: 'GET', mode: 'cors' });
-                if (!res.ok) return null;
-                const contentType = res.headers.get('content-type') || '';
-                if (!contentType.includes('json')) return null;
-                const data = await res.json();
-                return (data && data.status === 'success') ? data : null;
-            } catch (e) {
-                return null;
-            }
-        }
 
-        let data = await tryFetchStats('/api/visitor_count');
-        if (!data) {
-            data = await tryFetchStats('https://sanskritai.vercel.app/api/visitor_count');
-        }
+        let totalVisits = 1250;
+        let uniqueVisitors = 480;
 
-        const totalVisits = (data && data.total_visits) ? data.total_visits : 1250;
-        const uniqueVisitors = (data && data.unique_visitors) ? data.unique_visitors : 480;
+        try {
+            let count = parseInt(localStorage.getItem('sk_visitor_count') || '0', 10) + 1;
+            localStorage.setItem('sk_visitor_count', count.toString());
+            totalVisits += count;
+            if (count > 1) uniqueVisitors += 1;
+        } catch (e) {}
 
         if (totalEl) totalEl.innerText = Number(totalVisits).toLocaleString();
         if (uniqueEl) uniqueEl.innerText = Number(uniqueVisitors).toLocaleString();
+
+        try {
+            const apiBase = (window.location.hostname.includes('shunyakikhoj.co.in'))
+                ? '/api/visitor_count'
+                : 'https://shunyakikhoj.vercel.app/api/visitor_count';
+            
+            const res = await fetch(apiBase, { method: 'GET', mode: 'cors' }).catch(() => null);
+            if (res && res.ok) {
+                const contentType = res.headers.get('content-type') || '';
+                if (contentType.includes('json')) {
+                    const data = await res.json().catch(() => null);
+                    if (data && data.status === 'success') {
+                        if (totalEl) totalEl.innerText = Number(data.total_visits).toLocaleString();
+                        if (uniqueEl) uniqueEl.innerText = Number(data.unique_visitors).toLocaleString();
+                    }
+                }
+            }
+        } catch (e) {}
     }
     loadVisitorStats();
 });
