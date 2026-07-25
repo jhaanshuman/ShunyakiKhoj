@@ -111,7 +111,27 @@ class DivisionalEngine:
         rem = sign_lon % div_size
         div_deg = round(rem * div, 2)
         
-        return SIGN_NAMES[div_sign_idx % 12], div_deg
+        return SIGN_NAMES[div_sign_idx % 12], div_deg, div_sign_idx % 12
+
+    # 60 Shashtiamsa Deities (Parashari order)
+    SHASTIAMSA_DEITIES = [
+        "Ghor", "Rakshas", "Dev", "Kuber", "Yaksha", "Kinnar", "Bhrasht", "Kulaghn",
+        "Garal", "Vagni", "Maya", "Pretapura", "Apampati", "Devat", "Amrit", "Chandra",
+        "Vandana", "Nishachar", "Amrita", "Sudha", "Kala", "Dambha", "Kriti", "Kalyana",
+        "Kalarnava", "Mukhya", "Shitla", "Sudha", "Pramida", "Yamya", "Kantikari", "Kala",
+        "Davagni", "Ghor", "Yama", "Kantara", "Karakshya", "Chandra", "Amrita", "Sharama",
+        "Durga", "Shubha", "Kshatriya", "Deva", "Vyas", "Vishna", "Prajapati", "Agni",
+        "Yama", "Konnaga", "Shreeda", "Deva", "Amrita", "Katha", "Chandra", "Vardhamana",
+        "Indra", "Mridu", "Varga", "Guru"
+    ]
+
+    SIGN_LORDS = ['Mars', 'Venus', 'Mercury', 'Moon', 'Sun', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Saturn', 'Jupiter']
+    EXALTATION_SIGNS = {'Sun': 0, 'Moon': 1, 'Mars': 9, 'Mercury': 5, 'Jupiter': 3, 'Venus': 11, 'Saturn': 6, 'Rahu': 1, 'Ketu': 7}
+    DEBILITATION_SIGNS = {'Sun': 6, 'Moon': 7, 'Mars': 3, 'Mercury': 11, 'Jupiter': 9, 'Venus': 5, 'Saturn': 0, 'Rahu': 7, 'Ketu': 1}
+    OWN_SIGNS = {
+        'Sun': [4], 'Moon': [3], 'Mars': [0, 7], 'Mercury': [2, 5],
+        'Jupiter': [8, 11], 'Venus': [1, 6], 'Saturn': [9, 10], 'Rahu': [10], 'Ketu': [7]
+    }
 
     @classmethod
     def calculate_all_divisional_charts(
@@ -119,27 +139,82 @@ class DivisionalEngine:
         asc_sid_lon: float,
         planets_data: Dict[str, Any]
     ) -> Dict[str, Dict[str, Dict[str, Any]]]:
-        """Compute all divisional charts for planets and Ascendant."""
+        """Compute all divisional charts for planets and Ascendant with dignities and D60 deities."""
         div_charts: Dict[str, Dict[str, Dict[str, Any]]] = {}
         
+        # Track own sign/exalted counts per planet across the 10 major vargas for Vaisheshikamsa
+        VAISESHIKAMSA_VARGAS = [1, 2, 3, 7, 9, 10, 12, 16, 30, 60]
+        varga_dignity_counts = {p: 0 for p in planets_data.keys()}
+
         for div in DIVISIONS:
             div_key = f"D{div}"
             div_charts[div_key] = {}
             
             # Ascendant
-            asc_sign, asc_deg = cls.get_divisional_sign(asc_sid_lon, div)
+            asc_sign, asc_deg, asc_s_idx = cls.get_divisional_sign(asc_sid_lon, div)
             div_charts[div_key]['Asc'] = {
                 "sign": asc_sign,
-                "lon": asc_deg
+                "sign_index": asc_s_idx,
+                "sign_lord": cls.SIGN_LORDS[asc_s_idx],
+                "lon": asc_deg,
+                "house": 1
             }
             
             # Planets
             for p_name, p_obj in planets_data.items():
                 p_lon = p_obj.sidereal_lon if hasattr(p_obj, 'sidereal_lon') else p_obj['sidereal_lon']
-                p_sign, p_deg = cls.get_divisional_sign(p_lon, div)
-                div_charts[div_key][p_name] = {
-                    "sign": p_sign,
-                    "lon": p_deg
-                }
+                p_sign, p_deg, p_s_idx = cls.get_divisional_sign(p_lon, div)
                 
+                # House in this divisional chart relative to div Ascendant
+                v_house = ((p_s_idx - asc_s_idx + 12) % 12) + 1
+                
+                # Dignity state in this varga
+                lord = cls.SIGN_LORDS[p_s_idx]
+                if p_s_idx == cls.EXALTATION_SIGNS.get(p_name, -1):
+                    dignity = "Exalted"
+                elif p_s_idx == cls.DEBILITATION_SIGNS.get(p_name, -1):
+                    dignity = "Debilitated"
+                elif p_s_idx in cls.OWN_SIGNS.get(p_name, []):
+                    dignity = "Own Sign"
+                elif lord == p_name:
+                    dignity = "Own Sign"
+                else:
+                    dignity = "Neutral"
+
+                if div in VAISESHIKAMSA_VARGAS and dignity in ["Exalted", "Own Sign"]:
+                    varga_dignity_counts[p_name] = varga_dignity_counts.get(p_name, 0) + 1
+
+                p_dict = {
+                    "sign": p_sign,
+                    "sign_index": p_s_idx,
+                    "sign_lord": lord,
+                    "lon": p_deg,
+                    "house": v_house,
+                    "dignity": dignity
+                }
+
+                # Add D60 Shashtiamsa deity if D60
+                if div == 60:
+                    part = int((p_lon % 30.0) // 0.5)
+                    # Odd sign: 1 to 60, Even sign: 60 to 1
+                    is_odd = (int(p_lon // 30) % 2 == 0)
+                    deity_idx = part if is_odd else (59 - part)
+                    deity_name = cls.SHASTIAMSA_DEITIES[deity_idx % 60]
+                    p_dict["shashtiamsa_deity"] = deity_name
+
+                div_charts[div_key][p_name] = p_dict
+                
+        # Attach Vaisheshikamsa summary to metadata
+        vaisheshikamsa_labels = {
+            2: "Parijata", 3: "Uttama", 4: "Gopura", 5: "Simhasana",
+            6: "Paravata", 7: "Devaloka", 8: "Kumkuma", 9: "Airavata", 10: "Brahmaloka"
+        }
+        div_charts["_vaisheshikamsa"] = {
+            p: {
+                "good_vargas_count": count,
+                "classification": vaisheshikamsa_labels.get(count, "Ordinary" if count < 2 else "Brahmaloka")
+            }
+            for p, count in varga_dignity_counts.items()
+        }
+
         return div_charts

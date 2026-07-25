@@ -28,38 +28,85 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from vedic_engine.orchestrator.master_builder_v5 import MasterHoroscopeBuilderV5
+
+class CalculationOptions(BaseModel):
+    ayanamsa: str = "Lahiri"
+    node_type: str = "True"
+    house_system: str = "Whole Sign"
+    zodiac: str = "Sidereal"
+    dasha_systems: List[str] = ["ALL"]
+    yoga_depth: str = "Full"
+    varga_list: List[int] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 20, 24, 27, 30, 40, 45, 60]
+    include_source_texts: bool = True
+
 class BirthDetails(BaseModel):
     name: str = "Native"
     gender: str = "Male"
     date: str  # YYYY/MM/DD or YYYY-MM-DD
     time: str  # HH:MM
     place: str
-    lat: float = None
-    lon: float = None
+    lat: Optional[float] = None
+    lon: Optional[float] = None
     tz_offset: float = 5.5
     ayanamsa: str = "Lahiri"
     node_type: str = "True"
     house_system: str = "Whole Sign"
     zodiac: str = "Sidereal"
 
+class UniversalCalculateRequest(BaseModel):
+    birth_details: Optional[BirthDetails] = None
+    calculation_options: Optional[CalculationOptions] = CalculationOptions()
+    requested_modules: List[str] = ["ALL"]
+    partner_birth_details: Optional[BirthDetails] = None
+    # Backward compatibility for direct flat parameters
+    name: Optional[str] = None
+    gender: Optional[str] = None
+    date: Optional[str] = None
+    time: Optional[str] = None
+    place: Optional[str] = None
+    lat: Optional[float] = None
+    lon: Optional[float] = None
+    tz_offset: Optional[float] = 5.5
+    ayanamsa: Optional[str] = None
+    node_type: Optional[str] = None
+    house_system: Optional[str] = None
+
 @app.post("/api/calculate")
 @app.post("/")
-def calculate_chart(details: BirthDetails):
+def calculate_chart(request: Request, body: Dict[str, Any]):
     try:
-        clean_date = details.date.replace('-', '/')
-        
+        # Flexible parsing supporting both v5.0 nested JSON and v4.0 flat JSON
+        birth_dict = body.get('birth_details', {})
+        calc_options = body.get('calculation_options', {})
+        requested_modules = body.get('requested_modules', ["ALL"])
+        partner_dict = body.get('partner_birth_details', None)
+
+        # Extract fields from nested birth_details or root body
+        name = birth_dict.get('name') or body.get('name', 'Native')
+        gender = birth_dict.get('gender') or body.get('gender', 'Male')
+        date_str = birth_dict.get('date') or body.get('date', '1990/01/01')
+        time_str = birth_dict.get('time') or body.get('time', '12:00')
+        place = birth_dict.get('place') or body.get('place', 'New Delhi')
+        lat = birth_dict.get('lat') if birth_dict.get('lat') is not None else body.get('lat')
+        lon = birth_dict.get('lon') if birth_dict.get('lon') is not None else body.get('lon')
+        tz_offset = birth_dict.get('tz_offset') or body.get('tz_offset', 5.5)
+
+        ayanamsa = calc_options.get('ayanamsa') or birth_dict.get('ayanamsa') or body.get('ayanamsa', 'Lahiri')
+        node_type = calc_options.get('node_type') or birth_dict.get('node_type') or body.get('node_type', 'True')
+        house_system = calc_options.get('house_system') or birth_dict.get('house_system') or body.get('house_system', 'Whole Sign')
+
+        clean_date = str(date_str).replace('-', '/')
+
         # Geocode lat/lon if not provided
-        lat = details.lat
-        lon = details.lon
-        tz = details.tz_offset
         if lat is None or lon is None:
-            g_lat, g_lon, g_tz, _ = kundli_utils.resolve_place(details.place)
+            g_lat, g_lon, g_tz, _ = kundli_utils.resolve_place(place)
             lat = g_lat
             lon = g_lon
-            tz = g_tz
+            tz_offset = g_tz
 
         # Settings hash for database cache
-        settings_str = f"{clean_date}_{details.time}_{lat:.4f}_{lon:.4f}_{tz}_{details.ayanamsa}_{details.node_type}_{details.house_system}"
+        settings_str = f"{clean_date}_{time_str}_{lat:.4f}_{lon:.4f}_{tz_offset}_{ayanamsa}_{node_type}_{house_system}_{json.dumps(requested_modules)}"
         settings_hash = hashlib.sha256(settings_str.encode('utf-8')).hexdigest()[:16]
 
         # Check DB Cache
@@ -68,22 +115,24 @@ def calculate_chart(details: BirthDetails):
             cached['status'] = 'success'
             return cached
 
-        # Calculate Master Horoscope
-        master_obj = MasterHoroscopeBuilder.build_master_horoscope(
-            name=details.name,
-            gender=details.gender,
+        # Calculate Master Horoscope v5.0
+        master_obj = MasterHoroscopeBuilderV5.build_master_horoscope(
+            name=name,
+            gender=gender,
             dob_str=clean_date,
-            tob_str=details.time,
-            place=details.place,
+            tob_str=time_str,
+            place=place,
             lat=lat,
             lon=lon,
-            tz_offset=tz,
-            ayanamsa_name=details.ayanamsa,
-            node_type=details.node_type,
-            house_system=details.house_system
+            tz_offset=tz_offset,
+            ayanamsa_name=ayanamsa,
+            node_type=node_type,
+            house_system=house_system,
+            requested_modules=requested_modules,
+            partner_birth_details=partner_dict
         )
-        
-        # Backward-compatible fields
+
+        # Backward-compatible d1_chart flat object
         master_obj['status'] = 'success'
         asc_sign_idx = int(master_obj['houses']['ascendant_sidereal_lon'] / 30.0) % 12
         d1_flat = {}
@@ -101,8 +150,11 @@ def calculate_chart(details: BirthDetails):
             }
         master_obj['d1_chart'] = d1_flat
 
-        # Persist to database cache
-        EngineDatabase.save_cached_horoscope(settings_hash, master_obj)
+        # Save to cache asynchronously or synchronously
+        try:
+            EngineDatabase.save_cached_horoscope(settings_hash, master_obj)
+        except Exception:
+            pass
 
         return master_obj
     except Exception as e:

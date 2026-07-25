@@ -25,12 +25,35 @@ AYANAMSA_MAP = {
     "Raman": getattr(swe, 'SIDM_RAMAN', 3) if HAS_SWISSEPH else 3,
     "KP": getattr(swe, 'SIDM_KRISHNAMURTI', 5) if HAS_SWISSEPH else 5,
     "Krishnamurti": getattr(swe, 'SIDM_KRISHNAMURTI', 5) if HAS_SWISSEPH else 5,
-    "Fagan": getattr(swe, 'SIDM_FAGAN_BRADLEY', 0) if HAS_SWISSEPH else 0,
+    "Yukteswar": getattr(swe, 'SIDM_YUKTESHWAR', 7) if HAS_SWISSEPH else 7,
+    "Sri Yukteswar": getattr(swe, 'SIDM_YUKTESHWAR', 7) if HAS_SWISSEPH else 7,
+    "Fagan Bradley": getattr(swe, 'SIDM_FAGAN_BRADLEY', 0) if HAS_SWISSEPH else 0,
     "Fagan-Bradley": getattr(swe, 'SIDM_FAGAN_BRADLEY', 0) if HAS_SWISSEPH else 0,
-    "Yukteshwar": getattr(swe, 'SIDM_YUKTESHWAR', 7) if HAS_SWISSEPH else 7,
-    "TrueChitra": getattr(swe, 'SIDM_TRUE_CITRA', 27) if HAS_SWISSEPH else 27,
+    "De Luce": getattr(swe, 'SIDM_DELUCE', 2) if HAS_SWISSEPH else 2,
     "True Chitrapaksha": getattr(swe, 'SIDM_TRUE_CITRA', 27) if HAS_SWISSEPH else 27,
+    "TrueChitra": getattr(swe, 'SIDM_TRUE_CITRA', 27) if HAS_SWISSEPH else 27,
+    "Pushya Paksha": getattr(swe, 'SIDM_PUSHYA', 29) if HAS_SWISSEPH else 29,
+    "SS Citra": getattr(swe, 'SIDM_SURYA_CITRA', 30) if HAS_SWISSEPH else 30,
+    "Surya Siddhanta": getattr(swe, 'SIDM_SURYASIDDHANTA', 21) if HAS_SWISSEPH else 21,
+    "Aryabhata": getattr(swe, 'SIDM_ARYABHATA', 23) if HAS_SWISSEPH else 23,
+    "User-defined": -99,
     "Tropical": -1
+}
+
+HOUSE_SYSTEM_MAP = {
+    "Whole Sign": b'W',
+    "Equal": b'A',
+    "Sripati": b'E',
+    "Porphyry": b'P',
+    "Koch": b'K',
+    "Placidus": b'P',
+    "Regiomontanus": b'R',
+    "Campanus": b'C',
+    "Topocentric": b'T',
+    "Morinus": b'M',
+    "Alcabitius": b'B',
+    "Meridian": b'X',
+    "Vehlow Equal": b'V'
 }
 
 
