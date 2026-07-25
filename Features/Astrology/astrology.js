@@ -493,8 +493,12 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     applyLayoutStyles(tab);
-    initGlossaryTooltips();
-    initScrollAnimations();
+    if (typeof window.initGlossaryTooltips === 'function') {
+        window.initGlossaryTooltips();
+    } else if (typeof initGlossaryTooltips === 'function') {
+        initGlossaryTooltips();
+    }
+    if (typeof initScrollAnimations === 'function') initScrollAnimations();
 
     // API test panel triggers
     const btnOpenApiTest = document.getElementById('btnOpenApiTest');
@@ -3818,7 +3822,7 @@ window.setGhatiMode = function(mode) {
 };
 
 // ── Glossary Hover Tooltip Engine ─────────────────────────────────────────
-function initGlossaryTooltips() {
+window.initGlossaryTooltips = function initGlossaryTooltips() {
     const tooltip = document.getElementById('vedicGlossaryTooltip');
     if (!tooltip) return;
 

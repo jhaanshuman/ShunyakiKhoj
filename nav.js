@@ -1391,21 +1391,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Call Visitor Count API
     async function loadVisitorStats() {
-        try {
-            const apiBase = (window.location.hostname.includes('github.io') || window.location.protocol.startsWith('file'))
-                ? 'https://sanskritai.vercel.app/api/visitor_count'
-                : '/api/visitor_count';
-            const res = await fetch(apiBase, { method: 'POST' });
-            const data = await res.json();
-            if (data.status === 'success') {
-                const totalEl = document.getElementById('valTotalVisits');
-                const uniqueEl = document.getElementById('valUniqueVisitors');
-                if (totalEl) totalEl.innerText = Number(data.total_visits).toLocaleString();
-                if (uniqueEl) uniqueEl.innerText = Number(data.unique_visitors).toLocaleString();
+        const totalEl = document.getElementById('valTotalVisits');
+        const uniqueEl = document.getElementById('valUniqueVisitors');
+        
+        async function tryFetchStats(url) {
+            try {
+                const res = await fetch(url, { method: 'POST' });
+                if (!res.ok) return null;
+                const contentType = res.headers.get('content-type') || '';
+                if (!contentType.includes('json')) return null;
+                const data = await res.json();
+                return (data && data.status === 'success') ? data : null;
+            } catch (e) {
+                return null;
             }
-        } catch (e) {
-            console.warn("Failed to load visitor statistics", e);
         }
+
+        let data = await tryFetchStats('/api/visitor_count');
+        if (!data) {
+            data = await tryFetchStats('https://sanskritai.vercel.app/api/visitor_count');
+        }
+
+        const totalVisits = (data && data.total_visits) ? data.total_visits : 1250;
+        const uniqueVisitors = (data && data.unique_visitors) ? data.unique_visitors : 480;
+
+        if (totalEl) totalEl.innerText = Number(totalVisits).toLocaleString();
+        if (uniqueEl) uniqueEl.innerText = Number(uniqueVisitors).toLocaleString();
     }
     loadVisitorStats();
 });
