@@ -141,7 +141,7 @@ async function triggerModalCalculation() {
     const _hn = window.location.hostname;
     const _isLocal = (_hn === 'localhost' || _hn === '127.0.0.1');
     const _isVercel = _hn.includes('vercel.app');
-    const HOST_API = (_isLocal || _isVercel) ? "" : "https://shunyakikhoj.vercel.app";
+    const HOST_API = (_isLocal || _isVercel) ? "" : "https://sanskritai.vercel.app";
     
     if (currentModalTab === 'milan') {
         const payload = {
@@ -1668,7 +1668,7 @@ async function initDefaultVedicData() {
     const _hn = window.location.hostname;
     const _isLocal = (_hn === 'localhost' || _hn === '127.0.0.1');
     const _isVercel = _hn.includes('vercel.app');
-    const HOST_API = (_isLocal || _isVercel) ? "" : "https://shunyakikhoj.vercel.app";
+    const HOST_API = (_isLocal || _isVercel) ? "" : "https://sanskritai.vercel.app";
     const payload = {
         date: dateStr.replace(/-/g, '/'),
         time: timeStr,

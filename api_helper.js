@@ -52,7 +52,7 @@
                 const _isVercel = _hn.includes('vercel.app');
                 const apiUrl = (_isLocal || _isVercel)
                     ? '/api/calculate'
-                    : 'https://shunyakikhoj.vercel.app/api/calculate';
+                    : 'https://sanskritai.vercel.app/api/calculate';
 
                 try {
                     const res = await fetch(apiUrl, {

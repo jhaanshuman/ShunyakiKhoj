@@ -414,7 +414,7 @@ const _isLocalServer = (_hostname === 'localhost' || _hostname === '127.0.0.1');
 const _isVercelHost = _hostname.includes('vercel.app');
 const API_URL = (_isLocalServer || _isVercelHost)
     ? '/api/calculate'
-    : 'https://shunyakikhoj.vercel.app/api/calculate';
+    : 'https://sanskritai.vercel.app/api/calculate';
 
 function parseAstrologyTimeStr(tStr) {
     if (!tStr) return 0;

@@ -1410,7 +1410,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const apiBase = (window.location.hostname.includes('shunyakikhoj.co.in'))
                 ? '/api/visitor_count'
-                : 'https://shunyakikhoj.vercel.app/api/visitor_count';
+                : 'https://sanskritai.vercel.app/api/visitor_count';
             
             const res = await fetch(apiBase, { method: 'GET', mode: 'cors' }).catch(() => null);
             if (res && res.ok) {
