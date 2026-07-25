@@ -8,11 +8,13 @@ import hashlib
 import threading
 from datetime import datetime, date
 
-# Append backend directory so we can import from kundli_utils
+# Append backend directory so we can import from vedic_engine and database
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from vedic_engine.master_horoscope import MasterHoroscopeBuilder
+from database import EngineDatabase
 import kundli_utils
 
-app = FastAPI(title="Vedic Astrology API", version="1.0.0")
+app = FastAPI(title="Vedic Astrology API", version="2.2.0")
 
 # Enable CORS for frontend integration
 app.add_middleware(
@@ -24,107 +26,87 @@ app.add_middleware(
 )
 
 class BirthDetails(BaseModel):
-    date: str  # YYYY/MM/DD
+    name: str = "Native"
+    gender: str = "Male"
+    date: str  # YYYY/MM/DD or YYYY-MM-DD
     time: str  # HH:MM
     place: str
+    lat: float = None
+    lon: float = None
+    tz_offset: float = 5.5
     ayanamsa: str = "Lahiri"
     node_type: str = "True"
+    house_system: str = "Whole Sign"
     zodiac: str = "Sidereal"
 
 @app.post("/api/calculate")
+@app.post("/")
 def calculate_chart(details: BirthDetails):
     try:
-        # 1. Compute Chart
-        chart = kundli_utils.get_chart(
-            date_str=details.date,
-            time_str=details.time,
+        clean_date = details.date.replace('-', '/')
+        
+        # Geocode lat/lon if not provided
+        lat = details.lat
+        lon = details.lon
+        tz = details.tz_offset
+        if lat is None or lon is None:
+            g_lat, g_lon, g_tz, _ = kundli_utils.resolve_place(details.place)
+            lat = g_lat
+            lon = g_lon
+            tz = g_tz
+
+        # Settings hash for database cache
+        settings_str = f"{clean_date}_{details.time}_{lat:.4f}_{lon:.4f}_{tz}_{details.ayanamsa}_{details.node_type}_{details.house_system}"
+        settings_hash = hashlib.sha256(settings_str.encode('utf-8')).hexdigest()[:16]
+
+        # Check DB Cache
+        cached = EngineDatabase.get_cached_horoscope(settings_hash)
+        if cached:
+            cached['status'] = 'success'
+            return cached
+
+        # Calculate Master Horoscope
+        master_obj = MasterHoroscopeBuilder.build_master_horoscope(
+            name=details.name,
+            gender=details.gender,
+            dob_str=clean_date,
+            tob_str=details.time,
             place=details.place,
-            zodiac=details.zodiac,
-            house_system="Whole Sign",
-            ayanamsa=details.ayanamsa,
-            node_type=details.node_type
+            lat=lat,
+            lon=lon,
+            tz_offset=tz,
+            ayanamsa_name=details.ayanamsa,
+            node_type=details.node_type,
+            house_system=details.house_system
         )
         
-        # 2. Get Ascendant and Planet Placements (D1)
-        asc_sign, asc_deg = kundli_utils.get_ascendant(chart)
-        planets_data = kundli_utils.get_planet_positions(chart)
+        # Backward-compatible fields
+        master_obj['status'] = 'success'
+        master_obj['ascendant'] = {
+            'sign': master_obj['houses']['ascendant_sign'],
+            'degree': master_obj['houses']['ascendant_sidereal_lon'] % 30.0,
+            'longitude': master_obj['houses']['ascendant_sidereal_lon']
+        }
         
-        # 3. Compute Shodashvarga Divisional Charts (D1 to D60)
-        divisions = [1, 2, 3, 4, 7, 9, 10, 12, 16, 20, 24, 30, 40, 45, 60]
-        div_charts = {}
-        for div in divisions:
-            div_charts[f"D{div}"] = {}
-            for p_name in kundli_utils.PLANETS:
-                p_obj = chart.get(p_name)
-                # Compute divisional degree
-                sign_lon = p_obj.lon % 30
-                div_size = 30.0 / div
-                rem = sign_lon % div_size
-                div_lon = round(rem * div, 2)
-                div_charts[f"D{div}"][p_name] = {
-                    "sign": kundli_utils.get_divisional_chart_sign(p_obj.lon, div),
-                    "lon": div_lon
-                }
-            # Add Ascendant
-            asc_obj = chart.get('Asc')
-            sign_lon = asc_obj.lon % 30
-            div_size = 30.0 / div
-            rem = sign_lon % div_size
-            div_lon = round(rem * div, 2)
-            div_charts[f"D{div}"]['Asc'] = {
-                "sign": kundli_utils.get_divisional_chart_sign(asc_obj.lon, div),
-                "lon": div_lon
+        # Adapt D1 chart format for legacy views
+        d1_flat = {}
+        for p_name, p_data in master_obj['planets'].items():
+            d1_flat[p_name] = {
+                'sign': p_data['sign_name'],
+                'degree': p_data['sign_degree'],
+                'longitude': p_data['sidereal_lon'],
+                'nakshatra': p_data['nakshatra_name'],
+                'pada': p_data['pada'],
+                'house': p_data['house'],
+                'is_retrograde': p_data['is_retrograde'],
+                'is_combust': p_data['is_combust']
             }
-        
-        # 4. Compute Panchang
-        sun_lon = chart.get('Sun').lon
-        moon_lon = chart.get('Moon').lon
-        birth_date = datetime.strptime(details.date, "%Y/%m/%d").date()
-        panchang = kundli_utils.get_panchang(sun_lon, moon_lon, birth_date, chart.lat, chart.lon, chart.utc_offset_hours)
-        panchang_ext = kundli_utils.get_extended_panchang(sun_lon, moon_lon, birth_date, chart.lat, chart.lon, chart.utc_offset_hours, chart.ayanamsa_val, chart.jd)
-        
-        # 5. Compute Choghadiya, Hora & Regional months
-        choghadiya = kundli_utils.get_choghadiya_list(birth_date, chart.lat, chart.lon, chart.utc_offset_hours)
-        hora = kundli_utils.get_hora_list(birth_date, chart.lat, chart.lon, chart.utc_offset_hours)
-        
-        sun_sign_idx = kundli_utils.SIGN_NAMES.index(planets_data['Sun']['sign'])
-        reg_months = kundli_utils.REGIONAL_MONTHS[sun_sign_idx]
-        lunar_month = kundli_utils.LUNAR_MONTHS[sun_sign_idx]
-        
-        regional_panchang = {
-            "tamil": reg_months['tamil'],
-            "malayalam": reg_months['malayalam'],
-            "bengali": reg_months['bengali'],
-            "odia": reg_months['odia'],
-            "lunar_month": lunar_month,
-            "shaka_year": birth_date.year - 78,
-            "vikrama_year": birth_date.year + 57,
-            "kali_year": birth_date.year + 3101
-        }
-        
-        # 6. Houses
-        houses = kundli_utils.get_house_details(chart)
-        
-        return {
-            "status": "success",
-            "pob": chart.formatted_pob,
-            "timezone": chart.timezone,
-            "utc_offset": chart.utc_offset_hours,
-            "ayanamsa": chart.ayanamsa,
-            "ayanamsa_val": round(chart.ayanamsa_val, 4),
-            "ascendant": {
-                "sign": asc_sign,
-                "degree": asc_deg
-            },
-            "d1_chart": planets_data,
-            "divisional_charts": div_charts,
-            "panchang": panchang,
-            "panchang_extended": panchang_ext,
-            "choghadiya": choghadiya,
-            "hora": hora,
-            "regional": regional_panchang,
-            "houses": houses
-        }
+        master_obj['d1_chart'] = d1_flat
+
+        # Persist to database cache
+        EngineDatabase.save_cached_horoscope(settings_hash, master_obj)
+
+        return master_obj
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 

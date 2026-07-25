@@ -54,6 +54,17 @@ function renderAstrologyView() {
             </select>
         </div>
         <div style="display:flex; flex-direction:column; min-width:110px;">
+            <label style="font-weight:600; color:var(--text-muted); margin-bottom:4px;">House System</label>
+            <select id="selHouseSystem" style="padding:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); border-radius:4px;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
+                <option value="Whole Sign" selected>Whole Sign</option>
+                <option value="Equal">Equal House</option>
+                <option value="Sripati">Sripati</option>
+                <option value="Bhava Chalit">Bhava Chalit</option>
+                <option value="KP">KP System</option>
+                <option value="Placidus">Placidus</option>
+            </select>
+        </div>
+        <div style="display:flex; flex-direction:column; min-width:110px;">
             <label style="font-weight:600; color:var(--text-muted); margin-bottom:4px;">Longitude Format</label>
             <select id="selLongStyle" style="padding:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); border-radius:4px;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
                 <option value="DMS" selected>Deg-Min-Sec</option>
@@ -62,11 +73,13 @@ function renderAstrologyView() {
         </div>
     </div>
 
+
     <!-- Top Tabs for switching sections -->
     <div class="top-nav-tabs" style="margin-bottom: 20px;">
         <button class="top-tab-btn active" onclick="switchTopTab(event, 'personalKundliSection')">Personalized Kundli</button>
-        <button class="top-tab-btn" onclick="switchTopTab(event, 'milanSection')">Kundli Milan</button>
         <button class="top-tab-btn" onclick="switchTopTab(event, 'gocharSection')">Graha Gochar (Transits)</button>
+        <button class="top-tab-btn" onclick="switchTopTab(event, 'milanSection')">💞 Kundli Milan</button>
+        <button class="top-tab-btn" onclick="switchTopTab(event, 'prashnaSection')">🔮 Prashna Kundali</button>
     </div>
 
     <!-- 1. Personalized Kundli Section -->
@@ -132,21 +145,29 @@ function renderAstrologyView() {
                 <div class="mobile-report-selector-container" style="margin-bottom: 15px; display: none; width: 100%;">
                     <label for="mobileReportSelector" style="font-weight: 700; color: var(--accent-color); font-size: 0.9rem; display: block; margin-bottom: 6px;">Select Astrological Report:</label>
                     <select id="mobileReportSelector" style="width: 100%; padding: 10px; background: var(--tile-bg); color: var(--text-color); border: 1.5px solid var(--border-color); border-radius: 6px; font-weight: 600;" onchange="switchReportTab(this.value)">
-                        <option value="tabD1">D1 - Rashi Chart</option>
-                        <option value="tabD9">D9 - Navamsa Chart</option>
+                        <option value="tabD1">D1 - Rashi Chart (Lagna)</option>
                         <option value="tabD2">D2 - Hora Chart (Wealth)</option>
                         <option value="tabD3">D3 - Drekkana (Siblings)</option>
                         <option value="tabD4">D4 - Chaturthamsa (Assets)</option>
+                        <option value="tabD5">D5 - Panchamsa (Fame &amp; Power)</option>
+                        <option value="tabD6">D6 - Shasthamsa (Health &amp; Obstacles)</option>
                         <option value="tabD7">D7 - Saptamsa (Children)</option>
-                        <option value="tabD10">D10 - Dasamsa (Career)</option>
+                        <option value="tabD8">D8 - Ashtamsa (Longevity)</option>
+                        <option value="tabD9">D9 - Navamsa Chart (Spouse &amp; Karma)</option>
+                        <option value="tabD10">D10 - Dasamsa (Career &amp; Power)</option>
+                        <option value="tabD11">D11 - Rudramsa (Gains &amp; Victory)</option>
                         <option value="tabD12">D12 - Dwadasamsa (Parents)</option>
-                        <option value="tabD16">D16 - Shodasamsa (Vehicles)</option>
-                        <option value="tabD20">D20 - Vimsamsa (Spiritual)</option>
-                        <option value="tabD24">D24 - Chaturvimsamsa (Education)</option>
-                        <option value="tabD30">D30 - Trimsamsa (Mishaps)</option>
+                        <option value="tabD16">D16 - Shodasamsa (Vehicles &amp; Comforts)</option>
+                        <option value="tabD20">D20 - Vimsamsa (Spiritual Practice)</option>
+                        <option value="tabD24">D24 - Chaturvimsamsa (Education &amp; Learning)</option>
+                        <option value="tabD27">D27 - Saptavimsamsa (Stamina &amp; Strengths)</option>
+                        <option value="tabD30">D30 - Trimsamsa (Mishaps &amp; Evils)</option>
                         <option value="tabD40">D40 - Khavedamsa (Auspiciousness)</option>
                         <option value="tabD45">D45 - Akshavedamsa (Character)</option>
                         <option value="tabD60">D60 - Shastiamsa (Past Karma)</option>
+                        <option value="tabD81">D81 - Navanavamsa (Micro Karma Root)</option>
+                        <option value="tabD108">D108 - Ashtottaramsa (Divine Root)</option>
+                        <option value="tabD144">D144 - Dwadasadvadasamsa (Ultimate Matrix)</option>
                         <option value="tabVimshottari">Vimshottari Dasha</option>
                         <option value="tabAshtottari">Ashtottari Dasha</option>
                         <option value="tabYogini">Yogini Dasha</option>
@@ -187,20 +208,28 @@ function renderAstrologyView() {
 
                 <div id="subTabs-charts" class="sub-tabs-group" style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
                     <button class="rep-tab-btn active" id="btn-tabD1" onclick="switchReportTab('tabD1')">D1 (Lagna)</button>
-                    <button class="rep-tab-btn" id="btn-tabD9" onclick="switchReportTab('tabD9')">D9 (Navamsa)</button>
                     <button class="rep-tab-btn" id="btn-tabD2" onclick="switchReportTab('tabD2')">D2 (Hora)</button>
                     <button class="rep-tab-btn" id="btn-tabD3" onclick="switchReportTab('tabD3')">D3 (Drekkana)</button>
                     <button class="rep-tab-btn" id="btn-tabD4" onclick="switchReportTab('tabD4')">D4 (Chaturthamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD5" onclick="switchReportTab('tabD5')">D5 (Panchamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD6" onclick="switchReportTab('tabD6')">D6 (Shasthamsa)</button>
                     <button class="rep-tab-btn" id="btn-tabD7" onclick="switchReportTab('tabD7')">D7 (Saptamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD8" onclick="switchReportTab('tabD8')">D8 (Ashtamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD9" onclick="switchReportTab('tabD9')">D9 (Navamsa)</button>
                     <button class="rep-tab-btn" id="btn-tabD10" onclick="switchReportTab('tabD10')">D10 (Dasamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD11" onclick="switchReportTab('tabD11')">D11 (Rudramsa)</button>
                     <button class="rep-tab-btn" id="btn-tabD12" onclick="switchReportTab('tabD12')">D12 (Dwadasamsa)</button>
                     <button class="rep-tab-btn" id="btn-tabD16" onclick="switchReportTab('tabD16')">D16 (Shodasamsa)</button>
                     <button class="rep-tab-btn" id="btn-tabD20" onclick="switchReportTab('tabD20')">D20 (Vimsamsa)</button>
                     <button class="rep-tab-btn" id="btn-tabD24" onclick="switchReportTab('tabD24')">D24 (Chaturvimsamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD27" onclick="switchReportTab('tabD27')">D27 (Saptavimsamsa)</button>
                     <button class="rep-tab-btn" id="btn-tabD30" onclick="switchReportTab('tabD30')">D30 (Trimsamsa)</button>
                     <button class="rep-tab-btn" id="btn-tabD40" onclick="switchReportTab('tabD40')">D40 (Khavedamsa)</button>
                     <button class="rep-tab-btn" id="btn-tabD45" onclick="switchReportTab('tabD45')">D45 (Akshavedamsa)</button>
                     <button class="rep-tab-btn" id="btn-tabD60" onclick="switchReportTab('tabD60')">D60 (Shastiamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD81" onclick="switchReportTab('tabD81')">D81 (Navanavamsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD108" onclick="switchReportTab('tabD108')">D108 (Ashtottaramsa)</button>
+                    <button class="rep-tab-btn" id="btn-tabD144" onclick="switchReportTab('tabD144')">D144 (Dwadasadvadasamsa)</button>
                 </div>
 
                 <div id="subTabs-dasha" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
@@ -397,6 +426,92 @@ function renderAstrologyView() {
                 <!-- Deep Analysis Container populated dynamically -->
                 <div id="milanDeepAnalysisBlock"></div>
             </div>
+        </div>
+    </div>
+
+    <!-- 4. Prashna Kundali Section -->
+    <div id="prashnaSection" class="main-section" style="display: none;">
+        <div class="dashboard-grid" style="display: flex; gap: 20px; align-items: start; box-sizing: border-box; width: 100%; flex-wrap: wrap;">
+            
+            <!-- Prashna Inputs Form Card -->
+            <div class="birth-details-card" style="flex: 1; max-width: 450px; background: var(--card-bg); border: var(--card-border); border-radius: 12px; padding: 25px; box-sizing: border-box;">
+                <h3 style="color: var(--accent-purple); margin-top:0; margin-bottom: 1.5rem;">🔮 Prashna Kundali (Horary)</h3>
+                
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display:block; margin-bottom:6px; font-weight:600; color:var(--text-color);">Query Category (प्रश्न श्रेणी)</label>
+                    <select id="prashnaCategory" style="width:100%; padding:10px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); font-weight:700;">
+                        <option value="career">💼 Career & Job (नौकरी / व्यवसाय)</option>
+                        <option value="marriage">💞 Love & Marriage (प्रेम / विवाह)</option>
+                        <option value="health">🏥 Health & Recovery (स्वास्थ्य / रोग)</option>
+                        <option value="wealth">💰 Wealth & Property (धन / संपत्ति)</option>
+                        <option value="travel">✈️ Travel & Relocation (यात्रा / स्थानांतरण)</option>
+                        <option value="general" selected>🔮 General Guidance (सामान्य प्रश्न)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="prashnaQuestion" style="display:block; margin-bottom:6px; font-weight:600; color:var(--text-color);">Your Question (आपका प्रश्न)</label>
+                    <input type="text" id="prashnaQuestion" placeholder="e.g. Will I get a job in next 3 months?" style="width:100%; padding:10px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color);">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="prashnaDate" style="display:block; margin-bottom:6px; font-weight:600; color:var(--text-color);">Date of Query (प्रश्न तिथि)</label>
+                    <input type="date" id="prashnaDate" style="width:100%; padding:10px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color);">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="prashnaTime" style="display:block; margin-bottom:6px; font-weight:600; color:var(--text-color);">Time of Query (प्रश्न समय)</label>
+                    <input type="time" id="prashnaTime" style="width:100%; padding:10px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color);">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="prashnaPlace" style="display:block; margin-bottom:6px; font-weight:600; color:var(--text-color);">Place of Query (प्रश्न स्थान)</label>
+                    <input type="text" id="prashnaPlace" value="New Delhi, India" style="width:100%; padding:10px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color);">
+                </div>
+
+                <button class="btn-submit" id="btnPrashna" style="width:100%; padding:12px; font-size:1rem; font-weight:700; border-radius:8px;">🔮 Cast Prashna Chart</button>
+            </div>
+
+            <!-- Prashna Outputs Display Card -->
+            <div class="glass-card" id="prashnaOutputCard" style="display: none; flex: 1.5; min-width: 320px; background: var(--card-bg); border: var(--card-border); border-radius: 12px; padding: 25px; box-shadow: var(--shadow);">
+                <h3 style="color: var(--title-color); margin-top: 0; border-bottom: 1.5px solid rgba(255,255,255,0.06); padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <span>Horary (Prashna) Report</span>
+                    <span id="prashnaVerdictBadge" class="result-badge success" style="font-size: 0.95rem; font-weight: 800; padding: 4px 12px; border-radius: 99px;">Auspicious</span>
+                </h3>
+
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 15px;">
+                    <div style="flex: 1; min-width: 200px; text-align: center;">
+                        <h4 style="color: var(--accent-color); margin: 0 0 10px 0;">Prashna Lagna (D1)</h4>
+                        <div id="prashnaChartContainer" style="display: inline-block; border-radius: 8px; overflow: hidden; background: rgba(0,0,0,0.05); padding: 5px;"></div>
+                    </div>
+                    <div style="flex: 1.2; min-width: 240px;">
+                        <h4 style="color: var(--accent-color); margin: 0 0 10px 0;">Query Moment Panchang</h4>
+                        <div id="prashnaPanchang" style="font-size: 0.82rem; line-height: 1.6; color: var(--text-color);"></div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 15px; border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 15px;">
+                    <h4 style="color: var(--accent-color); margin: 0 0 10px 0;">Planetary Placements</h4>
+                    <div style="overflow-x: auto; background: rgba(0,0,0,0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem; line-height: 1.5;">
+                            <thead>
+                                <tr style="border-bottom: 1.5px solid var(--border-color); color: var(--accent-color); font-weight: 800;">
+                                    <th style="padding: 6px;">Planet</th>
+                                    <th style="padding: 6px;">Rashi</th>
+                                    <th style="padding: 6px;">Longitude</th>
+                                    <th style="padding: 6px;">Nakshatra</th>
+                                    <th style="padding: 6px;">House</th>
+                                </tr>
+                            </thead>
+                            <tbody id="prashnaPlanetsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Extensive Horary Analysis Panel -->
+                <div id="prashnaAnalysisBlock" style="margin-top: 15px;"></div>
+            </div>
+
         </div>
     </div>
 </div>`;

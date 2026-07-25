@@ -71,7 +71,7 @@ body.theme-dark, body.theme-bright {
     --text-color:     #2c1e11; /* Dark Sandalwood */
     --text-muted:     #e23d28; /* Vermilion */
     --text-gold:      #d4af37; /* Temple Gold */
-    --card-bg:        rgba(255, 255, 255, 0.95);
+    --card-bg:        #ffffff;
     --card-border:    2px solid #ff9933; /* Saffron borders */
     --glass-border:   rgba(255, 153, 51, 0.25);
     --glass-border-strong: rgba(255, 153, 51, 0.55);
@@ -166,7 +166,7 @@ button:hover{
 
 .glass-card{
 
-    background:rgba(255,248,205,.42);
+    background:#ffffff !important;
 
     backdrop-filter:blur(22px) saturate(180%);
     -webkit-backdrop-filter:blur(22px) saturate(180%);
@@ -1581,7 +1581,7 @@ button:hover{
 /* ── HOMEPAGE GRID & SIDEBARS ── */
 .homepage-three-column-grid {
     display: grid;
-    grid-template-columns: 1fr 320px;
+    grid-template-columns: 1fr;
     gap: 20px;
     width: 100%;
     margin-top: 15px;
@@ -2702,7 +2702,7 @@ button:hover{
  border-color: #a23922; background: rgba(162,57,34,0.12); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(162,57,34,0.15); 
 }
 .astrology-container .cal-cell.selected {
- border-color: var(--accent-color) !important; background: rgba(251,191,36,0.15) !important; box-shadow: 0 0 0 2px rgba(251,191,36,0.25); 
+ border-color: #8cb83e !important; background: #eefad2 !important; box-shadow: 0 0 0 2px rgba(140, 184, 62, 0.4); 
 }
 .astrology-container .cal-cell.today-cell {
  border-color: var(--accent-color); background: rgba(99,102,241,0.15); 
@@ -4589,3 +4589,171 @@ font-size:15px;
         min-width: 700px !important;
     }
 }
+
+/* Global responsiveness & card separation aesthetics */
+.glass-card, .widget-box, .birth-details-card, .monthly-cal-sidebar, .drik-card, .timeline-clock-row {
+    overflow-x: auto !important;
+    max-width: 100%;
+}
+table {
+    max-width: 100%;
+}
+#drikTimelineContainer {
+    background: #ffffff !important;
+}
+
+/* ── ACTIVE DATE TILE: Greenish-yellow highlight ── */
+.astrology-container .cal-cell.today-cell {
+    border-color: #7aad3a !important;
+    background: #E6FFB3 !important;
+    color: #1a3300 !important;
+    box-shadow: 0 0 0 2px rgba(122,173,58,0.5), 4px 4px 10px rgba(0,0,0,0.12) !important;
+}
+.astrology-container .cal-cell.today-cell .cell-day-num {
+    color: #1a3300 !important;
+}
+.astrology-container .cal-cell.today-cell .cell-tithi,
+.astrology-container .cal-cell.today-cell .cell-nakshatra,
+.astrology-container .cal-cell.today-cell .cell-info-row,
+.astrology-container .cal-cell.today-cell .cell-left-nak,
+.astrology-container .cal-cell.today-cell .cell-right-nak {
+    color: #2d5a00 !important;
+}
+
+/* ── RIGHT SIDEBAR HIDDEN → COLLAPSE GRID ── */
+.right-widgets-sidebar[style*="display:none"],
+.right-widgets-sidebar[style*="display: none"] {
+    display: none !important;
+}
+.homepage-three-column-grid:has(.right-widgets-sidebar[style*="display:none"]),
+.homepage-three-column-grid:has(.right-widgets-sidebar[style*="display: none"]) {
+    grid-template-columns: 1fr !important;
+}
+
+/* ── WHITE BACKGROUND for inner content blocks (tables / text within sections) ── */
+/* Dainik Panchang - panchang table rows */
+#panchangBody .panch-row,
+#panchangBody .panchang-detail-row,
+#panchangBody table,
+#panchangBody .panchang-table-wrap {
+    background: #ffffff;
+    border-radius: 6px;
+    color: #1e293b;
+}
+/* Dainik Panchang - timeline container is already white; ensure inner sections */
+#drikTimelineContainer .timeline-section,
+#drikTimelineContainer .timeline-row {
+    background: #fff !important;
+}
+/* Lagna Kundali card inner containers */
+#lagnaChartContainer,
+#lagnaPlanetsContainer {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 10px;
+    color: #1e293b;
+}
+/* Rashifal / horoscope inner items */
+#rashifalTodayContainer .rashi-item,
+#rashifalTodayContainer > div {
+    background: #ffffff;
+    border-radius: 8px;
+    color: #1e293b;
+}
+/* Planetary Events inner items */
+#planetaryEventsContainer .event-item,
+#planetaryEventsContainer > div {
+    background: #ffffff;
+    border-radius: 8px;
+    color: #1e293b;
+}
+/* Upavas & Festivals inner items */
+#upcomingFestivalsContainer .festival-item,
+#upcomingFestivalsContainer > div {
+    background: #ffffff;
+    border-radius: 8px;
+    color: #1e293b;
+}
+/* Maasik Calendar sidebar */
+#maasikSidebarContent,
+#maasikSidebarContent > div {
+    background: #ffffff !important;
+    border-radius: 6px;
+    color: #1e293b;
+}
+/* Maasik Festivals List */
+#maasikFestivalsList > div {
+    background: #ffffff;
+    border-radius: 8px;
+    color: #1e293b;
+}
+/* Astrology container output card content areas */
+.astrology-container .tab-content,
+.astrology-container .output-section {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 12px;
+    color: #1e293b;
+}
+/* Vedic Time details box */
+#vedicTimeDetails {
+    background: #ffffff !important;
+    color: #1e293b !important;
+}
+
+/* ── X-SCROLL for all overflowing tables ── */
+.table-scroll-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+}
+/* Ensure all tables inside glass-cards are scrollable */
+.glass-card table,
+.widget-box table,
+.birth-details-card table,
+.astrology-container table,
+#panchangBody table,
+#gocharChoghadiyaBody,
+#drikTimelineContainer table {
+    min-width: 520px;
+    overflow-x: auto;
+    display: block;
+    max-width: 100%;
+}
+/* Override: narrow tables should not be forced wide */
+.astrology-container .milan-result-table,
+.astrology-container .kuta-table {
+    min-width: unset;
+    width: 100%;
+    display: table;
+}
+
+/* ── MAASIK CALENDAR: ensure horizontal scroll on all screen sizes ── */
+.astrology-container .monthly-panchang-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.astrology-container .monthly-cal-main {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    min-width: 0;
+}
+.astrology-container .cal-grid-header,
+.astrology-container .cal-grid {
+    min-width: 700px;
+}
+
+/* homepage maasik wrapper (index.html direct) */
+.monthly-panchang-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.monthly-cal-main {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+#maasikCalGrid,
+.cal-grid-header {
+    min-width: 650px;
+}
+
