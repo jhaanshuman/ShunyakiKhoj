@@ -96,6 +96,25 @@ class MasterHoroscopeBuilderV5:
         if requested_modules is None:
             requested_modules = ["ALL"]
 
+        # Safely resolve numeric tz_offset (handles float, string, or timezone name like "Asia/Kolkata")
+        float_tz = 5.5
+        if isinstance(tz_offset, (int, float)):
+            float_tz = float(tz_offset)
+        elif isinstance(tz_offset, str):
+            try:
+                float_tz = float(tz_offset)
+            except ValueError:
+                try:
+                    import pytz
+                    clean_tz = tz_offset.strip()
+                    if 'Asia/' in clean_tz:
+                        clean_tz = 'Asia/' + clean_tz.split('Asia/')[-1].split('Asia')[0].replace('/', '')
+                    tz_obj = pytz.timezone(clean_tz if clean_tz in pytz.all_timezones else 'Asia/Kolkata')
+                    float_tz = round(datetime.now(tz_obj).utcoffset().total_seconds() / 3600.0, 2)
+                except Exception:
+                    float_tz = round(lon / 15.0 * 2.0) / 2.0
+        tz_offset = float_tz
+
         # Parse Datetime
         clean_dob = dob_str.replace('-', '/')
         dob_parts = [int(x) for x in clean_dob.split('/')]

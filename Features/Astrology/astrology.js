@@ -6018,9 +6018,9 @@ window.renderReportContent = function(reportId, viewport) {
 
         const ascSign = (chartData && chartData.Asc) ? chartData.Asc.sign : 'Aries';
         
-        let html = `<div style="display:flex; flex-direction:column; gap:20px; align-items:center; width:100%;">`;
+        let html = `<div style="display:flex; flex-direction:column; gap:20px; align-items:flex-start; width:100%; box-sizing:border-box; padding:15px 5px;">`;
         
-        // Render Chart SVG
+        // Render Chart SVG (North/South Indian style leftward)
         let chartSvg = '';
         if (chartStyle === 'South') {
             chartSvg = getSouthIndianSVG(chartData, ascSign);
@@ -6028,11 +6028,11 @@ window.renderReportContent = function(reportId, viewport) {
             chartSvg = getNorthIndianSVG(chartData, ascSign);
         }
         
-        html += `<div style="display:inline-block; border-radius:8px; overflow:hidden; background:rgba(0,0,0,0.1); padding:10px;">${chartSvg}</div>`;
+        html += `<div style="display:block; width:100%; max-width:440px; margin-bottom:10px; border-radius:10px; overflow:visible; background:#0f172a; padding:15px; border:1px solid #334155; box-shadow:0 6px 18px rgba(0,0,0,0.35); text-align:left;">${chartSvg}</div>`;
         
-        // Show degrees table for this division
-        html += `<div style="width:100%; overflow-x:auto;">
-            <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.8rem; background:rgba(0,0,0,0.15); border:1px solid var(--border-color); border-radius:8px;">
+        // Show degrees table for this division southward
+        html += `<div style="width:100%; overflow-x:auto; margin-top:5px; border-radius:8px; border:1px solid #334155;">
+            <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.82rem; background:#1e293b; color:#f8fafc;">
                 <thead>
                     <tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
                         <th style="padding:8px;">Planet</th>

@@ -4831,3 +4831,24 @@ table {
     clear: both !important;
 }
 
+/* Proper padding for Enter Birth Details section and Chart render categorical section */
+.birth-details-card,
+.astrology-container .birth-details-card {
+    padding: 25px !important;
+    box-sizing: border-box !important;
+}
+
+#outputCard,
+.report-content-pane,
+.astrology-container #outputCard {
+    padding: 24px !important;
+    box-sizing: border-box !important;
+}
+
+#reportViewport {
+    padding: 20px !important;
+    box-sizing: border-box !important;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}
+

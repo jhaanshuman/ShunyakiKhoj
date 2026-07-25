@@ -104,7 +104,12 @@ def calculate_chart(request: Request, body: Dict[str, Any]):
             g_lat, g_lon, g_tz, _ = kundli_utils.resolve_place(place)
             lat = g_lat
             lon = g_lon
-            tz_offset = g_tz
+            tz_offset = 5.5
+        else:
+            try:
+                tz_offset = float(tz_offset)
+            except (ValueError, TypeError):
+                tz_offset = 5.5
 
         # Settings hash for database cache
         settings_str = f"{clean_date}_{time_str}_{lat:.4f}_{lon:.4f}_{tz_offset}_{ayanamsa}_{node_type}_{house_system}_{json.dumps(requested_modules)}"

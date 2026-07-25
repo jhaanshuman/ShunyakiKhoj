@@ -48,12 +48,14 @@ def calculate_chart(details: BirthDetails):
         # Geocode lat/lon if not provided
         lat = details.lat
         lon = details.lon
-        tz = details.tz_offset
+        try:
+            tz = float(details.tz_offset)
+        except (ValueError, TypeError):
+            tz = 5.5
         if lat is None or lon is None:
             g_lat, g_lon, g_tz, _ = kundli_utils.resolve_place(details.place)
             lat = g_lat
             lon = g_lon
-            tz = g_tz
 
         # Settings hash for database cache
         settings_str = f"{clean_date}_{details.time}_{lat:.4f}_{lon:.4f}_{tz}_{details.ayanamsa}_{details.node_type}_{details.house_system}"

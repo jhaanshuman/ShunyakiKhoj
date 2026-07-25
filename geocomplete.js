@@ -363,6 +363,8 @@
         let activeIndex   = -1;
         let lastResults   = [];
         let selectedItem  = null;
+        let isProgrammaticSelect = false;
+        let isUserTyping  = false;
 
         /* Set default value */
         if (!originalInput.value) {
@@ -383,6 +385,7 @@
 
         /* Show searching indicator */
         function showSearching() {
+            if (!isUserTyping) return;
             dropdown.style.display = 'block';
             dropdown.innerHTML = `
                 <div class="gc-searching">
@@ -395,6 +398,10 @@
 
         /* Render results */
         function renderResults(results) {
+            if (isProgrammaticSelect) {
+                closeDropdown();
+                return;
+            }
             lastResults = results;
             activeIndex = -1;
             if (!results || results.length === 0) {
@@ -426,6 +433,8 @@
 
         /* Select a result */
         function selectResult(raw, formatted) {
+            isProgrammaticSelect = true;
+            isUserTyping = false;
             selectedItem = { raw, formatted };
             originalInput.value = formatted.inputValue;
             updateClearBtn();
@@ -449,12 +458,10 @@
 
             if (targetLat && raw.lat !== undefined && raw.lat !== null) {
                 targetLat.value = parseFloat(raw.lat).toFixed(4);
-                targetLat.dispatchEvent(new Event('input', { bubbles: true }));
                 targetLat.dispatchEvent(new Event('change', { bubbles: true }));
             }
             if (targetLon && raw.lon !== undefined && raw.lon !== null) {
                 targetLon.value = parseFloat(raw.lon).toFixed(4);
-                targetLon.dispatchEvent(new Event('input', { bubbles: true }));
                 targetLon.dispatchEvent(new Event('change', { bubbles: true }));
             }
 
@@ -462,9 +469,14 @@
                 options.onSelect(raw, formatted);
             }
 
-            // Fire change and input events so external listeners know
+            // Fire change event so external listeners know
             originalInput.dispatchEvent(new Event('change', { bubbles: true }));
-            originalInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+            // Ensure dropdown remains closed
+            setTimeout(() => {
+                closeDropdown();
+                isProgrammaticSelect = false;
+            }, 60);
         }
 
         /* Keyboard navigation */
@@ -499,8 +511,33 @@
         }
 
         /* ── Events ──────────────────────────────────────────────────────────── */
-        originalInput.addEventListener('input', () => {
+        originalInput.addEventListener('keydown', (e) => {
+            isUserTyping = true;
+            if (dropdown.style.display === 'none') return;
+            if (e.key === 'ArrowDown')  { e.preventDefault(); setActive(activeIndex + 1); }
+            if (e.key === 'ArrowUp')    { e.preventDefault(); setActive(activeIndex - 1); }
+            if (e.key === 'Escape')     { closeDropdown(); }
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (activeIndex >= 0 && lastResults[activeIndex]) {
+                    const f = formatResult(lastResults[activeIndex]);
+                    selectResult(lastResults[activeIndex], f);
+                } else {
+                    closeDropdown();
+                }
+            }
+        });
+
+        originalInput.addEventListener('input', (e) => {
             updateClearBtn();
+            if (isProgrammaticSelect) {
+                closeDropdown();
+                return;
+            }
+            if (!isUserTyping && !e.isTrusted) {
+                closeDropdown();
+                return;
+            }
             const q = originalInput.value.trim().toLowerCase();
             if (q.length < 2) { closeDropdown(); return; }
             
@@ -511,7 +548,6 @@
             ).slice(0, 5);
             
             if (localMatches.length > 0) {
-                // Instantly render local matches without debounce network delay!
                 renderResults(localMatches);
             } else {
                 showSearching();
@@ -519,9 +555,7 @@
 
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(async () => {
-                // Fetch Nominatim results to complete/refine search
                 const apiResults = await fetchPlaces(originalInput.value.trim());
-                // Merge local matches with API results, filtering duplicates
                 const merged = [...localMatches];
                 apiResults.forEach(apiCity => {
                     const latDiff = 0.05;
@@ -532,8 +566,10 @@
                     );
                     if (!isDup) merged.push(apiCity);
                 });
-                renderResults(merged.slice(0, 8));
-            }, 320); // 320ms debounce
+                if (isUserTyping && !isProgrammaticSelect) {
+                    renderResults(merged.slice(0, 8));
+                }
+            }, 320);
         });
 
         originalInput.addEventListener('keydown', (e) => {
