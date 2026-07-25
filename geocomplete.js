@@ -26,6 +26,17 @@
         { name: "Pune", display_name: "Pune, Maharashtra, India", lat: "18.5204", lon: "73.8567", type: "city", address: { city: "Pune", state: "Maharashtra", country: "India", country_code: "in" } },
         { name: "Ahmedabad", display_name: "Ahmedabad, Gujarat, India", lat: "23.0225", lon: "72.5714", type: "city", address: { city: "Ahmedabad", state: "Gujarat", country: "India", country_code: "in" } },
         { name: "Patna", display_name: "Patna, Bihar, India", lat: "25.5941", lon: "85.1376", type: "city", address: { city: "Patna", state: "Bihar", country: "India", country_code: "in" } },
+        { name: "Gaya", display_name: "Gaya, Bihar, India", lat: "24.7964", lon: "85.0080", type: "city", address: { city: "Gaya", state: "Bihar", country: "India", country_code: "in" } },
+        { name: "Bodh Gaya", display_name: "Bodh Gaya, Bihar, India", lat: "24.6961", lon: "84.9870", type: "city", address: { city: "Bodh Gaya", state: "Bihar", country: "India", country_code: "in" } },
+        { name: "Muzaffarpur", display_name: "Muzaffarpur, Bihar, India", lat: "26.1209", lon: "85.3647", type: "city", address: { city: "Muzaffarpur", state: "Bihar", country: "India", country_code: "in" } },
+        { name: "Bhagalpur", display_name: "Bhagalpur, Bihar, India", lat: "25.2425", lon: "86.9842", type: "city", address: { city: "Bhagalpur", state: "Bihar", country: "India", country_code: "in" } },
+        { name: "Darbhanga", display_name: "Darbhanga, Bihar, India", lat: "26.1542", lon: "85.8918", type: "city", address: { city: "Darbhanga", state: "Bihar", country: "India", country_code: "in" } },
+        { name: "Varanasi", display_name: "Varanasi, Uttar Pradesh, India", lat: "25.3176", lon: "82.9739", type: "city", address: { city: "Varanasi", state: "Uttar Pradesh", country: "India", country_code: "in" } },
+        { name: "Kashi", display_name: "Varanasi, Uttar Pradesh, India", lat: "25.3176", lon: "82.9739", type: "city", address: { city: "Varanasi", state: "Uttar Pradesh", country: "India", country_code: "in" } },
+        { name: "Ujjain", display_name: "Ujjain, Madhya Pradesh, India", lat: "23.1765", lon: "75.7885", type: "city", address: { city: "Ujjain", state: "Madhya Pradesh", country: "India", country_code: "in" } },
+        { name: "Haridwar", display_name: "Haridwar, Uttarakhand, India", lat: "29.9457", lon: "78.1642", type: "city", address: { city: "Haridwar", state: "Uttarakhand", country: "India", country_code: "in" } },
+        { name: "Rishikesh", display_name: "Rishikesh, Uttarakhand, India", lat: "30.0869", lon: "78.2676", type: "city", address: { city: "Rishikesh", state: "Uttarakhand", country: "India", country_code: "in" } },
+        { name: "Ayodhya", display_name: "Ayodhya, Uttar Pradesh, India", lat: "26.7922", lon: "82.1998", type: "city", address: { city: "Ayodhya", state: "Uttar Pradesh", country: "India", country_code: "in" } },
         { name: "Jaipur", display_name: "Jaipur, Rajasthan, India", lat: "26.9124", lon: "75.7873", type: "city", address: { city: "Jaipur", state: "Rajasthan", country: "India", country_code: "in" } },
         { name: "Surat", display_name: "Surat, Gujarat, India", lat: "21.1702", lon: "72.8311", type: "city", address: { city: "Surat", state: "Gujarat", country: "India", country_code: "in" } },
         { name: "Lucknow", display_name: "Lucknow, Uttar Pradesh, India", lat: "26.8467", lon: "80.9462", type: "city", address: { city: "Lucknow", state: "Uttar Pradesh", country: "India", country_code: "in" } },
@@ -423,8 +434,37 @@
             originalInput.dataset.lat = raw.lat;
             originalInput.dataset.lon = raw.lon;
             originalInput.dataset.displayName = raw.display_name;
-            // Fire change event so external listeners know
+
+            // AUTO-SET LATITUDE & LONGITUDE INPUT FIELDS
+            const inputId = originalInput.id || '';
+            const prefix = inputId.replace(/Place.*$/i, '').replace(/Input.*$/i, '');
+            const targetLat = document.getElementById(prefix + 'Lat') || 
+                              document.getElementById(inputId + 'Lat') || 
+                              (inputId === 'birthPlace' ? document.getElementById('birthLat') : null) ||
+                              document.getElementById('birthLat');
+            const targetLon = document.getElementById(prefix + 'Lon') || 
+                              document.getElementById(inputId + 'Lon') || 
+                              (inputId === 'birthPlace' ? document.getElementById('birthLon') : null) ||
+                              document.getElementById('birthLon');
+
+            if (targetLat && raw.lat !== undefined && raw.lat !== null) {
+                targetLat.value = parseFloat(raw.lat).toFixed(4);
+                targetLat.dispatchEvent(new Event('input', { bubbles: true }));
+                targetLat.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            if (targetLon && raw.lon !== undefined && raw.lon !== null) {
+                targetLon.value = parseFloat(raw.lon).toFixed(4);
+                targetLon.dispatchEvent(new Event('input', { bubbles: true }));
+                targetLon.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+
+            if (typeof options.onSelect === 'function') {
+                options.onSelect(raw, formatted);
+            }
+
+            // Fire change and input events so external listeners know
             originalInput.dispatchEvent(new Event('change', { bubbles: true }));
+            originalInput.dispatchEvent(new Event('input', { bubbles: true }));
         }
 
         /* Keyboard navigation */

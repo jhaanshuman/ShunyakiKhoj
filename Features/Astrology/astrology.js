@@ -1053,9 +1053,27 @@ window.handleKundliCalculation = async function(e) {
     const name = (document.getElementById('birthName') || {}).value || 'Native';
     const dateInput = (document.getElementById('birthDate') || {}).value || '1994-01-05';
     const timeInput = (document.getElementById('birthTime') || {}).value || '12:00';
-    const placeInput = (document.getElementById('birthPlace') || {}).value || 'New Delhi, India';
-    const lat = parseFloat((document.getElementById('birthLat') || {}).value) || 25.5941;
-    const lon = parseFloat((document.getElementById('birthLon') || {}).value) || 85.1376;
+    const placeElem = document.getElementById('birthPlace');
+    const placeInput = placeElem ? placeElem.value : 'New Delhi, India';
+    
+    const latElem = document.getElementById('birthLat');
+    const lonElem = document.getElementById('birthLon');
+    
+    let lat = latElem ? parseFloat(latElem.value) : NaN;
+    let lon = lonElem ? parseFloat(lonElem.value) : NaN;
+    
+    // Primary coordinate extraction from geocomplete dataset attributes
+    if (placeElem && placeElem.dataset.lat && !isNaN(parseFloat(placeElem.dataset.lat))) {
+        lat = parseFloat(placeElem.dataset.lat);
+        if (latElem) latElem.value = lat.toFixed(4);
+    }
+    if (placeElem && placeElem.dataset.lon && !isNaN(parseFloat(placeElem.dataset.lon))) {
+        lon = parseFloat(placeElem.dataset.lon);
+        if (lonElem) lonElem.value = lon.toFixed(4);
+    }
+    
+    if (isNaN(lat)) lat = 25.5941;
+    if (isNaN(lon)) lon = 85.1376;
 
     console.log(`📋 [STEP 2/5] Birth details extracted: Name="${name}", Date="${dateInput}", Time="${timeInput}", Place="${placeInput}", Lat=${lat}, Lon=${lon}`);
 
@@ -4553,16 +4571,6 @@ window.toggleRawPayloadModal = function() {
 // ═══════════════════════════════════════════════════════════════════════════
 // NEW UNIFIED REPORT TABS SYSTEM (40+ ASTROLOGICAL TABS)
 // ═══════════════════════════════════════════════════════════════════════════
-window.switchReportCategory = function(catName) {
-    // 1. Deactivate all category tab buttons
-    document.querySelectorAll('.cat-tab-btn').forEach(btn => {
-        btn.style.background = '#1e293b';
-        btn.style.border = '1px solid #334155';
-        btn.style.color = '#cbd5e1';
-        btn.classList.remove('active');
-    });
-    // 2. Activate the selected category tab button
-    const activeBtn = Array.from(document.querySelectorAll('.cat-tab-btn')).find(btn => btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(catName));
 window.switchReportCategory = function(catName) {
     // 1. Deactivate all category tab buttons
     document.querySelectorAll('.cat-tab-btn').forEach(btn => {
