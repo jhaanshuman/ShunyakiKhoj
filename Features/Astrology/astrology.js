@@ -3397,11 +3397,20 @@ window.loadDainikPanchang = async function loadDainikPanchang(dateStr, place) {
             // Re-bind and trigger animations for newly created elements
             initScrollAnimations();
         } else {
-            if (timelineContainer) timelineContainer.innerHTML = '<div style="color:#f87171;padding:2rem;text-align:center;">Error: ' + (data.detail || 'Panchang calculation failed') + '</div>';
+            console.warn("Panchang API returned non-success, using local ephemeris fallback...");
+            const fallbackData = generateLocalClientEphemerisFallback({
+                name: 'Native', date: formattedDate, time: '12:00', place: reqPlace
+            });
+            lastCalculatedData = fallbackData;
+            populatePanchangUI(fallbackData, dateStr, reqPlace);
         }
     } catch(e) {
-        console.error('loadDainikPanchang error:', e);
-        if (timelineContainer) timelineContainer.innerHTML = '<div style="color:#f87171;padding:2rem;text-align:center;">Could not connect to API server.</div>';
+        console.warn('loadDainikPanchang fetch error, using local ephemeris fallback:', e);
+        const fallbackData = generateLocalClientEphemerisFallback({
+            name: 'Native', date: formattedDate, time: '12:00', place: reqPlace
+        });
+        lastCalculatedData = fallbackData;
+        populatePanchangUI(fallbackData, dateStr, reqPlace);
     }
 }
 
