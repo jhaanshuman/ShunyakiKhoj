@@ -1,7 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /UserLog/
-Disallow: /_vercel/
 
 Sitemap: https://shunyakikhoj.co.in/sitemap.xml

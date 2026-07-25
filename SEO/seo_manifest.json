@@ -1,0 +1,167 @@
+{
+  "platform": "ShunyakiKhoj Vedic Astrology & Sanskrit AI",
+  "version": "1.0.0",
+  "domain": "https://shunyakikhoj.co.in",
+  "categories": [
+    {
+      "id": "kundli",
+      "name": "Birth Kundli & Horoscopes",
+      "slug": "kundli",
+      "priority": 1.0,
+      "changefreq": "daily",
+      "schema": "WebApplication",
+      "keywords_count": 350,
+      "head_keywords": ["birth kundli", "janam kundli", "free kundli", "online kundli", "vedic birth chart", "janampatri", "lagna chart"]
+    },
+    {
+      "id": "divisional",
+      "name": "Divisional Charts (Varga Charts D1-D144)",
+      "slug": "divisional-charts",
+      "priority": 0.9,
+      "changefreq": "weekly",
+      "schema": "Article",
+      "keywords_count": 2500,
+      "head_keywords": ["D1 chart", "D9 Navamsa", "D10 Dasamsa", "D3 Drekkana", "D7 Saptamsa", "D60 Shastiamsa", "varga charts"]
+    },
+    {
+      "id": "dasha",
+      "name": "Vedic Dasha Systems",
+      "slug": "dasha-systems",
+      "priority": 0.9,
+      "changefreq": "weekly",
+      "schema": "WebApplication",
+      "keywords_count": 1800,
+      "head_keywords": ["Vimshottari Dasha", "Yogini Dasha", "Chara Dasha", "Mahadasha predictions", "Antardasha calculator"]
+    },
+    {
+      "id": "panchang",
+      "name": "Dainik & Maasik Panchang",
+      "slug": "panchang",
+      "priority": 1.0,
+      "changefreq": "daily",
+      "schema": "WebApplication",
+      "keywords_count": 1500,
+      "head_keywords": ["today panchang", "daily panchang", "tithi today", "nakshatra today", "rahu kaal today", "choghadiya", "hora"]
+    },
+    {
+      "id": "muhurta",
+      "name": "Shubh Muhurta Finder",
+      "slug": "muhurta",
+      "priority": 0.85,
+      "changefreq": "weekly",
+      "schema": "WebApplication",
+      "keywords_count": 1200,
+      "head_keywords": ["marriage muhurta", "griha pravesh muhurta", "vehicle purchase muhurta", "business opening muhurta"]
+    },
+    {
+      "id": "matching",
+      "name": "Kundli Matching & Guna Milan",
+      "slug": "kundli-matching",
+      "priority": 0.95,
+      "changefreq": "weekly",
+      "schema": "WebApplication",
+      "keywords_count": 1400,
+      "head_keywords": ["kundli matching", "guna milan 36 points", "marriage compatibility", "ashtakoot matching", "manglik matching"]
+    },
+    {
+      "id": "planets",
+      "name": "Graha & Planetary Placements",
+      "slug": "planets",
+      "priority": 0.85,
+      "changefreq": "monthly",
+      "schema": "Article",
+      "keywords_count": 3200,
+      "head_keywords": ["Sun in houses", "Moon in signs", "Mars placement", "Jupiter in 10th house", "Saturn retrograde"]
+    },
+    {
+      "id": "zodiac",
+      "name": "Rashi & Zodiac Predictions",
+      "slug": "zodiac-signs",
+      "priority": 0.85,
+      "changefreq": "daily",
+      "schema": "Article",
+      "keywords_count": 1500,
+      "head_keywords": ["Aries horoscope", "Taurus career", "Gemini 2026 predictions", "Leo marriage horoscope"]
+    },
+    {
+      "id": "yogas",
+      "name": "300+ Vedic Yogas",
+      "slug": "yogas",
+      "priority": 0.9,
+      "changefreq": "weekly",
+      "schema": "Article",
+      "keywords_count": 4500,
+      "head_keywords": ["Gajakesari Yoga", "Budhaditya Yoga", "Neecha Bhanga Raja Yoga", "Pancha Mahapurusha Yoga", "Vipreet Raja Yoga"]
+    },
+    {
+      "id": "doshas",
+      "name": "Vedic Doshas & Malefics",
+      "slug": "doshas",
+      "priority": 0.85,
+      "changefreq": "weekly",
+      "schema": "Article",
+      "keywords_count": 1200,
+      "head_keywords": ["Manglik Dosha", "Kaal Sarp Dosha", "Pitru Dosha", "Guru Chandal Dosha", "Kuja Dosha remedies"]
+    },
+    {
+      "id": "remedies",
+      "name": "Gemstone & Rudraksha Remedies",
+      "slug": "remedies",
+      "priority": 0.85,
+      "changefreq": "weekly",
+      "schema": "WebApplication",
+      "keywords_count": 2200,
+      "head_keywords": ["gemstone calculator", "rudraksha calculator", "emerald benefits", "blue sapphire for saturn", "mantra remedies"]
+    },
+    {
+      "id": "sanskrit",
+      "name": "Sanskrit Dictionary & Grammar AI",
+      "slug": "sanskrit-dictionary",
+      "priority": 0.9,
+      "changefreq": "weekly",
+      "schema": "WebApplication",
+      "keywords_count": 2500,
+      "head_keywords": ["sanskrit dictionary", "monier williams", "sanskrit grammar", "devanagari typing", "sandhi samasa"]
+    },
+    {
+      "id": "festivals",
+      "name": "Hindu Festivals Directory & Vrat Katha",
+      "slug": "festivals",
+      "priority": 0.9,
+      "changefreq": "daily",
+      "schema": "Event",
+      "keywords_count": 3500,
+      "head_keywords": ["Mahashivratri date", "Diwali puja vidhi", "Navratri vrat katha", "Janmashtami muhurta", "Holi history"]
+    },
+    {
+      "id": "temples",
+      "name": "Sacred Temples & Pilgrimage Guide",
+      "slug": "temples",
+      "priority": 0.8,
+      "changefreq": "monthly",
+      "schema": "Place",
+      "keywords_count": 4000,
+      "head_keywords": ["Kashi Vishwanath darshan", "Baidyanath Dham history", "Kedarnath timings", "Mahakaleshwar aarti"]
+    },
+    {
+      "id": "ai-astrology",
+      "name": "AI Astrologer & Predictions",
+      "slug": "ai-astrology",
+      "priority": 0.95,
+      "changefreq": "daily",
+      "schema": "WebApplication",
+      "keywords_count": 1800,
+      "head_keywords": ["AI horoscope", "AI kundli", "AI predictions", "chat astrology", "ask AI astrologer"]
+    },
+    {
+      "id": "life-domains",
+      "name": "Life Domain Predictions",
+      "slug": "life-predictions",
+      "priority": 0.9,
+      "changefreq": "weekly",
+      "schema": "Article",
+      "keywords_count": 3800,
+      "head_keywords": ["career prediction", "government job astrology", "wealth prediction", "foreign settlement visa", "marriage age prediction"]
+    }
+  ]
+}
