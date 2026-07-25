@@ -47,10 +47,9 @@ def calculate_all_dashas(master_obj: Any, requested_dashas: List[str] = None) ->
         'lagna_kendradi': calculate_lagna_kendradi,
         'sudarshana_chakra': calculate_sudarshana_chakra
     }
-    
     for dasha_name, func in dashas_map.items():
         if 'ALL' in requested_dashas or dasha_name in requested_dashas:
             periods = func(master_obj)
-            result[dasha_name] = [p.to_dict() for p in periods]
+            result[dasha_name] = [p.to_dict() if hasattr(p, 'to_dict') else p for p in periods]
             
     return result
