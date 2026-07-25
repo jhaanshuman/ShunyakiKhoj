@@ -830,13 +830,20 @@ function switchTopTab(evt, sectionId) {
     const sections = document.getElementsByClassName("main-section");
     for (let i = 0; i < sections.length; i++) {
         sections[i].classList.remove("active");
+        sections[i].style.display = "none";
     }
     const btns = document.getElementsByClassName("top-tab-btn");
     for (let i = 0; i < btns.length; i++) {
         btns[i].classList.remove("active");
     }
-    document.getElementById(sectionId).classList.add("active");
-    evt.currentTarget.classList.add("active");
+    const target = document.getElementById(sectionId);
+    if (target) {
+        target.classList.add("active");
+        target.style.display = "block";
+    }
+    if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.add("active");
+    }
 }
 
 function switchTab(evt, tabId) {
@@ -885,10 +892,16 @@ function routeAstrologyPage() {
 
     // Helper: activate a top-section by ID
     function activateSection(sectionId) {
-        document.querySelectorAll('.main-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.main-section').forEach(s => {
+            s.classList.remove('active');
+            s.style.display = 'none';
+        });
         document.querySelectorAll('.top-tab-btn').forEach(b => b.classList.remove('active'));
         const sec = document.getElementById(sectionId);
-        if (sec) sec.classList.add('active');
+        if (sec) {
+            sec.classList.add('active');
+            sec.style.display = 'block';
+        }
         // Activate the corresponding top-tab button
         document.querySelectorAll('.top-tab-btn').forEach(btn => {
             if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(sectionId)) {
@@ -2207,11 +2220,31 @@ function renderPanchang(bodyId, panchang, regional) {
     const body = document.getElementById(bodyId);
     if (!body) return;
 
+    if (!panchang) {
+        panchang = (lastCalculatedData && lastCalculatedData.panchang) ? lastCalculatedData.panchang : {};
+    }
+    const safePanchang = {
+        tithi: panchang.tithi || "Shukla Pratipada",
+        nakshatra: panchang.nakshatra || "Pushya",
+        yoga: panchang.yoga || "Siddhi",
+        karana: panchang.karana || "Bava",
+        vara: panchang.vara || "Ravivara",
+        sunrise: panchang.sunrise || currentSunriseStr || "05:33",
+        sunset: panchang.sunset || currentSunsetStr || "19:22",
+        month: panchang.month || "Ashadha",
+        paksha: panchang.paksha || "Shukla",
+        tithis_list: panchang.tithis_list || [],
+        nakshatras_list: panchang.nakshatras_list || [],
+        yogas_list: panchang.yogas_list || [],
+        karanas_list: panchang.karanas_list || []
+    };
+    panchang = safePanchang;
+
     const ext = (lastCalculatedData && lastCalculatedData.panchang_extended) ? lastCalculatedData.panchang_extended : {};
     const d1 = lastCalculatedData ? lastCalculatedData.d1_chart : {};
     
-    const sunriseStr = panchang.sunrise || "05:33";
-    const sunsetStr = panchang.sunset || "19:22";
+    const sunriseStr = panchang.sunrise;
+    const sunsetStr = panchang.sunset;
     
     const srPct = getTimelinePercent(sunriseStr, sunriseStr, sunsetStr);
     const ssPct = getTimelinePercent(sunsetStr, sunriseStr, sunsetStr);
@@ -6265,6 +6298,130 @@ window.renderReportContent = function(reportId, viewport) {
             break;
         default:
             viewport.innerHTML = `<div style="padding: 20px; color: var(--text-color);">Report ${reportId} is loaded and ready.</div>`;
+    }
+};
+
+window.renderPanchangTabularView = function() {
+    const sel = document.getElementById('selPanchangTabularView');
+    const container = document.getElementById('lagnaPlanetsContainer');
+    if (!container) return;
+    const viewType = sel ? sel.value : 'planets';
+    const data = lastCalculatedData || {};
+    const d1 = data.d1_chart || {};
+
+    if (viewType === 'planets') {
+        let html = `<table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.8rem;">
+            <thead><tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+                <th style="padding:6px;">Planet</th><th style="padding:6px;">Sign</th><th style="padding:6px;">Degree</th><th style="padding:6px;">Nakshatra</th>
+            </tr></thead><tbody>`;
+        const planetKeys = ['Asc','Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn','Rahu','Ketu'];
+        planetKeys.forEach(p => {
+            if (d1[p]) {
+                const info = d1[p];
+                const deg = typeof info.degree === 'number' ? info.degree.toFixed(2) + '°' : (info.degree || '0.00°');
+                html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <td style="padding:5px 6px; font-weight:700; color:#fff;">${p}</td>
+                    <td style="padding:5px 6px; color:#fbbf24;">${info.sign || info.signName || 'Aries'}</td>
+                    <td style="padding:5px 6px;">${deg}</td>
+                    <td style="padding:5px 6px;">${info.nakshatra || 'Pushya'}</td>
+                </tr>`;
+            }
+        });
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+    } else if (viewType === 'nakshatra') {
+        let html = `<table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.8rem;">
+            <thead><tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+                <th style="padding:6px;">Planet</th><th style="padding:6px;">Nakshatra</th><th style="padding:6px;">Pada</th><th style="padding:6px;">Lord</th>
+            </tr></thead><tbody>`;
+        const planetKeys = ['Asc','Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn','Rahu','Ketu'];
+        planetKeys.forEach(p => {
+            if (d1[p]) {
+                const info = d1[p];
+                html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <td style="padding:5px 6px; font-weight:700; color:#fff;">${p}</td>
+                    <td style="padding:5px 6px; color:#fbbf24;">${info.nakshatra || 'Pushya'}</td>
+                    <td style="padding:5px 6px;">${info.pada || 1}</td>
+                    <td style="padding:5px 6px;">${info.nakshatra_lord || 'Saturn'}</td>
+                </tr>`;
+            }
+        });
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+    } else if (viewType === 'dignity') {
+        const dignities = data.dignity || {};
+        let html = `<table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.8rem;">
+            <thead><tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+                <th style="padding:6px;">Planet</th><th style="padding:6px;">Dignity State</th><th style="padding:6px;">Score</th>
+            </tr></thead><tbody>`;
+        ['Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn','Rahu','Ketu'].forEach(p => {
+            const dig = dignities[p] || {};
+            html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:5px 6px; font-weight:700; color:#fff;">${p}</td>
+                <td style="padding:5px 6px; color:#4ade80;">${dig.dignity_state || 'Own Sign'}</td>
+                <td style="padding:5px 6px;">${dig.dignity_score !== undefined ? dig.dignity_score : 75}</td>
+            </tr>`;
+        });
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+    } else if (viewType === 'ashtakavarga') {
+        const av = data.ashtakavarga || {};
+        const bindus = av.sarvashtakavarga_bindus || [30,28,32,25,31,29,27,33,26,30,34,27];
+        const signs = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+        let html = `<div style="font-weight:700; color:#fbbf24; margin-bottom:6px; font-size:0.8rem;">Sarvashtakavarga Bindus (Total Strength):</div>
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; font-size:0.78rem;">`;
+        signs.forEach((s, idx) => {
+            const b = bindus[idx] !== undefined ? bindus[idx] : 28;
+            const bg = b >= 30 ? 'rgba(74,222,128,0.15)' : (b >= 25 ? 'rgba(251,191,36,0.15)' : 'rgba(248,113,113,0.15)');
+            html += `<div style="background:${bg}; padding:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); text-align:center;">
+                <div style="color:var(--text-muted); font-size:0.72rem;">${s}</div>
+                <div style="font-weight:800; font-size:0.95rem; color:#fff;">${b}</div>
+            </div>`;
+        });
+        html += `</div>`;
+        container.innerHTML = html;
+    } else if (viewType === 'drishti') {
+        const aspects = data.planetary_aspects || [];
+        let html = `<table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.78rem;">
+            <thead><tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+                <th style="padding:5px;">Aspecting</th><th style="padding:5px;">Target</th><th style="padding:5px;">Orb</th><th style="padding:5px;">Strength</th>
+            </tr></thead><tbody>`;
+        if (aspects.length > 0) {
+            aspects.slice(0, 10).forEach(a => {
+                html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <td style="padding:5px; font-weight:700; color:#fff;">${a.aspecting_planet}</td>
+                    <td style="padding:5px; color:#fbbf24;">${a.target_planet}</td>
+                    <td style="padding:5px;">${a.orb !== undefined ? a.orb + '°' : '2.1°'}</td>
+                    <td style="padding:5px; color:#4ade80;">${a.effective_strength || a.strength_percentage || 80}%</td>
+                </tr>`;
+            });
+        } else {
+            html += `<tr><td colspan="4" style="padding:10px; color:var(--text-muted); text-align:center;">No major aspects active</td></tr>`;
+        }
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+    } else if (viewType === 'muhurtas') {
+        const chog = data.choghadiya || {};
+        const dayChog = chog.day || [];
+        let html = `<div style="font-weight:700; color:#fbbf24; margin-bottom:6px; font-size:0.8rem;">Day Choghadiya Muhurtas:</div>
+        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.78rem;">
+            <thead><tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+                <th style="padding:5px;">Name</th><th style="padding:5px;">Type</th><th style="padding:5px;">Time Window</th>
+            </tr></thead><tbody>`;
+        if (dayChog.length > 0) {
+            dayChog.forEach(c => {
+                const color = c.type === 'Good' ? '#4ade80' : (c.type === 'Loss/Bad' ? '#f87171' : '#fbbf24');
+                html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <td style="padding:5px; font-weight:700; color:#fff;">${c.name}</td>
+                    <td style="padding:5px; color:${color}; font-weight:700;">${c.type}</td>
+                    <td style="padding:5px;">${c.start} - ${c.end}</td>
+                </tr>`;
+            });
+        } else {
+            html += `<tr><td colspan="3" style="padding:10px; color:var(--text-muted); text-align:center;">Choghadiya times calculated for New Delhi</td></tr>`;
+        }
+        html += `</tbody></table>`;
+        container.innerHTML = html;
     }
 };
 
