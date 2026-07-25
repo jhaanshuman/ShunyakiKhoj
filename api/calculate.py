@@ -420,9 +420,17 @@ else:
 
 file_lock = threading.Lock()
 
+from fastapi.responses import JSONResponse
+
+@app.options("/api/visitor_count")
 @app.post("/api/visitor_count")
 @app.get("/api/visitor_count")
 def get_visitor_count(request: Request):
+    headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "*"
+    }
     try:
         ip = request.headers.get("x-forwarded-for")
         if ip:
@@ -468,20 +476,26 @@ def get_visitor_count(request: Request):
             except Exception as e:
                 print("Failed to save visitor file:", e)
 
-        return {
-            "status": "success",
-            "total_visits": data.get("total_visits", 1250),
-            "unique_visitors": data.get("unique_visitors", 480),
-            "is_repeat": is_repeat
-        }
+        return JSONResponse(
+            content={
+                "status": "success",
+                "total_visits": data.get("total_visits", 1250),
+                "unique_visitors": data.get("unique_visitors", 480),
+                "is_repeat": is_repeat
+            },
+            headers=headers
+        )
     except Exception as e:
-        return {
-            "status": "success",
-            "total_visits": 1250,
-            "unique_visitors": 480,
-            "is_repeat": True,
-            "fallback": True
-        }
+        return JSONResponse(
+            content={
+                "status": "success",
+                "total_visits": 1250,
+                "unique_visitors": 480,
+                "is_repeat": True,
+                "fallback": True
+            },
+            headers=headers
+        )
 
 
 import time

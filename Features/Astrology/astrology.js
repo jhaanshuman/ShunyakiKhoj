@@ -614,7 +614,11 @@ window.addEventListener('DOMContentLoaded', () => {
             if (controlsCard) controlsCard.style.display = 'flex';
             if (routerHeader) routerHeader.style.display = 'flex';
 
-            loadDainikPanchang(pDateInput ? pDateInput.value : curToday, pPlaceInput ? pPlaceInput.value : savedPlace);
+            if (typeof window.loadDainikPanchang === 'function') {
+                window.loadDainikPanchang(pDateInput ? pDateInput.value : curToday, pPlaceInput ? pPlaceInput.value : savedPlace);
+            } else if (typeof loadDainikPanchang === 'function') {
+                loadDainikPanchang(pDateInput ? pDateInput.value : curToday, pPlaceInput ? pPlaceInput.value : savedPlace);
+            }
 
             ['phViewDayBtn','phViewDayBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.add('active'); });
             ['phViewMonthBtn','phViewMonthBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
@@ -671,7 +675,11 @@ window.addEventListener('DOMContentLoaded', () => {
             if (welcomeSection) welcomeSection.style.display = 'block';
             
             // Populate right sidebar widgets on homepage load
-            loadDainikPanchang(curToday, savedPlace);
+            if (typeof window.loadDainikPanchang === 'function') {
+                window.loadDainikPanchang(curToday, savedPlace);
+            } else if (typeof loadDainikPanchang === 'function') {
+                loadDainikPanchang(curToday, savedPlace);
+            }
             if (dayViewHome) dayViewHome.style.display = 'none';
             if (maasikViewHome) maasikViewHome.style.display = 'none';
             const muhurtasViewHome = document.getElementById('muhurtasViewContainer');
@@ -3178,7 +3186,7 @@ function getSankrantiForDate(monthNum, dayNum) {
     return null;
 }
 
-async function loadDainikPanchang(dateStr, place) {
+window.loadDainikPanchang = async function loadDainikPanchang(dateStr, place) {
     const timelineContainer = document.getElementById('drikTimelineContainer');
     const panchangBody = document.getElementById('panchangBody');
     const phSubDaik = document.getElementById('phSubDaik');
