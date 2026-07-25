@@ -6525,6 +6525,12 @@ function generateLocalClientEphemerisFallback(payload) {
         },
         moon_nakshatra: d1_chart.Moon.Nakshatra,
         moon_lon: sidLons['Moon'],
+        shadbala: {
+            'Sun': 480.25, 'Moon': 390.11, 'Mars': 320.45, 'Mercury': 415.82, 'Jupiter': 490.95, 'Venus': 365.12, 'Saturn': 310.23
+        }
+    };
+}
+
 function renderGenericDashaTab(viewport, reportId) {
     const key = reportId.replace('tab', '').toLowerCase();
     const dashasData = lastCalculatedData.dashas || lastCalculatedData.dasha || {};
