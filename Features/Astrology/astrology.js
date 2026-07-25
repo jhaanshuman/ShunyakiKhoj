@@ -641,7 +641,11 @@ window.addEventListener('DOMContentLoaded', () => {
                 maasikMonthInput.value = `${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}`;
             }
 
-            loadMaasikCalendar();
+            if (typeof window.loadMaasikCalendar === 'function') {
+                window.loadMaasikCalendar();
+            } else if (typeof loadMaasikCalendar === 'function') {
+                loadMaasikCalendar();
+            }
 
             ['phViewMonthBtn','phViewMonthBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.add('active'); });
             ['phViewDayBtn','phViewDayBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
@@ -663,7 +667,11 @@ window.addEventListener('DOMContentLoaded', () => {
             if (controlsCard) controlsCard.style.display = 'flex';
             if (routerHeader) routerHeader.style.display = 'flex';
 
-            loadMuhurtasDashboard();
+            if (typeof window.loadMuhurtasDashboard === 'function') {
+                window.loadMuhurtasDashboard();
+            } else if (typeof loadMuhurtasDashboard === 'function') {
+                loadMuhurtasDashboard();
+            }
 
             ['phViewMonthBtn','phViewMonthBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
             ['phViewDayBtn','phViewDayBtnM'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
@@ -3975,7 +3983,7 @@ window.closeDirectoryDetailModal = function() {
 };
 
 // Tooltip display logic
-function setupDirectoryTooltipsAndClicks() {
+window.setupDirectoryTooltipsAndClicks = function setupDirectoryTooltipsAndClicks() {
     const tooltip = document.getElementById('vedicGlossaryTooltip');
     const items = document.querySelectorAll('.directory-box ul li a, .festival-item, .observance-item');
     
@@ -4395,9 +4403,8 @@ window.initAstrology = function(tab = '', queryParams = {}) {
     }
     
     // Initialize saffron controls bar for Panchang/Maasik navigation
-    if (typeof initSaffronControls === 'function') {
-        initSaffronControls();
-    }
+    if (typeof window.initSaffronControls === 'function') window.initSaffronControls();
+    else if (typeof initSaffronControls === 'function') initSaffronControls();
     
     // Bind save buttons
     const btnSavePanchangPlace = document.getElementById('btnSavePanchangPlace');
@@ -4428,11 +4435,20 @@ window.initAstrology = function(tab = '', queryParams = {}) {
     }
 
     // Trigger router and layouts
-    routeAstrologyPage(tab, queryParams);
-    applyLayoutStyles(tab);
-    initGlossaryTooltips();
-    initScrollAnimations();
-    setupDirectoryTooltipsAndClicks();
+    if (typeof window.routeAstrologyPage === 'function') window.routeAstrologyPage(tab, queryParams);
+    else if (typeof routeAstrologyPage === 'function') routeAstrologyPage(tab, queryParams);
+
+    if (typeof window.applyLayoutStyles === 'function') window.applyLayoutStyles(tab);
+    else if (typeof applyLayoutStyles === 'function') applyLayoutStyles(tab);
+
+    if (typeof window.initGlossaryTooltips === 'function') window.initGlossaryTooltips();
+    else if (typeof initGlossaryTooltips === 'function') initGlossaryTooltips();
+
+    if (typeof window.initScrollAnimations === 'function') window.initScrollAnimations();
+    else if (typeof initScrollAnimations === 'function') initScrollAnimations();
+
+    if (typeof window.setupDirectoryTooltipsAndClicks === 'function') window.setupDirectoryTooltipsAndClicks();
+    else if (typeof setupDirectoryTooltipsAndClicks === 'function') setupDirectoryTooltipsAndClicks();
 };
 
 
