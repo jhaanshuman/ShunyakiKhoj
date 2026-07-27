@@ -2,19 +2,23 @@
 /**
  * auth.php - Authentication & Birth Details Service for ShunyakiKhoj
  */
-header("Content-Type: application/json");
+header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, *");
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
     exit(0);
 }
 
 session_start();
 require_once "db.php";
 
-$action = $_POST['action'] ?? $_GET['action'] ?? '';
+$raw_input = file_get_contents('php://input');
+$json_data = json_decode($raw_input, true) ?? [];
+
+$action = $_POST['action'] ?? $_GET['action'] ?? $json_data['action'] ?? '';
 
 /* 1. SESSION CHECK */
 if ($action === "session") {
@@ -356,19 +360,17 @@ if ($action === "forgot_lookup") {
 
 /* 7. KUNDALI CACHE SAVE & FETCH (PHP MySQL Database Primary Storage) */
 if ($action === "save_kundali_cache") {
-    $user_id = db_escape($_POST['user_identifier'] ?? $_SESSION['username'] ?? 'default');
-    $dob = db_escape($_POST['dob'] ?? '');
-    $tob = db_escape($_POST['tob'] ?? '');
-    $pob = db_escape($_POST['pob'] ?? '');
-    $lat = floatval($_POST['lat'] ?? 0.0);
-    $lon = floatval($_POST['lon'] ?? 0.0);
-    $raw_json = db_escape($_POST['raw_json'] ?? '');
+    $user_id = db_escape($_POST['username'] ?? $_POST['user_identifier'] ?? $json_data['username'] ?? $json_data['user_identifier'] ?? $_SESSION['username'] ?? 'default');
+    $dob = db_escape($_POST['dob'] ?? $json_data['dob'] ?? '');
+    $tob = db_escape($_POST['tob'] ?? $json_data['tob'] ?? '');
+    $pob = db_escape($_POST['pob'] ?? $json_data['pob'] ?? '');
+    $lat = floatval($_POST['lat'] ?? $json_data['lat'] ?? 0.0);
+    $lon = floatval($_POST['lon'] ?? $json_data['lon'] ?? 0.0);
+    $raw_json = db_escape($_POST['raw_json'] ?? $json_data['raw_json'] ?? '');
 
     if (!empty($raw_json)) {
-        // Update users table cached_kundali_json column in PHP MySQL
         db_query("UPDATE users SET cached_kundali_json='$raw_json' WHERE username='$user_id' OR email='$user_id'");
         
-        // Upsert into user_kundali_cache table
         $check_q = db_query("SELECT id FROM user_kundali_cache WHERE user_identifier='$user_id'");
         if ($check_q && db_fetch($check_q)) {
             $sql = "UPDATE user_kundali_cache SET dob='$dob', tob='$tob', pob='$pob', lat=$lat, lon=$lon, raw_json='$raw_json' WHERE user_identifier='$user_id'";
@@ -385,13 +387,18 @@ if ($action === "save_kundali_cache") {
 }
 
 if ($action === "get_kundali_cache") {
-    $user_id = db_escape($_GET['user_identifier'] ?? $_SESSION['username'] ?? 'default');
+    $user_id = db_escape($_GET['username'] ?? $_GET['user_identifier'] ?? $_POST['username'] ?? $_POST['user_identifier'] ?? $json_data['username'] ?? $json_data['user_identifier'] ?? $_SESSION['username'] ?? '');
+    
+    if (empty($user_id)) {
+        echo json_encode(["success" => false, "error" => "Username parameter required"]);
+        exit;
+    }
+
     $q = db_query("SELECT raw_json FROM user_kundali_cache WHERE user_identifier='$user_id' ORDER BY id DESC LIMIT 1");
     $row = db_fetch($q);
     if ($row && !empty($row['raw_json'])) {
         echo json_encode(["success" => true, "raw_json" => $row['raw_json'], "db" => "PHP MySQL Database"]);
     } else {
-        // Check users table as secondary PHP MySQL fallback
         $q2 = db_query("SELECT cached_kundali_json FROM users WHERE username='$user_id' OR email='$user_id'");
         $row2 = db_fetch($q2);
         if ($row2 && !empty($row2['cached_kundali_json'])) {

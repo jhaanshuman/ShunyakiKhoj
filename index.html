@@ -555,7 +555,11 @@ function redirectToLanding(username) {
     if (username) {
         localStorage.setItem('shunya-username', username);
     }
-    const targetUrl = `landing.html?username=${encodeURIComponent(username || '')}`;
+    let baseUrl = 'landing.html';
+    if (window.location.hostname.includes('sanskrit.gt.tc')) {
+        baseUrl = 'https://www.shunyakikhoj.co.in/landing.html';
+    }
+    const targetUrl = `${baseUrl}?username=${encodeURIComponent(username || '')}`;
     window.location.href = targetUrl;
 }
 
@@ -580,14 +584,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('regTob')) document.getElementById('regTob').value = '12:00';
     if (document.getElementById('regPob')) document.getElementById('regPob').value = 'New Delhi, India';
 
-    if (document.getElementById('guestDob')) document.getElementById('guestDob').value = '1995-07-20';
-    if (document.getElementById('guestTob')) document.getElementById('guestTob').value = '12:00';
-    if (document.getElementById('guestPob')) document.getElementById('guestPob').value = 'New Delhi, India';
-
     // Init Geocomplete for location fields
-    if (typeof initGeoComplete === 'function') {
+    if (typeof initGeoComplete === 'function' && document.getElementById('regPob')) {
         initGeoComplete('regPob', { defaultPlace: 'New Delhi, India' });
-        initGeoComplete('guestPob', { defaultPlace: 'New Delhi, India' });
     }
 
     // Check active profile
@@ -745,25 +744,6 @@ async function handleRegisterSubmit(e) {
 
     const profile = data.profile || {
         name, nickname: name, email, mobile, gender, dob, tob, pob, lat, lon
-    };
-
-    if (typeof saveProfile === 'function') saveProfile(profile);
-    redirectToLanding(name);
-}
-
-async function handleGuestSubmit(e) {
-    e.preventDefault();
-    const name = document.getElementById('guestName').value.trim() || 'Guest';
-    const gender = document.getElementById('guestGender').value;
-    const dob = document.getElementById('guestDob').value;
-    const tob = document.getElementById('guestTob').value;
-    const pobEl = document.getElementById('guestPob');
-    const pob = pobEl.value;
-    const lat = pobEl.dataset.lat ? parseFloat(pobEl.dataset.lat) : 28.6139;
-    const lon = pobEl.dataset.lon ? parseFloat(pobEl.dataset.lon) : 77.2090;
-
-    const profile = {
-        name, nickname: name, isGuest: true, gender, dob, tob, pob, lat, lon
     };
 
     if (typeof saveProfile === 'function') saveProfile(profile);
