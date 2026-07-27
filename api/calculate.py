@@ -777,10 +777,15 @@ async def handle_auth_php(request: Request):
             try:
                 conn = get_user_auth_db()
                 cursor = conn.cursor()
-                cursor.execute("SELECT id FROM users WHERE username=? OR (email IS NOT NULL AND email=?) OR (mobile IS NOT NULL AND mobile=?)", (username, email, mobile))
+                cursor.execute("""
+                    SELECT id FROM users 
+                    WHERE username=? 
+                    OR (? IS NOT NULL AND ?!='' AND email=?) 
+                    OR (? IS NOT NULL AND ?!='' AND mobile=?)
+                """, (username, email_val, email_val, email_val, mobile_val, mobile_val, mobile_val))
                 if cursor.fetchone():
                     conn.close()
-                    return {"success": False, "error": "Username, Email, or Mobile already registered. Please Login."}
+                    return {"success": False, "error": "User with this Username, Email, or Mobile already registered. Please Login."}
                     
                 cursor.execute("""
                     INSERT INTO users (username, email, mobile, password_hash, gender, dob, tob, pob, lat, lon)

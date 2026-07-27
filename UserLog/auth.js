@@ -209,7 +209,6 @@
         dd.style.right = `${Math.max(10, window.innerWidth - rect.right)}px`;
         dd.style.left = 'auto';
     }
-    }
 
     // Settings Modal
     function injectSettingsModal() {
