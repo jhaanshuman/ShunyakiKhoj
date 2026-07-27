@@ -639,16 +639,18 @@ function showAuthError(targetId, msg) {
     }
 }
 
-// Helper to post to Auth endpoint with serverless fallback
+// Helper to post to Auth endpoint (prioritizes /api/auth to prevent Vercel 405 static file conflict)
 async function safeAuthFetch(formData) {
     let res = null;
     try {
-        res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData }).catch(() => null);
+        // Primary: Vercel Serverless API Route (avoids static file 405)
+        res = await fetch('/api/auth', { method: 'POST', body: formData }).catch(() => null);
     } catch(e) {}
     
     if (!res || !res.ok) {
         try {
-            res = await fetch('/api/auth', { method: 'POST', body: formData }).catch(() => null);
+            // Secondary: PHP endpoint for Apache/InfinityFree host
+            res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData }).catch(() => null);
         } catch(e) {}
     }
 
