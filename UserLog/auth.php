@@ -160,6 +160,56 @@ if ($action === "guest") {
     exit;
 }
 
+/* 5.1 GOOGLE ID TOKEN VERIFICATION (Server-Side) */
+if ($action === "verify_google_token") {
+    $id_token = $_POST['id_token'] ?? '';
+    
+    if (empty($id_token)) {
+        echo json_encode(["success" => false, "error" => "No ID token provided."]);
+        exit;
+    }
+
+    // Call Google's tokeninfo verification API to verify token signature and claims
+    $verify_url = "https://oauth2.googleapis.com/tokeninfo?id_token=" . urlencode($id_token);
+    $response = @file_get_contents($verify_url);
+    
+    if ($response !== false) {
+        $token_data = json_decode($response, true);
+        if (isset($token_data['email']) && isset($token_data['sub'])) {
+            $email = db_escape($token_data['email']);
+            $name = db_escape($token_data['name'] ?? $token_data['given_name'] ?? 'Google User');
+            $picture = db_escape($token_data['picture'] ?? '');
+            
+            // Check if user exists in database
+            $q = db_query("SELECT * FROM users WHERE email='$email'");
+            $user = db_fetch($q);
+            
+            if (!$user) {
+                // Insert new Google OAuth user into MySQL
+                $sql = "INSERT INTO users (username, email, social_provider, password_hash, dob, tob, pob, lat, lon)
+                        VALUES ('$name', '$email', 'google', 'OAUTH_GOOGLE', '1995-07-20', '12:00', 'New Delhi, India', 28.6139, 77.2090)";
+                db_query($sql);
+            }
+            
+            $_SESSION['user_id'] = $email;
+            $_SESSION['username'] = $name;
+            
+            echo json_encode([
+                "success" => true,
+                "verified_by_google" => true,
+                "email" => $token_data['email'],
+                "name" => $token_data['name'] ?? $token_data['given_name'] ?? 'Google User',
+                "picture" => $token_data['picture'] ?? '',
+                "sub" => $token_data['sub']
+            ]);
+            exit;
+        }
+    }
+
+    echo json_encode(["success" => false, "error" => "Invalid Google ID Token."]);
+    exit;
+}
+
 /* 5. SOCIAL AUTH */
 if ($action === "social_auth") {
     $provider = db_escape($_POST['provider'] ?? 'google');
