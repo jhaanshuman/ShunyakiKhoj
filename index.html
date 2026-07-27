@@ -550,16 +550,12 @@ function switchAuthTab(tab) {
     }
 }
 
-// Redirect to GitHub / Main Landing Page with username URL parameter
+// Redirect to Landing Page with username URL parameter
 function redirectToLanding(username) {
     if (username) {
         localStorage.setItem('shunya-username', username);
     }
-    let baseUrl = 'landing.html';
-    if (window.location.hostname.includes('sanskrit.gt.tc')) {
-        baseUrl = 'https://www.shunyakikhoj.co.in/landing.html';
-    }
-    const targetUrl = `${baseUrl}?username=${encodeURIComponent(username || '')}`;
+    const targetUrl = `landing.html?username=${encodeURIComponent(username || '')}`;
     window.location.href = targetUrl;
 }
 
@@ -608,36 +604,18 @@ function showAuthError(targetId, msg) {
     }
 }
 
-// Helper to post directly to InfinityFree PHP MySQL database endpoint (sanskrit.gt.tc)
+// Single direct relative fetch to native PHP MySQL backend on InfinityFree
 async function safeAuthFetch(formData) {
-    let res = null;
     try {
-        // Primary: Direct InfinityFree PHP MySQL backend
-        res = await fetch('https://sanskrit.gt.tc/UserLog/auth.php', { method: 'POST', body: formData }).catch(() => null);
-    } catch(e) {}
-    
-    if (!res || !res.ok) {
-        try {
-            res = await fetch('http://sanskrit.gt.tc/UserLog/auth.php', { method: 'POST', body: formData }).catch(() => null);
-        } catch(e) {}
-    }
-
-    if (!res || !res.ok) {
-        try {
-            res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData }).catch(() => null);
-        } catch(e) {}
-    }
-
-    if (!res || !res.ok) {
-        try {
-            res = await fetch('/api/auth', { method: 'POST', body: formData }).catch(() => null);
-        } catch(e) {}
-    }
-
-    if (res && res.ok) {
-        try {
+        const res = await fetch('/UserLog/auth.php', {
+            method: 'POST',
+            body: formData
+        });
+        if (res && res.ok) {
             return await res.json();
-        } catch(e) {}
+        }
+    } catch (e) {
+        console.error("Auth Fetch Error:", e);
     }
     return { success: false, error: "Could not connect to Database server. Please check your connection." };
 }
