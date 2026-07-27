@@ -168,6 +168,7 @@ def generate_seo_system():
     sitemap_urls = [
         {"loc": DOMAIN, "priority": "1.0", "changefreq": "daily"},
         {"loc": f"{DOMAIN}/index.html", "priority": "1.0", "changefreq": "daily"},
+        {"loc": f"{DOMAIN}/landing.html", "priority": "1.0", "changefreq": "daily"},
         {"loc": f"{DOMAIN}/jyotish_window.html", "priority": "0.9", "changefreq": "daily"}
     ]
 
@@ -179,7 +180,7 @@ def generate_seo_system():
         
         index_file = os.path.join(cat_dir, "index.html")
         canonical_url = f"{DOMAIN}/{slug}/"
-        cta_link = f"{DOMAIN}/index.html?tab={cat['id']}"
+        cta_link = f"{DOMAIN}/landing.html?tab={cat['id']}"
         
         title = f"Free {name} — Accurate Vedic Astrology & Calculations"
         description = f"Explore free online {name}. Powered by Swiss Ephemeris & classical Jyotish rules for accurate astronomical calculations, charts, and predictions."

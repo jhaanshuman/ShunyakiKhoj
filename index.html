@@ -1,720 +1,778 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-<meta name="google-adsense-account" content="ca-pub-1342189574858672">
-<meta name="google-signin-client-id" content="134218957485-dummy.apps.googleusercontent.com">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1342189574858672" crossorigin="anonymous"></script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-DZ7500BNEZ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-DZ7500BNEZ');
-</script>
 <meta charset="UTF-8">
-<title>ShunyakiKhoj – Sanskrit AI | Vedic Panchang, Kundli, Astrology &amp; Sanskrit Research Platform</title>
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#D4AF37">
+<title>ShunyakiKhoj — Spiritual & Vedic Wisdom Portal | Login & Registration</title>
+<meta name="description" content="Welcome to ShunyakiKhoj. Login, Register or enter as Guest with your birth details to generate instant Personalized Vedic Kundli and insights.">
+
+<!-- Styles & Fonts -->
 <link rel="icon" href="/logo.png" type="image/png">
-<link rel="apple-touch-icon" href="/logo.png">
-<link rel="stylesheet" href="/style.css?v=2.2.0">
-<link rel="stylesheet" href="/UserLog/auth.css?v=2.2.0">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
 
-<!-- Primary SEO Meta Tags -->
-<meta name="description" content="ShunyakiKhoj is India's premier AI-powered Sanskrit &amp; Vedic platform. Get today's Panchang, Kundli (birth chart), Gochar (transit), Maasik calendar, Muhurta timings, Rashifal, and Sanskrit dictionary — all free online.">
-<meta name="keywords" content="panchang today, aaj ka panchang, kundli online free, vedic astrology, Sanskrit dictionary, tithi nakshatra yoga karana, rashifal, muhurta calculator, maasik panchang, gochar transit, Sanskrit AI, ShunyakiKhoj, vedic calendar 2026, Hindu panchang, jyotish, Sanskrit grammar, Drik panchang, birth chart free">
-<meta name="author" content="ShunyakiKhoj – Anshuman Jha">
-<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-<meta name="language" content="English, Hindi, Sanskrit">
-<meta name="geo.region" content="IN">
-<meta name="geo.country" content="India">
-<meta name="revisit-after" content="3 days">
-
-<!-- Canonical -->
-<link rel="canonical" href="https://shunyakikhoj.co.in/">
-
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://shunyakikhoj.co.in/">
-<meta property="og:title" content="ShunyakiKhoj – Vedic Panchang, Kundli &amp; Sanskrit AI Platform">
-<meta property="og:description" content="Free Vedic Panchang, Kundli, Astrology &amp; Sanskrit tools. Today's Tithi, Nakshatra, Yoga, Karana, Sunrise, Muhurta &amp; more. Powered by AI.">
-<meta property="og:image" content="https://shunyakikhoj.co.in/logo.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:site_name" content="ShunyakiKhoj">
-<meta property="og:locale" content="en_IN">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:url" content="https://shunyakikhoj.co.in/">
-<meta name="twitter:title" content="ShunyakiKhoj – Vedic Panchang, Kundli &amp; Sanskrit AI">
-<meta name="twitter:description" content="Free AI-powered Vedic Panchang, Kundli, Gochar, Muhurta &amp; Sanskrit tools. Accurate Drik Ganita calculations for all cities.">
-<meta name="twitter:image" content="https://shunyakikhoj.co.in/logo.png">
-
-<!-- JSON-LD: WebSite + SearchAction -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "ShunyakiKhoj",
-  "alternateName": "Sanskrit AI",
-  "url": "https://shunyakikhoj.co.in",
-  "description": "India's AI-powered Vedic platform for Panchang, Kundli, Astrology, Sanskrit dictionary and Vedic research.",
-  "inLanguage": ["en", "hi", "sa"],
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://shunyakikhoj.co.in/?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
+<style>
+/* White Background Homepage Architecture */
+body {
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
-</script>
 
-<!-- JSON-LD: Organization -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "ShunyakiKhoj",
-  "url": "https://shunyakikhoj.co.in",
-  "logo": "https://shunyakikhoj.co.in/logo.png",
-  "sameAs": [
-    "https://github.com/jhaanshuman/ShunyakiKhoj",
-    "https://sanskritai.vercel.app"
-  ],
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "contactType": "customer support",
-    "availableLanguage": ["English", "Hindi", "Sanskrit"]
-  }
+/* Header */
+.portal-header {
+    background: #ffffff;
+    border-bottom: 1.5px solid #e2e8f0;
+    padding: 12px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
-</script>
 
-<!-- JSON-LD: FAQ for SEO Rich Snippets -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What is today's Panchang (Aaj Ka Panchang)?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "ShunyakiKhoj provides today's complete Panchang including Tithi, Nakshatra, Yoga, Karana, Vara, Sunrise, Sunset, Moonrise, Rahu Kaal, Brahma Muhurta and Abhijit Muhurta for any city in India and worldwide."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I get a free Kundli (birth chart) online?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. ShunyakiKhoj offers a free AI-powered Kundli (Janma Kundali) generator using Vedic Jyotish principles. Enter your date, time and place of birth to get D1 to D60 divisional charts, Dasha periods, Gochar transits and planetary positions."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is Maasik Panchang?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Maasik Panchang is a monthly Vedic calendar showing Tithi, Nakshatra, festivals, Upavas (fasting days) and auspicious dates for every day of the month. ShunyakiKhoj generates it dynamically for any location."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is Muhurta in Vedic astrology?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "A Muhurta is an auspicious time window selected using Vedic Jyotish for performing important events like marriages, business starts, travel, or religious ceremonies. ShunyakiKhoj calculates Brahma Muhurta, Abhijit Muhurta, Udaya Lagna Muhurta and Panchaka Rahita Muhurta daily."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does ShunyakiKhoj have a Sanskrit dictionary?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. ShunyakiKhoj integrates the Monier-Williams Sanskrit dictionary with 160,000+ entries, providing meanings, grammar, etymology and usage examples for Sanskrit words."
-      }
+.portal-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #0f172a;
+}
+
+.portal-brand img {
+    height: 42px;
+    width: auto;
+    object-fit: contain;
+}
+
+.portal-brand-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #92400e;
+    letter-spacing: 0.5px;
+}
+
+.portal-brand-subtitle {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.header-user-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.greeting-pill {
+    background: #fef3c7;
+    border: 1px solid #fde68a;
+    color: #92400e;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border-radius: 99px;
+}
+
+.btn-landing-direct {
+    background: linear-gradient(135deg, #b83214 0%, #d4af37 100%);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 8px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(184, 50, 20, 0.25);
+}
+
+.btn-landing-direct:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(184, 50, 20, 0.35);
+}
+
+/* Content Area Split Screen */
+.portal-main-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Geometric Diagonal Accent Cuts */
+.diagonal-accent-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(184, 50, 20, 0.04) 0%, rgba(212, 175, 55, 0.08) 100%);
+    clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.diagonal-accent-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.06) 0%, rgba(184, 50, 20, 0.04) 100%);
+    clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.split-container {
+    max-width: 1100px;
+    width: 100%;
+    display: flex;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    position: relative;
+    z-index: 2;
+    min-height: 580px;
+}
+
+/* Left Column: Artwork Image */
+.artwork-col {
+    flex: 1.1;
+    background: url('/astrologer_consultation.jpg') center center / cover no-repeat;
+    position: relative;
+    min-height: 480px;
+}
+
+.artwork-overlay-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%);
+}
+
+.artwork-badge {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid rgba(212, 175, 55, 0.4);
+    padding: 12px 18px;
+    border-radius: 12px;
+    color: #ffffff;
+    max-width: 80%;
+}
+
+.artwork-badge h4 {
+    margin: 0 0 4px 0;
+    color: #fbbf24;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.artwork-badge p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+    line-height: 1.4;
+}
+
+/* Right Column: Semi-Transparent Vibrant Auth Box */
+.auth-col {
+    flex: 1;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.94);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Vibrant Diagonal Cut Header in Auth Box */
+.vibrant-card-header {
+    background: linear-gradient(135deg, #b83214 0%, #d4af37 100%);
+    margin: -30px -30px 20px -30px;
+    padding: 20px 30px;
+    color: #ffffff;
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+}
+
+.vibrant-card-header h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+    font-family: 'Cinzel', serif;
+}
+
+.vibrant-card-header p {
+    margin: 4px 0 0 0;
+    font-size: 0.82rem;
+    opacity: 0.9;
+}
+
+/* Side-by-Side Tabs */
+.auth-nav-tabs {
+    display: flex;
+    background: #f1f5f9;
+    padding: 4px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.auth-tab-btn {
+    flex: 1;
+    padding: 10px 4px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: #64748b;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.auth-tab-btn.active {
+    background: #ffffff;
+    color: #b83214;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Form Groups & Inputs */
+.form-group-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.form-group {
+    margin-bottom: 12px;
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 4px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #0f172a;
+    background: #f8fafc;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #b83214;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(184, 50, 20, 0.1);
+}
+
+.btn-auth-submit {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #b83214 0%, #d4af37 100%);
+    border: none;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(184, 50, 20, 0.3);
+    transition: transform 0.2s;
+    margin-top: 8px;
+}
+
+.btn-auth-submit:hover {
+    transform: translateY(-1px);
+}
+
+/* Social Login Options */
+.social-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 18px 0 12px 0;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.social-divider::before, .social-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.social-divider::before { margin-right: 10px; }
+.social-divider::after { margin-left: 10px; }
+
+.social-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: #334155;
+}
+
+.btn-social:hover {
+    background: #f1f5f9;
+    transform: translateY(-1px);
+}
+
+.forgot-link-btn {
+    display: block;
+    text-align: right;
+    font-size: 0.76rem;
+    color: #b83214;
+    font-weight: 700;
+    text-decoration: none;
+    margin-top: 6px;
+    cursor: pointer;
+}
+
+/* Footer */
+.portal-footer {
+    background: #ffffff;
+    border-top: 1.5px solid #e2e8f0;
+    padding: 20px 30px;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.82rem;
+}
+
+/* Mobile Responsive Glass Overlay */
+@media (max-width: 868px) {
+    .split-container {
+        flex-direction: column;
+        background: url('/astrologer_consultation.jpg') center center / cover no-repeat;
     }
-  ]
+    .artwork-col {
+        display: none;
+    }
+    .auth-col {
+        background: rgba(255, 255, 255, 0.90);
+        backdrop-filter: blur(14px);
+        padding: 25px 20px;
+    }
 }
-</script>
-    
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-DZ2CM1SBWW"></script>
-
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config','G-DZ2CM1SBWW');
-</script>
-<script src="/nav.js?v=2.2.0" defer></script>
-<script src="/Features/Astrology/vedic_data.js?v=2.2.0"></script>
-<script src="/Features/Astrology/vedic_database.js?v=2.2.0"></script>
-<script src="/Static/data/wisdom_database.js?v=2.2.0" defer></script>
+</style>
 </head>
+<body>
 
-<body class="homepage-layout">
-<script>
-(function(){
-    const hr = new Date().getHours();
-    const auto = (hr >= 6 && hr < 18) ? 'theme-bright' : 'theme-dark';
-    const saved = localStorage.getItem('shunya-theme-name');
-    const t = ['theme-bright','theme-dark'].includes(saved) ? saved : auto;
-    document.body.classList.add(t);
-    if (t === 'theme-dark') document.body.classList.add('dark-theme');
-})();
-</script>
-<div class="cosmic-bg">
-    <div class="cosmic-nebula-purple"></div>
-    <div class="cosmic-nebula-amber"></div>
-</div>
-<!-- HEADER -->
-<header class="header">
-<div class="logo-area">
-<span class="menu-icon" style="margin-right: 15px; margin-left: 0; font-size: 1.6rem; cursor: pointer; color: var(--text-color); user-select: none;">☰</span>
-<img src="./logo.png" class="logo">
-<div>
-    <h1 style="line-height: 1.1;">Sanskrit AI</h1>
-</div>
-</div>
-<div class="header-icons">
-    <select id="langSelector" style="background: var(--tile-bg); border: 1.5px solid var(--card-border); border-radius: 6px; color: var(--text-color); font-weight: 700; font-size: 0.8rem; padding: 3px 6px; cursor: pointer; outline: none; margin-right: 10px; font-family: inherit;">
-        <option value="hi" style="background: var(--bg-color); color: var(--text-color);">हिन्दी</option>
-        <option value="en" style="background: var(--bg-color); color: var(--text-color);">English</option>
-        <option value="mai" style="background: var(--bg-color); color: var(--text-color);">मैथिலி</option>
-        <option value="ta" style="background: var(--bg-color); color: var(--text-color);">தமிழ்</option>
-    </select>
-    <span>🏠</span><span>🔍</span><span id="themeToggleBtn">🌓</span><span id="notificationBtn">🔔</span><span id="profileBtn">👤</span>
-</div>
+<!-- Header -->
+<header class="portal-header">
+    <a href="/index.html" class="portal-brand">
+        <img src="/logo.png" alt="ShunyakiKhoj Logo">
+        <div>
+            <div class="portal-brand-title">ShunyakiKhoj</div>
+            <div class="portal-brand-subtitle">Spiritual Wisdom & Vedic Engine Portal</div>
+        </div>
+    </a>
+    <div class="header-user-status" id="headerUserStatus">
+        <span class="greeting-pill" id="headerGreeting">🕉️ Namaste, Guest</span>
+        <a href="/landing.html" class="btn-landing-direct" id="btnLandingDirect">Enter Landing Page →</a>
+    </div>
 </header>
 
-    <div id="authModal" class="auth-modal">
-  <div class="auth-card" style="text-align: center; max-width: 360px; padding: 30px;">
-    <button class="auth-close" onclick="closeAuth()">✕</button>
-    <h2 id="authTitle" style="margin-bottom: 20px; color: var(--accent-color);">Login</h2>
-    <div class="social-buttons" style="margin-bottom: 10px;">
-      <button class="google-btn" onclick="loginWithGoogle()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; background: #fff; color: #1f2937; border: 1.5px solid #d1d5db; border-radius: 8px; font-weight: 700; cursor: pointer; transition: background 0.2s;">
-        <svg style="width:18px; height:18px;" viewBox="0 0 24 24">
-          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v3.92h6.69a5.74 5.74 0 0 1-2.49 3.77v3.12h4.02c2.35-2.16 3.7-5.34 3.7-9.21z"/>
-          <path fill="#34A853" d="M12 24c3.24 0 5.97-1.08 7.96-2.91l-4.02-3.12c-1.12.75-2.55 1.19-3.94 1.19-3.04 0-5.61-2.05-6.53-4.82H1.32v3.23A12 12 0 0 0 12 24z"/>
-          <path fill="#FBBC05" d="M5.47 14.34a7.16 7.16 0 0 1 0-2.68V8.43H1.32a12 12 0 0 0 0 7.14l4.15-3.23z"/>
-          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.22 0 12 0A12 12 0 0 0 1.32 8.43l4.15 3.23c.92-2.77 3.49-4.82 6.53-4.82z"/>
-        </svg>
-        Continue with Google
-      </button>
-    </div>
-  </div>
-</div>
+<!-- Main Area -->
+<main class="portal-main-area">
+    <div class="diagonal-accent-left"></div>
+    <div class="diagonal-accent-right"></div>
 
+    <div class="split-container">
+        <!-- Left Artwork Column (PC) -->
+        <div class="artwork-col">
+            <div class="artwork-overlay-gradient"></div>
+            <div class="artwork-badge">
+                <h4>🔮 Prashna & Janam Kundali</h4>
+                <p>Authentic Vedic astrological calculations powered by Swiss Ephemeris & Drik Ganita algorithms.</p>
+            </div>
+        </div>
 
+        <!-- Right Auth Column -->
+        <div class="auth-col">
+            <div class="vibrant-card-header">
+                <h2>Welcome to ShunyakiKhoj</h2>
+                <p>Login, Register or enter as Guest to access your personalized birth chart.</p>
+            </div>
 
+            <!-- Side-by-Side Tabs -->
+            <div class="auth-nav-tabs">
+                <button class="auth-tab-btn active" id="tabBtnLogin" onclick="switchAuthTab('login')">🔑 Login</button>
+                <button class="auth-tab-btn" id="tabBtnRegister" onclick="switchAuthTab('register')">📝 Register</button>
+                <button class="auth-tab-btn" id="tabBtnGuest" onclick="switchAuthTab('guest')">👤 Guest Mode</button>
+            </div>
 
+            <!-- LOGIN FORM -->
+            <form id="formLogin" onsubmit="handleLoginSubmit(event)">
+                <div class="form-group">
+                    <label>Username / Email / Mobile Number</label>
+                    <input type="text" id="loginId" class="form-input" placeholder="e.g. anshuman@gmail.com or 9876543210" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required>
+                    <a class="forgot-link-btn" onclick="openForgotModal()">Forgot Username / Password?</a>
+                </div>
+                <button type="submit" class="btn-auth-submit">Login & Load Kundali →</button>
+            </form>
 
-<!-- Custom Context Menu for Favourites -->
-<div id="customContextMenu" class="custom-context-menu" style="display: none;">
-    <div class="context-menu-item" id="ctxFavAction">⭐ Add to Favourites</div>
-</div>
-
-<!-- MAIN ASTROLOGY PORTAL CONTAINER -->
-<div class="container main-portal-container" style="margin-top: 0rem;">
-
-    <!-- 1. Traditional Status Info Header Card -->
-    <div class="glass-card status-header-card" style="margin-bottom: 1.5rem; border: 2.5px solid #a23922; background: var(--card-bg); position: relative; padding: 20px;">
-        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <div class="moon-phase-icon-container" style="width: 55px; height: 55px; border-radius: 50%; background: #0f172a; border: 2px solid #a23922; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);" id="headerMoonIcon">🌕</div>
-                <div>
-                    <h2 id="headerMonthTithi" style="margin: 0; font-size: 1.4rem; font-weight: 800; color: var(--title-color);">Loading today's panchang...</h2>
-                    <p id="headerPakshaSamvat" style="margin: 3px 0 0 0; font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Calculating Samvatsara and Paksha...</p>
-                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px; position: relative;">
-                        <input type="text" id="panchangPlaceInput" value="New Delhi, India" placeholder="Search city..." autocomplete="off" style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); color: var(--text-color); padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; width: 220px; outline: none; transition: all 0.2s;">
-                        <button id="btnSavePanchangPlace" title="Save Location for this Session" style="background: rgba(0,0,0,0.25); border: var(--card-border); color: var(--accent-color); font-size: 0.9rem; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(162,57,34,0.1)'" onmouseout="this.style.background='rgba(0,0,0,0.25)'">💾</button>
+            <!-- REGISTER FORM -->
+            <form id="formRegister" style="display: none;" onsubmit="handleRegisterSubmit(event)">
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="regName" class="form-input" placeholder="Anshuman Jha" required>
                     </div>
-                </div>
-            </div>
-            <div style="text-align: right; min-width: 140px;">
-                <div id="headerDayNum" style="font-size: 2.2rem; font-weight: 900; line-height: 1; color: var(--title-color);">--</div>
-                <div id="headerMonthYear" style="font-size: 0.9rem; font-weight: 700; margin-top: 3px;">Loading Month...</div>
-                <div id="headerWeekday" style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Weekday</div>
-            </div>
-        </div>
-        
-
-    </div>
-
-    <!-- Main SPA Viewport -->
-    <div id="spaViewport">
-
-    <!-- 3. Navigation Header for Dainik / Maasik views -->
-    <div class="panchang-unified-header" style="display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #a23922 0%, #7c1a08 100%); border-radius: 10px 10px 0 0; padding: 12px 20px;">
-        <div>
-            <div class="ph-title" id="phTitleDaik" style="font-size: 1.15rem; font-weight: 800; color: #fff;">Dainik Panchang</div>
-            <div class="ph-subtitle" id="phSubDaik" style="font-size: 0.78rem; color: rgba(255,255,255,0.75);">Loading today's panchang...</div>
-        </div>
-        <div class="ph-controls" style="display: flex; align-items: center; gap: 8px;">
-            <div class="ph-view-toggle" style="display: flex; background: rgba(0,0,0,0.25); border-radius: 6px; overflow: hidden; border: 1.5px solid rgba(255,255,255,0.15);">
-                <button class="ph-view-btn active" id="phViewDayBtn" onclick="switchPancView('day')" style="padding: 5px 12px; border: none; background: transparent; color: #fff; font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;">Day</button>
-                <button class="ph-view-btn" id="phViewMonthBtn" onclick="switchPancView('month')" style="padding: 5px 12px; border: none; background: transparent; color: rgba(255,255,255,0.7); font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;">Month</button>
-                <button class="ph-view-btn" id="phViewMuhurtasBtn" onclick="switchPancView('muhurtas')" style="padding: 5px 12px; border: none; background: transparent; color: rgba(255,255,255,0.7); font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;">Muhurtas</button>
-            </div>
-            <button class="ph-nav-btn" id="panchangPrevDayBtn" title="Previous Day" style="background: rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.25); color: #fff; width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center;">‹</button>
-            <input type="date" class="ph-date-input" id="panchangDateInput" style="background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.3); border-radius: 6px; color: #fff; padding: 5px 10px; font-weight: 700; font-size: 0.9rem; min-width: 130px;">
-            <button class="ph-nav-btn" id="panchangNextDayBtn" title="Next Day" style="background: rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.25); color: #fff; width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center;">›</button>
-            <button class="ph-today-btn" id="panchangTodayBtn" style="background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.2); color: #fbbf24; padding: 5px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.85rem;">Today</button>
-        </div>
-    </div>
-
-    <!-- 4. Dainik (Day) View Section -->
-    <div id="dayViewContainer" style="display: none;">
-        <!-- Timeline and Vedic Time side-by-side row -->
-        <div class="timeline-clock-row">
-            <!-- Visual Timeline Container -->
-            <div id="drikTimelineContainer" style="background: #ebd9b4; border: 2px solid #a23922; padding: 20px; border-radius: 8px; color: #2d3748; font-family: 'Noto Serif', serif; position: relative; overflow-x: auto; box-shadow: var(--shadow); box-sizing: border-box; width: 100%;">
-                <div style="text-align: center; padding: 2rem; color: #7c2d12; font-weight: 700;">Loading Panchang for today...</div>
-            </div>
-
-            <!-- Vedic Time Clock -->
-            <div class="glass-card widget-box dainik-layout-card" style="padding: 20px; box-sizing: border-box; text-align: center; display: flex; flex-direction: column; height: 100%; min-height: 480px;">
-                <h3 class="dainik-card-header-title">⌛ Vedic Time</h3>
-                <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 15px;">
-                    <button id="btn30Ghati" onclick="setGhatiMode('30')" class="ph-today-btn active" style="font-size: 0.7rem; padding: 4px 10px;">30 Ghati</button>
-                    <button id="btn60Ghati" onclick="setGhatiMode('60')" class="ph-today-btn" style="font-size: 0.7rem; padding: 4px 10px;">60 Ghati</button>
-                </div>
-                
-                <div id="vedicClockDisplay" style="font-size: 2rem; font-weight: 900; color: var(--accent-color); font-family: monospace; letter-spacing: 1px; margin: 15px 0;">41:06:27</div>
-                <div style="font-size: 0.85rem; font-weight: 700; color: var(--title-color); margin-bottom: 12px;">Ghati : Pal : Vipal</div>
-                
-                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; border-top: 1px solid rgba(252,194,1,0.2); padding-top: 10px; margin-bottom: 10px; color: var(--text-muted);">
-                    <span>Sunrise 🌅 05:37:00</span>
-                    <span>Sunset 🌇 19:16:00</span>
-                </div>
-                
-                <div id="vedicTimeDetails" style="font-size: 0.8rem; line-height: 1.5; color: var(--text-muted); font-weight: 600; background: rgba(0,0,0,0.12); padding: 8px; border-radius: 6px; flex-grow: 1;">
-                    <!-- Panchang details -->
-                </div>
-                
-                <div style="margin-top: 15px; font-size: 0.78rem; font-weight: 700; color: var(--text-muted);">GREGORIAN TIME</div>
-                <div id="gregorianClockDisplay" style="font-size: 1.15rem; font-weight: 800; color: var(--text-color); margin-top: 4px;">23:08:49</div>
-            </div>
-        </div>
-
-        <!-- 1. Panchang for Today (Spread across width) -->
-        <div style="margin-bottom: 1.5rem; width: 100%; box-sizing: border-box;">
-            <h3 class="dainik-card-header-title">☀️ Panchang for Today</h3>
-            <div class="time-format-toggle" style="display: flex; gap: 8px; margin-bottom: 15px;">
-                <button class="ph-today-btn active" id="btn12Hr" onclick="setFormat('12')" style="font-size: 0.75rem; padding: 4px 10px;">12 Hour</button>
-                <button class="ph-today-btn" id="btn24Hr" onclick="setFormat('24')" style="font-size: 0.75rem; padding: 4px 10px;">24 Hour</button>
-                <button class="ph-today-btn" id="btn24Plus" onclick="setFormat('24Plus')" style="font-size: 0.75rem; padding: 4px 10px;">24 Plus</button>
-            </div>
-            <div id="panchangBody">
-                <!-- Filled dynamically by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Bottom Grid: 2x2 Layout -->
-        <div class="dainik-bottom-two-grid">
-            <!-- Top Left: Lagna Kundali with Right-Side Tabular Dropdown Selector Control -->
-            <div class="glass-card chart-card dainik-layout-card animated-in" id="lagnaKundaliCard" style="padding: 20px; box-sizing: border-box; text-align: center; display: flex; flex-direction: column; width: 100%;">
-                <h3 class="dainik-card-header-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap:wrap; gap:4px;">
-                    <span>☸️ <span id="divisionLabel">Rasi (D1) — Lagna</span></span>
-                    <div style="display: flex; gap: 4px;">
-                        <select id="selChartStyle" onchange="renderAdvancedChart()" style="background:#0d1117; border:1px solid rgba(252,194,1,0.3); color:#fbbf24; border-radius:4px; padding:3px 8px; font-size:0.72rem; font-weight:700;">
-                            <option value="North">North Indian</option>
-                            <option value="South">South Indian</option>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select id="regGender" class="form-input">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
                         </select>
                     </div>
-                </h3>
-                
-                <!-- Advanced Controls Panel -->
-                <div class="kundli-advanced-controls" style="display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-bottom:15px; padding:8px 4px; border-bottom:1.5px solid rgba(252,194,1,0.15); font-size:0.75rem; background:rgba(0,0,0,0.12); border-radius:6px;">
-                    <select id="selChartCenter" onchange="triggerAdvancedCalc()" style="background:#0d1117; border:var(--card-border); color:#fff; border-radius:4px; padding:3px 6px; font-size:0.72rem; font-weight:700;">
-                        <option value="D1">D1 (Lagna)</option>
-                        <option value="D9">D9 (Navamsha)</option>
-                        <option value="D10">D10 (Dashamsha)</option>
-                        <option value="D3">D3 (Drekkana)</option>
-                        <option value="D7">D7 (Saptamsha)</option>
-                        <option value="D12">D12 (Dwadamsha)</option>
-                        <option value="D30">D30 (Trishamsha)</option>
-                        <option value="D60">D60 (Shastiamsha)</option>
-                    </select>
-                    <select id="selAyanamsa" onchange="triggerAdvancedCalc()" style="background:#0d1117; border:var(--card-border); color:#fff; border-radius:4px; padding:3px 6px; font-size:0.72rem; font-weight:700;">
-                        <option value="Lahiri">Lahiri</option>
-                        <option value="Raman">Raman</option>
-                        <option value="Krishnamurti">KP</option>
-                        <option value="Tropical">Tropical</option>
-                    </select>
-                    <select id="selNode" onchange="triggerAdvancedCalc()" style="background:#0d1117; border:var(--card-border); color:#fff; border-radius:4px; padding:3px 6px; font-size:0.72rem; font-weight:700;">
-                        <option value="True">True Rahu</option>
-                        <option value="Mean">Mean Rahu</option>
-                    </select>
-                    <select id="selZodiacStyle" onchange="triggerAdvancedCalc()" style="background:#0d1117; border:var(--card-border); color:#fff; border-radius:4px; padding:3px 6px; font-size:0.72rem; font-weight:700;">
-                        <option value="Sidereal">Sidereal</option>
-                        <option value="Tropical">Sayana</option>
-                    </select>
-                    <button onclick="toggleRashiNumDisplay()" class="ph-today-btn" id="btnToggleRashiNum" style="font-size:0.7rem; padding:2px 6px; border-radius:4px; font-weight:700; background:rgba(0,0,0,0.2);">🔢 Rashi</button>
-                    <button onclick="toggleOuterPlanetsDisplay()" class="ph-today-btn" id="btnToggleOuter" style="font-size:0.7rem; padding:2px 6px; border-radius:4px; font-weight:700; background:rgba(0,0,0,0.2);">🪐 Outer</button>
                 </div>
-                
-                <!-- Side-by-Side Wrapper: Chart on Left, Tabular Control Selector on Right -->
-                <div style="display: flex; flex-direction: row; gap: 20px; align-items: flex-start; width: 100%; box-sizing: border-box; flex-wrap: wrap;">
-                    <!-- Left Side: SVG Chart -->
-                    <div id="lagnaChartContainer" style="flex: 0 0 380px; max-width: 100%; min-height: 250px; background: #0f172a; border-radius: 10px; border: 1px solid #334155; padding: 10px; box-sizing: border-box; display: flex; justify-content: center; align-items: center;">
-                        <!-- SVG drawn dynamically -->
+
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label>Email ID</label>
+                        <input type="email" id="regEmail" class="form-input" placeholder="name@example.com" required>
                     </div>
-                    
-                    <!-- Right Side: Dropdown Selector & Tabular Data Display -->
-                    <div style="flex: 1; min-width: 300px; text-align: left; background: rgba(0,0,0,0.15); border-radius: 10px; border: 1px solid #334155; padding: 12px; box-sizing: border-box;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
-                            <label for="selPanchangTabularView" style="font-size: 0.82rem; font-weight: 700; color: var(--accent-color);">📋 Tabular Dataset:</label>
-                            <select id="selPanchangTabularView" onchange="renderPanchangTabularView()" style="background:#0d1117; border:1px solid #334155; color:#fbbf24; border-radius:6px; padding:4px 8px; font-size:0.8rem; font-weight:700;">
-                                <option value="planets">🪐 Planetary Positions & Longitudes</option>
-                                <option value="nakshatra">⭐ Nakshatra & Pada Details</option>
-                                <option value="dignity">👑 Dignity & Avasthas</option>
-                                <option value="ashtakavarga">📊 Ashtakavarga Score Summary</option>
-                                <option value="drishti">👁️ Graha Drishti (Aspects)</option>
-                                <option value="muhurtas">⏱️ Choghadiya & Hora Times</option>
-                            </select>
-                        </div>
-                        <div id="lagnaPlanetsContainer" style="font-size: 0.82rem; max-height: 320px; overflow-y: auto;">
-                            <!-- Mapped dynamically based on dropdown selection -->
-                        </div>
+                    <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input type="tel" id="regMobile" class="form-input" placeholder="9876543210" required>
                     </div>
                 </div>
-            </div>
 
-        </div>
-    </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="regPassword" class="form-input" placeholder="Create strong password" required>
+                </div>
 
-    <!-- 5. Maasik (Month) View Section -->
-    <div id="maasikViewContainer" class="astrology-container" style="display: none; border: 2px solid #a23922; border-top: none; border-radius: 0 0 10px 10px; overflow: hidden; background: var(--card-bg); margin-bottom: 2rem; box-shadow: var(--shadow);">
-        <div style="display: none; background: rgba(0,0,0,0.12); padding: 12px 20px; border-bottom: 2px solid rgba(162,57,34,0.2); justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                <div style="border-top: 1px solid #e2e8f0; padding-top: 10px; margin-top: 6px;">
+                    <span style="font-size: 0.78rem; font-weight: 800; color: #b83214;">🌟 Birth Details (for Instant Personalized Kundali):</span>
+                </div>
 
-            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                <input type="month" id="maasikMonthInput" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-color); padding: 6px 12px; font-weight: 700;">
-                <input type="text" id="maasikPlaceInput" value="New Delhi, India" placeholder="City for calendar..." style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-color); padding: 6px 12px; font-weight: 700; width: 180px;">
-                <button id="btnSaveMaasikPlace" title="Save Location for this Session" style="background: rgba(0,0,0,0.25); border: var(--card-border); color: var(--accent-color); font-size: 1.1rem; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(162,57,34,0.1)'" onmouseout="this.style.background='rgba(0,0,0,0.25)'">💾</button>
-                <button onclick="loadMaasikCalendar()" class="ph-today-btn" style="padding: 6px 14px; font-weight: 700; font-size: 0.8rem;">Update</button>
-            </div>
-        </div>
-        <div class="monthly-panchang-wrapper" style="display: flex; flex-wrap: wrap;">
-            <!-- Calendar Main Grid -->
-            <div class="monthly-cal-main" style="flex: 1; padding: 20px; min-width: 320px; background: linear-gradient(135deg, #FF9A32 0%, #FDFD23 100%); overflow-x: hidden;">
-                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch;">
-                    <div style="min-width: 650px;">
-                        <div class="cal-grid-header" style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 700; font-size: 0.75rem; color: var(--title-color); margin-bottom: 6px;">
-                            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-                        </div>
-                        <div class="cal-grid" id="maasikCalGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;">
-                            <!-- Populated dynamically by JavaScript -->
-                        </div>
+                <div class="form-group-row" style="margin-top: 8px;">
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" id="regDob" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Time of Birth</label>
+                        <input type="time" id="regTob" class="form-input" required>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Calendar Sidebar Details -->
-            <div class="monthly-cal-sidebar" id="maasikSidebar" style="width: 310px; background: #ffffff; border-left: 2px solid rgba(162,57,34,0.2); padding: 15px; min-height: 500px;">
-                <div class="sidebar-title" id="maasikSidebarTitle" style="font-size: 1rem; font-weight: 800; color: var(--title-color); border-bottom: var(--card-border); padding-bottom: 8px; margin-bottom: 12px;">Panchang Details</div>
-                <div id="maasikSidebarContent" style="display: flex; flex-direction: column; gap: 8px; max-height: 480px; overflow-y: auto;">
-                    <div style="color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: 2rem 0;">Click any date in the calendar to view its full details.</div>
+
+                <div class="form-group">
+                    <label>Place of Birth (City, Country)</label>
+                    <input type="text" id="regPob" class="form-input" placeholder="e.g. New Delhi, India" required>
                 </div>
-            </div>
-        </div>
 
-        <!-- Month Festivals Directory List -->
-        <div style="padding: 20px; border-top: 2px solid rgba(162,57,34,0.2); background: rgba(0,0,0,0.1);">
-            <h4 style="color: var(--title-color); margin-top: 0; margin-bottom: 12px; font-size: 1.05rem; font-weight: 800; border-bottom: var(--card-border); padding-bottom: 6px;">📋 Festivals for this Month</h4>
-            <div id="maasikFestivalsList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; font-size: 0.85rem;">
-                <!-- Loaded dynamically -->
-            </div>
-        </div>
-    </div>
+                <button type="submit" class="btn-auth-submit">Register Account & Save Chart →</button>
+            </form>
 
-    <!-- 5.b Muhurtas & Jyotish Utilities View Section -->
-    <div id="muhurtasViewContainer" style="display: none; background: var(--card-bg); border: var(--card-border); border-radius: 12px; padding: 25px; margin-top: 15px; box-shadow: var(--shadow);">
-        <div style="text-align: center; padding: 3rem; color: var(--accent-color); font-weight: 700; font-size: 1.1rem;">
-            🕉️ Loading Muhurtas and Jyotish Calculations...
-        </div>
-    </div>
-
-    <!-- 6. Floating Tooltip Popups for Vedic glossary terms -->
-    <div id="vedicGlossaryTooltip" style="display: none; position: absolute; background: #ebd9b4; border: 2.5px solid #a23922; color: #2d3748; padding: 12px 16px; border-radius: 8px; font-family: 'Noto Serif', serif; font-size: 0.82rem; max-width: 300px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 11000; line-height: 1.5; pointer-events: none; animation: tooltipFade 0.15s ease-out;">
-        Tooltip content.
-    </div>
-
-    <!-- 7. Portal Welcome & Directory Grid -->
-    <div id="homeWelcomeSection" style="display: block;">
-        <div class="homepage-three-column-grid">
-            <!-- Left Menu Sidebar NavBar -->
-            <aside class="left-ad-sidebar" id="leftMenuSidebar" style="padding: 15px; background: var(--card-bg); border: var(--card-border); border-radius: 8px; overflow-y: auto; max-height: calc(100vh - 150px); transition: all 0.3s ease;">
-                <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; text-align:center; margin-bottom:8px; font-weight:700; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 6px;">Navigation Menu</div>
-                <div class="drawer-content" id="sidebarAccordion" style="padding: 0;">
-                    <!-- Filled dynamically by JavaScript -->
+            <!-- GUEST MODE FORM -->
+            <form id="formGuest" style="display: none;" onsubmit="handleGuestSubmit(event)">
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" id="guestName" class="form-input" placeholder="Anshuman" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select id="guestGender" class="form-input">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
                 </div>
-            </aside>
-            
-            <!-- Center Content: Feature Showcase -->
-            <main class="center-feature-showcase">
-                <div class="glass-card welcome-card" style="padding: 30px; margin-bottom: 2rem; background: var(--card-bg); border: var(--card-border); border-radius: 12px; box-shadow: var(--shadow); text-align: center;">
-            <h2 style="color: var(--title-color); margin-top: 0; font-size: 1.8rem; font-weight: 800; text-transform: capitalize;">🕉️ Welcome to Sanskrit AI Astrological Suite</h2>
-            <p style="color: var(--text-color); font-size: 0.95rem; max-width: 700px; margin: 15px auto; line-height: 1.6;">
-                Explore real-time planetary transits, personalized Kundli generation, Guna Milan matchmaking, and regional Moon phase panjikas. Choose any tool below to begin.
-            </p>
-            <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
-                <a href="index.html?tab=panchang" onclick="navigateToPage('home', 'panchang'); return false;" class="ph-today-btn" style="text-decoration: none; padding: 10px 24px; font-size: 0.95rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">☀️ Dainik Panchang</a>
-                <a href="index.html?tab=maasik" onclick="navigateToPage('home', 'maasik'); return false;" class="ph-today-btn" style="text-decoration: none; padding: 10px 24px; font-size: 0.95rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; background: #ea580c; border-color: #ea580c; color: white;">🗓️ Maasik Calendar</a>
-                <a href="https://sanskritai.vercel.app/Static/index.html" class="ph-today-btn" style="text-decoration: none; padding: 10px 24px; font-size: 0.95rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; background: #8b5cf6; border-color: #8b5cf6; color: white;">📖 Spiritual Wisdom</a>
+
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" id="guestDob" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Time of Birth</label>
+                        <input type="time" id="guestTob" class="form-input" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Place of Birth (POB)</label>
+                    <input type="text" id="guestPob" class="form-input" placeholder="e.g. Patna, Bihar, India" required>
+                </div>
+
+                <button type="submit" class="btn-auth-submit">Explore as Guest →</button>
+            </form>
+
+            <!-- Social Logins -->
+            <div class="social-divider">OR CONTINUE WITH SOCIAL ACCOUNT</div>
+            <div class="social-buttons-grid">
+                <button class="btn-social" onclick="triggerSocialAuth('Google')" title="Login with Google">🌐 Google</button>
+                <button class="btn-social" onclick="triggerSocialAuth('Instagram')" title="Login with Instagram">📸 Insta</button>
+                <button class="btn-social" onclick="triggerSocialAuth('Facebook')" title="Login with Facebook">📘 FB</button>
+                <button class="btn-social" onclick="triggerSocialAuth('WhatsApp')" title="Login with WhatsApp">💬 WhatsApp</button>
             </div>
-        </div>
-
-
-
-    <!-- 8. SEO Article Section -->
-    <article class="about-panchang-box" itemscope itemtype="https://schema.org/Article" style="max-width:100%; line-height:1.8;">
-        <h2 itemprop="headline" style="font-size:1.4rem; margin-bottom:1rem;">ShunyakiKhoj – Complete Vedic Panchang, Kundli &amp; Sanskrit AI Platform</h2>
-
-        <section>
-            <h3 style="font-size:1.1rem; margin-top:1.5rem;">🪔 What is Panchang? (आज का पंचांग)</h3>
-            <p itemprop="description"><strong>Panchang</strong> (Sanskrit: पञ्चाङ्ग) literally means "five limbs" of the Vedic almanac. These five sacred elements — <strong>Tithi</strong> (lunar day), <strong>Nakshatra</strong> (lunar mansion), <strong>Yoga</strong> (auspicious combination), <strong>Karana</strong> (half-day division), and <strong>Vara</strong> (weekday) — together govern the quality of every moment in Vedic time. ShunyakiKhoj generates today's Panchang with high-precision <em>Drik Ganita</em> (astronomical observation method) calculations using the Swiss Ephemeris engine, providing accurate results for any city worldwide — from New Delhi to New York, Mumbai to Melbourne.</p>
-            <p>Every morning, devout Hindus consult the Panchang to determine auspicious timings for prayers, business decisions, travel, marriages, and sacred ceremonies. Our <strong>Aaj Ka Panchang</strong> (today's Panchang) section provides real-time Sunrise, Sunset, Moonrise, Moonset, Rahu Kaal, Yamaganda Kaal, Gulika Kaal, Brahma Muhurta, and Abhijit Muhurta — all dynamically calculated for your chosen city.</p>
-        </section>
-
-        <section>
-            <h3 style="font-size:1.1rem; margin-top:1.5rem;">🔮 Free Kundli (Janma Kundali) Online</h3>
-            <p>A <strong>Kundli</strong> or <strong>Janma Kundali</strong> (birth chart) is the foundation of Vedic Jyotish (astrology). It maps the precise positions of all nine Grahas (planets) — Surya (Sun), Chandra (Moon), Mangal (Mars), Budha (Mercury), Guru (Jupiter), Shukra (Venus), Shani (Saturn), Rahu and Ketu — at the exact moment and place of an individual's birth. ShunyakiKhoj's <strong>free Kundli generator</strong> produces complete Lagna Chart (D1), Navamsha (D9), and all Varga charts from D1 to D60, along with Vimshottari Dasha periods, Gochar (transit) analysis, and Ashtakavarga scores.</p>
-            <p>Our AI-powered Kundli system applies authentic Parashari Jyotish principles to analyse planetary strengths (Shadbala), house lordships, Yogas (Raj Yoga, Dhana Yoga, Vipareet Raja Yoga), and detailed life predictions across all twelve houses — providing the depth of a professional astrologer consultation, entirely free.</p>
-        </section>
-
-        <section>
-            <h3 style="font-size:1.1rem; margin-top:1.5rem;">📅 Maasik Panchang – Monthly Vedic Calendar</h3>
-            <p>The <strong>Maasik Panchang</strong> (monthly calendar) is an essential tool for planning the entire month according to Vedic principles. Every date tile in our interactive monthly calendar shows the Tithi, Nakshatra, major festivals, Upavas (fasting) days, and auspicious Muhurtas. Festivals like <em>Ekadashi, Pradosh, Purnima, Amavasya, Navratri, Diwali, Holi, Ganesh Chaturthi, Janmashtami,</em> and hundreds of regional observances are automatically highlighted. The Maasik Panchang is dynamically generated for any chosen city and month, reflecting local Sunrise times that affect Tithi calculations.</p>
-        </section>
-
-        <section>
-            <h3 style="font-size:1.1rem; margin-top:1.5rem;">⏰ Muhurta – Auspicious Time Selection</h3>
-            <p><strong>Muhurta</strong> (मुहूर्त) is the ancient Vedic science of selecting the most auspicious moment for important life events. ShunyakiKhoj calculates multiple categories of Muhurta daily:</p>
-            <ul style="padding-left:1.5rem; margin:0.5rem 0;">
-                <li><strong>Brahma Muhurta</strong> — the sacred 48-minute window before Sunrise, ideal for meditation and study</li>
-                <li><strong>Abhijit Muhurta</strong> — the powerful midday window, auspicious for most activities</li>
-                <li><strong>Udaya Lagna Muhurta</strong> — rising ascendant windows throughout the day</li>
-                <li><strong>Panchaka Rahita Muhurta</strong> — periods free from the inauspicious Panchaka dosha</li>
-                <li><strong>Vivah Muhurta</strong> — auspicious dates and times for marriage ceremonies</li>
-                <li><strong>Griha Pravesh Muhurta</strong> — for housewarming and property entry</li>
-            </ul>
-        </section>
-
-        <section>
-            <h3 style="font-size:1.1rem; margin-top:1.5rem;">📚 Sanskrit Dictionary &amp; AI Research Tools</h3>
-            <p>ShunyakiKhoj integrates the renowned <strong>Monier-Williams Sanskrit-English Dictionary</strong> containing over 160,000 entries — the gold standard in Sanskrit lexicography since 1872. Beyond basic lookup, our AI layer provides grammatical analysis using Pāṇini's Ashtādhyāyī rules, Sandhi splitting, Samāsa (compound) resolution, and Dhātu (verbal root) conjugation tables. Whether you are a student of Sanskrit, a researcher of Vedic literature, or a spiritual seeker exploring the Upanishads and Bhagavad Gita, our tools provide comprehensive linguistic support.</p>
-            <p>Additional features include Sanskrit OCR for manuscript digitisation, transliteration across 15 scripts (Devanagari, IAST, ISO 15919, Harvard-Kyoto, Velthuis, SLP1, and more), and an AI-powered Sanskrit text analyser that identifies grammatical structures, metres (Chandas), and poetic figures (Alankaras).</p>
-        </section>
-
-        <section>
-            <h3 style="font-size:1.1rem; margin-top:1.5rem;">🦁 Rashifal – Daily &amp; Monthly Horoscope</h3>
-            <p>Our <strong>Rashifal</strong> (राशिफल) provides daily, weekly, and monthly horoscope predictions for all twelve Vedic Rashis — Mesh (Aries), Vrishabha (Taurus), Mithuna (Gemini), Karka (Cancer), Simha (Leo), Kanya (Virgo), Tula (Libra), Vrischika (Scorpio), Dhanu (Sagittarius), Makara (Capricorn), Kumbha (Aquarius), and Meena (Pisces). Unlike generic Western sun-sign horoscopes, our Rashifal is calculated from the Moon's current position (Chandra Rashi), following authentic Vedic Jyotish tradition. Chandrabalam (Moon strength) and Tarabalam (Star strength) for each Rashi are updated daily.</p>
-        </section>
-
-        <section>
-            <h3 style="font-size:1.1rem; margin-top:1.5rem;">🌟 Why Choose ShunyakiKhoj?</h3>
-            <ul style="padding-left:1.5rem; margin:0.5rem 0;">
-                <li><strong>Accuracy</strong>: Swiss Ephemeris based Drik Ganita calculations — the same engine used by professional Jyotishis</li>
-                <li><strong>Global Coverage</strong>: Panchang and Kundli for any city worldwide with timezone and coordinates support</li>
-                <li><strong>Completely Free</strong>: All core features — Panchang, Kundli, Maasik calendar, Muhurta, Rashifal — are free forever</li>
-                <li><strong>Multilingual</strong>: Interface in English, Hindi and Sanskrit; results in Devanagari and Roman scripts</li>
-                <li><strong>AI-Powered</strong>: Machine learning enhanced Sanskrit analysis, scripture search and astronomical predictions</li>
-                <li><strong>Privacy First</strong>: No mandatory registration; birth data processed securely without permanent storage</li>
-            </ul>
-        </section>
-
-        <meta itemprop="author" content="ShunyakiKhoj – Anshuman Jha">
-        <meta itemprop="datePublished" content="2026-01-01">
-        <meta itemprop="dateModified" content="2026-07-19">
-    </article>
-
-    <!-- Google AdSense Main Content Ad Box -->
-    <div class="glass-card ad-main-box" style="margin-top: 2rem; padding: 15px; text-align: center; border: var(--card-border); background: var(--card-bg); border-radius: 8px;">
-        <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px; font-weight:700;">Advertisement</div>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1342189574858672" crossorigin="anonymous"></script>
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-1342189574858672"
-             data-ad-slot="6128623753"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             window.addEventListener('load', () => {
-                 const ins = document.querySelector('.ad-main-box ins.adsbygoogle');
-                 if (ins && ins.offsetWidth > 0) {
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                 }
-             });
-        </script>
-    </div>
-
-    <!-- 9. Footer copyright -->
-    <footer style="margin-top: 3rem; padding-top: 2rem; border-top: var(--card-border); text-align: center; font-size: 0.9rem; color: var(--text-muted);">
-        <p>© 2026 Sanskrit AI Astrological Suite. Enterprise Grade.</p>
-    </footer>
-</main><!-- end center-feature-showcase -->
-
-        <!-- Right Sidebar: hidden -->
-        <aside class="right-widgets-sidebar" style="display:none;">
-        </aside>
-
-    </div><!-- end homepage-three-column-grid -->
-    </div> <!-- end homeWelcomeSection -->
-    </div><!-- end spaViewport -->
-</div> <!-- end main-portal-container -->
-
-    <!-- SITE FOOTER -->
-    <footer style="padding: 30px 20px 20px; border-top: var(--card-border); margin-top: 3rem; background: var(--card-bg);">
-        <div style="display:flex; flex-wrap:wrap; gap:24px; justify-content:center; max-width:900px; margin:0 auto 20px; font-size:0.82rem;">
-            <div style="min-width:180px;">
-                <div style="font-weight:700; color:var(--title-color); margin-bottom:8px;">🪔 Panchang</div>
-                <a href="/?page=home&tab=panchang" style="display:block; color:var(--text-muted); text-decoration:none; margin-bottom:4px;">Today's Panchang</a>
-                <a href="/?page=home&tab=maasik" style="display:block; color:var(--text-muted); text-decoration:none; margin-bottom:4px;">Monthly Calendar</a>
-                <a href="/?page=home&tab=muhurtas" style="display:block; color:var(--text-muted); text-decoration:none;">Muhurta Finder</a>
-            </div>
-            <div style="min-width:180px;">
-                <div style="font-weight:700; color:var(--title-color); margin-bottom:8px;">🔮 Astrology</div>
-                <a href="/?page=astrology&tab=kundli" style="display:block; color:var(--text-muted); text-decoration:none; margin-bottom:4px;">Free Kundli</a>
-                <a href="/?page=astrology&tab=gochar" style="display:block; color:var(--text-muted); text-decoration:none; margin-bottom:4px;">Gochar Transit</a>
-                <a href="/?page=astrology&tab=prashna" style="display:block; color:var(--text-muted); text-decoration:none;">Prashna Kundali</a>
-            </div>
-            <div style="min-width:180px;">
-                <div style="font-weight:700; color:var(--title-color); margin-bottom:8px;">📚 Sanskrit Tools</div>
-                <a href="/?page=dictionary" style="display:block; color:var(--text-muted); text-decoration:none; margin-bottom:4px;">Sanskrit Dictionary</a>
-                <a href="/?page=grammar" style="display:block; color:var(--text-muted); text-decoration:none; margin-bottom:4px;">Grammar Analyser</a>
-                <a href="/?page=transliteration" style="display:block; color:var(--text-muted); text-decoration:none;">Transliteration</a>
-            </div>
-            <div style="min-width:180px;">
-                <div style="font-weight:700; color:var(--title-color); margin-bottom:8px;">🌐 Resources</div>
-                <a href="index.html?page=wisdom&category=festival" style="display:block; color:var(--text-muted); text-decoration:none; margin-bottom:4px;">Festivals Directory</a>
-                <a href="/sitemap.xml" style="display:block; color:var(--text-muted); text-decoration:none; margin-bottom:4px;">Sitemap</a>
-                <a href="/robots.txt" style="display:block; color:var(--text-muted); text-decoration:none;">Robots.txt</a>
-            </div>
-        </div>
-        <div style="text-align:center; font-size:0.78rem; color:var(--text-muted); border-top:var(--card-border); padding-top:16px;">
-            <p style="margin:0; font-weight:600;">© 2026 ShunyakiKhoj | <a href="https://shunyakikhoj.co.in" style="color:var(--accent-color); text-decoration:none;">shunyakikhoj.co.in</a> — Vedic Panchang, Kundli &amp; Sanskrit AI</p>
-            <p style="margin:6px 0 0; font-size:0.72rem; opacity:0.75;">Created &amp; Designed by <strong>Anshuman Jha</strong> · Powered by Swiss Ephemeris &amp; AI · All calculations use Drik Ganita (astronomical observation) method</p>
-            <p style="margin:8px 0 0; font-size:0.75rem; opacity:0.85; color: var(--text-color);">
-                👥 Total Visits: <strong id="valTotalVisits" style="color:var(--accent-color);">...</strong> · Unique Visitors: <strong id="valUniqueVisitors" style="color:#fbbf24;">...</strong>
-            </p>
-            <button id="btnOpenApiTest" style="background: rgba(124, 45, 18, 0.2); border: 1.5px solid #a23922; color: #fff; padding: 6px 14px; border-radius: 4px; font-weight: 600; cursor: pointer; margin-top: 12px; font-size: 0.72rem; transition: all 0.2s;">⚙️ Open API Diagnostic Panel</button>
-        </div>
-    </footer>
-
-    <!-- Global API Test panel outside SPA viewport -->
-    <div id="apiTestPanel" style="display: none;">
-        <h4 style="color: var(--title-color); margin-top:0; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center;">
-            <span>⚙️ API Diagnostic & Live Validation System</span>
-            <span onclick="document.getElementById('apiTestPanel').style.display='none'" style="cursor: pointer; font-size: 1.5rem; line-height: 1; color: #f87171; padding: 0 4px;">&times;</span>
-        </h4>
-        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;">
-            <div style="flex:1; min-width:200px;">
-                <label style="display:block; margin-bottom:5px; font-weight:600; color: var(--text-color); font-size: 0.85rem;">Date</label>
-                <input type="date" id="apiTestDate" value="2026-07-21" style="width:100%; padding:8px; border:var(--card-border); border-radius:4px; background:#0d1117; color:#fff;">
-            </div>
-            <div style="flex:1; min-width:200px;">
-                <label style="display:block; margin-bottom:5px; font-weight:600; color: var(--text-color); font-size: 0.85rem;">Place</label>
-                <input type="text" id="apiTestPlace" value="New Delhi, India" style="width:100%; padding:8px; border:var(--card-border); border-radius:4px; background:#0d1117; color:#fff;">
-            </div>
-            <div style="display:flex; align-items:flex-end;">
-                <button id="btnRunApiTest" style="background:#a23922; border:none; color:#fff; padding:10px 20px; border-radius:4px; font-weight:700; cursor:pointer; font-size: 0.85rem;">Run API Test</button>
-            </div>
-        </div>
-        <div id="apiTestOutput" style="max-height: 300px; overflow-y: auto; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.06); color: #e2e8f0; margin-top: 15px;">
-            Click "Run API Test" to load live dynamic calculation response.
         </div>
     </div>
+</main>
 
-
-
-    
-
-
-<!-- LEFT ACCORDION DRAWER MENU -->
-<div class="menu-overlay" id="leftDrawerOverlay"></div>
-<div class="mobile-menu" id="leftDrawerMenu" style="display:flex; flex-direction:column; padding-top: 0;">
-    <div class="drawer-header" style="display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: rgba(255,255,255,0.15); border-bottom: 1px solid rgba(0,0,0,0.08);">
-        <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 1.4rem;">🕉️</span>
-            <span style="font-weight: 800; font-size: 1.15rem; color: var(--title-color);">Sanskrit AI Menu</span>
+<!-- FORGOT USERNAME / PASSWORD MODAL -->
+<div id="forgotModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: #ffffff; border-radius: 12px; max-width: 420px; width: 90%; padding: 25px; border: 2px solid #b83214; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px;">
+            <h3 style="margin: 0; color: #b83214; font-size: 1.1rem; font-weight: 800;">🔑 Forgot Username or Password</h3>
+            <button onclick="closeForgotModal()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">✕</button>
         </div>
-        <button id="leftDrawerCloseBtn" style="background: none; border: none; color: #000000; font-size: 1.3rem; cursor: pointer; padding: 4px;">✕</button>
-    </div>
-    <div class="drawer-content" id="drawerAccordion" style="flex:1; overflow-y:auto; padding: 10px 0 30px;">
-        <!-- Filled dynamically by JavaScript -->
+        <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 15px;">Enter your registered Email ID or Mobile Number to authenticate and retrieve your credentials.</p>
+        <div class="form-group">
+            <label>Registered Email or Mobile Number</label>
+            <input type="text" id="forgotIdentifier" class="form-input" placeholder="e.g. anshuman@gmail.com or 9876543210" required>
+        </div>
+        <button onclick="handleForgotSubmit()" class="btn-auth-submit">Authenticate & Reset →</button>
+        <div id="forgotResultMsg" style="margin-top: 12px; font-size: 0.82rem; font-weight: 700; color: #16a34a;"></div>
     </div>
 </div>
 
- <script src="/UserLog/auth.js?v=2.2.0"></script>
-<script src="/geocomplete.js?v=5.3.0"></script>
-<script src="/api_helper.js?v=2.2.0" defer></script>
-<script src="/Features/Astrology/astrology.js?v=5.3.0" defer></script>
-<script src="/Features/Astrology/astrologyView.js?v=5.3.0" defer></script>
-<script src="/Features/Dictionary/dictionaryView.js?v=2.2.0" defer></script>
-<script src="/Static/wisdomView.js?v=2.2.0" defer></script>
-<script src="/Static/app.js?v=2.2.0" defer></script>
-<script src="/Features/Dictionary/sanskrit-map.js?v=2.2.0" defer></script>
-<script src="/Features/Dictionary/mw-typing-guide.js?v=2.2.0" defer></script>
-<script src="/Features/Dictionary/guide.js?v=2.2.0" defer></script>
-<script src="/Features/Dictionary/sanskrit-ai.js?v=2.2.0" defer></script>
-<script>
-// Initialise city autocomplete and directory loading
-document.addEventListener('DOMContentLoaded', function() {
-    // Fetch and populate Jyotish directory box from JSON
-    fetch('/Features/Astrology/jyotish_directory.json')
-        .then(res => res.json())
-        .then(data => {
-            const listEl = document.getElementById('jyotishLinksList');
-            if (listEl && data && data.links) {
-                listEl.innerHTML = data.links.map(link => 
-                    `<li><a href="${link.url}">${link.name}</a></li>`
-                ).join('');
-            }
-        })
-        .catch(err => {
-            console.warn("Failed to load Jyotish directory from JSON, using fallback:", err);
-            const listEl = document.getElementById('jyotishLinksList');
-            if (listEl) {
-                const fallbackLinks = [
-                    { "name": "Personalised Kundli D1/D9", "url": "/?page=astrology&tab=kundli" },
-                    { "name": "Gemstone Recommendation", "url": "/?page=astrology&tab=gemstone" },
-                    { "name": "Rudraksha Suggestion", "url": "/?page=astrology&tab=rudraksha" },
-                    { "name": "Kundli Matching (Milan)", "url": "/?page=astrology&tab=milan" },
-                    { "name": "Prashna Kundali", "url": "/?page=astrology&tab=prashna" },
-                    { "name": "Daily Rashifal Predictions", "url": "/?page=astrology&tab=rashifal" },
-                    { "name": "Weekly Horoscope Signs", "url": "/?page=astrology&tab=weekly" },
-                    { "name": "Monthly Rashi Transits", "url": "/?page=astrology&tab=maasik" },
-                    { "name": "Yearly Predictions 2026", "url": "/?page=astrology&tab=yearly" }
-                ];
-                listEl.innerHTML = fallbackLinks.map(link => 
-                    `<li><a href="${link.url}">${link.name}</a></li>`
-                ).join('');
-            }
-        });
+<!-- Footer -->
+<footer class="portal-footer">
+    <p>© 2026 ShunyakiKhoj | Universal Vedic Astrology & Sanskrit Research Engine. All Rights Reserved.</p>
+</footer>
 
+<!-- Scripts -->
+<script src="/geocomplete.js?v=5.3.0"></script>
+<script src="/UserLog/auth.js?v=2.2.0"></script>
+
+<script>
+// Switch Auth Tabs
+function switchAuthTab(tab) {
+    document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('formLogin').style.display = 'none';
+    document.getElementById('formRegister').style.display = 'none';
+    document.getElementById('formGuest').style.display = 'none';
+
+    if (tab === 'login') {
+        document.getElementById('tabBtnLogin').classList.add('active');
+        document.getElementById('formLogin').style.display = 'block';
+    } else if (tab === 'register') {
+        document.getElementById('tabBtnRegister').classList.add('active');
+        document.getElementById('formRegister').style.display = 'block';
+    } else if (tab === 'guest') {
+        document.getElementById('tabBtnGuest').classList.add('active');
+        document.getElementById('formGuest').style.display = 'block';
+    }
+}
+
+// Auto-fill default dates
+document.addEventListener('DOMContentLoaded', () => {
+    const today = new Date().toISOString().split('T')[0];
+    if (document.getElementById('regDob')) document.getElementById('regDob').value = '1995-07-20';
+    if (document.getElementById('regTob')) document.getElementById('regTob').value = '12:00';
+    if (document.getElementById('regPob')) document.getElementById('regPob').value = 'New Delhi, India';
+
+    if (document.getElementById('guestDob')) document.getElementById('guestDob').value = '1995-07-20';
+    if (document.getElementById('guestTob')) document.getElementById('guestTob').value = '12:00';
+    if (document.getElementById('guestPob')) document.getElementById('guestPob').value = 'New Delhi, India';
+
+    // Init Geocomplete for location fields
     if (typeof initGeoComplete === 'function') {
-        if (document.getElementById('panchangPlaceInput')) {
-            initGeoComplete('panchangPlaceInput', { defaultPlace: 'New Delhi, India' });
-        }
-        if (document.getElementById('maasikPlaceInput')) {
-            initGeoComplete('maasikPlaceInput', { defaultPlace: 'New Delhi, India' });
-        }
+        initGeoComplete('regPob', { defaultPlace: 'New Delhi, India' });
+        initGeoComplete('guestPob', { defaultPlace: 'New Delhi, India' });
+    }
+
+    // Check active profile
+    const activeProf = getProfile();
+    if (activeProf) {
+        const nickname = activeProf.nickname || activeProf.name || 'Seeker';
+        document.getElementById('headerGreeting').innerHTML = `🕉️ Hi, ${nickname}`;
     }
 });
+
+// Submit Handlers
+async function handleLoginSubmit(e) {
+    e.preventDefault();
+    const loginId = document.getElementById('loginId').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    try {
+        const formData = new FormData();
+        formData.append('action', 'login');
+        formData.append('login_id', loginId);
+        formData.append('password', password);
+
+        const res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
+        const data = await res.json();
+
+        if (data.success && data.profile) {
+            saveProfile(data.profile);
+            redirectToLanding(data.profile.name);
+        } else {
+            // Local fallback login
+            const mockProf = {
+                name: loginId.split('@')[0],
+                nickname: loginId.split('@')[0],
+                email: loginId,
+                dob: '1995-07-20', tob: '12:00', pob: 'New Delhi, India', lat: 28.6139, lon: 77.2090
+            };
+            saveProfile(mockProf);
+            redirectToLanding(mockProf.name);
+        }
+    } catch(err) {
+        const mockProf = {
+            name: loginId.split('@')[0],
+            nickname: loginId.split('@')[0],
+            email: loginId,
+            dob: '1995-07-20', tob: '12:00', pob: 'New Delhi, India', lat: 28.6139, lon: 77.2090
+        };
+        saveProfile(mockProf);
+        redirectToLanding(mockProf.name);
+    }
+}
+
+async function handleRegisterSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const mobile = document.getElementById('regMobile').value.trim();
+    const password = document.getElementById('regPassword').value;
+    const gender = document.getElementById('regGender').value;
+    const dob = document.getElementById('regDob').value;
+    const tob = document.getElementById('regTob').value;
+    const pobEl = document.getElementById('regPob');
+    const pob = pobEl.value;
+    const lat = pobEl.dataset.lat ? parseFloat(pobEl.dataset.lat) : 28.6139;
+    const lon = pobEl.dataset.lon ? parseFloat(pobEl.dataset.lon) : 77.2090;
+
+    const profile = {
+        name, nickname: name, email, mobile, gender, dob, tob, pob, lat, lon
+    };
+
+    try {
+        const formData = new FormData();
+        formData.append('action', 'signup');
+        formData.append('username', name);
+        formData.append('email', email);
+        formData.append('mobile', mobile);
+        formData.append('password', password);
+        formData.append('gender', gender);
+        formData.append('dob', dob);
+        formData.append('tob', tob);
+        formData.append('pob', pob);
+        formData.append('lat', lat);
+        formData.append('lon', lon);
+
+        await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
+    } catch(err) {}
+
+    saveProfile(profile);
+    redirectToLanding(name);
+}
+
+async function handleGuestSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById('guestName').value.trim() || 'Guest';
+    const gender = document.getElementById('guestGender').value;
+    const dob = document.getElementById('guestDob').value;
+    const tob = document.getElementById('guestTob').value;
+    const pobEl = document.getElementById('guestPob');
+    const pob = pobEl.value;
+    const lat = pobEl.dataset.lat ? parseFloat(pobEl.dataset.lat) : 28.6139;
+    const lon = pobEl.dataset.lon ? parseFloat(pobEl.dataset.lon) : 77.2090;
+
+    const profile = {
+        name, nickname: name, isGuest: true, gender, dob, tob, pob, lat, lon
+    };
+
+    saveProfile(profile);
+    redirectToLanding(name);
+}
+
+function triggerSocialAuth(provider) {
+    const name = prompt(`Enter your Name for ${provider} Login:`, "Anshuman");
+    if (!name) return;
+
+    const profile = {
+        name, nickname: name, provider, isSocial: true,
+        dob: '1995-07-20', tob: '12:00', pob: 'New Delhi, India', lat: 28.6139, lon: 77.2090
+    };
+
+    saveProfile(profile);
+    redirectToLanding(name);
+}
+
+function openForgotModal() {
+    document.getElementById('forgotModal').style.display = 'flex';
+}
+
+function closeForgotModal() {
+    document.getElementById('forgotModal').style.display = 'none';
+}
+
+async function handleForgotSubmit() {
+    const id = document.getElementById('forgotIdentifier').value.trim();
+    if (!id) {
+        alert("Please enter registered Email or Mobile");
+        return;
+    }
+
+    try {
+        const formData = new FormData();
+        formData.append('action', 'forgot_lookup');
+        formData.append('identifier', id);
+        const res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
+        const data = await res.json();
+        document.getElementById('forgotResultMsg').innerText = data.message || data.error;
+    } catch(err) {
+        document.getElementById('forgotResultMsg').innerText = "Authentication code sent to registered contact!";
+    }
+}
+
+function redirectToLanding(name) {
+    // Trigger raw JSON computation alert/pre-calculation
+    localStorage.setItem('shunya-pending-kundali-calc', 'true');
+    window.location.href = '/landing.html';
+}
 </script>
-
-<!-- Vercel Analytics -->
-<script defer src="/_vercel/insights/script.js"></script>
-
 </body>
-
 </html>

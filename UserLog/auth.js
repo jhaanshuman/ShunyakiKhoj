@@ -279,7 +279,7 @@
         } else {
             btn.innerHTML = '🔑 Login / Register';
             btn.onclick = () => {
-                window.location.href = '/home.html';
+                window.location.href = '/index.html';
             };
         }
     }
