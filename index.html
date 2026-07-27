@@ -726,15 +726,8 @@ async function handleRegisterSubmit(e) {
 
     if (typeof saveProfile === 'function') saveProfile(profile);
 
-    // Store birth details in localStorage so landing.html can generate Kundali cache
+    // Only persist username — birth details live in MySQL users table
     localStorage.setItem('shunya-username', name);
-    localStorage.setItem('shunya-new-user', 'true');
-    localStorage.setItem('shunya-dob', dob);
-    localStorage.setItem('shunya-tob', tob);
-    localStorage.setItem('shunya-pob', pob);
-    localStorage.setItem('shunya-lat', String(lat));
-    localStorage.setItem('shunya-lon', String(lon));
-    localStorage.setItem('shunya-gender', gender);
 
     redirectToLanding(name);
 }

@@ -159,6 +159,33 @@ if ($action === "login") {
     exit;
 }
 
+/* 3b. GET USER PROFILE (birth details from MySQL users table) */
+if ($action === "get_user_profile") {
+    $username = db_escape($_GET['username'] ?? $_POST['username'] ?? $json_data['username'] ?? '');
+    if (empty($username)) {
+        echo json_encode(["success" => false, "error" => "Username required"]);
+        exit;
+    }
+    $q = db_query("SELECT username, email, mobile, gender, dob, tob, pob, lat, lon FROM users WHERE username='$username' OR email='$username' LIMIT 1");
+    $row = db_fetch($q);
+    if ($row) {
+        echo json_encode(["success" => true, "profile" => [
+            "username" => $row['username'],
+            "email"    => $row['email'],
+            "mobile"   => $row['mobile'],
+            "gender"   => $row['gender'],
+            "dob"      => $row['dob'],
+            "tob"      => $row['tob'],
+            "pob"      => $row['pob'],
+            "lat"      => floatval($row['lat']),
+            "lon"      => floatval($row['lon'])
+        ]]);
+    } else {
+        echo json_encode(["success" => false, "error" => "User not found"]);
+    }
+    exit;
+}
+
 /* 4. SAVE KUNDALI CACHE (PHP MYSQL) */
 if ($action === "save_kundali_cache") {
     $username = db_escape($_POST['username'] ?? $_POST['user_identifier'] ?? '');
