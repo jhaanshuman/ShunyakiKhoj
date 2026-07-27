@@ -411,58 +411,6 @@ if ($action === "forgot_lookup" || $action === "reset_credentials") {
     exit;
 }
 
-/* 7. KUNDALI CACHE SAVE & FETCH (PHP MySQL Database Primary Storage) */
-if ($action === "save_kundali_cache") {
-    $user_id = db_escape($_POST['username'] ?? $_POST['user_identifier'] ?? $json_data['username'] ?? $json_data['user_identifier'] ?? $_SESSION['username'] ?? 'default');
-    $dob = db_escape($_POST['dob'] ?? $json_data['dob'] ?? '');
-    $tob = db_escape($_POST['tob'] ?? $json_data['tob'] ?? '');
-    $pob = db_escape($_POST['pob'] ?? $json_data['pob'] ?? '');
-    $lat = floatval($_POST['lat'] ?? $json_data['lat'] ?? 0.0);
-    $lon = floatval($_POST['lon'] ?? $json_data['lon'] ?? 0.0);
-    $raw_json = db_escape($_POST['raw_json'] ?? $json_data['raw_json'] ?? '');
-
-    if (!empty($raw_json)) {
-        db_query("UPDATE users SET cached_kundali_json='$raw_json' WHERE username='$user_id' OR email='$user_id'");
-        
-        $check_q = db_query("SELECT id FROM user_kundali_cache WHERE user_identifier='$user_id'");
-        if ($check_q && db_fetch($check_q)) {
-            $sql = "UPDATE user_kundali_cache SET dob='$dob', tob='$tob', pob='$pob', lat=$lat, lon=$lon, raw_json='$raw_json' WHERE user_identifier='$user_id'";
-        } else {
-            $sql = "INSERT INTO user_kundali_cache (user_identifier, dob, tob, pob, lat, lon, raw_json)
-                    VALUES ('$user_id', '$dob', '$tob', '$pob', $lat, $lon, '$raw_json')";
-        }
-        db_query($sql);
-        echo json_encode(["success" => true, "db" => "PHP MySQL Database"]);
-    } else {
-        echo json_encode(["success" => false, "error" => "Empty raw json"]);
-    }
-    exit;
-}
-
-if ($action === "get_kundali_cache") {
-    $user_id = db_escape($_GET['username'] ?? $_GET['user_identifier'] ?? $_POST['username'] ?? $_POST['user_identifier'] ?? $json_data['username'] ?? $json_data['user_identifier'] ?? $_SESSION['username'] ?? '');
-    
-    if (empty($user_id)) {
-        echo json_encode(["success" => false, "error" => "Username parameter required"]);
-        exit;
-    }
-
-    $q = db_query("SELECT raw_json FROM user_kundali_cache WHERE user_identifier='$user_id' ORDER BY id DESC LIMIT 1");
-    $row = db_fetch($q);
-    if ($row && !empty($row['raw_json'])) {
-        echo json_encode(["success" => true, "raw_json" => $row['raw_json'], "db" => "PHP MySQL Database"]);
-    } else {
-        $q2 = db_query("SELECT cached_kundali_json FROM users WHERE username='$user_id' OR email='$user_id'");
-        $row2 = db_fetch($q2);
-        if ($row2 && !empty($row2['cached_kundali_json'])) {
-            echo json_encode(["success" => true, "raw_json" => $row2['cached_kundali_json'], "db" => "PHP MySQL Database"]);
-        } else {
-            echo json_encode(["success" => false, "error" => "No cache found in PHP MySQL Database"]);
-        }
-    }
-    exit;
-}
-
 /* LOGOUT */
 if ($action === "logout") {
     session_destroy();

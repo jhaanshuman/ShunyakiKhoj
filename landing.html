@@ -782,26 +782,26 @@ window.showKundaliProgressModal = showKundaliProgressModal;
 
     const authBase = '/UserLog/auth.php';
 
-    // Step 1: Check if Kundali cache already exists in MySQL
-    try {
-        const cacheResp = await fetch(`${authBase}?action=get_kundali_cache&username=${encodeURIComponent(username)}`);
-        if (cacheResp.ok) {
-            const cacheData = await cacheResp.json();
-            if (cacheData.success && cacheData.raw_json) {
-                const rawJson = typeof cacheData.raw_json === 'string'
-                    ? cacheData.raw_json : JSON.stringify(cacheData.raw_json);
-                localStorage.setItem('shunya-raw-kundali-json', rawJson);
-                const hiddenEl = document.getElementById('hiddenRawKundaliJson');
-                if (hiddenEl) hiddenEl.textContent = rawJson;
-                console.log('[Kundali] Loaded existing cache from MySQL for:', username);
-                return; // Existing user — done, zero lag
-            }
-        }
-    } catch (e) {
-        console.warn('[Kundali] get_kundali_cache failed:', e);
+    // ── Step 1: Check localStorage profile for cached_kundali_json (set during login)
+    // This avoids ANY extra API call for returning users — MySQL data already here
+    const storedProfile = (() => {
+        try { return JSON.parse(localStorage.getItem('shunyaProfile') || 'null'); } catch(e) { return null; }
+    })();
+
+    if (storedProfile && storedProfile.cached_kundali_json) {
+        const rawJson = storedProfile.cached_kundali_json;
+        localStorage.setItem('shunya-raw-kundali-json', rawJson);
+        const hiddenEl = document.getElementById('hiddenRawKundaliJson');
+        if (hiddenEl) hiddenEl.textContent = rawJson;
+        try {
+            window.lastCalculatedData = JSON.parse(rawJson);
+            if (typeof window.renderAstrologyViews === 'function') window.renderAstrologyViews(window.lastCalculatedData);
+        } catch(e) {}
+        console.log('[Kundali] Loaded from login profile (zero API call) for:', username);
+        return;
     }
 
-    // Step 2: No cache — fetch birth details directly from MySQL users table
+    // ── Step 2: Profile not in localStorage — fetch from users table (includes cached_kundali_json)
     let profile = null;
     try {
         const profileResp = await fetch(`${authBase}?action=get_user_profile&username=${encodeURIComponent(username)}`);
@@ -809,21 +809,34 @@ window.showKundaliProgressModal = showKundaliProgressModal;
             const profileData = await profileResp.json();
             if (profileData.success && profileData.profile) {
                 profile = profileData.profile;
-                console.log('[Kundali] Fetched birth profile from MySQL:', profile);
+                // If cache already exists in users table, use it immediately
+                if (profile.cached_kundali_json) {
+                    const rawJson = profile.cached_kundali_json;
+                    localStorage.setItem('shunya-raw-kundali-json', rawJson);
+                    const hiddenEl = document.getElementById('hiddenRawKundaliJson');
+                    if (hiddenEl) hiddenEl.textContent = rawJson;
+                    try {
+                        window.lastCalculatedData = JSON.parse(rawJson);
+                        if (typeof window.renderAstrologyViews === 'function') window.renderAstrologyViews(window.lastCalculatedData);
+                    } catch(e) {}
+                    console.log('[Kundali] Loaded from users.cached_kundali_json for:', username);
+                    return;
+                }
             }
         }
     } catch (e) {
         console.warn('[Kundali] get_user_profile failed:', e);
     }
 
+    // ── Step 3: No cache anywhere — need to generate fresh Kundali
     if (!profile || !profile.dob || !profile.tob || !profile.pob) {
-        console.log('[Kundali] No birth details in MySQL, skipping generation.');
+        console.log('[Kundali] No birth details found, skipping generation.');
         return;
     }
 
     const { dob, tob, pob, lat, lon, gender } = profile;
 
-    // Step 3: Show progress overlay
+    // Show progress overlay
     showKundaliProgressModal(true);
 
     try {
@@ -845,7 +858,7 @@ window.showKundaliProgressModal = showKundaliProgressModal;
         formData.append('hour', String(hour));
         formData.append('minute', String(minute));
 
-        // Step 4: Call Vercel Python API to generate Raw JSON Kundali
+        // Call Vercel Python API to generate Raw JSON Kundali
         let rawJson = null;
         const apiTargets = ['/api/calculate', 'https://www.shunyakikhoj.co.in/api/calculate'];
         for (const target of apiTargets) {
@@ -864,10 +877,34 @@ window.showKundaliProgressModal = showKundaliProgressModal;
         }
 
         if (rawJson) {
-            // Step 5: Save Raw JSON to MySQL user_kundali_cache via auth.php
+            // Save directly to users.cached_kundali_json via auth.php
             const saveForm = new FormData();
             saveForm.append('action', 'save_kundali_cache');
             saveForm.append('username', username);
+            saveForm.append('raw_json', rawJson);
+            fetch(authBase, { method: 'POST', body: saveForm })
+                .then(r => r.json())
+                .then(d => console.log('[Kundali] Saved to users.cached_kundali_json:', d.message || d.error))
+                .catch(() => {});
+
+            // Expose for astrology.js
+            localStorage.setItem('shunya-raw-kundali-json', rawJson);
+            const hiddenEl = document.getElementById('hiddenRawKundaliJson');
+            if (hiddenEl) hiddenEl.textContent = rawJson;
+            try {
+                window.lastCalculatedData = JSON.parse(rawJson);
+                if (typeof window.renderAstrologyViews === 'function') window.renderAstrologyViews(window.lastCalculatedData);
+            } catch(e) {}
+            console.log('[Kundali] Generated and saved fresh Kundali for:', username);
+        } else {
+            console.warn('[Kundali] Could not generate — Vercel API unavailable.');
+        }
+    } catch (e) {
+        console.error('[Kundali] Generation error:', e);
+    } finally {
+        showKundaliProgressModal(false);
+    }
+})();
             saveForm.append('dob', dob);
             saveForm.append('tob', tob);
             saveForm.append('pob', pob);
@@ -878,7 +915,7 @@ window.showKundaliProgressModal = showKundaliProgressModal;
             const saveResp = await fetch(authBase, { method: 'POST', body: saveForm });
             if (saveResp.ok) {
                 const saveData = await saveResp.json();
-                console.log('[Kundali] Saved to MySQL user_kundali_cache:', saveData);
+                console.log('[Kundali] Saved to MySQL users.cached_kundali_json:', saveData);
             }
 
             // Step 6: Expose for astrology.js

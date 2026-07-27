@@ -46,18 +46,7 @@ if (!$conn) {
             last_log DATETIME DEFAULT CURRENT_TIMESTAMP
         )");
 
-        // Table for cached Kundali Raw JSON
-        $conn->exec("CREATE TABLE IF NOT EXISTS user_kundali_cache (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_identifier TEXT UNIQUE,
-            dob TEXT,
-            tob TEXT,
-            pob TEXT,
-            lat REAL,
-            lon REAL,
-            raw_json TEXT,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )");
+        // Table for SQLite offline support (if needed)
     } catch (Exception $e) {
         // Fallback: Continue operating with session/localStorage support
         $db_type = 'offline';
@@ -65,7 +54,7 @@ if (!$conn) {
 } else {
     mysqli_set_charset($conn, "utf8mb4");
     
-    // Auto-create MySQL tables if missing
+    // Auto-create MySQL users table if missing
     $mysql_users_table = "CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(100) UNIQUE NOT NULL,
@@ -84,21 +73,8 @@ if (!$conn) {
         cached_kundali_json LONGTEXT,
         last_log DATETIME DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-    
-    $mysql_cache_table = "CREATE TABLE IF NOT EXISTS user_kundali_cache (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        user_identifier VARCHAR(150) UNIQUE NOT NULL,
-        dob VARCHAR(20),
-        tob VARCHAR(20),
-        pob VARCHAR(255),
-        lat DOUBLE,
-        lon DOUBLE,
-        raw_json LONGTEXT,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
     @mysqli_query($conn, $mysql_users_table);
-    @mysqli_query($conn, $mysql_cache_table);
 
     // Auto-ALTER users table to add missing columns safely
     $alter_cols = [
