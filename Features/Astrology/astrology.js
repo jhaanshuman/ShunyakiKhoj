@@ -1186,7 +1186,25 @@ window.handleKundliCalculation = async function(e) {
         lastCalculatedData = generateLocalClientEphemerisFallback(payload);
     }
 
-    // Format raw data block
+    // Format raw data block and cache Kundali Raw JSON
+    if (lastCalculatedData) {
+        try {
+            const jsonStr = JSON.stringify(lastCalculatedData);
+            localStorage.setItem('shunya-cached-raw-json', jsonStr);
+            const prof = typeof getProfile === 'function' ? getProfile() : null;
+            const formData = new FormData();
+            formData.append('action', 'save_kundali_cache');
+            formData.append('user_identifier', prof ? (prof.username || prof.name) : 'guest');
+            formData.append('dob', payload.dob || '');
+            formData.append('tob', payload.tob || '');
+            formData.append('pob', payload.pob || '');
+            formData.append('lat', payload.lat || 0.0);
+            formData.append('lon', payload.lon || 0.0);
+            formData.append('raw_json', jsonStr);
+            fetch('/UserLog/auth.php', { method: 'POST', body: formData }).catch(()=>{});
+        } catch(e) {}
+    }
+
     const rawBox = document.getElementById('rawPayloadBox');
     if (rawBox) {
         rawBox.textContent = JSON.stringify(lastCalculatedData, null, 2);

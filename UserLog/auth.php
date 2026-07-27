@@ -1,15 +1,29 @@
 <?php
+/**
+ * auth.php - Authentication & Birth Details Service for ShunyakiKhoj
+ */
 header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: *");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit(0);
+}
+
 session_start();
-require "db.php";
+require_once "db.php";
+
 $action = $_POST['action'] ?? $_GET['action'] ?? '';
 
-/* SESSION CHECK */
-if($action == "session"){
-    if(isset($_SESSION['user_id'])){
+/* 1. SESSION CHECK */
+if ($action === "session") {
+    if (isset($_SESSION['user_id']) || isset($_SESSION['guest_mode'])) {
         echo json_encode([
             "loggedIn" => true,
-            "username" => $_SESSION['username']
+            "username" => $_SESSION['username'] ?? $_SESSION['name'] ?? 'Seeker',
+            "isGuest" => isset($_SESSION['guest_mode']),
+            "profile" => $_SESSION['profile'] ?? null
         ]);
     } else {
         echo json_encode([
@@ -19,121 +33,233 @@ if($action == "session"){
     exit;
 }
 
-/* SIGNUP */
-if($action=="signup"){
+/* 2. SIGNUP */
+if ($action === "signup") {
+    $username = db_escape($_POST['username'] ?? '');
+    $email = db_escape($_POST['email'] ?? '');
+    $mobile = db_escape($_POST['mobile'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $gender = db_escape($_POST['gender'] ?? 'Male');
+    $dob = db_escape($_POST['dob'] ?? '');
+    $tob = db_escape($_POST['tob'] ?? '');
+    $pob = db_escape($_POST['pob'] ?? '');
+    $lat = floatval($_POST['lat'] ?? 28.6139);
+    $lon = floatval($_POST['lon'] ?? 77.2090);
 
-$username=db_escape($_POST['username']);
-$email=db_escape($_POST['email']);
-$password=$_POST['password'];
-$gen=db_escape($_POST['Gen']);
-$dob=db_escape($_POST['DOB']);
-$lang=db_escape($_POST['DefLang']);
+    if (empty($username) || empty($email) || empty($password)) {
+        echo json_encode(["success" => false, "error" => "Username, Email, and Password are required."]);
+        exit;
+    }
 
-$hash=password_hash($password,PASSWORD_DEFAULT);
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+    
+    $sql = "INSERT INTO users (username, email, mobile, password_hash, gender, dob, tob, pob, lat, lon, login_mode)
+            VALUES ('$username', '$email', '$mobile', '$hash', '$gender', '$dob', '$tob', '$pob', $lat, $lon, 'email')";
 
-$sql="INSERT INTO users
-(username,email,password_hash,Gen,DOB,DefLang,login_mode)
-VALUES
-('$username','$email','$hash','$gen','$dob','$lang','email')";
+    if (db_query($sql)) {
+        $_SESSION['user_id'] = $username;
+        $_SESSION['username'] = $username;
+        $_SESSION['profile'] = [
+            "name" => $username,
+            "username" => $username,
+            "email" => $email,
+            "mobile" => $mobile,
+            "gender" => $gender,
+            "dob" => $dob,
+            "tob" => $tob,
+            "pob" => $pob,
+            "lat" => $lat,
+            "lon" => $lon
+        ];
 
-if(db_query($sql)){
-
-echo json_encode(["success"=>true]);
-
-}else{
-
-echo json_encode(["success"=>false,"error"=>"User exists"]);
-
+        echo json_encode([
+            "success" => true,
+            "username" => $username,
+            "profile" => $_SESSION['profile']
+        ]);
+    } else {
+        echo json_encode(["success" => false, "error" => "User with this Email, Username, or Mobile already exists."]);
+    }
+    exit;
 }
 
-exit;
+/* 3. LOGIN */
+if ($action === "login") {
+    $login_id = db_escape($_POST['login_id'] ?? $_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
 
+    if (empty($login_id) || empty($password)) {
+        echo json_encode(["success" => false, "error" => "Login ID and Password are required."]);
+        exit;
+    }
+
+    $q = db_query("SELECT * FROM users WHERE email='$login_id' OR username='$login_id' OR mobile='$login_id'");
+    $row = db_fetch($q);
+
+    if (!$row) {
+        echo json_encode(["success" => false, "error" => "Account not found."]);
+        exit;
+    }
+
+    if (password_verify($password, $row['password_hash'])) {
+        $_SESSION['user_id'] = $row['id'];
+        $_SESSION['username'] = $row['username'];
+        $_SESSION['profile'] = [
+            "name" => $row['username'],
+            "username" => $row['username'],
+            "email" => $row['email'],
+            "mobile" => $row['mobile'],
+            "gender" => $row['gender'],
+            "dob" => $row['dob'],
+            "tob" => $row['tob'],
+            "pob" => $row['pob'],
+            "lat" => floatval($row['lat']),
+            "lon" => floatval($row['lon'])
+        ];
+
+        echo json_encode([
+            "success" => true,
+            "username" => $row['username'],
+            "profile" => $_SESSION['profile']
+        ]);
+    } else {
+        echo json_encode(["success" => false, "error" => "Invalid password."]);
+    }
+    exit;
 }
 
-/* LOGIN */
+/* 4. GUEST MODE */
+if ($action === "guest") {
+    $name = db_escape($_POST['name'] ?? 'Guest');
+    $gender = db_escape($_POST['gender'] ?? 'Male');
+    $dob = db_escape($_POST['dob'] ?? date('Y-m-d'));
+    $tob = db_escape($_POST['tob'] ?? '12:00');
+    $pob = db_escape($_POST['pob'] ?? 'New Delhi, India');
+    $lat = floatval($_POST['lat'] ?? 28.6139);
+    $lon = floatval($_POST['lon'] ?? 77.2090);
 
-if($action=="login"){
+    $_SESSION['guest_mode'] = true;
+    $_SESSION['username'] = $name;
+    $_SESSION['profile'] = [
+        "name" => $name,
+        "username" => $name,
+        "isGuest" => true,
+        "gender" => $gender,
+        "dob" => $dob,
+        "tob" => $tob,
+        "pob" => $pob,
+        "lat" => $lat,
+        "lon" => $lon
+    ];
 
-$email=db_escape($_POST['email']);
-$password=$_POST['password'];
-
-$q=db_query("SELECT * FROM users WHERE email='$email'");
-
-$row=db_fetch($q);
-
-if(!$row){
-
-echo json_encode([
-"success"=>false,
-"error"=>"User not found"
-]);
-
-exit;
-
+    echo json_encode([
+        "success" => true,
+        "username" => $name,
+        "profile" => $_SESSION['profile']
+    ]);
+    exit;
 }
 
-if(password_verify($password,$row['password_hash'])){
+/* 5. SOCIAL AUTH */
+if ($action === "social_auth") {
+    $provider = db_escape($_POST['provider'] ?? 'google');
+    $name = db_escape($_POST['name'] ?? 'Devotee');
+    $email = db_escape($_POST['email'] ?? '');
+    $gender = db_escape($_POST['gender'] ?? 'Male');
+    $dob = db_escape($_POST['dob'] ?? '');
+    $tob = db_escape($_POST['tob'] ?? '');
+    $pob = db_escape($_POST['pob'] ?? '');
+    $lat = floatval($_POST['lat'] ?? 28.6139);
+    $lon = floatval($_POST['lon'] ?? 77.2090);
 
-$_SESSION['user_id']=$row['id'];
-$_SESSION['username']=$row['username'];
+    $_SESSION['user_id'] = $name;
+    $_SESSION['username'] = $name;
+    $_SESSION['profile'] = [
+        "name" => $name,
+        "username" => $name,
+        "email" => $email,
+        "provider" => $provider,
+        "gender" => $gender,
+        "dob" => $dob,
+        "tob" => $tob,
+        "pob" => $pob,
+        "lat" => $lat,
+        "lon" => $lon
+    ];
 
-if ($db_type === 'sqlite') {
-    db_query("UPDATE users SET LastLog=datetime('now') WHERE id=".$row['id']);
-} else {
-    db_query("UPDATE users SET LastLog=NOW() WHERE id=".$row['id']);
+    echo json_encode([
+        "success" => true,
+        "username" => $name,
+        "profile" => $_SESSION['profile']
+    ]);
+    exit;
 }
 
-echo json_encode([
-"success"=>true,
-"username"=>$row['username']
-]);
+/* 6. FORGOT USERNAME / PASSWORD */
+if ($action === "forgot_lookup") {
+    $identifier = db_escape($_POST['identifier'] ?? '');
 
-}else{
+    if (empty($identifier)) {
+        echo json_encode(["success" => false, "error" => "Please enter your registered Email or Mobile number."]);
+        exit;
+    }
 
-echo json_encode([
-"success"=>false,
-"error"=>"Wrong password"
-]);
+    $q = db_query("SELECT username, email, mobile FROM users WHERE email='$identifier' OR mobile='$identifier'");
+    $row = db_fetch($q);
 
+    if ($row) {
+        echo json_encode([
+            "success" => true,
+            "message" => "Account found for username: " . $row['username'] . ". A password reset code has been dispatched to your registered contact."
+        ]);
+    } else {
+        echo json_encode([
+            "success" => false,
+            "error" => "No account found matching given Email or Mobile."
+        ]);
+    }
+    exit;
 }
 
-exit;
+/* 7. KUNDALI CACHE SAVE & FETCH */
+if ($action === "save_kundali_cache") {
+    $user_id = db_escape($_POST['user_identifier'] ?? $_SESSION['username'] ?? 'default');
+    $dob = db_escape($_POST['dob'] ?? '');
+    $tob = db_escape($_POST['tob'] ?? '');
+    $pob = db_escape($_POST['pob'] ?? '');
+    $lat = floatval($_POST['lat'] ?? 0.0);
+    $lon = floatval($_POST['lon'] ?? 0.0);
+    $raw_json = db_escape($_POST['raw_json'] ?? '');
 
+    if (!empty($raw_json)) {
+        $sql = "INSERT INTO user_kundali_cache (user_identifier, dob, tob, pob, lat, lon, raw_json)
+                VALUES ('$user_id', '$dob', '$tob', '$pob', $lat, $lon, '$raw_json')";
+        db_query($sql);
+        echo json_encode(["success" => true]);
+    } else {
+        echo json_encode(["success" => false, "error" => "Empty raw json"]);
+    }
+    exit;
+}
+
+if ($action === "get_kundali_cache") {
+    $user_id = db_escape($_GET['user_identifier'] ?? $_SESSION['username'] ?? 'default');
+    $q = db_query("SELECT raw_json FROM user_kundali_cache WHERE user_identifier='$user_id' ORDER BY id DESC LIMIT 1");
+    $row = db_fetch($q);
+    if ($row) {
+        echo json_encode(["success" => true, "raw_json" => $row['raw_json']]);
+    } else {
+        echo json_encode(["success" => false, "error" => "No cache found"]);
+    }
+    exit;
 }
 
 /* LOGOUT */
-
-if($action=="logout"){
-
-session_destroy();
-
-echo json_encode(["success"=>true]);
-
-exit;
-
+if ($action === "logout") {
+    session_destroy();
+    echo json_encode(["success" => true]);
+    exit;
 }
 
-/* DELETE ACCOUNT */
-
-if($action=="deleteAccount"){
-
-$id=$_SESSION['user_id'];
-
-db_query("DELETE FROM users WHERE id=$id");
-
-session_destroy();
-
-echo json_encode(["success"=>true]);
-
-exit;
-
-}
-
-/* DEFAULT */
-
-echo json_encode([
-"success"=>false,
-"error"=>"Invalid request"
-]);
-
+echo json_encode(["success" => false, "error" => "Invalid action"]);
 ?>

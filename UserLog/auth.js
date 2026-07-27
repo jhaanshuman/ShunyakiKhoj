@@ -31,15 +31,21 @@
         applyPersonalization(profile);
     }
 
-    // Auto-populate form inputs across all features silently
+    // Auto-populate form inputs across all features silently & cache Raw JSON Kundali
     function applyPersonalization(profile) {
         if (!profile) return;
         
-        // Greeting personalization
+        const nickname = profile.nickname || profile.name || 'Seeker';
+
+        // Greeting personalization across header and cards
         const welcomeTitle = document.querySelector('.welcome-card h2');
         if (welcomeTitle) {
-            const nickname = profile.nickname || profile.name || 'Seeker';
-            welcomeTitle.innerHTML = `🕉️ Namaste, <span style="color:#fbbf24;">${nickname}</span>! Welcome to Sanskrit AI`;
+            welcomeTitle.innerHTML = `🕉️ Namaste, <span style="color:#fbbf24;">Hi, ${nickname}</span>! Welcome to ShunyakiKundali`;
+        }
+
+        const headerGreeting = document.getElementById('headerGreetingPill');
+        if (headerGreeting) {
+            headerGreeting.innerHTML = `🕉️ Hi, ${nickname}`;
         }
 
         // Auto-populate Panchang Place Input if blank or default
@@ -54,16 +60,37 @@
         }
 
         // Auto-populate Kundli/Astrology forms
+        const mName = document.getElementById('mName');
+        if (mName && !mName.value) mName.value = profile.name || nickname;
+
+        const mGender = document.getElementById('mGender');
+        if (mGender && profile.gender) mGender.value = profile.gender;
+
         const mDate = document.getElementById('mDate');
-        if (mDate && !mDate.value) mDate.value = profile.dob || '';
+        if (mDate && profile.dob) mDate.value = profile.dob;
 
         const mTime = document.getElementById('mTime');
-        if (mTime && !mTime.value) mTime.value = profile.tob || '';
+        if (mTime && profile.tob) mTime.value = profile.tob;
 
         const mPlace = document.getElementById('mPlace');
-        if (mPlace && (!mPlace.value || mPlace.value === 'Patna, Bihar, India')) {
-            mPlace.value = profile.pob || '';
-            mPlace.dispatchEvent(new Event('change', { bubbles: true }));
+        if (mPlace && profile.pob) {
+            mPlace.value = profile.pob;
+            if (profile.lat && profile.lon) {
+                mPlace.dataset.lat = profile.lat;
+                mPlace.dataset.lon = profile.lon;
+            }
+        }
+
+        // Check if raw Kundali JSON calculation is pending or cached
+        if (profile.dob && profile.pob && (localStorage.getItem('shunya-pending-kundali-calc') === 'true' || !localStorage.getItem('shunya-cached-raw-json'))) {
+            localStorage.removeItem('shunya-pending-kundali-calc');
+            setTimeout(() => {
+                const btnSubmit = document.getElementById('btnSubmitAstrology') || document.querySelector('#personalKundliSection button[type="submit"]');
+                if (btnSubmit && typeof calculateAstrologyData === 'function') {
+                    console.log("⚡ Auto-calculating & caching Raw JSON Kundali for:", nickname);
+                    calculateAstrologyData();
+                }
+            }, 300);
         }
     }
 
@@ -237,10 +264,11 @@
         
         const profile = getProfile();
         if (profile) {
+            const nickname = profile.nickname || profile.name || 'Anshuman';
             btn.innerHTML = `
-                <div class="profile-menu-container" style="position:relative; display:inline-block;">
-                    <span style="font-size:0.8rem; font-weight:700; color:#fbbf24; margin-right:4px;">${profile.nickname || profile.name}</span>
-                    <span class="active-dot" style="position:absolute; bottom:2px; right:2px; width:8px; height:8px; background:#10b981; border-radius:50%; border:1px solid #000;"></span>
+                <div class="profile-menu-container" style="position:relative; display:inline-flex; align-items:center; gap:6px;">
+                    <span style="font-size:0.82rem; font-weight:800; color:#fbbf24;">Hi, ${nickname}</span>
+                    <span class="active-dot" style="width:8px; height:8px; background:#10b981; border-radius:50%; border:1px solid #000;"></span>
                     👤
                 </div>
             `;
@@ -249,8 +277,10 @@
                 toggleProfileDropdown(e);
             };
         } else {
-            btn.innerHTML = '👤';
-            btn.onclick = openAuth;
+            btn.innerHTML = '🔑 Login / Register';
+            btn.onclick = () => {
+                window.location.href = '/home.html';
+            };
         }
     }
 
