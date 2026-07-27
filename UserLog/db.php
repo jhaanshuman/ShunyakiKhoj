@@ -95,10 +95,33 @@ if (!$conn) {
         lon DOUBLE,
         raw_json LONGTEXT,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-    
     @mysqli_query($conn, $mysql_users_table);
     @mysqli_query($conn, $mysql_cache_table);
+
+    // Auto-ALTER users table to add missing columns safely
+    $alter_cols = [
+        "email VARCHAR(150)",
+        "mobile VARCHAR(30)",
+        "gender VARCHAR(20)",
+        "dob VARCHAR(20)",
+        "tob VARCHAR(20)",
+        "pob VARCHAR(255)",
+        "lat DOUBLE",
+        "lon DOUBLE",
+        "def_lang VARCHAR(10) DEFAULT 'en'",
+        "login_mode VARCHAR(30) DEFAULT 'email'",
+        "social_provider VARCHAR(50)",
+        "cached_kundali_json LONGTEXT",
+        "last_log DATETIME DEFAULT CURRENT_TIMESTAMP"
+    ];
+
+    foreach ($alter_cols as $col_def) {
+        $col_name = explode(' ', trim($col_def))[0];
+        $chk = @mysqli_query($conn, "SHOW COLUMNS FROM users LIKE '$col_name'");
+        if ($chk && mysqli_num_rows($chk) == 0) {
+            @mysqli_query($conn, "ALTER TABLE users ADD COLUMN $col_def");
+        }
+    }
 }
 
 function db_query($sql) {
