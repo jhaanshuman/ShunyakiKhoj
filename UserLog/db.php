@@ -95,6 +95,8 @@ if (!$conn) {
         lon DOUBLE,
         raw_json LONGTEXT,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+
     @mysqli_query($conn, $mysql_users_table);
     @mysqli_query($conn, $mysql_cache_table);
 
