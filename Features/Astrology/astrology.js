@@ -1186,22 +1186,30 @@ window.handleKundliCalculation = async function(e) {
         lastCalculatedData = generateLocalClientEphemerisFallback(payload);
     }
 
-    // Format raw data block and cache Kundali Raw JSON
+    // Format raw data block and save Kundali Raw JSON directly to PHP MySQL Database
     if (lastCalculatedData) {
         try {
             const jsonStr = JSON.stringify(lastCalculatedData);
-            localStorage.setItem('shunya-cached-raw-json', jsonStr);
             const prof = typeof getProfile === 'function' ? getProfile() : null;
+            const userId = prof ? (prof.username || prof.name) : 'guest';
             const formData = new FormData();
             formData.append('action', 'save_kundali_cache');
-            formData.append('user_identifier', prof ? (prof.username || prof.name) : 'guest');
+            formData.append('user_identifier', userId);
             formData.append('dob', payload.dob || '');
             formData.append('tob', payload.tob || '');
             formData.append('pob', payload.pob || '');
             formData.append('lat', payload.lat || 0.0);
             formData.append('lon', payload.lon || 0.0);
             formData.append('raw_json', jsonStr);
-            fetch('/UserLog/auth.php', { method: 'POST', body: formData }).catch(()=>{});
+
+            fetch('/UserLog/auth.php', { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(resData => {
+                    if (resData.success) {
+                        console.log(`💾 Raw JSON Kundali saved to PHP MySQL Database for user [${userId}]`);
+                    }
+                })
+                .catch(() => {});
         } catch(e) {}
     }
 
