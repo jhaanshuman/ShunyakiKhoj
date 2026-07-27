@@ -136,16 +136,17 @@ if ($action === "login") {
         $_SESSION['user_id'] = $row['id'];
         $_SESSION['username'] = $row['username'];
         $_SESSION['profile'] = [
-            "name" => $row['username'],
-            "username" => $row['username'],
-            "email" => $row['email'],
-            "mobile" => $row['mobile'],
-            "gender" => $row['gender'],
-            "dob" => $row['dob'],
-            "tob" => $row['tob'],
-            "pob" => $row['pob'],
-            "lat" => floatval($row['lat']),
-            "lon" => floatval($row['lon'])
+            "name"               => $row['username'],
+            "username"           => $row['username'],
+            "email"              => $row['email'],
+            "mobile"             => $row['mobile'],
+            "gender"             => $row['gender'],
+            "dob"                => $row['dob'],
+            "tob"                => $row['tob'],
+            "pob"                => $row['pob'],
+            "lat"                => floatval($row['lat']),
+            "lon"                => floatval($row['lon']),
+            "cached_kundali_json" => $row['cached_kundali_json'] // included at login — no extra API call needed
         ];
 
         echo json_encode([
@@ -159,26 +160,27 @@ if ($action === "login") {
     exit;
 }
 
-/* 3b. GET USER PROFILE (birth details from MySQL users table) */
+/* 3b. GET USER PROFILE (birth details + cached kundali from users table) */
 if ($action === "get_user_profile") {
     $username = db_escape($_GET['username'] ?? $_POST['username'] ?? $json_data['username'] ?? '');
     if (empty($username)) {
         echo json_encode(["success" => false, "error" => "Username required"]);
         exit;
     }
-    $q = db_query("SELECT username, email, mobile, gender, dob, tob, pob, lat, lon FROM users WHERE username='$username' OR email='$username' LIMIT 1");
+    $q = db_query("SELECT username, email, mobile, gender, dob, tob, pob, lat, lon, cached_kundali_json FROM users WHERE username='$username' OR email='$username' LIMIT 1");
     $row = db_fetch($q);
     if ($row) {
         echo json_encode(["success" => true, "profile" => [
-            "username" => $row['username'],
-            "email"    => $row['email'],
-            "mobile"   => $row['mobile'],
-            "gender"   => $row['gender'],
-            "dob"      => $row['dob'],
-            "tob"      => $row['tob'],
-            "pob"      => $row['pob'],
-            "lat"      => floatval($row['lat']),
-            "lon"      => floatval($row['lon'])
+            "username"           => $row['username'],
+            "email"              => $row['email'],
+            "mobile"             => $row['mobile'],
+            "gender"             => $row['gender'],
+            "dob"                => $row['dob'],
+            "tob"                => $row['tob'],
+            "pob"                => $row['pob'],
+            "lat"                => floatval($row['lat']),
+            "lon"                => floatval($row['lon']),
+            "cached_kundali_json" => $row['cached_kundali_json']
         ]]);
     } else {
         echo json_encode(["success" => false, "error" => "User not found"]);
@@ -186,34 +188,28 @@ if ($action === "get_user_profile") {
     exit;
 }
 
-/* 4. SAVE KUNDALI CACHE (PHP MYSQL) */
+/* 4. SAVE KUNDALI CACHE — writes directly to users.cached_kundali_json */
 if ($action === "save_kundali_cache") {
     $username = db_escape($_POST['username'] ?? $_POST['user_identifier'] ?? '');
     $raw_json = db_escape($_POST['raw_json'] ?? '');
-    $dob = db_escape($_POST['dob'] ?? '');
-    $tob = db_escape($_POST['tob'] ?? '');
-    $pob = db_escape($_POST['pob'] ?? '');
-    $lat = floatval($_POST['lat'] ?? 0);
-    $lon = floatval($_POST['lon'] ?? 0);
 
     if (empty($username) || empty($raw_json)) {
         echo json_encode(["success" => false, "error" => "Username and Raw JSON are required."]);
         exit;
     }
 
-    $sql = "INSERT INTO user_kundali_cache (user_identifier, dob, tob, pob, lat, lon, raw_json)
-            VALUES ('$username', '$dob', '$tob', '$pob', $lat, $lon, '$raw_json')
-            ON DUPLICATE KEY UPDATE raw_json='$raw_json', dob='$dob', tob='$tob', pob='$pob', lat=$lat, lon=$lon";
+    // Store directly in users table — no separate cache table needed
+    $sql = "UPDATE users SET cached_kundali_json='$raw_json' WHERE username='$username' OR email='$username'";
 
     if (db_query($sql)) {
-        echo json_encode(["success" => true, "message" => "Kundali Raw JSON cached successfully in MySQL database."]);
+        echo json_encode(["success" => true, "message" => "Kundali JSON saved to users table."]);
     } else {
-        echo json_encode(["success" => false, "error" => "Failed to save Kundali cache in MySQL."]);
+        echo json_encode(["success" => false, "error" => "Failed to update cached_kundali_json in users table."]);
     }
     exit;
 }
 
-/* 5. GET KUNDALI CACHE (PHP MYSQL) */
+/* 5. GET KUNDALI CACHE — reads from users.cached_kundali_json directly */
 if ($action === "get_kundali_cache") {
     $username = db_escape($_GET['username'] ?? $_POST['username'] ?? '');
 
@@ -222,19 +218,20 @@ if ($action === "get_kundali_cache") {
         exit;
     }
 
-    $q = db_query("SELECT * FROM user_kundali_cache WHERE user_identifier='$username'");
+    // Read from users table — single source of truth
+    $q = db_query("SELECT username, dob, tob, pob, lat, lon, cached_kundali_json FROM users WHERE username='$username' OR email='$username' LIMIT 1");
     $row = db_fetch($q);
 
-    if ($row) {
+    if ($row && !empty($row['cached_kundali_json'])) {
         echo json_encode([
-            "success" => true,
-            "username" => $row['user_identifier'],
-            "dob" => $row['dob'],
-            "tob" => $row['tob'],
-            "pob" => $row['pob'],
-            "lat" => floatval($row['lat']),
-            "lon" => floatval($row['lon']),
-            "raw_json" => $row['raw_json']
+            "success"  => true,
+            "username" => $row['username'],
+            "dob"      => $row['dob'],
+            "tob"      => $row['tob'],
+            "pob"      => $row['pob'],
+            "lat"      => floatval($row['lat']),
+            "lon"      => floatval($row['lon']),
+            "raw_json" => $row['cached_kundali_json']
         ]);
     } else {
         echo json_encode(["success" => false, "error" => "No cached Kundali found for user."]);
@@ -359,27 +356,56 @@ if ($action === "social_auth") {
     exit;
 }
 
-/* 6. FORGOT USERNAME / PASSWORD */
-if ($action === "forgot_lookup") {
-    $identifier = db_escape($_POST['identifier'] ?? '');
+/* 6. RESET USERNAME & PASSWORD BY MOBILE */
+if ($action === "forgot_lookup" || $action === "reset_credentials") {
+    $mobile = db_escape($_POST['mobile'] ?? $_POST['identifier'] ?? $json_data['mobile'] ?? $json_data['identifier'] ?? '');
+    $new_username = db_escape($_POST['new_username'] ?? $_POST['username'] ?? $json_data['new_username'] ?? $json_data['username'] ?? '');
+    $new_password = $_POST['new_password'] ?? $_POST['password'] ?? $json_data['new_password'] ?? $json_data['password'] ?? '';
 
-    if (empty($identifier)) {
-        echo json_encode(["success" => false, "error" => "Please enter your registered Email or Mobile number."]);
+    if (empty($mobile)) {
+        echo json_encode(["success" => false, "error" => "Registered Mobile Number is required."]);
         exit;
     }
 
-    $q = db_query("SELECT username, email, mobile FROM users WHERE email='$identifier' OR mobile='$identifier'");
+    if (empty($new_username) || empty($new_password)) {
+        echo json_encode(["success" => false, "error" => "New Username and New Password are required."]);
+        exit;
+    }
+
+    // Verify mobile number exists in database
+    $q = db_query("SELECT id, username FROM users WHERE mobile='$mobile'");
     $row = db_fetch($q);
 
-    if ($row) {
+    if (!$row) {
+        echo json_encode([
+            "success" => false,
+            "error" => "No account found registered with Mobile Number: " . $mobile
+        ]);
+        exit;
+    }
+
+    // Check if new username is already taken by another user
+    $chk_user = db_query("SELECT id FROM users WHERE username='$new_username' AND mobile != '$mobile'");
+    if ($chk_user && db_fetch($chk_user)) {
+        echo json_encode([
+            "success" => false,
+            "error" => "Username '$new_username' is already taken by another user. Please choose a different username."
+        ]);
+        exit;
+    }
+
+    $pwd_hash = password_hash($new_password, PASSWORD_DEFAULT);
+    $upd = db_query("UPDATE users SET username='$new_username', password_hash='$pwd_hash' WHERE mobile='$mobile'");
+
+    if ($upd) {
         echo json_encode([
             "success" => true,
-            "message" => "Account found for username: " . $row['username'] . ". A password reset code has been dispatched to your registered contact."
+            "message" => "Credentials updated successfully! Reloading page..."
         ]);
     } else {
         echo json_encode([
             "success" => false,
-            "error" => "No account found matching given Email or Mobile."
+            "error" => "Failed to update database record. Please try again."
         ]);
     }
     exit;

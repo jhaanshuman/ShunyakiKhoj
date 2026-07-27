@@ -512,16 +512,29 @@ body {
 <div id="forgotModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); z-index: 1000; align-items: center; justify-content: center;">
     <div style="background: #ffffff; border-radius: 12px; max-width: 420px; width: 90%; padding: 25px; border: 2px solid #b83214; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px;">
-            <h3 style="margin: 0; color: #b83214; font-size: 1.1rem; font-weight: 800;">🔑 Forgot Username or Password</h3>
+            <h3 style="margin: 0; color: #b83214; font-size: 1.1rem; font-weight: 800;">🔑 Reset Username & Password</h3>
             <button type="button" onclick="closeForgotModal()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">✕</button>
         </div>
-        <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 15px;">Enter your registered Email ID or Mobile Number to authenticate and retrieve your credentials.</p>
-        <div class="form-group">
-            <label>Registered Email or Mobile Number</label>
-            <input type="text" id="forgotIdentifier" class="form-input" placeholder="e.g. anshuman@gmail.com or 9876543210" required>
-        </div>
-        <button type="button" onclick="handleForgotSubmit()" class="btn-auth-submit">Authenticate & Reset →</button>
-        <div id="forgotResultMsg" style="margin-top: 12px; font-size: 0.82rem; font-weight: 700; color: #16a34a;"></div>
+        <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 15px;">Enter your registered Mobile Number to set a new Username and Password.</p>
+        <form onsubmit="handleForgotSubmit(event)">
+            <div class="form-group">
+                <label>Registered Mobile Number</label>
+                <input type="text" id="forgotMobile" class="form-input" placeholder="e.g. 9876543210" required>
+            </div>
+            <div class="form-group">
+                <label>New Username</label>
+                <input type="text" id="forgotNewUsername" class="form-input" placeholder="Enter new username" required>
+            </div>
+            <div class="form-group">
+                <label>New Password</label>
+                <div class="password-input-wrap" style="position: relative; display: flex; align-items: center;">
+                    <input type="password" id="forgotNewPassword" class="form-input" placeholder="••••••••" required style="padding-right: 40px;">
+                    <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('forgotNewPassword', this)" title="Show/Hide Password" style="position: absolute; right: 10px; background: none; border: none; font-size: 1.1rem; cursor: pointer; color: #64748b; padding: 4px; display: flex; align-items: center; justify-content: center; z-index: 5;">👁️</button>
+                </div>
+            </div>
+            <button type="submit" id="forgotSubmitBtn" class="btn-auth-submit">Update Credentials & Reload →</button>
+            <div id="forgotResultMsg" style="margin-top: 12px; font-size: 0.82rem; font-weight: 700; text-align: center;"></div>
+        </form>
     </div>
 </div>
 
@@ -740,19 +753,54 @@ function closeForgotModal() {
     document.getElementById('forgotModal').style.display = 'none';
 }
 
-async function handleForgotSubmit() {
-    const id = document.getElementById('forgotIdentifier').value.trim();
-    if (!id) {
-        alert("Please enter registered Email or Mobile");
+async function handleForgotSubmit(event) {
+    if (event) event.preventDefault();
+    const mobile = document.getElementById('forgotMobile').value.trim();
+    const newUsername = document.getElementById('forgotNewUsername').value.trim();
+    const newPassword = document.getElementById('forgotNewPassword').value.trim();
+    const resultMsg = document.getElementById('forgotResultMsg');
+    const submitBtn = document.getElementById('forgotSubmitBtn');
+
+    if (!mobile || !newUsername || !newPassword) {
+        if (resultMsg) {
+            resultMsg.style.color = '#dc2626';
+            resultMsg.innerText = "Please fill in Mobile Number, New Username, and New Password.";
+        }
         return;
     }
 
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Updating Credentials...";
+    }
+
     const formData = new FormData();
-    formData.append('action', 'forgot_lookup');
-    formData.append('identifier', id);
+    formData.append('action', 'reset_credentials');
+    formData.append('mobile', mobile);
+    formData.append('new_username', newUsername);
+    formData.append('new_password', newPassword);
 
     const data = await safeAuthFetch(formData);
-    document.getElementById('forgotResultMsg').innerText = (data && data.message) ? data.message : "Authentication code sent to registered contact!";
+
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Update Credentials & Reload →";
+    }
+
+    if (data && data.success) {
+        if (resultMsg) {
+            resultMsg.style.color = '#16a34a';
+            resultMsg.innerText = data.message || "Credentials updated successfully! Reloading...";
+        }
+        setTimeout(() => {
+            window.location.reload();
+        }, 1200);
+    } else {
+        if (resultMsg) {
+            resultMsg.style.color = '#dc2626';
+            resultMsg.innerText = (data && data.error) ? data.error : "Failed to update credentials. Please check mobile number.";
+        }
+    }
 }
 
 function redirectToLanding(name) {
