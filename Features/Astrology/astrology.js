@@ -1203,9 +1203,9 @@ window.handleKundliCalculation = async function(e) {
             formData.append('raw_json', jsonStr);
 
             fetch('/UserLog/auth.php', { method: 'POST', body: formData })
-                .then(res => res.json())
+                .then(res => res.ok ? res.json() : null)
                 .then(resData => {
-                    if (resData.success) {
+                    if (resData && resData.success) {
                         console.log(`💾 Raw JSON Kundali saved to PHP MySQL Database for user [${userId}]`);
                     }
                 })

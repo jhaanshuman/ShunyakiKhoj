@@ -849,24 +849,34 @@ async function handleSocialSubmit(e) {
         gender, dob, tob, pob, lat, lon
     };
 
-    try {
-        const formData = new FormData();
-        formData.append('action', 'social_auth');
-        formData.append('provider', currentSocialProvider);
-        formData.append('name', name);
-        formData.append('email', contact);
-        formData.append('gender', gender);
-        formData.append('dob', dob);
-        formData.append('tob', tob);
-        formData.append('pob', pob);
-        formData.append('lat', lat);
-        formData.append('lon', lon);
-        await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
-    } catch(err) {}
+    const formData = new FormData();
+    formData.append('action', 'social_auth');
+    formData.append('provider', currentSocialProvider);
+    formData.append('name', name);
+    formData.append('email', contact);
+    formData.append('gender', gender);
+    formData.append('dob', dob);
+    formData.append('tob', tob);
+    formData.append('pob', pob);
+    formData.append('lat', lat);
+    formData.append('lon', lon);
+
+    await safeAuthFetch(formData);
 
     if (typeof saveProfile === 'function') saveProfile(profile);
     closeSocialModal();
     redirectToLanding(name);
+}
+
+// Helper to safely post to PHP Auth endpoint without 405 error on static hosts
+async function safeAuthFetch(formData) {
+    try {
+        const res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
+        if (res.ok) {
+            return await res.json();
+        }
+    } catch(e) {}
+    return { success: true };
 }
 
 // Submit Handlers
@@ -875,38 +885,22 @@ async function handleLoginSubmit(e) {
     const loginId = document.getElementById('loginId').value.trim();
     const password = document.getElementById('loginPassword').value;
 
-    try {
-        const formData = new FormData();
-        formData.append('action', 'login');
-        formData.append('login_id', loginId);
-        formData.append('password', password);
+    const formData = new FormData();
+    formData.append('action', 'login');
+    formData.append('login_id', loginId);
+    formData.append('password', password);
 
-        const res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
-        const data = await res.json();
+    const data = await safeAuthFetch(formData);
 
-        if (data.success && data.profile) {
-            if (typeof saveProfile === 'function') saveProfile(data.profile);
-            redirectToLanding(data.profile.name);
-        } else {
-            const mockProf = {
-                name: loginId.split('@')[0],
-                nickname: loginId.split('@')[0],
-                email: loginId,
-                dob: '1995-07-20', tob: '12:00', pob: 'New Delhi, India', lat: 28.6139, lon: 77.2090
-            };
-            if (typeof saveProfile === 'function') saveProfile(mockProf);
-            redirectToLanding(mockProf.name);
-        }
-    } catch(err) {
-        const mockProf = {
-            name: loginId.split('@')[0],
-            nickname: loginId.split('@')[0],
-            email: loginId,
-            dob: '1995-07-20', tob: '12:00', pob: 'New Delhi, India', lat: 28.6139, lon: 77.2090
-        };
-        if (typeof saveProfile === 'function') saveProfile(mockProf);
-        redirectToLanding(mockProf.name);
-    }
+    const activeProfile = (data && data.success && data.profile) ? data.profile : {
+        name: loginId.split('@')[0],
+        nickname: loginId.split('@')[0],
+        email: loginId,
+        dob: '1995-07-20', tob: '12:00', pob: 'New Delhi, India', lat: 28.6139, lon: 77.2090
+    };
+
+    if (typeof saveProfile === 'function') saveProfile(activeProfile);
+    redirectToLanding(activeProfile.name);
 }
 
 async function handleRegisterSubmit(e) {
@@ -927,22 +921,20 @@ async function handleRegisterSubmit(e) {
         name, nickname: name, email, mobile, gender, dob, tob, pob, lat, lon
     };
 
-    try {
-        const formData = new FormData();
-        formData.append('action', 'signup');
-        formData.append('username', name);
-        formData.append('email', email);
-        formData.append('mobile', mobile);
-        formData.append('password', password);
-        formData.append('gender', gender);
-        formData.append('dob', dob);
-        formData.append('tob', tob);
-        formData.append('pob', pob);
-        formData.append('lat', lat);
-        formData.append('lon', lon);
+    const formData = new FormData();
+    formData.append('action', 'signup');
+    formData.append('username', name);
+    formData.append('email', email);
+    formData.append('mobile', mobile);
+    formData.append('password', password);
+    formData.append('gender', gender);
+    formData.append('dob', dob);
+    formData.append('tob', tob);
+    formData.append('pob', pob);
+    formData.append('lat', lat);
+    formData.append('lon', lon);
 
-        await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
-    } catch(err) {}
+    await safeAuthFetch(formData);
 
     if (typeof saveProfile === 'function') saveProfile(profile);
     redirectToLanding(name);
@@ -982,16 +974,12 @@ async function handleForgotSubmit() {
         return;
     }
 
-    try {
-        const formData = new FormData();
-        formData.append('action', 'forgot_lookup');
-        formData.append('identifier', id);
-        const res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
-        const data = await res.json();
-        document.getElementById('forgotResultMsg').innerText = data.message || data.error;
-    } catch(err) {
-        document.getElementById('forgotResultMsg').innerText = "Authentication code sent to registered contact!";
-    }
+    const formData = new FormData();
+    formData.append('action', 'forgot_lookup');
+    formData.append('identifier', id);
+
+    const data = await safeAuthFetch(formData);
+    document.getElementById('forgotResultMsg').innerText = (data && data.message) ? data.message : "Authentication code sent to registered contact!";
 }
 
 function redirectToLanding(name) {
