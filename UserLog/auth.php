@@ -46,8 +46,18 @@ if ($action === "signup") {
     $lat = floatval($_POST['lat'] ?? 28.6139);
     $lon = floatval($_POST['lon'] ?? 77.2090);
 
-    if (empty($username) || empty($email) || empty($password)) {
-        echo json_encode(["success" => false, "error" => "Username, Email, and Password are required."]);
+    if (empty($username) || empty($password) || (empty($email) && empty($mobile))) {
+        echo json_encode(["success" => false, "error" => "Username, Email/Mobile, and Password are required."]);
+        exit;
+    }
+
+    // Check if username, email, or mobile already exists
+    $check_sql = "SELECT id FROM users WHERE username='$username' " . 
+                 (!empty($email) ? "OR email='$email' " : "") . 
+                 (!empty($mobile) ? "OR mobile='$mobile' " : "");
+    $existing = db_fetch(db_query($check_sql));
+    if ($existing) {
+        echo json_encode(["success" => false, "error" => "User with this Username, Email, or Mobile already exists. Please Login."]);
         exit;
     }
 
@@ -78,7 +88,7 @@ if ($action === "signup") {
             "profile" => $_SESSION['profile']
         ]);
     } else {
-        echo json_encode(["success" => false, "error" => "User with this Email, Username, or Mobile already exists."]);
+        echo json_encode(["success" => false, "error" => "Database insertion error. Could not register user."]);
     }
     exit;
 }
@@ -89,7 +99,7 @@ if ($action === "login") {
     $password = $_POST['password'] ?? '';
 
     if (empty($login_id) || empty($password)) {
-        echo json_encode(["success" => false, "error" => "Login ID and Password are required."]);
+        echo json_encode(["success" => false, "error" => "Username/Email/Mobile and Password are required."]);
         exit;
     }
 
@@ -97,11 +107,16 @@ if ($action === "login") {
     $row = db_fetch($q);
 
     if (!$row) {
-        echo json_encode(["success" => false, "error" => "Account not found."]);
+        echo json_encode(["success" => false, "error" => "Invalid Credentials. Username/Email/Mobile not registered."]);
         exit;
     }
 
-    if (password_verify($password, $row['password_hash'])) {
+    // Verify Password against hash or plain
+    $pwd_matched = password_verify($password, $row['password_hash']) || 
+                  ($row['password_hash'] === hash('sha256', $password)) ||
+                  ($row['password_hash'] === $password);
+
+    if ($pwd_matched) {
         $_SESSION['user_id'] = $row['id'];
         $_SESSION['username'] = $row['username'];
         $_SESSION['profile'] = [
@@ -123,7 +138,7 @@ if ($action === "login") {
             "profile" => $_SESSION['profile']
         ]);
     } else {
-        echo json_encode(["success" => false, "error" => "Invalid password."]);
+        echo json_encode(["success" => false, "error" => "Invalid Credentials. Incorrect Password."]);
     }
     exit;
 }

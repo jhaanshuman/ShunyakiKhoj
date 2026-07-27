@@ -689,6 +689,29 @@ def query_festivals(year: int, month: int, date: str):
     return {"status": "success", "festivals": results}
 
 
+def get_user_auth_db():
+    db_path = "/tmp/userAuth.db"
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE,
+            email TEXT UNIQUE,
+            mobile TEXT UNIQUE,
+            password_hash TEXT,
+            gender TEXT,
+            dob TEXT,
+            tob TEXT,
+            pob TEXT,
+            lat REAL,
+            lon REAL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    conn.commit()
+    return conn
+
 # Auth endpoints for Vercel Serverless environment
 @app.api_route("/UserLog/auth.php", methods=["GET", "POST", "OPTIONS"])
 @app.api_route("/api/auth", methods=["GET", "POST", "OPTIONS"])
@@ -714,7 +737,6 @@ async def handle_auth_php(request: Request):
             if not id_token:
                 return {"success": False, "error": "No ID token provided."}
             
-            # Verify token via Google's tokeninfo API
             import urllib.request
             verify_url = f"https://oauth2.googleapis.com/tokeninfo?id_token={id_token}"
             try:
@@ -731,33 +753,91 @@ async def handle_auth_php(request: Request):
                         }
             except Exception as ve:
                 return {"success": False, "error": f"Token verification failed: {str(ve)}"}
+
+        if action == "signup":
+            username = data.get("username", "").strip()
+            email = data.get("email", "").strip()
+            mobile = data.get("mobile", "").strip()
+            password = data.get("password", "").strip()
+            gender = data.get("gender", "Male")
+            dob = data.get("dob", "1995-07-20")
+            tob = data.get("tob", "12:00")
+            pob = data.get("pob", "New Delhi, India")
+            lat = float(data.get("lat", 28.6139))
+            lon = float(data.get("lon", 77.2090))
+            
+            if not username or not (email or mobile) or not password:
+                return {"success": False, "error": "Username, Email/Mobile, and Password are required."}
                 
-        if action == "social_auth":
-            return {
-                "success": True,
-                "username": data.get("name", "User"),
-                "profile": data
-            }
+            pwd_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
             
-        if action == "login":
-            login_id = data.get("login_id", "User")
-            name = login_id.split("@")[0] if "@" in login_id else login_id
-            return {
-                "success": True,
-                "profile": {
-                    "name": name,
-                    "nickname": name,
-                    "email": login_id,
-                    "dob": "1995-07-20", "tob": "12:00", "pob": "New Delhi, India", "lat": 28.6139, "lon": 77.2090
+            try:
+                conn = get_user_auth_db()
+                cursor = conn.cursor()
+                cursor.execute("SELECT id FROM users WHERE username=? OR (email!='' AND email=?) OR (mobile!='' AND mobile=?)", (username, email, mobile))
+                if cursor.fetchone():
+                    conn.close()
+                    return {"success": False, "error": "Username, Email, or Mobile already registered. Please Login."}
+                    
+                cursor.execute("""
+                    INSERT INTO users (username, email, mobile, password_hash, gender, dob, tob, pob, lat, lon)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (username, email, mobile, pwd_hash, gender, dob, tob, pob, lat, lon))
+                conn.commit()
+                conn.close()
+                
+                return {
+                    "success": True,
+                    "username": username,
+                    "profile": {
+                        "name": username, "nickname": username, "email": email, "mobile": mobile,
+                        "gender": gender, "dob": dob, "tob": tob, "pob": pob, "lat": lat, "lon": lon
+                    }
                 }
-            }
+            except Exception as sqle:
+                return {"success": False, "error": f"Database Error: {str(sqle)}"}
+
+        if action == "login":
+            login_id = data.get("login_id", "").strip()
+            password = data.get("password", "").strip()
             
-        if action in ["signup", "guest", "save_kundali_cache", "forgot_lookup"]:
+            if not login_id or not password:
+                return {"success": False, "error": "Username/Email/Mobile and Password are required."}
+                
+            pwd_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            
+            try:
+                conn = get_user_auth_db()
+                cursor = conn.cursor()
+                cursor.execute("SELECT username, email, mobile, password_hash, gender, dob, tob, pob, lat, lon FROM users WHERE username=? OR email=? OR mobile=?", (login_id, login_id, login_id))
+                row = cursor.fetchone()
+                conn.close()
+                
+                if not row:
+                    return {"success": False, "error": "Invalid Credentials. Account not found."}
+                    
+                db_user, db_email, db_mobile, db_hash, db_gender, db_dob, db_tob, db_pob, db_lat, db_lon = row
+                
+                if db_hash != pwd_hash:
+                    return {"success": False, "error": "Invalid Credentials. Incorrect Password."}
+                    
+                return {
+                    "success": True,
+                    "username": db_user,
+                    "profile": {
+                        "name": db_user, "nickname": db_user, "email": db_email, "mobile": db_mobile,
+                        "gender": db_gender, "dob": db_dob, "tob": db_tob, "pob": db_pob, "lat": db_lat, "lon": db_lon
+                    }
+                }
+            except Exception as sqle:
+                return {"success": False, "error": f"Database Authentication Error: {str(sqle)}"}
+
+        if action in ["guest", "save_kundali_cache", "forgot_lookup"]:
             return {"success": True, "message": "Authenticated successfully"}
 
-        return {"success": True, "loggedIn": False}
+        return {"success": False, "error": "Invalid Action"}
     except Exception as e:
-        return {"success": True, "note": str(e)}
+        return {"success": False, "error": str(e)}
 
 
 

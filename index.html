@@ -614,7 +614,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Helper to safely post to PHP Auth endpoint
+// Helper to post to Auth endpoint
 async function safeAuthFetch(formData) {
     try {
         const res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
@@ -622,7 +622,7 @@ async function safeAuthFetch(formData) {
             return await res.json();
         }
     } catch(e) {}
-    return { success: true };
+    return null;
 }
 
 // Submit Handlers
@@ -631,6 +631,11 @@ async function handleLoginSubmit(e) {
     const loginId = document.getElementById('loginId').value.trim();
     const password = document.getElementById('loginPassword').value;
 
+    if (!loginId || !password) {
+        alert("⚠️ Please enter your Username/Email/Mobile and Password.");
+        return;
+    }
+
     const formData = new FormData();
     formData.append('action', 'login');
     formData.append('login_id', loginId);
@@ -638,13 +643,12 @@ async function handleLoginSubmit(e) {
 
     const data = await safeAuthFetch(formData);
 
-    const activeProfile = (data && data.success && data.profile) ? data.profile : {
-        name: loginId.split('@')[0],
-        nickname: loginId.split('@')[0],
-        email: loginId,
-        dob: '1995-07-20', tob: '12:00', pob: 'New Delhi, India', lat: 28.6139, lon: 77.2090
-    };
+    if (!data || !data.success) {
+        alert("❌ Login Failed: " + ((data && data.error) ? data.error : "Invalid Credentials"));
+        return;
+    }
 
+    const activeProfile = data.profile;
     if (typeof saveProfile === 'function') saveProfile(activeProfile);
     redirectToLanding(activeProfile.name);
 }
@@ -663,9 +667,10 @@ async function handleRegisterSubmit(e) {
     const lat = pobEl.dataset.lat ? parseFloat(pobEl.dataset.lat) : 28.6139;
     const lon = pobEl.dataset.lon ? parseFloat(pobEl.dataset.lon) : 77.2090;
 
-    const profile = {
-        name, nickname: name, email, mobile, gender, dob, tob, pob, lat, lon
-    };
+    if (!name || !email || !password || !dob || !tob || !pob) {
+        alert("⚠️ Please fill in all required registration and birth details fields.");
+        return;
+    }
 
     const formData = new FormData();
     formData.append('action', 'signup');
@@ -680,7 +685,16 @@ async function handleRegisterSubmit(e) {
     formData.append('lat', lat);
     formData.append('lon', lon);
 
-    await safeAuthFetch(formData);
+    const data = await safeAuthFetch(formData);
+
+    if (!data || !data.success) {
+        alert("❌ Registration Failed: " + ((data && data.error) ? data.error : "User with this Email, Username, or Mobile already exists. Please Login."));
+        return;
+    }
+
+    const profile = data.profile || {
+        name, nickname: name, email, mobile, gender, dob, tob, pob, lat, lon
+    };
 
     if (typeof saveProfile === 'function') saveProfile(profile);
     redirectToLanding(name);
