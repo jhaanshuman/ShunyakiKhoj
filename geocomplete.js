@@ -125,19 +125,22 @@
             .gc-input {
                 width: 100%;
                 padding: 9px 34px 9px 30px !important;
-                background: rgba(255,255,255,0.05);
-                border: 1px solid rgba(255,255,255,0.12);
-                color: #fff;
+                background: #f8fafc;
+                border: 1.5px solid #cbd5e1;
+                color: #047857 !important; /* Noticeable Emerald Green */
+                font-weight: 700 !important;
                 border-radius: 8px;
                 font-family: inherit;
-                font-size: 0.9rem;
+                font-size: 0.92rem;
                 transition: border-color 0.2s, background 0.2s;
                 box-sizing: border-box;
             }
             .gc-input:focus {
                 outline: none;
-                border-color: #6366f1;
-                background: rgba(99,102,241,0.08);
+                border-color: #16a34a !important;
+                background: #f0fdf4 !important;
+                color: #047857 !important;
+                box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2) !important;
             }
             .gc-clear-btn {
                 position: absolute;

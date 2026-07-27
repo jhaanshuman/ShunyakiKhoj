@@ -4852,3 +4852,27 @@ table {
     overflow-y: auto !important;
 }
 
+/* Global Location Input Noticeable Emerald Green Styling */
+.gc-input,
+input.gc-input,
+input[id*="Pob"],
+input[id*="Place"],
+input[name*="pob"],
+input[name*="place"] {
+    color: #047857 !important; /* Rich Noticeable Emerald Green */
+    font-weight: 700 !important;
+    background-color: #f0fdf4 !important;
+    border: 1.5px solid #86efac !important;
+}
+
+.gc-input:focus,
+input.gc-input:focus,
+input[id*="Pob"]:focus,
+input[id*="Place"]:focus,
+input[name*="pob"]:focus,
+input[name*="place"]:focus {
+    border-color: #16a34a !important;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2) !important;
+    background-color: #ffffff !important;
+}
+
