@@ -6,6 +6,10 @@
 <title>ShunyakiKhoj — Spiritual & Vedic Wisdom Portal | Login & Registration</title>
 <meta name="description" content="Welcome to ShunyakiKhoj. Login, Register or enter as Guest with your birth details to generate instant Personalized Vedic Kundli and insights.">
 
+<!-- Google AdSense & Analytics -->
+<meta name="google-adsense-account" content="ca-pub-1342189574858672">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1342189574858672" crossorigin="anonymous"></script>
+
 <!-- Styles & Fonts -->
 <link rel="icon" href="/logo.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -549,10 +553,10 @@ body {
             <!-- Social Logins -->
             <div class="social-divider">OR CONTINUE WITH SOCIAL ACCOUNT</div>
             <div class="social-buttons-grid">
-                <button class="btn-social" onclick="triggerSocialAuth('Google')" title="Login with Google">🌐 Google</button>
-                <button class="btn-social" onclick="triggerSocialAuth('Instagram')" title="Login with Instagram">📸 Insta</button>
-                <button class="btn-social" onclick="triggerSocialAuth('Facebook')" title="Login with Facebook">📘 FB</button>
-                <button class="btn-social" onclick="triggerSocialAuth('WhatsApp')" title="Login with WhatsApp">💬 WhatsApp</button>
+                <button type="button" class="btn-social" onclick="triggerSocialAuth('Google')" title="Login with Google">🌐 Google</button>
+                <button type="button" class="btn-social" onclick="triggerSocialAuth('Instagram')" title="Login with Instagram">📸 Insta</button>
+                <button type="button" class="btn-social" onclick="triggerSocialAuth('Facebook')" title="Login with Facebook">📘 FB</button>
+                <button type="button" class="btn-social" onclick="triggerSocialAuth('WhatsApp')" title="Login with WhatsApp">💬 WhatsApp</button>
             </div>
         </div>
     </div>
@@ -563,175 +567,21 @@ body {
     <div style="background: #ffffff; border-radius: 12px; max-width: 420px; width: 90%; padding: 25px; border: 2px solid #b83214; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px;">
             <h3 style="margin: 0; color: #b83214; font-size: 1.1rem; font-weight: 800;">🔑 Forgot Username or Password</h3>
-            <button onclick="closeForgotModal()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">✕</button>
+            <button type="button" onclick="closeForgotModal()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">✕</button>
         </div>
         <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 15px;">Enter your registered Email ID or Mobile Number to authenticate and retrieve your credentials.</p>
         <div class="form-group">
             <label>Registered Email or Mobile Number</label>
             <input type="text" id="forgotIdentifier" class="form-input" placeholder="e.g. anshuman@gmail.com or 9876543210" required>
         </div>
-        <button onclick="handleForgotSubmit()" class="btn-auth-submit">Authenticate & Reset →</button>
+        <button type="button" onclick="handleForgotSubmit()" class="btn-auth-submit">Authenticate & Reset →</button>
         <div id="forgotResultMsg" style="margin-top: 12px; font-size: 0.82rem; font-weight: 700; color: #16a34a;"></div>
     </div>
 </div>
 
-<!-- Footer -->
-<footer class="portal-footer">
-    <p>© 2026 ShunyakiKhoj | Universal Vedic Astrology & Sanskrit Research Engine. All Rights Reserved.</p>
-</footer>
-
-<!-- Scripts -->
-<script src="/geocomplete.js?v=5.3.0"></script>
-<script src="/UserLog/auth.js?v=2.2.0"></script>
-
-<script>
-// Switch Auth Tabs
-function switchAuthTab(tab) {
-    document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('formLogin').style.display = 'none';
-    document.getElementById('formRegister').style.display = 'none';
-    document.getElementById('formGuest').style.display = 'none';
-
-    if (tab === 'login') {
-        document.getElementById('tabBtnLogin').classList.add('active');
-        document.getElementById('formLogin').style.display = 'block';
-    } else if (tab === 'register') {
-        document.getElementById('tabBtnRegister').classList.add('active');
-        document.getElementById('formRegister').style.display = 'block';
-    } else if (tab === 'guest') {
-        document.getElementById('tabBtnGuest').classList.add('active');
-        document.getElementById('formGuest').style.display = 'block';
-    }
-}
-
-// Auto-fill default dates
-document.addEventListener('DOMContentLoaded', () => {
-    const today = new Date().toISOString().split('T')[0];
-    if (document.getElementById('regDob')) document.getElementById('regDob').value = '1995-07-20';
-    if (document.getElementById('regTob')) document.getElementById('regTob').value = '12:00';
-    if (document.getElementById('regPob')) document.getElementById('regPob').value = 'New Delhi, India';
-
-    if (document.getElementById('guestDob')) document.getElementById('guestDob').value = '1995-07-20';
-    if (document.getElementById('guestTob')) document.getElementById('guestTob').value = '12:00';
-    if (document.getElementById('guestPob')) document.getElementById('guestPob').value = 'New Delhi, India';
-
-    // Init Geocomplete for location fields
-    if (typeof initGeoComplete === 'function') {
-        initGeoComplete('regPob', { defaultPlace: 'New Delhi, India' });
-        initGeoComplete('guestPob', { defaultPlace: 'New Delhi, India' });
-    }
-
-    // Check active profile
-    const activeProf = getProfile();
-    if (activeProf) {
-        const nickname = activeProf.nickname || activeProf.name || 'Seeker';
-        document.getElementById('headerGreeting').innerHTML = `🕉️ Hi, ${nickname}`;
-    }
-});
-
-// Submit Handlers
-async function handleLoginSubmit(e) {
-    e.preventDefault();
-    const loginId = document.getElementById('loginId').value.trim();
-    const password = document.getElementById('loginPassword').value;
-
-    try {
-        const formData = new FormData();
-        formData.append('action', 'login');
-        formData.append('login_id', loginId);
-        formData.append('password', password);
-
-        const res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
-        const data = await res.json();
-
-        if (data.success && data.profile) {
-            saveProfile(data.profile);
-            redirectToLanding(data.profile.name);
-        } else {
-            // Local fallback login
-            const mockProf = {
-                name: loginId.split('@')[0],
-                nickname: loginId.split('@')[0],
-                email: loginId,
-                dob: '1995-07-20', tob: '12:00', pob: 'New Delhi, India', lat: 28.6139, lon: 77.2090
-            };
-            saveProfile(mockProf);
-            redirectToLanding(mockProf.name);
-        }
-    } catch(err) {
-        const mockProf = {
-            name: loginId.split('@')[0],
-            nickname: loginId.split('@')[0],
-            email: loginId,
-            dob: '1995-07-20', tob: '12:00', pob: 'New Delhi, India', lat: 28.6139, lon: 77.2090
-        };
-        saveProfile(mockProf);
-        redirectToLanding(mockProf.name);
-    }
-}
-
-async function handleRegisterSubmit(e) {
-    e.preventDefault();
-    const name = document.getElementById('regName').value.trim();
-    const email = document.getElementById('regEmail').value.trim();
-    const mobile = document.getElementById('regMobile').value.trim();
-    const password = document.getElementById('regPassword').value;
-    const gender = document.getElementById('regGender').value;
-    const dob = document.getElementById('regDob').value;
-    const tob = document.getElementById('regTob').value;
-    const pobEl = document.getElementById('regPob');
-    const pob = pobEl.value;
-    const lat = pobEl.dataset.lat ? parseFloat(pobEl.dataset.lat) : 28.6139;
-    const lon = pobEl.dataset.lon ? parseFloat(pobEl.dataset.lon) : 77.2090;
-
-    const profile = {
-        name, nickname: name, email, mobile, gender, dob, tob, pob, lat, lon
-    };
-
-    try {
-        const formData = new FormData();
-        formData.append('action', 'signup');
-        formData.append('username', name);
-        formData.append('email', email);
-        formData.append('mobile', mobile);
-        formData.append('password', password);
-        formData.append('gender', gender);
-        formData.append('dob', dob);
-        formData.append('tob', tob);
-        formData.append('pob', pob);
-        formData.append('lat', lat);
-        formData.append('lon', lon);
-
-        await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
-    } catch(err) {}
-
-    saveProfile(profile);
-    redirectToLanding(name);
-}
-
-async function handleGuestSubmit(e) {
-    e.preventDefault();
-    const name = document.getElementById('guestName').value.trim() || 'Guest';
-    const gender = document.getElementById('guestGender').value;
-    const dob = document.getElementById('guestDob').value;
-    const tob = document.getElementById('guestTob').value;
-    const pobEl = document.getElementById('guestPob');
-    const pob = pobEl.value;
-    const lat = pobEl.dataset.lat ? parseFloat(pobEl.dataset.lat) : 28.6139;
-    const lon = pobEl.dataset.lon ? parseFloat(pobEl.dataset.lon) : 77.2090;
-
-    const profile = {
-        name, nickname: name, isGuest: true, gender, dob, tob, pob, lat, lon
-    };
-
-    saveProfile(profile);
-    redirectToLanding(name);
-}
-
 <!-- INTERACTIVE SOCIAL AUTH MODAL -->
 <div id="socialAuthModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(8px); z-index: 10000; align-items: center; justify-content: center;">
     <div style="background: #ffffff; border-radius: 16px; max-width: 440px; width: 92%; padding: 0; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.35); border: 1.5px solid #cbd5e1;">
-        <!-- Header with Dynamic Provider Branding -->
         <div id="socialHeaderBg" style="padding: 20px 24px; color: #ffffff; display: flex; justify-content: space-between; align-items: center; background: #4285F4;">
             <div style="display: flex; align-items: center; gap: 10px;">
                 <span id="socialProviderIcon" style="font-size: 1.4rem;">🌐</span>
@@ -789,9 +639,64 @@ async function handleGuestSubmit(e) {
     </div>
 </div>
 
+<!-- Footer -->
+<footer class="portal-footer">
+    <p>© 2026 ShunyakiKhoj | Universal Vedic Astrology & Sanskrit Research Engine. All Rights Reserved.</p>
+</footer>
+
+<!-- Scripts -->
+<script src="/geocomplete.js?v=5.3.0"></script>
+<script src="/UserLog/auth.js?v=2.2.0"></script>
+
 <script>
 let currentSocialProvider = 'Google';
 
+// Switch Auth Tabs
+function switchAuthTab(tab) {
+    document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('formLogin').style.display = 'none';
+    document.getElementById('formRegister').style.display = 'none';
+    document.getElementById('formGuest').style.display = 'none';
+
+    if (tab === 'login') {
+        document.getElementById('tabBtnLogin').classList.add('active');
+        document.getElementById('formLogin').style.display = 'block';
+    } else if (tab === 'register') {
+        document.getElementById('tabBtnRegister').classList.add('active');
+        document.getElementById('formRegister').style.display = 'block';
+    } else if (tab === 'guest') {
+        document.getElementById('tabBtnGuest').classList.add('active');
+        document.getElementById('formGuest').style.display = 'block';
+    }
+}
+
+// Auto-fill default dates
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('regDob')) document.getElementById('regDob').value = '1995-07-20';
+    if (document.getElementById('regTob')) document.getElementById('regTob').value = '12:00';
+    if (document.getElementById('regPob')) document.getElementById('regPob').value = 'New Delhi, India';
+
+    if (document.getElementById('guestDob')) document.getElementById('guestDob').value = '1995-07-20';
+    if (document.getElementById('guestTob')) document.getElementById('guestTob').value = '12:00';
+    if (document.getElementById('guestPob')) document.getElementById('guestPob').value = 'New Delhi, India';
+
+    // Init Geocomplete for location fields
+    if (typeof initGeoComplete === 'function') {
+        initGeoComplete('regPob', { defaultPlace: 'New Delhi, India' });
+        initGeoComplete('guestPob', { defaultPlace: 'New Delhi, India' });
+    }
+
+    // Check active profile
+    if (typeof getProfile === 'function') {
+        const activeProf = getProfile();
+        if (activeProf) {
+            const nickname = activeProf.nickname || activeProf.name || 'Seeker';
+            document.getElementById('headerGreeting').innerHTML = `🕉️ Hi, ${nickname}`;
+        }
+    }
+});
+
+// Social Auth Modal trigger
 function triggerSocialAuth(provider) {
     currentSocialProvider = provider;
     const modal = document.getElementById('socialAuthModal');
@@ -802,7 +707,6 @@ function triggerSocialAuth(provider) {
     const submitBtn = document.getElementById('socialSubmitBtn');
     const contactInput = document.getElementById('socialContact');
 
-    // Default fill
     if (document.getElementById('socialName')) document.getElementById('socialName').value = 'Anshuman Jha';
     if (document.getElementById('socialDob')) document.getElementById('socialDob').value = '1995-07-20';
     if (document.getElementById('socialTob')) document.getElementById('socialTob').value = '12:00';
@@ -885,8 +789,106 @@ async function handleSocialSubmit(e) {
         await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
     } catch(err) {}
 
-    saveProfile(profile);
+    if (typeof saveProfile === 'function') saveProfile(profile);
     closeSocialModal();
+    redirectToLanding(name);
+}
+
+// Submit Handlers
+async function handleLoginSubmit(e) {
+    e.preventDefault();
+    const loginId = document.getElementById('loginId').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    try {
+        const formData = new FormData();
+        formData.append('action', 'login');
+        formData.append('login_id', loginId);
+        formData.append('password', password);
+
+        const res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
+        const data = await res.json();
+
+        if (data.success && data.profile) {
+            if (typeof saveProfile === 'function') saveProfile(data.profile);
+            redirectToLanding(data.profile.name);
+        } else {
+            const mockProf = {
+                name: loginId.split('@')[0],
+                nickname: loginId.split('@')[0],
+                email: loginId,
+                dob: '1995-07-20', tob: '12:00', pob: 'New Delhi, India', lat: 28.6139, lon: 77.2090
+            };
+            if (typeof saveProfile === 'function') saveProfile(mockProf);
+            redirectToLanding(mockProf.name);
+        }
+    } catch(err) {
+        const mockProf = {
+            name: loginId.split('@')[0],
+            nickname: loginId.split('@')[0],
+            email: loginId,
+            dob: '1995-07-20', tob: '12:00', pob: 'New Delhi, India', lat: 28.6139, lon: 77.2090
+        };
+        if (typeof saveProfile === 'function') saveProfile(mockProf);
+        redirectToLanding(mockProf.name);
+    }
+}
+
+async function handleRegisterSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const mobile = document.getElementById('regMobile').value.trim();
+    const password = document.getElementById('regPassword').value;
+    const gender = document.getElementById('regGender').value;
+    const dob = document.getElementById('regDob').value;
+    const tob = document.getElementById('regTob').value;
+    const pobEl = document.getElementById('regPob');
+    const pob = pobEl.value;
+    const lat = pobEl.dataset.lat ? parseFloat(pobEl.dataset.lat) : 28.6139;
+    const lon = pobEl.dataset.lon ? parseFloat(pobEl.dataset.lon) : 77.2090;
+
+    const profile = {
+        name, nickname: name, email, mobile, gender, dob, tob, pob, lat, lon
+    };
+
+    try {
+        const formData = new FormData();
+        formData.append('action', 'signup');
+        formData.append('username', name);
+        formData.append('email', email);
+        formData.append('mobile', mobile);
+        formData.append('password', password);
+        formData.append('gender', gender);
+        formData.append('dob', dob);
+        formData.append('tob', tob);
+        formData.append('pob', pob);
+        formData.append('lat', lat);
+        formData.append('lon', lon);
+
+        await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
+    } catch(err) {}
+
+    if (typeof saveProfile === 'function') saveProfile(profile);
+    redirectToLanding(name);
+}
+
+async function handleGuestSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById('guestName').value.trim() || 'Guest';
+    const gender = document.getElementById('guestGender').value;
+    const dob = document.getElementById('guestDob').value;
+    const tob = document.getElementById('guestTob').value;
+    const pobEl = document.getElementById('guestPob');
+    const pob = pobEl.value;
+    const lat = pobEl.dataset.lat ? parseFloat(pobEl.dataset.lat) : 28.6139;
+    const lon = pobEl.dataset.lon ? parseFloat(pobEl.dataset.lon) : 77.2090;
+
+    const profile = {
+        name, nickname: name, isGuest: true, gender, dob, tob, pob, lat, lon
+    };
+
+    if (typeof saveProfile === 'function') saveProfile(profile);
     redirectToLanding(name);
 }
 
@@ -918,7 +920,6 @@ async function handleForgotSubmit() {
 }
 
 function redirectToLanding(name) {
-    // Trigger raw JSON computation alert/pre-calculation
     localStorage.setItem('shunya-pending-kundali-calc', 'true');
     window.location.href = '/landing.html';
 }
