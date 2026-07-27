@@ -709,69 +709,90 @@ function triggerSocialAuth(provider) {
     }
 }
 
-function initiateGoogleOAuth() {
-    console.log("🔑 Initiating Authentic Google OAuth 2.0 Flow...");
-    const metaClient = document.querySelector('meta[name="google-signin-client-id"]');
-    const clientId = metaClient ? metaClient.content : '';
-    const isRealClientId = clientId && !clientId.includes('dummy');
+function getGoogleClientId() {
+    const meta = document.querySelector('meta[name="google-signin-client-id"]');
+    if (meta && meta.content) return meta.content;
+    if (window.GOOGLE_CLIENT_ID) return window.GOOGLE_CLIENT_ID;
+    return '134218957485-dummy.apps.googleusercontent.com';
+}
 
-    // Google Identity Services (GSI) Native SDK with FedCM compliance
-    if (isRealClientId && window.google && window.google.accounts && window.google.accounts.id) {
+function initiateGoogleOAuth() {
+    console.log("🔑 [STEP 1/3] Triggering Official Google OAuth 2.0 Identity Services...");
+    const clientId = getGoogleClientId();
+
+    // 1. Google Identity Services (GSI) Native SDK
+    if (window.google && window.google.accounts && window.google.accounts.id) {
         try {
             google.accounts.id.initialize({
                 client_id: clientId,
                 callback: handleGoogleOAuthResponse,
                 auto_select: false,
-                use_fedcm_for_prompt: true,
-                cancel_on_tap_outside: true
+                use_fedcm_for_prompt: true
             });
             
             google.accounts.id.prompt((notification) => {
                 if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-                    openSocialSetupModal('Google', {
-                        name: 'Anshuman Jha',
-                        email: 'jhaanshuman.2010@gmail.com'
-                    });
+                    console.log("Google One Tap prompt not displayed, launching Google OAuth popup window...");
+                    launchGoogleOAuthPopupWindow(clientId);
                 }
             });
             return;
         } catch(e) {
-            console.warn("GSI Prompt failed, falling back to account confirmation modal...", e);
+            console.warn("GSI init error, opening OAuth popup window...", e);
+            launchGoogleOAuthPopupWindow(clientId);
         }
-    }
-
-    // Direct Google Account Verified setup modal (zero console 403 errors)
-    openSocialSetupModal('Google', {
-        name: 'Anshuman Jha',
-        email: 'jhaanshuman.2010@gmail.com'
-    });
-}
-
-function parseJwt(token) {
-    try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-        return JSON.parse(jsonPayload);
-    } catch(e) {
-        return null;
+    } else {
+        launchGoogleOAuthPopupWindow(clientId);
     }
 }
 
-function handleGoogleOAuthResponse(response) {
-    if (!response || !response.credential) return;
-    const payload = parseJwt(response.credential);
-    if (!payload) return;
+function launchGoogleOAuthPopupWindow(clientId) {
+    const redirectUri = window.location.origin + '/index.html';
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
+        `client_id=${encodeURIComponent(clientId)}` +
+        `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+        `&response_type=id_token` +
+        `&scope=${encodeURIComponent("openid email profile")}` +
+        `&prompt=select_account` +
+        `&nonce=${Math.random().toString(36).substring(2)}`;
 
-    console.log("✅ Google OAuth Verified User:", payload.email, payload.name);
+    const width = 500;
+    const height = 600;
+    const left = (screen.width / 2) - (width / 2);
+    const top = (screen.height / 2) - (height / 2);
 
-    openSocialSetupModal('Google', {
-        name: payload.name || payload.given_name || 'Anshuman Jha',
-        email: payload.email || 'jhaanshuman.2010@gmail.com',
-        picture: payload.picture || ''
-    });
+    window.open(googleAuthUrl, 'GoogleOAuthPopup', `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`);
+}
+
+// 2. Google OAuth Callback -> Send ID Token to PHP Backend for Server-Side Verification
+async function handleGoogleOAuthResponse(response) {
+    if (!response || !response.credential) {
+        console.error("❌ Google Authentication Failed: No ID token returned from Google.");
+        return;
+    }
+
+    const idToken = response.credential;
+    console.log("🔒 [STEP 2/3] Google ID Token received. Sending to PHP backend (/UserLog/auth.php) for server-side verification...");
+
+    const formData = new FormData();
+    formData.append('action', 'verify_google_token');
+    formData.append('id_token', idToken);
+
+    const result = await safeAuthFetch(formData);
+
+    if (result && result.success && result.verified_by_google) {
+        console.log("🎉 [STEP 3/3] Google Server-Side Verification SUCCESS! User:", result.email);
+        
+        // ONLY AFTER SUCCESSFUL SERVER-SIDE VERIFICATION -> Show Birth Details Confirmation Modal
+        openSocialSetupModal('Google', {
+            name: result.name || 'Google User',
+            email: result.email,
+            picture: result.picture || ''
+        });
+    } else {
+        console.error("❌ Google Server-Side Verification FAILED:", result ? result.error : 'Invalid Token');
+        alert("Google Token Verification Failed: " + (result ? (result.error || 'Server rejected token') : 'Verification endpoint error'));
+    }
 }
 
 function openSocialSetupModal(provider, verifiedData = null) {

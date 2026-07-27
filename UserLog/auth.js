@@ -94,70 +94,99 @@
         }
     }
 
-    // Load GIS SDK dynamically
-    function loadGoogleGSI() {
-        if (window.google && window.google.accounts) return;
-        const script = document.createElement('script');
-        script.src = 'https://accounts.google.com/gsi/client';
-        script.async = true;
-        script.defer = true;
-        script.onload = () => {
-            try {
-                tokenClient = google.accounts.oauth2.initTokenClient({
-                    client_id: CLIENT_ID,
-                    scope: 'https://www.googleapis.com/auth/drive.file',
-                    callback: handleGoogleAuthResponse
-                });
-            } catch(e) {
-                console.warn("GSI Token init failed (likely local development). Mock flow will be used.", e);
-            }
-        };
-        document.head.appendChild(script);
+    // Google Identity Services (GSI) Authentication & Token Verification
+    function getGoogleClientId() {
+        const meta = document.querySelector('meta[name="google-signin-client-id"]');
+        if (meta && meta.content) return meta.content;
+        if (window.GOOGLE_CLIENT_ID) return window.GOOGLE_CLIENT_ID;
+        return '134218957485-dummy.apps.googleusercontent.com';
     }
 
-    // Trigger Google Sign-In GSI popup or custom Social Auth modal
+    // Trigger Official Google Sign-In Prompt or Popup Window
     function loginWithGoogle() {
-        if (tokenClient && !CLIENT_ID.includes('dummy')) {
-            tokenClient.requestAccessToken();
-        } else if (typeof global.triggerSocialAuth === 'function') {
-            global.triggerSocialAuth('Google');
+        console.log("🔑 [STEP 1/3] Triggering Official Google Sign-In Prompt...");
+        const clientId = getGoogleClientId();
+
+        if (window.google && window.google.accounts && window.google.accounts.id) {
+            try {
+                google.accounts.id.initialize({
+                    client_id: clientId,
+                    callback: handleCredentialResponse,
+                    auto_select: false,
+                    use_fedcm_for_prompt: true
+                });
+
+                google.accounts.id.prompt((notification) => {
+                    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                        console.log("Google One Tap not displayed, launching OAuth popup window...");
+                        launchGoogleOAuthWindow(clientId);
+                    }
+                });
+                return;
+            } catch(e) {
+                console.warn("GSI init error, launching OAuth popup window...", e);
+                launchGoogleOAuthWindow(clientId);
+            }
         } else {
-            const mockProfile = {
-                email: 'anshuman.jha@gmail.com',
-                name: 'Anshuman Jha',
-                nickname: 'Anshuman',
-                dob: '1995-07-20',
-                tob: '12:00',
-                pob: 'New Delhi, India',
-                lat: 28.6139,
-                lon: 77.2090
-            };
-            saveProfile(mockProfile);
-            updateProfileHeaderButton();
+            launchGoogleOAuthWindow(clientId);
         }
     }
 
-    // Handle real Google Drive token
-    async function handleGoogleAuthResponse(response) {
-        if (response.error) {
-            console.error("Google Auth error:", response);
+    function launchGoogleOAuthWindow(clientId) {
+        const redirectUri = window.location.origin + '/index.html';
+        const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
+            `client_id=${encodeURIComponent(clientId)}` +
+            `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+            `&response_type=id_token` +
+            `&scope=${encodeURIComponent("openid email profile")}` +
+            `&prompt=select_account` +
+            `&nonce=${Math.random().toString(36).substring(2)}`;
+
+        const width = 500;
+        const height = 600;
+        const left = (screen.width / 2) - (width / 2);
+        const top = (screen.height / 2) - (height / 2);
+
+        window.open(googleAuthUrl, 'GoogleOAuthPopup', `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`);
+    }
+
+    // Credential Response Callback from Google Identity Services
+    async function handleCredentialResponse(response) {
+        if (!response || !response.credential) {
+            console.error("❌ Google Sign-In failed: No credential returned.");
             return;
         }
-        const accessToken = response.access_token;
-        sessionStorage.setItem('google-access-token', accessToken);
 
-        // Fetch User Info using token
+        const idToken = response.credential;
+        console.log("🔒 [STEP 2/3] Google ID Token received. Verifying server-side with /UserLog/auth.php...");
+
         try {
-            const userRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-                headers: { Authorization: `Bearer ${accessToken}` }
-            });
-            const userData = await userRes.json();
-            
-            // Try to fetch profile from user's Google Drive
-            const driveProfile = await fetchProfileFromDrive(accessToken);
-            if (driveProfile) {
-                saveProfile(driveProfile);
-                alert("Profile synchronized from Google Drive!");
+            const formData = new FormData();
+            formData.append('action', 'verify_google_token');
+            formData.append('id_token', idToken);
+
+            const res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
+            const data = await res.json();
+
+            if (data.success && data.verified_by_google) {
+                console.log("🎉 [STEP 3/3] Google Server-Side Token Verification SUCCESS! User:", data.email);
+                
+                // ONLY AFTER SUCCESSFUL VERIFICATION -> Open birth details confirmation modal
+                if (typeof global.openSocialSetupModal === 'function') {
+                    global.openSocialSetupModal('Google', {
+                        name: data.name,
+                        email: data.email,
+                        picture: data.picture
+                    });
+                }
+            } else {
+                console.error("❌ Server-side Google token verification failed:", data.error);
+                alert("Google Token Verification failed: " + (data.error || "Invalid Token"));
+            }
+        } catch(err) {
+            console.error("❌ Error verifying ID Token with backend:", err);
+        }
+    }
             } else {
                 // Initialize default profile using google details
                 const defaultProf = {
