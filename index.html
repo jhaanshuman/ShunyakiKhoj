@@ -422,7 +422,10 @@ body {
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required>
+                    <div class="password-input-wrap" style="position: relative; display: flex; align-items: center;">
+                        <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required style="padding-right: 40px;">
+                        <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('loginPassword', this)" title="Show/Hide Password" style="position: absolute; right: 10px; background: none; border: none; font-size: 1.1rem; cursor: pointer; color: #64748b; padding: 4px; display: flex; align-items: center; justify-content: center; z-index: 5;">👁️</button>
+                    </div>
                     <a class="forgot-link-btn" onclick="openForgotModal()">Forgot Username / Password?</a>
                 </div>
                 <button type="submit" class="btn-auth-submit">Login & Load Kundali →</button>
@@ -457,7 +460,10 @@ body {
 
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="regPassword" class="form-input" placeholder="Create strong password" required>
+                    <div class="password-input-wrap" style="position: relative; display: flex; align-items: center;">
+                        <input type="password" id="regPassword" class="form-input" placeholder="Create strong password" required style="padding-right: 40px;">
+                        <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('regPassword', this)" title="Show/Hide Password" style="position: absolute; right: 10px; background: none; border: none; font-size: 1.1rem; cursor: pointer; color: #64748b; padding: 4px; display: flex; align-items: center; justify-content: center; z-index: 5;">👁️</button>
+                    </div>
                 </div>
 
                 <div style="border-top: 1px solid #e2e8f0; padding-top: 10px; margin-top: 6px;">
@@ -564,6 +570,21 @@ function switchAuthTab(tab) {
     } else if (tab === 'guest') {
         document.getElementById('tabBtnGuest').classList.add('active');
         document.getElementById('formGuest').style.display = 'block';
+    }
+}
+
+// Password Visibility Toggle
+function togglePasswordVisibility(inputId, btnEl) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    if (input.type === 'password') {
+        input.type = 'text';
+        btnEl.innerHTML = '🙈';
+        btnEl.title = 'Hide Password';
+    } else {
+        input.type = 'password';
+        btnEl.innerHTML = '👁️';
+        btnEl.title = 'Show Password';
     }
 }
 
