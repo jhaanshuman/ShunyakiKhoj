@@ -779,9 +779,9 @@ async def handle_auth_php(request: Request):
                 cursor = conn.cursor()
                 cursor.execute("""
                     SELECT id FROM users 
-                    WHERE username=? 
-                    OR (? IS NOT NULL AND ?!='' AND email=?) 
-                    OR (? IS NOT NULL AND ?!='' AND mobile=?)
+                    WHERE username = ? 
+                    OR (? IS NOT NULL AND ? != '' AND email = ?) 
+                    OR (? IS NOT NULL AND ? != '' AND mobile = ?)
                 """, (username, email_val, email_val, email_val, mobile_val, mobile_val, mobile_val))
                 if cursor.fetchone():
                     conn.close()

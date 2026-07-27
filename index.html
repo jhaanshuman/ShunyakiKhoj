@@ -664,6 +664,9 @@ async function safeAuthFetch(formData) {
 async function handleLoginSubmit(e) {
     e.preventDefault();
     showAuthError('loginErrorMsg', '');
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const origText = submitBtn ? submitBtn.innerText : 'Login & Load Kundali →';
+
     const loginId = document.getElementById('loginId').value.trim();
     const password = document.getElementById('loginPassword').value;
 
@@ -672,12 +675,22 @@ async function handleLoginSubmit(e) {
         return;
     }
 
+    if (submitBtn) {
+        submitBtn.innerText = 'Authenticating... ⏳';
+        submitBtn.disabled = true;
+    }
+
     const formData = new FormData();
     formData.append('action', 'login');
     formData.append('login_id', loginId);
     formData.append('password', password);
 
     const data = await safeAuthFetch(formData);
+
+    if (submitBtn) {
+        submitBtn.innerText = origText;
+        submitBtn.disabled = false;
+    }
 
     if (!data || !data.success) {
         showAuthError('loginErrorMsg', (data && data.error) ? data.error : "Invalid Credentials");
@@ -692,6 +705,9 @@ async function handleLoginSubmit(e) {
 async function handleRegisterSubmit(e) {
     e.preventDefault();
     showAuthError('registerErrorMsg', '');
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const origText = submitBtn ? submitBtn.innerText : 'Register Account & Save Chart →';
+
     const name = document.getElementById('regName').value.trim();
     const email = document.getElementById('regEmail').value.trim();
     const mobile = document.getElementById('regMobile').value.trim();
@@ -714,6 +730,11 @@ async function handleRegisterSubmit(e) {
         return;
     }
 
+    if (submitBtn) {
+        submitBtn.innerText = 'Registering Account... ⏳';
+        submitBtn.disabled = true;
+    }
+
     const formData = new FormData();
     formData.append('action', 'signup');
     formData.append('username', name);
@@ -729,8 +750,13 @@ async function handleRegisterSubmit(e) {
 
     const data = await safeAuthFetch(formData);
 
+    if (submitBtn) {
+        submitBtn.innerText = origText;
+        submitBtn.disabled = false;
+    }
+
     if (!data || !data.success) {
-        showAuthError('registerErrorMsg', (data && data.error) ? data.error : "User with this Email, Username, or Mobile already exists. Please Login.");
+        showAuthError('registerErrorMsg', (data && data.error) ? data.error : "User registration failed. Please try again.");
         return;
     }
 
