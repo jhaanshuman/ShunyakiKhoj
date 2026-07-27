@@ -115,30 +115,25 @@
         document.head.appendChild(script);
     }
 
-    // Trigger Google Sign-In GSI popup
+    // Trigger Google Sign-In GSI popup or custom Social Auth modal
     function loginWithGoogle() {
         if (tokenClient && !CLIENT_ID.includes('dummy')) {
             tokenClient.requestAccessToken();
+        } else if (typeof global.triggerSocialAuth === 'function') {
+            global.triggerSocialAuth('Google');
         } else {
-            // Simulated login flow if GSI block/offline
-            const email = prompt("Enter your Google Account email to sign in:", "anshuman.jha@gmail.com");
-            if (email) {
-                const mockProfile = {
-                    email: email,
-                    name: email.split('@')[0],
-                    nickname: email.split('@')[0].toUpperCase(),
-                    dob: '1995-07-20',
-                    tob: '12:00',
-                    pob: 'New Delhi, India',
-                    lat: 28.6139,
-                    lon: 77.2090
-                };
-                saveProfile(mockProfile);
-                alert("Simulated Google Login Successful for: " + email);
-                closeAuth();
-                updateProfileHeaderButton();
-                promptSettingsIfIncomplete();
-            }
+            const mockProfile = {
+                email: 'anshuman.jha@gmail.com',
+                name: 'Anshuman Jha',
+                nickname: 'Anshuman',
+                dob: '1995-07-20',
+                tob: '12:00',
+                pob: 'New Delhi, India',
+                lat: 28.6139,
+                lon: 77.2090
+            };
+            saveProfile(mockProfile);
+            updateProfileHeaderButton();
         }
     }
 

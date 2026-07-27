@@ -728,16 +728,165 @@ async function handleGuestSubmit(e) {
     redirectToLanding(name);
 }
 
+<!-- INTERACTIVE SOCIAL AUTH MODAL -->
+<div id="socialAuthModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(8px); z-index: 10000; align-items: center; justify-content: center;">
+    <div style="background: #ffffff; border-radius: 16px; max-width: 440px; width: 92%; padding: 0; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.35); border: 1.5px solid #cbd5e1;">
+        <!-- Header with Dynamic Provider Branding -->
+        <div id="socialHeaderBg" style="padding: 20px 24px; color: #ffffff; display: flex; justify-content: space-between; align-items: center; background: #4285F4;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span id="socialProviderIcon" style="font-size: 1.4rem;">🌐</span>
+                <h3 id="socialProviderTitle" style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #ffffff;">Sign in with Google</h3>
+            </div>
+            <button type="button" onclick="closeSocialModal()" style="background: none; border: none; color: #ffffff; font-size: 1.3rem; cursor: pointer;">✕</button>
+        </div>
+
+        <form id="formSocialAuth" onsubmit="handleSocialSubmit(event)" style="padding: 24px;">
+            <p style="font-size: 0.82rem; color: #64748b; margin-top: 0; margin-bottom: 16px;">
+                Authenticate with your social account and confirm your birth details to generate your Personalized Kundali.
+            </p>
+
+            <div class="form-group-row">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="socialName" class="form-input" placeholder="Anshuman Jha" required>
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select id="socialGender" class="form-input">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="socialContactLabel">Email / Social Handle</label>
+                <input type="text" id="socialContact" class="form-input" placeholder="anshuman.jha@gmail.com" required>
+            </div>
+
+            <div style="border-top: 1px solid #e2e8f0; padding-top: 10px; margin-top: 10px;">
+                <span style="font-size: 0.78rem; font-weight: 800; color: #b83214;">🌟 Birth Details (for Kundali Calculation):</span>
+            </div>
+
+            <div class="form-group-row" style="margin-top: 8px;">
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                    <input type="date" id="socialDob" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Time of Birth</label>
+                    <input type="time" id="socialTob" class="form-input" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Place of Birth (POB)</label>
+                <input type="text" id="socialPob" class="form-input" placeholder="e.g. New Delhi, India" required>
+            </div>
+
+            <button type="submit" id="socialSubmitBtn" class="btn-auth-submit" style="margin-top: 12px; background: #4285F4;">Confirm & Enter Landing Page →</button>
+        </form>
+    </div>
+</div>
+
+<script>
+let currentSocialProvider = 'Google';
+
 function triggerSocialAuth(provider) {
-    const name = prompt(`Enter your Name for ${provider} Login:`, "Anshuman");
-    if (!name) return;
+    currentSocialProvider = provider;
+    const modal = document.getElementById('socialAuthModal');
+    const headerBg = document.getElementById('socialHeaderBg');
+    const title = document.getElementById('socialProviderTitle');
+    const icon = document.getElementById('socialProviderIcon');
+    const contactLabel = document.getElementById('socialContactLabel');
+    const submitBtn = document.getElementById('socialSubmitBtn');
+    const contactInput = document.getElementById('socialContact');
+
+    // Default fill
+    if (document.getElementById('socialName')) document.getElementById('socialName').value = 'Anshuman Jha';
+    if (document.getElementById('socialDob')) document.getElementById('socialDob').value = '1995-07-20';
+    if (document.getElementById('socialTob')) document.getElementById('socialTob').value = '12:00';
+    if (document.getElementById('socialPob')) document.getElementById('socialPob').value = 'New Delhi, India';
+
+    if (typeof initGeoComplete === 'function') {
+        initGeoComplete('socialPob', { defaultPlace: 'New Delhi, India' });
+    }
+
+    if (provider === 'Google') {
+        headerBg.style.background = '#4285F4';
+        submitBtn.style.background = '#4285F4';
+        title.innerText = 'Sign in with Google';
+        icon.innerText = '🌐';
+        contactLabel.innerText = 'Google Email Address';
+        contactInput.placeholder = 'anshuman.jha@gmail.com';
+        contactInput.value = 'anshuman.jha@gmail.com';
+    } else if (provider === 'Instagram') {
+        headerBg.style.background = 'linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)';
+        submitBtn.style.background = 'linear-gradient(45deg, #e6683c, #dc2743)';
+        title.innerText = 'Sign in with Instagram';
+        icon.innerText = '📸';
+        contactLabel.innerText = 'Instagram Handle / Email';
+        contactInput.placeholder = '@anshuman_jha or email';
+        contactInput.value = '@anshuman_jha';
+    } else if (provider === 'Facebook') {
+        headerBg.style.background = '#1877F2';
+        submitBtn.style.background = '#1877F2';
+        title.innerText = 'Sign in with Facebook';
+        icon.innerText = '📘';
+        contactLabel.innerText = 'Facebook Account Email / Phone';
+        contactInput.placeholder = 'anshuman@facebook.com';
+        contactInput.value = 'anshuman@facebook.com';
+    } else if (provider === 'WhatsApp') {
+        headerBg.style.background = '#25D366';
+        submitBtn.style.background = '#25D366';
+        title.innerText = 'Sign in with WhatsApp';
+        icon.innerText = '💬';
+        contactLabel.innerText = 'WhatsApp Mobile Number (+91)';
+        contactInput.placeholder = '+91 9876543210';
+        contactInput.value = '+91 9876543210';
+    }
+
+    modal.style.display = 'flex';
+}
+
+function closeSocialModal() {
+    document.getElementById('socialAuthModal').style.display = 'none';
+}
+
+async function handleSocialSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById('socialName').value.trim() || 'Anshuman';
+    const gender = document.getElementById('socialGender').value;
+    const contact = document.getElementById('socialContact').value.trim();
+    const dob = document.getElementById('socialDob').value;
+    const tob = document.getElementById('socialTob').value;
+    const pobEl = document.getElementById('socialPob');
+    const pob = pobEl.value;
+    const lat = pobEl.dataset.lat ? parseFloat(pobEl.dataset.lat) : 28.6139;
+    const lon = pobEl.dataset.lon ? parseFloat(pobEl.dataset.lon) : 77.2090;
 
     const profile = {
-        name, nickname: name, provider, isSocial: true,
-        dob: '1995-07-20', tob: '12:00', pob: 'New Delhi, India', lat: 28.6139, lon: 77.2090
+        name, nickname: name, email: contact, provider: currentSocialProvider, isSocial: true,
+        gender, dob, tob, pob, lat, lon
     };
 
+    try {
+        const formData = new FormData();
+        formData.append('action', 'social_auth');
+        formData.append('provider', currentSocialProvider);
+        formData.append('name', name);
+        formData.append('email', contact);
+        formData.append('gender', gender);
+        formData.append('dob', dob);
+        formData.append('tob', tob);
+        formData.append('pob', pob);
+        formData.append('lat', lat);
+        formData.append('lon', lon);
+        await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
+    } catch(err) {}
+
     saveProfile(profile);
+    closeSocialModal();
     redirectToLanding(name);
 }
 
