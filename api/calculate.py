@@ -690,7 +690,12 @@ def query_festivals(year: int, month: int, date: str):
 
 
 def get_user_auth_db():
-    db_path = "/tmp/userAuth.db"
+    if os.name == 'nt':
+        db_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "backend")
+        os.makedirs(db_dir, exist_ok=True)
+        db_path = os.path.join(db_dir, "userAuth.db")
+    else:
+        db_path = "/tmp/userAuth.db"
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute("""
