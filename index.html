@@ -639,18 +639,29 @@ function showAuthError(targetId, msg) {
     }
 }
 
-// Helper to post to Auth endpoint (prioritizes /api/auth to prevent Vercel 405 static file conflict)
+// Helper to post directly to InfinityFree PHP MySQL database endpoint (sanskrit.gt.tc)
 async function safeAuthFetch(formData) {
     let res = null;
     try {
-        // Primary: Vercel Serverless API Route (avoids static file 405)
-        res = await fetch('/api/auth', { method: 'POST', body: formData }).catch(() => null);
+        // Primary: Direct InfinityFree PHP MySQL backend
+        res = await fetch('https://sanskrit.gt.tc/UserLog/auth.php', { method: 'POST', body: formData }).catch(() => null);
     } catch(e) {}
     
     if (!res || !res.ok) {
         try {
-            // Secondary: PHP endpoint for Apache/InfinityFree host
+            res = await fetch('http://sanskrit.gt.tc/UserLog/auth.php', { method: 'POST', body: formData }).catch(() => null);
+        } catch(e) {}
+    }
+
+    if (!res || !res.ok) {
+        try {
             res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData }).catch(() => null);
+        } catch(e) {}
+    }
+
+    if (!res || !res.ok) {
+        try {
+            res = await fetch('/api/auth', { method: 'POST', body: formData }).catch(() => null);
         } catch(e) {}
     }
 
