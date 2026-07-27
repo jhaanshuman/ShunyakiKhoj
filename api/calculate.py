@@ -845,7 +845,71 @@ async def handle_auth_php(request: Request):
             except Exception as sqle:
                 return {"success": False, "error": f"Database Authentication Error: {str(sqle)}"}
 
-        if action in ["guest", "save_kundali_cache", "forgot_lookup"]:
+        if action == "save_kundali_cache":
+            username = data.get("username", data.get("user_identifier", "")).strip()
+            raw_json = data.get("raw_json", "").strip()
+            dob = data.get("dob", "")
+            tob = data.get("tob", "")
+            pob = data.get("pob", "")
+            lat = float(data.get("lat", 0))
+            lon = float(data.get("lon", 0))
+            
+            if not username or not raw_json:
+                return {"success": False, "error": "Username and Raw JSON required."}
+                
+            try:
+                conn = get_user_auth_db()
+                cursor = conn.cursor()
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS user_kundali_cache (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        user_identifier TEXT UNIQUE,
+                        dob TEXT, tob TEXT, pob TEXT, lat REAL, lon REAL, raw_json TEXT,
+                        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                    )
+                """)
+                cursor.execute("""
+                    INSERT INTO user_kundali_cache (user_identifier, dob, tob, pob, lat, lon, raw_json)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                    ON CONFLICT(user_identifier) DO UPDATE SET
+                    raw_json=excluded.raw_json, dob=excluded.dob, tob=excluded.tob, pob=excluded.pob, lat=excluded.lat, lon=excluded.lon
+                """, (username, dob, tob, pob, lat, lon, raw_json))
+                conn.commit()
+                conn.close()
+                return {"success": True, "message": "Raw JSON Kundali cached successfully."}
+            except Exception as e:
+                return {"success": False, "error": str(e)}
+
+        if action == "get_kundali_cache":
+            username = data.get("username", data.get("user_identifier", "")).strip()
+            if not username:
+                return {"success": False, "error": "Username required."}
+            try:
+                conn = get_user_auth_db()
+                cursor = conn.cursor()
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS user_kundali_cache (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        user_identifier TEXT UNIQUE,
+                        dob TEXT, tob TEXT, pob TEXT, lat REAL, lon REAL, raw_json TEXT,
+                        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                    )
+                """)
+                cursor.execute("SELECT dob, tob, pob, lat, lon, raw_json FROM user_kundali_cache WHERE user_identifier=?", (username,))
+                row = cursor.fetchone()
+                conn.close()
+                if row:
+                    return {
+                        "success": True,
+                        "username": username,
+                        "dob": row[0], "tob": row[1], "pob": row[2], "lat": row[3], "lon": row[4],
+                        "raw_json": row[5]
+                    }
+                return {"success": False, "error": "No cached Kundali found."}
+            except Exception as e:
+                return {"success": False, "error": str(e)}
+
+        if action in ["guest", "forgot_lookup"]:
             return {"success": True, "message": "Authenticated successfully"}
 
         return {"success": False, "error": "Invalid Action"}

@@ -653,7 +653,19 @@ gtag('config','G-DZ2CM1SBWW');
     </div>
 </div>
 
- <script src="/UserLog/auth.js?v=2.2.0"></script>
+<!-- Birth Chart Preparation Progress Modal -->
+<div id="kundaliProgressModal" class="kundali-progress-overlay" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.85); backdrop-filter:blur(8px); z-index:10000; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center;">
+    <div style="background:rgba(30,41,59,0.95); border:2.5px solid #fbbf24; padding:32px; border-radius:18px; max-width:440px; box-shadow:0 20px 50px rgba(0,0,0,0.6);">
+        <div style="font-size:3.5rem; margin-bottom:15px; animation: pulse 1.5s infinite alternate;" class="spinning-mandala">🕉️</div>
+        <h3 style="color:#fbbf24; font-size:1.3rem; font-weight:800; margin:0 0 10px 0;">Birth Chart Under Preparation</h3>
+        <p style="color:#e2e8f0; font-size:0.95rem; line-height:1.6; margin:0;">Your Birth chart preparation is under process. Please wait sometime...</p>
+    </div>
+</div>
+
+<!-- Hidden Raw JSON Kundali Container -->
+<pre id="hiddenRawKundaliJson" style="display:none;"></pre>
+
+<script src="/UserLog/auth.js?v=2.2.0"></script>
 <script src="/geocomplete.js?v=5.3.0"></script>
 <script src="/api_helper.js?v=2.2.0" defer></script>
 <script src="/Features/Astrology/astrology.js?v=5.3.0" defer></script>
@@ -665,10 +677,52 @@ gtag('config','G-DZ2CM1SBWW');
 <script src="/Features/Dictionary/mw-typing-guide.js?v=2.2.0" defer></script>
 <script src="/Features/Dictionary/guide.js?v=2.2.0" defer></script>
 <script src="/Features/Dictionary/sanskrit-ai.js?v=2.2.0" defer></script>
+
 <script>
-// Initialise city autocomplete and directory loading
+// Zero-Lag Kundali Cache Loader & Progress Manager
 document.addEventListener('DOMContentLoaded', function() {
-    // Fetch and populate Jyotish directory box from JSON
+    // 1. Parse username from URL parameter or localStorage
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlUser = urlParams.get('username');
+    if (urlUser) {
+        localStorage.setItem('shunya-username', urlUser);
+    }
+    const username = urlUser || localStorage.getItem('shunya-username') || (typeof getProfile === 'function' && getProfile() ? getProfile().name : null);
+
+    if (username && typeof updateProfileHeaderButton === 'function') {
+        updateProfileHeaderButton();
+    }
+
+    // 2. Fetch Cached Kundali from sanskrit.gt.tc MySQL database
+    if (username) {
+        const fetchCache = (apiUrl) => fetch(`${apiUrl}?action=get_kundali_cache&username=${encodeURIComponent(username)}`)
+            .then(res => res.ok ? res.json() : null)
+            .catch(() => null);
+
+        fetchCache('https://sanskrit.gt.tc/UserLog/auth.php').then(data => {
+            if (!data || !data.success) return fetchCache('/UserLog/auth.php');
+            return data;
+        }).then(data => {
+            if (!data || !data.success) return fetchCache('/api/auth');
+            return data;
+        }).then(data => {
+            if (data && data.success && data.raw_json) {
+                console.log("⚡ [ZERO-LAG] Loaded cached Kundali from MySQL for:", username);
+                const hiddenBox = document.getElementById('hiddenRawKundaliJson');
+                if (hiddenBox) hiddenBox.textContent = data.raw_json;
+                localStorage.setItem('shunya-cached-raw-json', data.raw_json);
+                
+                try {
+                    window.lastCalculatedData = JSON.parse(data.raw_json);
+                    if (typeof window.renderAstrologyViews === 'function') {
+                        window.renderAstrologyViews(window.lastCalculatedData);
+                    }
+                } catch(e) {}
+            }
+        });
+    }
+
+    // 3. Populate Jyotish directory links
     fetch('/Features/Astrology/jyotish_directory.json')
         .then(res => res.json())
         .then(data => {
@@ -680,7 +734,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(err => {
-            console.warn("Failed to load Jyotish directory from JSON, using fallback:", err);
             const listEl = document.getElementById('jyotishLinksList');
             if (listEl) {
                 const fallbackLinks = [
@@ -709,6 +762,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+// Helper to show/hide birth chart preparation progress overlay
+function showKundaliProgressModal(show = true) {
+    const modal = document.getElementById('kundaliProgressModal');
+    if (modal) {
+        modal.style.display = show ? 'flex' : 'none';
+    }
+}
+window.showKundaliProgressModal = showKundaliProgressModal;
 </script>
 
 <!-- Vercel Analytics -->

@@ -102,42 +102,50 @@
     // Setup and render user header button & dropdown logic
     function updateProfileHeaderButton() {
         const btn = document.getElementById("profileBtn");
-        if (!btn) return;
         
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlUsername = urlParams.get('username');
+        if (urlUsername) {
+            localStorage.setItem('shunya-username', urlUsername);
+        }
+
         const profile = getProfile();
-        if (profile) {
-            const nickname = profile.nickname || profile.name || 'User';
-            btn.style.display = 'inline-flex';
-            btn.style.alignItems = 'center';
-            btn.style.gap = '6px';
-            btn.style.cursor = 'pointer';
-            btn.style.padding = '4px 12px';
-            btn.style.borderRadius = '99px';
-            btn.style.background = 'rgba(184, 50, 20, 0.12)';
-            btn.style.border = '1.5px solid rgba(184, 50, 20, 0.35)';
-            btn.style.transition = 'all 0.2s';
-            
-            btn.innerHTML = `
-                <span style="font-size:0.85rem; font-weight:800; color:var(--text-color, #92400e);">Hi, ${nickname}</span>
-                <span style="font-size:1.05rem;">👤</span>
-            `;
-            btn.onclick = (e) => {
-                e.stopPropagation();
-                toggleProfileDropdown(e);
-            };
-        } else {
-            btn.style.display = 'inline-flex';
-            btn.style.alignItems = 'center';
-            btn.style.gap = '4px';
-            btn.style.cursor = 'pointer';
-            btn.style.padding = '4px 10px';
-            btn.style.borderRadius = '99px';
-            btn.style.background = 'transparent';
-            btn.style.border = 'none';
-            btn.innerHTML = '<span style="font-size:0.85rem; font-weight:700; color:var(--text-color, #92400e);">🔑 Login / Register</span>';
-            btn.onclick = () => {
-                window.location.href = '/index.html';
-            };
+        const username = urlUsername || localStorage.getItem('shunya-username') || (profile ? (profile.nickname || profile.name) : null);
+        
+        if (btn) {
+            if (username) {
+                btn.style.display = 'inline-flex';
+                btn.style.alignItems = 'center';
+                btn.style.gap = '6px';
+                btn.style.cursor = 'pointer';
+                btn.style.padding = '4px 12px';
+                btn.style.borderRadius = '99px';
+                btn.style.background = 'rgba(184, 50, 20, 0.12)';
+                btn.style.border = '1.5px solid rgba(184, 50, 20, 0.35)';
+                btn.style.transition = 'all 0.2s';
+                
+                btn.innerHTML = `
+                    <span style="font-size:0.85rem; font-weight:800; color:var(--text-color, #92400e);">Hi, ${username}</span>
+                    <span style="font-size:1.05rem;">👤</span>
+                `;
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    toggleProfileDropdown(e);
+                };
+            } else {
+                btn.style.display = 'inline-flex';
+                btn.style.alignItems = 'center';
+                btn.style.gap = '4px';
+                btn.style.cursor = 'pointer';
+                btn.style.padding = '4px 10px';
+                btn.style.borderRadius = '99px';
+                btn.style.background = 'transparent';
+                btn.style.border = 'none';
+                btn.innerHTML = '<span style="font-size:0.85rem; font-weight:700; color:var(--text-color, #92400e);">🔑 Login / Register</span>';
+                btn.onclick = () => {
+                    window.location.href = 'index.html';
+                };
+            }
         }
     }
 

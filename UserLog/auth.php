@@ -155,6 +155,62 @@ if ($action === "login") {
     exit;
 }
 
+/* 4. SAVE KUNDALI CACHE (PHP MYSQL) */
+if ($action === "save_kundali_cache") {
+    $username = db_escape($_POST['username'] ?? $_POST['user_identifier'] ?? '');
+    $raw_json = db_escape($_POST['raw_json'] ?? '');
+    $dob = db_escape($_POST['dob'] ?? '');
+    $tob = db_escape($_POST['tob'] ?? '');
+    $pob = db_escape($_POST['pob'] ?? '');
+    $lat = floatval($_POST['lat'] ?? 0);
+    $lon = floatval($_POST['lon'] ?? 0);
+
+    if (empty($username) || empty($raw_json)) {
+        echo json_encode(["success" => false, "error" => "Username and Raw JSON are required."]);
+        exit;
+    }
+
+    $sql = "INSERT INTO user_kundali_cache (user_identifier, dob, tob, pob, lat, lon, raw_json)
+            VALUES ('$username', '$dob', '$tob', '$pob', $lat, $lon, '$raw_json')
+            ON DUPLICATE KEY UPDATE raw_json='$raw_json', dob='$dob', tob='$tob', pob='$pob', lat=$lat, lon=$lon";
+
+    if (db_query($sql)) {
+        echo json_encode(["success" => true, "message" => "Kundali Raw JSON cached successfully in MySQL database."]);
+    } else {
+        echo json_encode(["success" => false, "error" => "Failed to save Kundali cache in MySQL."]);
+    }
+    exit;
+}
+
+/* 5. GET KUNDALI CACHE (PHP MYSQL) */
+if ($action === "get_kundali_cache") {
+    $username = db_escape($_GET['username'] ?? $_POST['username'] ?? '');
+
+    if (empty($username)) {
+        echo json_encode(["success" => false, "error" => "Username is required."]);
+        exit;
+    }
+
+    $q = db_query("SELECT * FROM user_kundali_cache WHERE user_identifier='$username'");
+    $row = db_fetch($q);
+
+    if ($row) {
+        echo json_encode([
+            "success" => true,
+            "username" => $row['user_identifier'],
+            "dob" => $row['dob'],
+            "tob" => $row['tob'],
+            "pob" => $row['pob'],
+            "lat" => floatval($row['lat']),
+            "lon" => floatval($row['lon']),
+            "raw_json" => $row['raw_json']
+        ]);
+    } else {
+        echo json_encode(["success" => false, "error" => "No cached Kundali found for user."]);
+    }
+    exit;
+}
+
 /* 4. GUEST MODE */
 if ($action === "guest") {
     $name = db_escape($_POST['name'] ?? 'Guest');

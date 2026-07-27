@@ -1202,14 +1202,20 @@ window.handleKundliCalculation = async function(e) {
             formData.append('lon', payload.lon || 0.0);
             formData.append('raw_json', jsonStr);
 
-            fetch('/UserLog/auth.php', { method: 'POST', body: formData })
+            const postCache = (url) => fetch(url, { method: 'POST', body: formData })
                 .then(res => res.ok ? res.json() : null)
                 .then(resData => {
                     if (resData && resData.success) {
-                        console.log(`💾 Raw JSON Kundali saved to PHP MySQL Database for user [${userId}]`);
+                        console.log(`💾 Raw JSON Kundali saved to sanskrit.gt.tc MySQL Database for user [${userId}]`);
                     }
                 })
-                .catch(() => {});
+                .catch(() => null);
+
+            postCache('https://sanskrit.gt.tc/UserLog/auth.php').then(res => {
+                if (!res) postCache('/UserLog/auth.php').then(res2 => {
+                    if (!res2) postCache('/api/auth');
+                });
+            });
         } catch(e) {}
     }
 
