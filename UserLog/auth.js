@@ -192,27 +192,42 @@
         }
     }
 
-    // Setup and render custom dropdown/form logic
+    // Setup and render user header button & dropdown logic
     function updateProfileHeaderButton() {
         const btn = document.getElementById("profileBtn");
         if (!btn) return;
         
         const profile = getProfile();
         if (profile) {
-            const nickname = profile.nickname || profile.name || 'Anshuman';
+            const nickname = profile.nickname || profile.name || 'User';
+            btn.style.display = 'inline-flex';
+            btn.style.alignItems = 'center';
+            btn.style.gap = '6px';
+            btn.style.cursor = 'pointer';
+            btn.style.padding = '4px 12px';
+            btn.style.borderRadius = '99px';
+            btn.style.background = 'rgba(184, 50, 20, 0.12)';
+            btn.style.border = '1.5px solid rgba(184, 50, 20, 0.35)';
+            btn.style.transition = 'all 0.2s';
+            
             btn.innerHTML = `
-                <div class="profile-menu-container" style="position:relative; display:inline-flex; align-items:center; gap:6px;">
-                    <span style="font-size:0.82rem; font-weight:800; color:#fbbf24;">Hi, ${nickname}</span>
-                    <span class="active-dot" style="width:8px; height:8px; background:#10b981; border-radius:50%; border:1px solid #000;"></span>
-                    👤
-                </div>
+                <span style="font-size:0.85rem; font-weight:800; color:var(--text-color, #92400e);">Hi, ${nickname}</span>
+                <span style="font-size:1.05rem;">👤</span>
             `;
             btn.onclick = (e) => {
                 e.stopPropagation();
                 toggleProfileDropdown(e);
             };
         } else {
-            btn.innerHTML = '🔑 Login / Register';
+            btn.style.display = 'inline-flex';
+            btn.style.alignItems = 'center';
+            btn.style.gap = '4px';
+            btn.style.cursor = 'pointer';
+            btn.style.padding = '4px 10px';
+            btn.style.borderRadius = '99px';
+            btn.style.background = 'transparent';
+            btn.style.border = 'none';
+            btn.innerHTML = '<span style="font-size:0.85rem; font-weight:700; color:var(--text-color, #92400e);">🔑 Login / Register</span>';
             btn.onclick = () => {
                 window.location.href = '/index.html';
             };
@@ -223,61 +238,70 @@
         let dd = document.getElementById('profileDropdownEl');
         if (dd) {
             dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+            if (dd.style.display === 'block') {
+                positionDropdown(e, dd);
+            }
             return;
         }
 
         dd = document.createElement('div');
         dd.id = 'profileDropdownEl';
-        dd.className = 'glass-card';
         dd.style.cssText = `
-            position: absolute;
-            top: 50px;
-            right: 20px;
+            position: fixed;
             width: 240px;
-            background: rgba(15, 23, 42, 0.95);
-            border: 1.5px solid var(--glass-border);
-            border-radius: 8px;
-            padding: 12px 15px;
-            z-index: 10000;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            color: #fff;
+            background: #ffffff;
+            border: 2px solid #b83214;
+            border-radius: 12px;
+            padding: 16px;
+            z-index: 100000;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            color: #1e293b;
+            font-family: 'Inter', sans-serif;
         `;
         
         const profile = getProfile();
+        const name = profile ? (profile.name || profile.nickname || 'Devotee') : 'Guest User';
+        const contact = profile ? (profile.email || profile.mobile || 'Offline User') : 'Guest Mode';
+
         dd.innerHTML = `
-            <div style="font-weight:800; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px; margin-bottom:8px; font-size:0.9rem; color:#fbbf24;">
-                ${profile ? profile.name : 'Vedic Profile'}
+            <div style="font-weight:800; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:6px; font-size:0.95rem; color:#b83214; display:flex; align-items:center; gap:6px;">
+                <span>👤</span> ${name}
             </div>
-            <div style="font-size:0.75rem; color:#94a3b8; margin-bottom:12px; word-break:break-all;">
-                ${profile ? profile.email || 'offline-mode' : ''}
+            <div style="font-size:0.78rem; color:#64748b; margin-bottom:14px; word-break:break-all; font-weight:600;">
+                ${contact}
             </div>
-            <button id="btnOpenSettings" style="width:100%; text-align:left; background:none; border:none; color:#fff; font-weight:700; padding:8px 0; cursor:pointer; font-size:0.85rem;">⚙️ Profile Settings</button>
-            <button id="btnSyncDrive" style="width:100%; text-align:left; background:none; border:none; color:#fbbf24; font-weight:700; padding:8px 0; cursor:pointer; font-size:0.85rem;">💾 Sync to Google Drive</button>
-            <button id="btnLogout" style="width:100%; text-align:left; background:none; border:none; color:#f87171; font-weight:700; padding:8px 0; cursor:pointer; font-size:0.85rem; border-top:1px solid rgba(255,255,255,0.08); margin-top:8px; padding-top:10px;">🚪 Log Out</button>
+            <button id="btnOpenSettings" style="width:100%; text-align:left; background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:8px; color:#1e293b; font-weight:700; padding:10px 12px; cursor:pointer; font-size:0.85rem; margin-bottom:8px; display:flex; align-items:center; gap:8px; transition:background 0.2s;">
+                ⚙️ Profile Settings
+            </button>
+            <button id="btnLogout" style="width:100%; text-align:left; background:#fef2f2; border:1.5px solid #fecaca; border-radius:8px; color:#dc2626; font-weight:700; padding:10px 12px; cursor:pointer; font-size:0.85rem; display:flex; align-items:center; gap:8px; transition:background 0.2s;">
+                🚪 Log Out
+            </button>
         `;
         
         document.body.appendChild(dd);
 
-        // Bind clicks inside dropdown
+        dd.addEventListener('click', (ev) => ev.stopPropagation());
+
         dd.querySelector('#btnOpenSettings').onclick = () => {
             dd.style.display = 'none';
             openSettingsModal();
         };
-        dd.querySelector('#btnSyncDrive').onclick = () => {
-            dd.style.display = 'none';
-            saveProfileToDrive();
-        };
+
         dd.querySelector('#btnLogout').onclick = () => {
             dd.style.display = 'none';
             logout();
         };
 
-        // Align coordinates dynamically below user button
-        const rect = e.currentTarget.getBoundingClientRect();
-        dd.style.top = `${rect.bottom + window.scrollY + 8}px`;
-        dd.style.left = `${rect.right - 240 + window.scrollX}px`;
+        positionDropdown(e, dd);
+    }
 
-        e.stopPropagation();
+    function positionDropdown(e, dd) {
+        const btn = document.getElementById("profileBtn") || e.currentTarget;
+        const rect = btn.getBoundingClientRect();
+        dd.style.top = `${rect.bottom + 8}px`;
+        dd.style.right = `${Math.max(10, window.innerWidth - rect.right)}px`;
+        dd.style.left = 'auto';
+    }
     }
 
     // Settings Modal
@@ -442,10 +466,10 @@
 
     function logout() {
         localStorage.removeItem('shunya-profile');
+        localStorage.removeItem('shunya-cached-raw-json');
         sessionStorage.removeItem('google-access-token');
         sessionStorage.removeItem('google-drive-file-id');
-        alert("Logged out successfully.");
-        location.reload();
+        window.location.href = '/index.html';
     }
 
     function openAuth() {
@@ -481,10 +505,15 @@
     global.loginWithGoogle = loginWithGoogle;
     global.openSettingsModal = openSettingsModal;
     global.getProfile = getProfile;
+    global.updateProfileHeaderButton = updateProfileHeaderButton;
+
+    // Immediate execution on script load
+    try {
+        updateProfileHeaderButton();
+    } catch(e) {}
 
     // Load libraries on content load
     document.addEventListener('DOMContentLoaded', () => {
-        loadGoogleGSI();
         updateProfileHeaderButton();
         
         // Hide profileDropdown when clicking outside
@@ -502,6 +531,7 @@
 
     // Re-run personalization when SPA transitions views
     document.addEventListener('shunya-profile-changed', (e) => {
+        updateProfileHeaderButton();
         applyPersonalization(e.detail);
     });
 
