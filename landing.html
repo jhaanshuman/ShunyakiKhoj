@@ -764,13 +764,138 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Helper to show/hide birth chart preparation progress overlay
-function showKundaliProgressModal(show = true) {
+function showKundaliProgressModal(show = true, msg = null) {
     const modal = document.getElementById('kundaliProgressModal');
     if (modal) {
         modal.style.display = show ? 'flex' : 'none';
+        if (msg) {
+            const msgEl = modal.querySelector('p, .modal-msg');
+            if (msgEl) msgEl.textContent = msg;
+        }
     }
 }
 window.showKundaliProgressModal = showKundaliProgressModal;
+
+// ═══════════════════════════════════════════════════════════════════
+// AUTO KUNDALI CACHE: Generate & save for new users, load for existing
+// ═══════════════════════════════════════════════════════════════════
+(async function initKundaliCache() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username') || localStorage.getItem('shunya-username') || '';
+    if (!username) return;
+
+    const authBase = '/UserLog/auth.php';
+
+    // Step 1: Try to fetch existing cached kundali first
+    try {
+        const cacheResp = await fetch(`${authBase}?action=get_kundali_cache&username=${encodeURIComponent(username)}`);
+        if (cacheResp.ok) {
+            const cacheData = await cacheResp.json();
+            if (cacheData.success && cacheData.raw_json) {
+                // Existing user: cache found — store and expose for astrology.js
+                const rawJson = typeof cacheData.raw_json === 'string'
+                    ? cacheData.raw_json
+                    : JSON.stringify(cacheData.raw_json);
+                localStorage.setItem('shunya-raw-kundali-json', rawJson);
+                const hiddenEl = document.getElementById('hiddenRawKundaliJson');
+                if (hiddenEl) hiddenEl.textContent = rawJson;
+                console.log('[Kundali Cache] Loaded existing cache from MySQL for:', username);
+                return;
+            }
+        }
+    } catch (e) {
+        console.warn('[Kundali Cache] get_kundali_cache fetch failed:', e);
+    }
+
+    // Step 2: New user — read birth details from localStorage
+    const isNew = localStorage.getItem('shunya-new-user') === 'true';
+    const dob = localStorage.getItem('shunya-dob') || '';
+    const tob = localStorage.getItem('shunya-tob') || '';
+    const pob = localStorage.getItem('shunya-pob') || '';
+    const lat = parseFloat(localStorage.getItem('shunya-lat') || '28.6139');
+    const lon = parseFloat(localStorage.getItem('shunya-lon') || '77.2090');
+    const gender = localStorage.getItem('shunya-gender') || 'Male';
+
+    if (!dob || !tob || !pob) {
+        console.log('[Kundali Cache] No birth details in localStorage, skipping generation.');
+        return;
+    }
+
+    // Step 3: Show progress overlay
+    showKundaliProgressModal(true);
+
+    try {
+        // Step 4: Call Python API to generate Raw JSON Kundali
+        const [year, month, day] = dob.split('-').map(Number);
+        const [hour, minute] = tob.split(':').map(Number);
+
+        const formData = new FormData();
+        formData.append('action', 'calculate');
+        formData.append('name', username);
+        formData.append('gender', gender);
+        formData.append('dob', dob);
+        formData.append('tob', tob);
+        formData.append('pob', pob);
+        formData.append('lat', String(lat));
+        formData.append('lon', String(lon));
+        formData.append('year', String(year));
+        formData.append('month', String(month));
+        formData.append('day', String(day));
+        formData.append('hour', String(hour));
+        formData.append('minute', String(minute));
+
+        // Try Vercel Python API first, then fall back gracefully
+        let rawJson = null;
+        const apiTargets = ['/api/calculate', 'https://www.shunyakikhoj.co.in/api/calculate'];
+        for (const target of apiTargets) {
+            try {
+                const apiResp = await fetch(target, { method: 'POST', body: formData });
+                if (apiResp.ok) {
+                    const apiData = await apiResp.json();
+                    if (apiData && (apiData.success || apiData.planets)) {
+                        rawJson = JSON.stringify(apiData);
+                        break;
+                    }
+                }
+            } catch (e2) {
+                console.warn('[Kundali Cache] API target failed:', target, e2);
+            }
+        }
+
+        if (rawJson) {
+            // Step 5: Save to MySQL via auth.php save_kundali_cache
+            const saveFormData = new FormData();
+            saveFormData.append('action', 'save_kundali_cache');
+            saveFormData.append('username', username);
+            saveFormData.append('dob', dob);
+            saveFormData.append('tob', tob);
+            saveFormData.append('pob', pob);
+            saveFormData.append('lat', String(lat));
+            saveFormData.append('lon', String(lon));
+            saveFormData.append('raw_json', rawJson);
+
+            const saveResp = await fetch(authBase, { method: 'POST', body: saveFormData });
+            if (saveResp.ok) {
+                const saveData = await saveResp.json();
+                console.log('[Kundali Cache] Saved to MySQL:', saveData);
+            }
+
+            // Step 6: Store locally and expose
+            localStorage.setItem('shunya-raw-kundali-json', rawJson);
+            localStorage.removeItem('shunya-new-user');
+            const hiddenEl = document.getElementById('hiddenRawKundaliJson');
+            if (hiddenEl) hiddenEl.textContent = rawJson;
+            console.log('[Kundali Cache] Generated and saved Raw JSON for new user:', username);
+        } else {
+            console.warn('[Kundali Cache] Could not generate Raw JSON - API unavailable.');
+        }
+    } catch (e) {
+        console.error('[Kundali Cache] Generation failed:', e);
+    } finally {
+        // Step 7: Close modal regardless
+        showKundaliProgressModal(false);
+    }
+})();
 </script>
 
 <!-- Vercel Analytics -->
