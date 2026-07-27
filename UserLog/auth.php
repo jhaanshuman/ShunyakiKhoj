@@ -63,8 +63,12 @@ if ($action === "signup") {
 
     $hash = password_hash($password, PASSWORD_DEFAULT);
     
+    // Convert empty email/mobile strings to NULL to avoid MySQL UNIQUE constraint failure (Error #1062)
+    $email_val = !empty($email) ? "'$email'" : "NULL";
+    $mobile_val = !empty($mobile) ? "'$mobile'" : "NULL";
+
     $sql = "INSERT INTO users (username, email, mobile, password_hash, gender, dob, tob, pob, lat, lon, login_mode)
-            VALUES ('$username', '$email', '$mobile', '$hash', '$gender', '$dob', '$tob', '$pob', $lat, $lon, 'email')";
+            VALUES ('$username', $email_val, $mobile_val, '$hash', '$gender', '$dob', '$tob', '$pob', $lat, $lon, 'email')";
 
     if (db_query($sql)) {
         $_SESSION['user_id'] = $username;
@@ -88,7 +92,9 @@ if ($action === "signup") {
             "profile" => $_SESSION['profile']
         ]);
     } else {
-        echo json_encode(["success" => false, "error" => "Database insertion error. Could not register user."]);
+        global $conn;
+        $err_msg = ($conn && is_object($conn) && mysqli_error($conn)) ? mysqli_error($conn) : "Database insertion error. Could not register user into MySQL.";
+        echo json_encode(["success" => false, "error" => $err_msg]);
     }
     exit;
 }

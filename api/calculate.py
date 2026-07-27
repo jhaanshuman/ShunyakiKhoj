@@ -771,10 +771,13 @@ async def handle_auth_php(request: Request):
                 
             pwd_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
             
+            email_val = email if email else None
+            mobile_val = mobile if mobile else None
+
             try:
                 conn = get_user_auth_db()
                 cursor = conn.cursor()
-                cursor.execute("SELECT id FROM users WHERE username=? OR (email!='' AND email=?) OR (mobile!='' AND mobile=?)", (username, email, mobile))
+                cursor.execute("SELECT id FROM users WHERE username=? OR (email IS NOT NULL AND email=?) OR (mobile IS NOT NULL AND mobile=?)", (username, email, mobile))
                 if cursor.fetchone():
                     conn.close()
                     return {"success": False, "error": "Username, Email, or Mobile already registered. Please Login."}
@@ -782,7 +785,7 @@ async def handle_auth_php(request: Request):
                 cursor.execute("""
                     INSERT INTO users (username, email, mobile, password_hash, gender, dob, tob, pob, lat, lon)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """, (username, email, mobile, pwd_hash, gender, dob, tob, pob, lat, lon))
+                """, (username, email_val, mobile_val, pwd_hash, gender, dob, tob, pob, lat, lon))
                 conn.commit()
                 conn.close()
                 
