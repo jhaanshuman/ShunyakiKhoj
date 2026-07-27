@@ -284,7 +284,8 @@ body {
     border: 1.5px solid #cbd5e1;
     border-radius: 8px;
     font-size: 0.85rem;
-    color: #0f172a;
+    color: #047857 !important; /* Noticeable Emerald Green for all input text */
+    font-weight: 700 !important;
     background: #f8fafc;
     box-sizing: border-box;
     transition: border-color 0.2s;
@@ -292,9 +293,9 @@ body {
 
 .form-input:focus {
     outline: none;
-    border-color: #b83214;
+    border-color: #16a34a !important;
     background: #ffffff;
-    box-shadow: 0 0 0 3px rgba(184, 50, 20, 0.1);
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
 }
 
 /* Location Input Noticeable Emerald Green Styling */
@@ -309,6 +310,20 @@ body {
     border-color: #16a34a !important;
     box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2) !important;
     background-color: #ffffff !important;
+}
+
+/* Red Error Message Below Submit Buttons */
+.auth-error-msg {
+    color: #dc2626 !important;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    text-align: center;
+    display: none;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    padding: 8px 12px;
+    border-radius: 6px;
 }
 
 .btn-auth-submit {
@@ -428,6 +443,7 @@ body {
                     <a class="forgot-link-btn" onclick="openForgotModal()">Forgot Username / Password?</a>
                 </div>
                 <button type="submit" class="btn-auth-submit">Login & Load Kundali →</button>
+                <div id="loginErrorMsg" class="auth-error-msg"></div>
             </form>
 
             <!-- REGISTER FORM -->
@@ -452,8 +468,8 @@ body {
                         <input type="email" id="regEmail" class="form-input" placeholder="name@example.com" required>
                     </div>
                     <div class="form-group">
-                        <label>Mobile Number</label>
-                        <input type="tel" id="regMobile" class="form-input" placeholder="9876543210" required>
+                        <label>Mobile Number (10 Digits)</label>
+                        <input type="tel" id="regMobile" class="form-input" placeholder="9876543210" maxlength="10" pattern="[0-9]{10}" required>
                     </div>
                 </div>
 
@@ -486,6 +502,7 @@ body {
                 </div>
 
                 <button type="submit" class="btn-auth-submit">Register Account & Save Chart →</button>
+                <div id="registerErrorMsg" class="auth-error-msg"></div>
             </form>
 
             <!-- GUEST MODE FORM -->
@@ -521,7 +538,7 @@ body {
                 </div>
 
                 <button type="submit" class="btn-auth-submit">Explore as Guest →</button>
-            </form>
+                <div id="guestErrorMsg" class="auth-error-msg"></div>
         </div>
     </div>
 </main>
@@ -613,25 +630,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Helper to post to Auth endpoint
+// Display inline red error message below submit button (NO POPUPS)
+function showAuthError(targetId, msg) {
+    const el = document.getElementById(targetId);
+    if (el) {
+        el.innerText = msg ? `❌ ${msg}` : '';
+        el.style.display = msg ? 'block' : 'none';
+    }
+}
+
+// Helper to post to Auth endpoint with direct PHP fallback
 async function safeAuthFetch(formData) {
+    let res = null;
     try {
-        const res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData });
-        if (res.ok) {
-            return await res.json();
-        }
+        res = await fetch('/UserLog/auth.php', { method: 'POST', body: formData }).catch(() => null);
     } catch(e) {}
-    return null;
+    
+    if (!res || !res.ok) {
+        try {
+            res = await fetch('https://www.shunyakikhoj.co.in/UserLog/auth.php', { method: 'POST', body: formData }).catch(() => null);
+        } catch(e) {}
+    }
+
+    if (res && res.ok) {
+        try {
+            return await res.json();
+        } catch(e) {}
+    }
+    return { success: false, error: "Could not connect to Database server. Please check your connection." };
 }
 
 // Submit Handlers
 async function handleLoginSubmit(e) {
     e.preventDefault();
+    showAuthError('loginErrorMsg', '');
     const loginId = document.getElementById('loginId').value.trim();
     const password = document.getElementById('loginPassword').value;
 
     if (!loginId || !password) {
-        alert("⚠️ Please enter your Username/Email/Mobile and Password.");
+        showAuthError('loginErrorMsg', "Please enter your Username/Email/Mobile and Password.");
         return;
     }
 
@@ -643,7 +680,7 @@ async function handleLoginSubmit(e) {
     const data = await safeAuthFetch(formData);
 
     if (!data || !data.success) {
-        alert("❌ Login Failed: " + ((data && data.error) ? data.error : "Invalid Credentials"));
+        showAuthError('loginErrorMsg', (data && data.error) ? data.error : "Invalid Credentials");
         return;
     }
 
@@ -654,6 +691,7 @@ async function handleLoginSubmit(e) {
 
 async function handleRegisterSubmit(e) {
     e.preventDefault();
+    showAuthError('registerErrorMsg', '');
     const name = document.getElementById('regName').value.trim();
     const email = document.getElementById('regEmail').value.trim();
     const mobile = document.getElementById('regMobile').value.trim();
@@ -667,7 +705,12 @@ async function handleRegisterSubmit(e) {
     const lon = pobEl.dataset.lon ? parseFloat(pobEl.dataset.lon) : 77.2090;
 
     if (!name || !email || !password || !dob || !tob || !pob) {
-        alert("⚠️ Please fill in all required registration and birth details fields.");
+        showAuthError('registerErrorMsg', "Please fill in all required registration and birth details fields.");
+        return;
+    }
+
+    if (mobile && !/^\d{10}$/.test(mobile)) {
+        showAuthError('registerErrorMsg', "Mobile number must be exactly 10 digits.");
         return;
     }
 
@@ -687,7 +730,7 @@ async function handleRegisterSubmit(e) {
     const data = await safeAuthFetch(formData);
 
     if (!data || !data.success) {
-        alert("❌ Registration Failed: " + ((data && data.error) ? data.error : "User with this Email, Username, or Mobile already exists. Please Login."));
+        showAuthError('registerErrorMsg', (data && data.error) ? data.error : "User with this Email, Username, or Mobile already exists. Please Login.");
         return;
     }
 

@@ -22,8 +22,6 @@
     }
   ],
   "rewrites": [
-    { "source": "/UserLog/auth.php", "destination": "/api/calculate" },
-    { "source": "/api/auth", "destination": "/api/calculate" },
     { "source": "/api/(.*)", "destination": "/api/calculate" }
   ]
 }

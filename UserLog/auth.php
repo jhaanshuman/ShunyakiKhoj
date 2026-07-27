@@ -35,9 +35,10 @@ if ($action === "session") {
 
 /* 2. SIGNUP */
 if ($action === "signup") {
-    $username = db_escape($_POST['username'] ?? '');
-    $email = db_escape($_POST['email'] ?? '');
-    $mobile = db_escape($_POST['mobile'] ?? '');
+    // Clean inputs
+    $username = db_escape(trim($_POST['username'] ?? ''));
+    $email = db_escape(trim($_POST['email'] ?? ''));
+    $mobile = db_escape(trim($_POST['mobile'] ?? ''));
     $password = $_POST['password'] ?? '';
     $gender = db_escape($_POST['gender'] ?? 'Male');
     $dob = db_escape($_POST['dob'] ?? '');
@@ -52,13 +53,18 @@ if ($action === "signup") {
     }
 
     // Check if username, email, or mobile already exists
-    $check_sql = "SELECT id FROM users WHERE username='$username' " . 
-                 (!empty($email) ? "OR email='$email' " : "") . 
-                 (!empty($mobile) ? "OR mobile='$mobile' " : "");
-    $existing = db_fetch(db_query($check_sql));
-    if ($existing) {
-        echo json_encode(["success" => false, "error" => "User with this Username, Email, or Mobile already exists. Please Login."]);
-        exit;
+    $check_conds = [];
+    if (!empty($username)) $check_conds[] = "username='$username'";
+    if (!empty($email)) $check_conds[] = "email='$email'";
+    if (!empty($mobile)) $check_conds[] = "mobile='$mobile'";
+
+    if (!empty($check_conds)) {
+        $check_sql = "SELECT id FROM users WHERE " . implode(" OR ", $check_conds);
+        $check_res = db_query($check_sql);
+        if ($check_res && db_fetch($check_res)) {
+            echo json_encode(["success" => false, "error" => "User with this Username, Email, or Mobile already exists. Please Login."]);
+            exit;
+        }
     }
 
     $hash = password_hash($password, PASSWORD_DEFAULT);
