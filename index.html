@@ -639,7 +639,7 @@ function showAuthError(targetId, msg) {
     }
 }
 
-// Helper to post to Auth endpoint with direct PHP fallback
+// Helper to post to Auth endpoint with serverless fallback
 async function safeAuthFetch(formData) {
     let res = null;
     try {
@@ -648,7 +648,7 @@ async function safeAuthFetch(formData) {
     
     if (!res || !res.ok) {
         try {
-            res = await fetch('https://www.shunyakikhoj.co.in/UserLog/auth.php', { method: 'POST', body: formData }).catch(() => null);
+            res = await fetch('/api/auth', { method: 'POST', body: formData }).catch(() => null);
         } catch(e) {}
     }
 
