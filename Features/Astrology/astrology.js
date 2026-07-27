@@ -1206,16 +1206,13 @@ window.handleKundliCalculation = async function(e) {
                 .then(res => res.ok ? res.json() : null)
                 .then(resData => {
                     if (resData && resData.success) {
-                        console.log(`💾 Raw JSON Kundali saved to sanskrit.gt.tc MySQL Database for user [${userId}]`);
+                        console.log(`Raw JSON Kundali saved to MySQL Database for user [${userId}]`);
                     }
                 })
                 .catch(() => null);
 
-            postCache('https://sanskrit.gt.tc/UserLog/auth.php').then(res => {
-                if (!res) postCache('/UserLog/auth.php').then(res2 => {
-                    if (!res2) postCache('/api/auth');
-                });
-            });
+            // Single relative endpoint — no CORS, no fallback chain needed
+            postCache('/UserLog/auth.php');
         } catch(e) {}
     }
 

@@ -175,8 +175,8 @@
         `;
         
         const profile = getProfile();
-        const name = profile ? (profile.name || profile.nickname || 'Devotee') : 'Guest User';
-        const contact = profile ? (profile.email || profile.mobile || 'Offline User') : 'Guest Mode';
+        const name = profile ? (profile.name || profile.nickname || profile.username || 'Devotee') : 'Login / Register';
+        const contact = profile ? (profile.email || profile.mobile || 'Logged in') : 'Sign in to continue';
 
         dd.innerHTML = `
             <div style="font-weight:800; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:6px; font-size:0.95rem; color:#b83214; display:flex; align-items:center; gap:6px;">

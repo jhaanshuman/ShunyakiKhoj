@@ -693,33 +693,25 @@ document.addEventListener('DOMContentLoaded', function() {
         updateProfileHeaderButton();
     }
 
-    // 2. Fetch Cached Kundali from sanskrit.gt.tc MySQL database
+    // 2. Fetch Cached Kundali from MySQL (single relative endpoint — no CORS)
     if (username) {
-        const fetchCache = (apiUrl) => fetch(`${apiUrl}?action=get_kundali_cache&username=${encodeURIComponent(username)}`)
+        fetch(`/UserLog/auth.php?action=get_kundali_cache&username=${encodeURIComponent(username)}`)
             .then(res => res.ok ? res.json() : null)
-            .catch(() => null);
-
-        fetchCache('https://sanskrit.gt.tc/UserLog/auth.php').then(data => {
-            if (!data || !data.success) return fetchCache('/UserLog/auth.php');
-            return data;
-        }).then(data => {
-            if (!data || !data.success) return fetchCache('/api/auth');
-            return data;
-        }).then(data => {
-            if (data && data.success && data.raw_json) {
-                console.log("⚡ [ZERO-LAG] Loaded cached Kundali from MySQL for:", username);
-                const hiddenBox = document.getElementById('hiddenRawKundaliJson');
-                if (hiddenBox) hiddenBox.textContent = data.raw_json;
-                localStorage.setItem('shunya-cached-raw-json', data.raw_json);
-                
-                try {
-                    window.lastCalculatedData = JSON.parse(data.raw_json);
-                    if (typeof window.renderAstrologyViews === 'function') {
-                        window.renderAstrologyViews(window.lastCalculatedData);
-                    }
-                } catch(e) {}
-            }
-        });
+            .catch(() => null)
+            .then(data => {
+                if (data && data.success && data.raw_json) {
+                    console.log("[ZERO-LAG] Loaded cached Kundali from MySQL for:", username);
+                    const hiddenBox = document.getElementById('hiddenRawKundaliJson');
+                    if (hiddenBox) hiddenBox.textContent = data.raw_json;
+                    localStorage.setItem('shunya-cached-raw-json', data.raw_json);
+                    try {
+                        window.lastCalculatedData = JSON.parse(data.raw_json);
+                        if (typeof window.renderAstrologyViews === 'function') {
+                            window.renderAstrologyViews(window.lastCalculatedData);
+                        }
+                    } catch(e) {}
+                }
+            });
     }
 
     // 3. Populate Jyotish directory links
