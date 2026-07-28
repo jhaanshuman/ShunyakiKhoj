@@ -653,14 +653,39 @@ gtag('config','G-DZ2CM1SBWW');
     </div>
 </div>
 
-<!-- Birth Chart Preparation Progress Modal -->
-<div id="kundaliProgressModal" class="kundali-progress-overlay" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.85); backdrop-filter:blur(8px); z-index:10000; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center;">
-    <div style="background:rgba(30,41,59,0.95); border:2.5px solid #fbbf24; padding:32px; border-radius:18px; max-width:440px; box-shadow:0 20px 50px rgba(0,0,0,0.6);">
-        <div style="font-size:3.5rem; margin-bottom:15px; animation: pulse 1.5s infinite alternate;" class="spinning-mandala">🕉️</div>
-        <h3 style="color:#fbbf24; font-size:1.3rem; font-weight:800; margin:0 0 10px 0;">Birth Chart Under Preparation</h3>
-        <p style="color:#e2e8f0; font-size:0.95rem; line-height:1.6; margin:0;">Your Birth chart preparation is under process. Please wait sometime...</p>
+<!-- Birth Chart Preparation & Login Progress Modal -->
+<style>
+@keyframes pulseGlow {
+    0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.5)); }
+    100% { transform: scale(1.1); filter: drop-shadow(0 0 28px rgba(251, 191, 36, 0.95)); }
+}
+@keyframes barShimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+</style>
+<div id="kundaliProgressModal" class="kundali-progress-overlay" style="display:none; position:fixed; inset:0; background:linear-gradient(135deg, rgba(15,23,42,0.96) 0%, rgba(30,27,75,0.96) 50%, rgba(49,16,63,0.96) 100%); backdrop-filter:blur(12px); z-index:10000; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:20px;">
+    <div style="background:rgba(30,41,59,0.95); border:2.5px solid #fbbf24; padding:35px 28px; border-radius:22px; max-width:480px; width:92%; box-shadow:0 25px 60px rgba(0,0,0,0.8), 0 0 40px rgba(251,191,36,0.25); position:relative; overflow:hidden;">
+        <div style="font-size:3.8rem; margin-bottom:12px; animation: pulseGlow 2s infinite alternate;" class="spinning-mandala">🕉️</div>
+        <h3 style="color:#fbbf24; font-size:1.35rem; font-weight:800; margin:0 0 14px 0; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">Preparing Your Sacred Portal</h3>
+        
+        <!-- Vibrant Animated Progress Bar -->
+        <div style="width:100%; height:14px; background:rgba(255,255,255,0.12); border-radius:999px; overflow:hidden; margin:20px 0 10px 0; box-shadow:inset 0 2px 4px rgba(0,0,0,0.6); border:1px solid rgba(251,191,36,0.3);">
+            <div id="kundaliProgressFill" style="height:100%; width:15%; background:linear-gradient(90deg, #f59e0b, #ec4899, #8b5cf6, #f59e0b); background-size:300% 300%; border-radius:999px; transition:width 0.8s cubic-bezier(0.4, 0, 0.2, 1); animation: barShimmer 3s ease infinite;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:0.78rem; font-weight:700; color:#fbbf24; margin-bottom:12px;">
+            <span>Processing...</span>
+            <span id="kundaliProgressPercent">15%</span>
+        </div>
+
+        <!-- Interactive Engaging Message Container -->
+        <div id="kundaliProgressMsg" style="color:#fef08a; font-size:1.02rem; font-weight:700; line-height:1.5; min-height:54px; display:flex; align-items:center; justify-content:center; padding:8px 12px; background:rgba(255,255,255,0.06); border-radius:12px; border:1px solid rgba(255,255,255,0.08); transition:opacity 0.4s ease;">
+            🔑 User is being Logged IN...
+        </div>
     </div>
 </div>
+
 
 <!-- Hidden Raw JSON Kundali Container -->
 <pre id="hiddenRawKundaliJson" style="display:none;"></pre>
@@ -768,40 +793,73 @@ function showKundaliProgressModal(show = true, msg = null) {
 }
 window.showKundaliProgressModal = showKundaliProgressModal;
 
+// Helper to update progress UI
+function updateProgressUI(pct, text) {
+    const fill = document.getElementById('kundaliProgressFill');
+    const percentEl = document.getElementById('kundaliProgressPercent');
+    const msgEl = document.getElementById('kundaliProgressMsg');
+    
+    if (fill) fill.style.width = `${pct}%`;
+    if (percentEl) percentEl.innerText = `${Math.round(pct)}%`;
+    if (msgEl && text) {
+        msgEl.style.opacity = '0';
+        setTimeout(() => {
+            msgEl.innerText = text;
+            msgEl.style.opacity = '1';
+        }, 150);
+    }
+}
+
+// Helper to show/hide birth chart preparation progress overlay
+function showKundaliProgressModal(show = true) {
+    const modal = document.getElementById('kundaliProgressModal');
+    if (modal) {
+        modal.style.display = show ? 'flex' : 'none';
+    }
+}
+window.showKundaliProgressModal = showKundaliProgressModal;
+
 // ═══════════════════════════════════════════════════════════════════
-// AUTO KUNDALI CACHE: Fetch profile from MySQL, generate & save cache
-// No localStorage dependency for birth data — MySQL is source of truth
+// DYNAMIC ENGAGING KUNDALI LOADER & PROGRESS BAR
 // ═══════════════════════════════════════════════════════════════════
 (async function initKundaliCache() {
     const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get('username') || localStorage.getItem('shunya-username') || '';
+    const username = urlParams.get('username') || localStorage.getItem('shunya-username') || 'Devotee';
     if (!username) return;
 
-    // Persist username for header display
     localStorage.setItem('shunya-username', username);
+
+    // Show Progress Modal immediately
+    showKundaliProgressModal(true);
+    updateProgressUI(15, `🔑 User is being Logged IN...`);
 
     const authBase = '/UserLog/auth.php';
 
-    // ── Step 1: Check localStorage profile for cached_kundali_json (set during login)
-    // This avoids ANY extra API call for returning users — MySQL data already here
-    const storedProfile = (() => {
-        try { return JSON.parse(localStorage.getItem('shunyaProfile') || 'null'); } catch(e) { return null; }
-    })();
+    // Interactive message queue every 3 seconds to keep user engaged
+    let stepCount = 0;
+    const engageTimer = setInterval(() => {
+        stepCount++;
+        if (stepCount === 1) {
+            updateProgressUI(35, `✨ Hi ${username}! We are getting your profile ready...`);
+        } else if (stepCount === 2) {
+            updateProgressUI(60, `⏳ This will take a few seconds to process...`);
+        } else if (stepCount === 3) {
+            updateProgressUI(80, `🔮 Calibrating planetary transits & divisional charts...`);
+        }
+    }, 3000);
 
-    if (storedProfile && storedProfile.cached_kundali_json) {
-        const rawJson = storedProfile.cached_kundali_json;
-        localStorage.setItem('shunya-raw-kundali-json', rawJson);
-        const hiddenEl = document.getElementById('hiddenRawKundaliJson');
-        if (hiddenEl) hiddenEl.textContent = rawJson;
-        try {
-            window.lastCalculatedData = JSON.parse(rawJson);
-            if (typeof window.renderAstrologyViews === 'function') window.renderAstrologyViews(window.lastCalculatedData);
-        } catch(e) {}
-        console.log('[Kundali] Loaded from login profile (zero API call) for:', username);
-        return;
-    }
+    const finishProgressAndHide = (rawJson) => {
+        clearInterval(engageTimer);
+        updateProgressUI(95, `📜 Your Personalized Kundali Data has been prepared successfully!`);
+        setTimeout(() => {
+            updateProgressUI(100, `🙏 We value your time and patience. Thank you for waiting! Welcome ${username}! 🌸`);
+            setTimeout(() => {
+                showKundaliProgressModal(false);
+            }, 2200);
+        }, 1400);
+    };
 
-    // ── Step 2: Profile not in localStorage — fetch from users table (includes cached_kundali_json)
+    // Step A: Check MySQL users table directly for existing cached_kundali_json
     let profile = null;
     try {
         const profileResp = await fetch(`${authBase}?action=get_user_profile&username=${encodeURIComponent(username)}`);
@@ -809,7 +867,6 @@ window.showKundaliProgressModal = showKundaliProgressModal;
             const profileData = await profileResp.json();
             if (profileData.success && profileData.profile) {
                 profile = profileData.profile;
-                // If cache already exists in users table, use it immediately
                 if (profile.cached_kundali_json) {
                     const rawJson = profile.cached_kundali_json;
                     localStorage.setItem('shunya-raw-kundali-json', rawJson);
@@ -817,93 +874,86 @@ window.showKundaliProgressModal = showKundaliProgressModal;
                     if (hiddenEl) hiddenEl.textContent = rawJson;
                     try {
                         window.lastCalculatedData = JSON.parse(rawJson);
-                        if (typeof window.renderAstrologyViews === 'function') window.renderAstrologyViews(window.lastCalculatedData);
+                        if (typeof window.renderAstrologyViews === 'function') {
+                            window.renderAstrologyViews(window.lastCalculatedData);
+                        }
                     } catch(e) {}
-                    console.log('[Kundali] Loaded from users.cached_kundali_json for:', username);
+                    console.log('[Kundali] Verified cached_kundali_json in MySQL for:', username);
+                    finishProgressAndHide(rawJson);
                     return;
                 }
             }
         }
     } catch (e) {
-        console.warn('[Kundali] get_user_profile failed:', e);
+        console.warn('[Kundali] Profile verification failed:', e);
     }
 
-    // ── Step 3: No cache anywhere — need to generate fresh Kundali
+    // Step B: No cached_kundali_json in MySQL — Calculate fresh Raw JSON via Vercel Python API
     if (!profile || !profile.dob || !profile.tob || !profile.pob) {
-        console.log('[Kundali] No birth details found, skipping generation.');
+        console.log('[Kundali] No birth details found in database, closing overlay.');
+        finishProgressAndHide(null);
         return;
     }
 
     const { dob, tob, pob, lat, lon, gender } = profile;
+    const [year, month, day] = dob.split('-').map(Number);
+    const [hour, minute] = tob.split(':').map(Number);
 
-    // Show progress overlay
-    showKundaliProgressModal(true);
+    const formData = new FormData();
+    formData.append('action', 'calculate');
+    formData.append('name', username);
+    formData.append('gender', gender || 'Male');
+    formData.append('dob', dob);
+    formData.append('tob', tob);
+    formData.append('pob', pob);
+    formData.append('lat', String(lat || 28.6139));
+    formData.append('lon', String(lon || 77.2090));
+    formData.append('year', String(year));
+    formData.append('month', String(month));
+    formData.append('day', String(day));
+    formData.append('hour', String(hour));
+    formData.append('minute', String(minute));
 
-    try {
-        const [year, month, day] = dob.split('-').map(Number);
-        const [hour, minute] = tob.split(':').map(Number);
-
-        const formData = new FormData();
-        formData.append('action', 'calculate');
-        formData.append('name', username);
-        formData.append('gender', gender || 'Male');
-        formData.append('dob', dob);
-        formData.append('tob', tob);
-        formData.append('pob', pob);
-        formData.append('lat', String(lat || 28.6139));
-        formData.append('lon', String(lon || 77.2090));
-        formData.append('year', String(year));
-        formData.append('month', String(month));
-        formData.append('day', String(day));
-        formData.append('hour', String(hour));
-        formData.append('minute', String(minute));
-
-        // Call Vercel Python API to generate Raw JSON Kundali
-        let rawJson = null;
-        const apiTargets = ['/api/calculate', 'https://www.shunyakikhoj.co.in/api/calculate'];
-        for (const target of apiTargets) {
-            try {
-                const apiResp = await fetch(target, { method: 'POST', body: formData });
-                if (apiResp.ok) {
-                    const apiData = await apiResp.json();
-                    if (apiData && (apiData.success || apiData.planets)) {
-                        rawJson = JSON.stringify(apiData);
-                        break;
-                    }
+    let rawJson = null;
+    const apiTargets = ['/api/calculate', 'https://www.shunyakikhoj.co.in/api/calculate'];
+    for (const target of apiTargets) {
+        try {
+            const apiResp = await fetch(target, { method: 'POST', body: formData });
+            if (apiResp.ok) {
+                const apiData = await apiResp.json();
+                if (apiData && (apiData.success || apiData.planets)) {
+                    rawJson = JSON.stringify(apiData);
+                    break;
                 }
-            } catch (e2) {
-                console.warn('[Kundali] API target failed:', target, e2);
             }
+        } catch (e2) {
+            console.warn('[Kundali] API target failed:', target, e2);
         }
-
-        if (rawJson) {
-            // Save directly to users.cached_kundali_json via auth.php
-            const saveForm = new FormData();
-            saveForm.append('action', 'save_kundali_cache');
-            saveForm.append('username', username);
-            saveForm.append('raw_json', rawJson);
-            fetch(authBase, { method: 'POST', body: saveForm })
-                .then(r => r.json())
-                .then(d => console.log('[Kundali] Saved to users.cached_kundali_json:', d.message || d.error))
-                .catch(() => {});
-
-            // Expose for astrology.js
-            localStorage.setItem('shunya-raw-kundali-json', rawJson);
-            const hiddenEl = document.getElementById('hiddenRawKundaliJson');
-            if (hiddenEl) hiddenEl.textContent = rawJson;
-            try {
-                window.lastCalculatedData = JSON.parse(rawJson);
-                if (typeof window.renderAstrologyViews === 'function') window.renderAstrologyViews(window.lastCalculatedData);
-            } catch(e) {}
-            console.log('[Kundali] Generated and saved fresh Kundali for:', username);
-        } else {
-            console.warn('[Kundali] Could not generate — Vercel API unavailable.');
-        }
-    } catch (e) {
-        console.error('[Kundali] Generation error:', e);
-    } finally {
-        showKundaliProgressModal(false);
     }
+
+    if (rawJson) {
+        // Pass Raw JSON to MySQL users.cached_kundali_json
+        const saveForm = new FormData();
+        saveForm.append('action', 'save_kundali_cache');
+        saveForm.append('username', username);
+        saveForm.append('raw_json', rawJson);
+        fetch(authBase, { method: 'POST', body: saveForm })
+            .then(r => r.json())
+            .then(d => console.log('[Kundali] Saved to MySQL users.cached_kundali_json:', d.message || d.error))
+            .catch(() => {});
+
+        localStorage.setItem('shunya-raw-kundali-json', rawJson);
+        const hiddenEl = document.getElementById('hiddenRawKundaliJson');
+        if (hiddenEl) hiddenEl.textContent = rawJson;
+        try {
+            window.lastCalculatedData = JSON.parse(rawJson);
+            if (typeof window.renderAstrologyViews === 'function') {
+                window.renderAstrologyViews(window.lastCalculatedData);
+            }
+        } catch(e) {}
+    }
+
+    finishProgressAndHide(rawJson);
 })();
 </script>
 
