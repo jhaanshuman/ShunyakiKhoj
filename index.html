@@ -625,7 +625,13 @@ async function safeAuthFetch(formData) {
             body: formData
         });
         if (res && res.ok) {
-            return await res.json();
+            const text = await res.text();
+            try {
+                return JSON.parse(text);
+            } catch (jsonErr) {
+                console.warn("Auth Server returned HTML/non-JSON response:", text.substring(0, 150));
+                return { success: false, error: "Server error occurred. Please try again." };
+            }
         }
     } catch (e) {
         console.error("Auth Fetch Error:", e);
