@@ -617,19 +617,57 @@ function showAuthError(targetId, msg) {
     }
 }
 
+// Helper to solve InfinityFree security challenge transparently
+async function solveInfinityFreeChallenge(htmlText) {
+    try {
+        if (typeof window.slowAES === 'undefined') {
+            await new Promise((resolve) => {
+                const s = document.createElement('script');
+                s.src = '/aes.js';
+                s.onload = resolve;
+                s.onerror = resolve;
+                document.head.appendChild(s);
+            });
+        }
+        const scripts = htmlText.match(/<script[\s\S]*?>([\s\S]*?)<\/script>/gi) || [];
+        for (const scriptTag of scripts) {
+            const code = scriptTag.replace(/<script[\s\S]*?>/i, '').replace(/<\/script>/i, '');
+            if (code.includes('document.cookie') || code.includes('slowAES')) {
+                const safeCode = code.replace(/location\.href\s*=\s*[^;]+;/g, '');
+                const fn = new Function(safeCode);
+                fn();
+                console.log("[InfinityFree Security] Challenge auto-solved cleanly.");
+                return true;
+            }
+        }
+    } catch (err) {
+        console.warn("[InfinityFree Security] Challenge auto-solve warning:", err);
+    }
+    return false;
+}
+
 // Single direct relative fetch to native PHP MySQL backend on InfinityFree
-async function safeAuthFetch(formData) {
+async function safeAuthFetch(formData, retryCount = 0) {
     try {
         const res = await fetch('/UserLog/auth.php', {
             method: 'POST',
-            body: formData
+            body: formData,
+            credentials: 'same-origin'
         });
         if (res && res.ok) {
             const text = await res.text();
             try {
                 return JSON.parse(text);
             } catch (jsonErr) {
-                console.warn("Auth Server returned HTML/non-JSON response:", text.substring(0, 150));
+                if (text.includes('slowAES') || text.includes('__test=') || text.includes('aes.js')) {
+                    if (retryCount < 2) {
+                        console.log("[InfinityFree Security] Challenge detected. Solving & retrying request...");
+                        await solveInfinityFreeChallenge(text);
+                        await new Promise(r => setTimeout(r, 200));
+                        return await safeAuthFetch(formData, retryCount + 1);
+                    }
+                }
+                console.warn("Auth Server returned non-JSON response:", text.substring(0, 150));
                 return { success: false, error: "Server error occurred. Please try again." };
             }
         }
