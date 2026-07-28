@@ -1410,16 +1410,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (uniqueEl) uniqueEl.innerText = Number(uniqueVisitors).toLocaleString();
 
         try {
-            const apiBase = 'https://www.shunyakikhoj.co.in/api/visitor_count';
-            const res = await fetch(apiBase, { method: 'GET', mode: 'cors' }).catch(() => null);
+            const apiBase = 'https://sanskritai.vercel.app/api/visitor_count';
+            const res = await fetch(apiBase, { method: 'GET' }).catch(() => null);
             if (res && res.ok) {
-                const contentType = res.headers.get('content-type') || '';
-                if (contentType.includes('json')) {
-                    const data = await res.json().catch(() => null);
-                    if (data && data.status === 'success') {
-                        if (totalEl) totalEl.innerText = Number(data.total_visits).toLocaleString();
-                        if (uniqueEl) uniqueEl.innerText = Number(data.unique_visitors).toLocaleString();
-                    }
+                const data = await res.json().catch(() => null);
+                if (data && data.status === 'success') {
+                    if (totalEl) totalEl.innerText = Number(data.total_visits).toLocaleString();
+                    if (uniqueEl) uniqueEl.innerText = Number(data.unique_visitors).toLocaleString();
                 }
             }
         } catch (e) {}

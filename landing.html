@@ -950,29 +950,34 @@ window.showKundaliReadyToast = showKundaliReadyToast;
     const [year, month, day] = dob.split('-').map(Number);
     const [hour, minute] = tob.split(':').map(Number);
 
-    const formData = new FormData();
-    formData.append('action', 'calculate');
-    formData.append('name', username);
-    formData.append('gender', gender || 'Male');
-    formData.append('dob', dob);
-    formData.append('tob', tob);
-    formData.append('pob', pob);
-    formData.append('lat', String(lat || 28.6139));
-    formData.append('lon', String(lon || 77.2090));
-    formData.append('year', String(year));
-    formData.append('month', String(month));
-    formData.append('day', String(day));
-    formData.append('hour', String(hour));
-    formData.append('minute', String(minute));
+    const calcPayload = {
+        action: 'calculate',
+        name: username,
+        gender: gender || 'Male',
+        dob: dob,
+        tob: tob,
+        pob: pob,
+        lat: parseFloat(lat) || 28.6139,
+        lon: parseFloat(lon) || 77.2090,
+        year: year || 1990,
+        month: month || 1,
+        day: day || 1,
+        hour: hour || 12,
+        minute: minute || 0
+    };
 
     let rawJson = null;
-    const apiTargets = ['/api/calculate', 'https://www.shunyakikhoj.co.in/api/calculate'];
+    const apiTargets = ['https://sanskritai.vercel.app/api/calculate', 'https://sanskrit.gt.tc/api/calculate', '/api/calculate'];
     for (const target of apiTargets) {
         try {
-            const apiResp = await fetch(target, { method: 'POST', body: formData });
+            const apiResp = await fetch(target, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(calcPayload)
+            });
             if (apiResp.ok) {
                 const apiData = await apiResp.json();
-                if (apiData && (apiData.success || apiData.planets)) {
+                if (apiData && (apiData.success || apiData.planets || apiData.status === 'success' || apiData.engine_metadata)) {
                     rawJson = JSON.stringify(apiData);
                     break;
                 }
