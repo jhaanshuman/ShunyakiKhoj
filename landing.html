@@ -819,28 +819,82 @@ function showKundaliProgressModal(show = true) {
 }
 window.showKundaliProgressModal = showKundaliProgressModal;
 
+// Helper to show Kundali Ready Notification Toast
+function showKundaliReadyToast() {
+    let toast = document.getElementById('kundaliReadyToast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'kundaliReadyToast';
+        toast.style.cssText = 'position:fixed; bottom:25px; right:25px; background:linear-gradient(135deg, #1e1b4b 0%, #31103f 100%); border:2px solid #fbbf24; color:#fff; padding:18px 24px; border-radius:16px; box-shadow:0 15px 35px rgba(0,0,0,0.6), 0 0 20px rgba(251,191,36,0.3); z-index:9999; max-width:380px; display:flex; align-items:center; gap:15px; animation: slideUpToast 0.5s ease-out;';
+        toast.innerHTML = `
+            <div style="font-size:2.2rem;">✨</div>
+            <div>
+                <h4 style="margin:0 0 4px 0; color:#fbbf24; font-size:1.02rem; font-weight:800;">Personalized Kundali Ready!</h4>
+                <p style="margin:0; font-size:0.85rem; color:#fef08a; line-height:1.4;">Your Personalized Kundali is ready for you. Kindly Visit mentioned section to be guided by Stars.</p>
+            </div>
+            <button onclick="this.parentElement.style.display='none'" style="background:none; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer; align-self:flex-start; margin-left:auto;">✕</button>
+        `;
+        document.body.appendChild(toast);
+    }
+    toast.style.display = 'flex';
+    setTimeout(() => {
+        if (toast) toast.style.display = 'none';
+    }, 8000);
+}
+window.showKundaliReadyToast = showKundaliReadyToast;
+
 // ═══════════════════════════════════════════════════════════════════
 // DYNAMIC ENGAGING KUNDALI LOADER & PROGRESS BAR
 // ═══════════════════════════════════════════════════════════════════
 (async function initKundaliCache() {
     const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get('username') || localStorage.getItem('shunya-username') || 'Devotee';
+    let username = urlParams.get('username') || localStorage.getItem('shunya-username') || '';
+    
+    // Clean username if fallback string was stored
+    if (username === 'Devotee' || username === 'Guest') username = '';
+
+    const authBase = '/UserLog/auth.php';
+
+    // Fetch user profile from MySQL first to get exact username & birth details
+    let profile = null;
+    try {
+        const queryUser = username || '';
+        const profileResp = await fetch(`${authBase}?action=get_user_profile&username=${encodeURIComponent(queryUser)}`);
+        if (profileResp.ok) {
+            const profileData = await profileResp.json();
+            if (profileData.success && profileData.profile) {
+                profile = profileData.profile;
+                if (profile.username) username = profile.username;
+            }
+        }
+    } catch (e) {
+        console.warn('[Kundali] Profile fetch failed:', e);
+    }
+
+    if (!username) {
+        const p = (typeof getProfile === 'function') ? getProfile() : null;
+        if (p && p.username) username = p.username;
+    }
+
     if (!username) return;
 
     localStorage.setItem('shunya-username', username);
 
+    // Update header button with Namaste 🙏 username
+    if (typeof updateProfileHeaderButton === 'function') {
+        updateProfileHeaderButton();
+    }
+
     // Show Progress Modal immediately
     showKundaliProgressModal(true);
     updateProgressUI(15, `🔑 User is being Logged IN...`);
-
-    const authBase = '/UserLog/auth.php';
 
     // Interactive message queue every 3 seconds to keep user engaged
     let stepCount = 0;
     const engageTimer = setInterval(() => {
         stepCount++;
         if (stepCount === 1) {
-            updateProgressUI(35, `✨ Hi ${username}! We are getting your profile ready...`);
+            updateProgressUI(35, `✨ Namaste 🙏 ${username}! We are getting your profile ready...`);
         } else if (stepCount === 2) {
             updateProgressUI(60, `⏳ This will take a few seconds to process...`);
         } else if (stepCount === 3) {
@@ -848,44 +902,34 @@ window.showKundaliProgressModal = showKundaliProgressModal;
         }
     }, 3000);
 
-    const finishProgressAndHide = (rawJson) => {
+    const finishProgressAndHide = (analyticsData) => {
         clearInterval(engageTimer);
         updateProgressUI(95, `📜 Your Personalized Kundali Data has been prepared successfully!`);
         setTimeout(() => {
             updateProgressUI(100, `🙏 We value your time and patience. Thank you for waiting! Welcome ${username}! 🌸`);
             setTimeout(() => {
                 showKundaliProgressModal(false);
-            }, 2200);
-        }, 1400);
+                showKundaliReadyToast();
+            }, 2000);
+        }, 1200);
     };
 
-    // Step A: Check MySQL users table directly for existing cached_kundali_json
-    let profile = null;
-    try {
-        const profileResp = await fetch(`${authBase}?action=get_user_profile&username=${encodeURIComponent(username)}`);
-        if (profileResp.ok) {
-            const profileData = await profileResp.json();
-            if (profileData.success && profileData.profile) {
-                profile = profileData.profile;
-                if (profile.cached_kundali_json) {
-                    const rawJson = profile.cached_kundali_json;
-                    localStorage.setItem('shunya-raw-kundali-json', rawJson);
-                    const hiddenEl = document.getElementById('hiddenRawKundaliJson');
-                    if (hiddenEl) hiddenEl.textContent = rawJson;
-                    try {
-                        window.lastCalculatedData = JSON.parse(rawJson);
-                        if (typeof window.renderAstrologyViews === 'function') {
-                            window.renderAstrologyViews(window.lastCalculatedData);
-                        }
-                    } catch(e) {}
-                    console.log('[Kundali] Verified cached_kundali_json in MySQL for:', username);
-                    finishProgressAndHide(rawJson);
-                    return;
-                }
+    // Step A: Check MySQL users table directly for existing cached_kundali_json or kundali_analytics
+    if (profile && (profile.cached_kundali_json || profile.kundali_analytics)) {
+        const rawJson = profile.kundali_analytics || profile.cached_kundali_json;
+        localStorage.setItem('shunya-raw-kundali-json', rawJson);
+        localStorage.setItem('shunya-kundali-analytics', rawJson);
+        const hiddenEl = document.getElementById('hiddenRawKundaliJson');
+        if (hiddenEl) hiddenEl.textContent = rawJson;
+        try {
+            window.lastCalculatedData = JSON.parse(rawJson);
+            if (typeof window.renderAstrologyViews === 'function') {
+                window.renderAstrologyViews(window.lastCalculatedData);
             }
-        }
-    } catch (e) {
-        console.warn('[Kundali] Profile verification failed:', e);
+        } catch(e) {}
+        console.log('[Kundali] Verified cached Kundali data in MySQL for:', username);
+        finishProgressAndHide(rawJson);
+        return;
     }
 
     // Step B: No cached_kundali_json in MySQL — Calculate fresh Raw JSON via Vercel Python API
@@ -932,17 +976,24 @@ window.showKundaliProgressModal = showKundaliProgressModal;
     }
 
     if (rawJson) {
-        // Pass Raw JSON to MySQL users.cached_kundali_json
+        // Pass Raw JSON & Analytics to MySQL users.cached_kundali_json & users.kundali_analytics
         const saveForm = new FormData();
         saveForm.append('action', 'save_kundali_cache');
         saveForm.append('username', username);
         saveForm.append('raw_json', rawJson);
-        fetch(authBase, { method: 'POST', body: saveForm })
+        fetch(authBase, { method: 'POST', body: saveForm }).catch(() => {});
+
+        const saveAnalyticsForm = new FormData();
+        saveAnalyticsForm.append('action', 'save_kundali_analytics');
+        saveAnalyticsForm.append('username', username);
+        saveAnalyticsForm.append('kundali_analytics', rawJson);
+        fetch(authBase, { method: 'POST', body: saveAnalyticsForm })
             .then(r => r.json())
-            .then(d => console.log('[Kundali] Saved to MySQL users.cached_kundali_json:', d.message || d.error))
+            .then(d => console.log('[Kundali Analytics] Saved to MySQL users.kundali_analytics:', d.message || d.error))
             .catch(() => {});
 
         localStorage.setItem('shunya-raw-kundali-json', rawJson);
+        localStorage.setItem('shunya-kundali-analytics', rawJson);
         const hiddenEl = document.getElementById('hiddenRawKundaliJson');
         if (hiddenEl) hiddenEl.textContent = rawJson;
         try {

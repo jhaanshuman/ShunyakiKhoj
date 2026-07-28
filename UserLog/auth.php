@@ -139,17 +139,18 @@ if ($action === "login") {
         $_SESSION['user_id'] = $row['id'];
         $_SESSION['username'] = $row['username'];
         $_SESSION['profile'] = [
-            "name"               => $row['username'],
-            "username"           => $row['username'],
-            "email"              => $row['email'],
-            "mobile"             => $row['mobile'],
-            "gender"             => $row['gender'],
-            "dob"                => $row['dob'],
-            "tob"                => $row['tob'],
-            "pob"                => $row['pob'],
-            "lat"                => floatval($row['lat']),
-            "lon"                => floatval($row['lon']),
-            "cached_kundali_json" => $row['cached_kundali_json'] // included at login — no extra API call needed
+            "name"                => $row['username'],
+            "username"            => $row['username'],
+            "email"               => $row['email'],
+            "mobile"              => $row['mobile'],
+            "gender"              => $row['gender'],
+            "dob"                 => $row['dob'],
+            "tob"                 => $row['tob'],
+            "pob"                 => $row['pob'],
+            "lat"                 => floatval($row['lat']),
+            "lon"                 => floatval($row['lon']),
+            "cached_kundali_json" => $row['cached_kundali_json'],
+            "kundali_analytics"   => $row['kundali_analytics']
         ];
 
         echo json_encode([
@@ -163,14 +164,14 @@ if ($action === "login") {
     exit;
 }
 
-/* 3b. GET USER PROFILE (birth details + cached kundali from users table) */
+/* 3b. GET USER PROFILE (birth details + cached kundali + analytics from users table) */
 if ($action === "get_user_profile") {
     $username = db_escape($_GET['username'] ?? $_POST['username'] ?? $json_data['username'] ?? '');
     if (empty($username)) {
         echo json_encode(["success" => false, "error" => "Username required"]);
         exit;
     }
-    $q = db_query("SELECT username, email, mobile, gender, dob, tob, pob, lat, lon, cached_kundali_json FROM users WHERE username='$username' OR email='$username' LIMIT 1");
+    $q = db_query("SELECT username, email, mobile, gender, dob, tob, pob, lat, lon, cached_kundali_json, kundali_analytics FROM users WHERE username='$username' OR email='$username' LIMIT 1");
     $row = db_fetch($q);
     if ($row) {
         echo json_encode(["success" => true, "profile" => [
@@ -183,7 +184,8 @@ if ($action === "get_user_profile") {
             "pob"                => $row['pob'],
             "lat"                => floatval($row['lat']),
             "lon"                => floatval($row['lon']),
-            "cached_kundali_json" => $row['cached_kundali_json']
+            "cached_kundali_json" => $row['cached_kundali_json'],
+            "kundali_analytics"   => $row['kundali_analytics']
         ]]);
     } else {
         echo json_encode(["success" => false, "error" => "User not found"]);
@@ -201,7 +203,6 @@ if ($action === "save_kundali_cache") {
         exit;
     }
 
-    // Store directly in users table — no separate cache table needed
     $sql = "UPDATE users SET cached_kundali_json='$raw_json' WHERE username='$username' OR email='$username'";
 
     if (db_query($sql)) {
@@ -212,8 +213,28 @@ if ($action === "save_kundali_cache") {
     exit;
 }
 
-/* 5. GET KUNDALI CACHE — reads from users.cached_kundali_json directly */
-if ($action === "get_kundali_cache") {
+/* 4b. SAVE KUNDALI ANALYTICS — writes directly to users.kundali_analytics */
+if ($action === "save_kundali_analytics") {
+    $username = db_escape($_POST['username'] ?? $_POST['user_identifier'] ?? '');
+    $analytics = db_escape($_POST['kundali_analytics'] ?? $_POST['analytics'] ?? '');
+
+    if (empty($username) || empty($analytics)) {
+        echo json_encode(["success" => false, "error" => "Username and Kundali Analytics are required."]);
+        exit;
+    }
+
+    $sql = "UPDATE users SET kundali_analytics='$analytics' WHERE username='$username' OR email='$username'";
+
+    if (db_query($sql)) {
+        echo json_encode(["success" => true, "message" => "Kundali Analytics saved to users table."]);
+    } else {
+        echo json_encode(["success" => false, "error" => "Failed to update kundali_analytics in users table."]);
+    }
+    exit;
+}
+
+/* 5. GET KUNDALI CACHE — reads from users.cached_kundali_json & kundali_analytics directly */
+if ($action === "get_kundali_cache" || $action === "get_kundali_analytics") {
     $username = db_escape($_GET['username'] ?? $_POST['username'] ?? '');
 
     if (empty($username)) {
@@ -221,23 +242,23 @@ if ($action === "get_kundali_cache") {
         exit;
     }
 
-    // Read from users table — single source of truth
-    $q = db_query("SELECT username, dob, tob, pob, lat, lon, cached_kundali_json FROM users WHERE username='$username' OR email='$username' LIMIT 1");
+    $q = db_query("SELECT username, dob, tob, pob, lat, lon, cached_kundali_json, kundali_analytics FROM users WHERE username='$username' OR email='$username' LIMIT 1");
     $row = db_fetch($q);
 
-    if ($row && !empty($row['cached_kundali_json'])) {
+    if ($row) {
         echo json_encode([
-            "success"  => true,
-            "username" => $row['username'],
-            "dob"      => $row['dob'],
-            "tob"      => $row['tob'],
-            "pob"      => $row['pob'],
-            "lat"      => floatval($row['lat']),
-            "lon"      => floatval($row['lon']),
-            "raw_json" => $row['cached_kundali_json']
+            "success"           => true,
+            "username"          => $row['username'],
+            "dob"               => $row['dob'],
+            "tob"               => $row['tob'],
+            "pob"               => $row['pob'],
+            "lat"               => floatval($row['lat']),
+            "lon"               => floatval($row['lon']),
+            "raw_json"          => $row['cached_kundali_json'],
+            "kundali_analytics" => $row['kundali_analytics']
         ]);
     } else {
-        echo json_encode(["success" => false, "error" => "No cached Kundali found for user."]);
+        echo json_encode(["success" => false, "error" => "No record found for user."]);
     }
     exit;
 }

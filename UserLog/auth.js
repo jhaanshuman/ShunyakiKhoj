@@ -110,7 +110,10 @@
         }
 
         const profile = getProfile();
-        const username = urlUsername || localStorage.getItem('shunya-username') || (profile ? (profile.nickname || profile.name) : null);
+        let username = urlUsername || localStorage.getItem('shunya-username') || (profile ? (profile.username || profile.nickname || profile.name) : null);
+        if (username === 'Devotee' || username === 'Guest') {
+            username = (profile && profile.username && profile.username !== 'Devotee') ? profile.username : null;
+        }
         
         if (btn) {
             if (username) {
@@ -118,15 +121,14 @@
                 btn.style.alignItems = 'center';
                 btn.style.gap = '6px';
                 btn.style.cursor = 'pointer';
-                btn.style.padding = '4px 12px';
+                btn.style.padding = '4px 14px';
                 btn.style.borderRadius = '99px';
                 btn.style.background = 'rgba(184, 50, 20, 0.12)';
                 btn.style.border = '1.5px solid rgba(184, 50, 20, 0.35)';
                 btn.style.transition = 'all 0.2s';
                 
                 btn.innerHTML = `
-                    <span style="font-size:0.85rem; font-weight:800; color:var(--text-color, #92400e);">Hi, ${username}</span>
-                    <span style="font-size:1.05rem;">👤</span>
+                    <span style="font-size:0.88rem; font-weight:800; color:var(--text-color, #92400e);">Namaste 🙏 ${username}</span>
                 `;
                 btn.onclick = (e) => {
                     e.stopPropagation();

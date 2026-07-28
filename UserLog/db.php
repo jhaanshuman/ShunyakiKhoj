@@ -71,6 +71,7 @@ if (!$conn) {
         login_mode VARCHAR(30) DEFAULT 'email',
         social_provider VARCHAR(50),
         cached_kundali_json LONGTEXT,
+        kundali_analytics LONGTEXT,
         last_log DATETIME DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
@@ -90,6 +91,7 @@ if (!$conn) {
         "login_mode VARCHAR(30) DEFAULT 'email'",
         "social_provider VARCHAR(50)",
         "cached_kundali_json LONGTEXT",
+        "kundali_analytics LONGTEXT",
         "last_log DATETIME DEFAULT CURRENT_TIMESTAMP"
     ];
 

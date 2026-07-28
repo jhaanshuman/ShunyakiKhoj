@@ -4791,6 +4791,16 @@ window.switchReportTab = function(reportId) {
     viewport.innerHTML = '';
 
     if (!lastCalculatedData) {
+        const cachedAnalytics = localStorage.getItem('shunya-kundali-analytics') || localStorage.getItem('shunya-raw-kundali-json');
+        if (cachedAnalytics) {
+            try {
+                lastCalculatedData = JSON.parse(cachedAnalytics);
+                console.log("⚡ [ZERO-LAG] Loaded Personalized Kundali instantly from pre-calculated database cache!");
+            } catch(e) {}
+        }
+    }
+
+    if (!lastCalculatedData) {
         viewport.innerHTML = '<div style="color:#cbd5e1; text-align:center; padding: 2rem;">Please generate your Kundali first.</div>';
         return;
     }
