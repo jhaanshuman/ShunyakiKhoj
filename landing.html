@@ -905,33 +905,6 @@ window.showKundaliProgressModal = showKundaliProgressModal;
         showKundaliProgressModal(false);
     }
 })();
-            saveForm.append('dob', dob);
-            saveForm.append('tob', tob);
-            saveForm.append('pob', pob);
-            saveForm.append('lat', String(lat || 28.6139));
-            saveForm.append('lon', String(lon || 77.2090));
-            saveForm.append('raw_json', rawJson);
-
-            const saveResp = await fetch(authBase, { method: 'POST', body: saveForm });
-            if (saveResp.ok) {
-                const saveData = await saveResp.json();
-                console.log('[Kundali] Saved to MySQL users.cached_kundali_json:', saveData);
-            }
-
-            // Step 6: Expose for astrology.js
-            localStorage.setItem('shunya-raw-kundali-json', rawJson);
-            const hiddenEl = document.getElementById('hiddenRawKundaliJson');
-            if (hiddenEl) hiddenEl.textContent = rawJson;
-            console.log('[Kundali] Raw JSON generated and saved for:', username);
-        } else {
-            console.warn('[Kundali] Could not generate Raw JSON — Vercel API unavailable.');
-        }
-    } catch (e) {
-        console.error('[Kundali] Generation error:', e);
-    } finally {
-        showKundaliProgressModal(false);
-    }
-})();
 </script>
 
 <!-- Vercel Analytics -->
