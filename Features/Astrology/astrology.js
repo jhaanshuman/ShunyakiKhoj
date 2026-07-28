@@ -4918,6 +4918,59 @@ window.switchListTab = function(event, tabId) {
     // Left empty or overridden as list tabs are merged in switchReportTab
 };
 
+// ═══════════════════════════════════════════════════════════════════
+// GLOBAL AUTO-POPULATION & VIEW RENDERER FOR PERSONALIZED KUNDALI
+// ═══════════════════════════════════════════════════════════════════
+window.renderAstrologyViews = function(data) {
+    if (!data) return;
+    lastCalculatedData = data;
+    window.lastCalculatedData = data;
+
+    // Auto-populate birth input fields if elements exist on DOM
+    const birthName = document.getElementById('birthName');
+    const birthDate = document.getElementById('birthDate');
+    const birthTime = document.getElementById('birthTime');
+    const birthPlace = document.getElementById('birthPlace');
+    const birthLat = document.getElementById('birthLat');
+    const birthLon = document.getElementById('birthLon');
+
+    const inputDetails = (data.input && data.input.birth_details) || data;
+    if (birthName && (inputDetails.name || data.name)) birthName.value = inputDetails.name || data.name;
+    if (birthDate && (inputDetails.date || inputDetails.date_of_birth || inputDetails.dob || data.dob)) {
+        const rawDate = inputDetails.date || inputDetails.date_of_birth || inputDetails.dob || data.dob;
+        birthDate.value = String(rawDate).replace(/\//g, '-');
+    }
+    if (birthTime && (inputDetails.time || inputDetails.tob || data.tob)) {
+        birthTime.value = inputDetails.time || inputDetails.tob || data.tob;
+    }
+    if (birthPlace && (inputDetails.place || inputDetails.pob || data.pob)) {
+        birthPlace.value = inputDetails.place || inputDetails.pob || data.pob;
+    }
+    if (birthLat && (inputDetails.lat || inputDetails.latitude || data.lat)) {
+        birthLat.value = inputDetails.lat || inputDetails.latitude || data.lat;
+    }
+    if (birthLon && (inputDetails.lon || inputDetails.longitude || data.lon)) {
+        birthLon.value = inputDetails.lon || inputDetails.longitude || data.lon;
+    }
+
+    // Display outputCard container
+    const outputCard = document.getElementById('outputCard');
+    const extraDetails = document.getElementById('extraSidebarDetails');
+    if (outputCard) {
+        outputCard.style.display = 'flex';
+        outputCard.style.flexDirection = 'column';
+    }
+    if (extraDetails) extraDetails.style.display = 'block';
+
+    // Render active report tab or default to D1 chart
+    const activeBtn = document.querySelector('.rep-tab-btn.active');
+    const currentTab = activeBtn ? activeBtn.id.replace('btn-', '') : 'tabD1';
+    if (typeof window.switchReportTab === 'function') {
+        window.switchReportTab(currentTab);
+    }
+    console.log("⚡ [Astrology Engine] Rendered all Kundali views and tables successfully!");
+};
+
 // Format degree output based on longitude style select
 function formatLongitude(deg) {
     const style = document.getElementById('selLongStyle').value;

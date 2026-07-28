@@ -988,24 +988,43 @@ window.showKundaliReadyToast = showKundaliReadyToast;
     }
 
     if (rawJson) {
-        // Pass Raw JSON & Analytics to MySQL users.cached_kundali_json & users.kundali_analytics
+        let analyticsJson = rawJson;
+        try {
+            const parsedObj = JSON.parse(rawJson);
+            const analyticsObj = {
+                user: username,
+                d1_chart: parsedObj.d1_chart || parsedObj.planets,
+                divisional_charts: parsedObj.divisional_charts || {},
+                dashas: parsedObj.dashas || {},
+                panchang: parsedObj.panchang || {},
+                shadbala: parsedObj.shadbala || {},
+                house_analysis: parsedObj.house_analysis || {},
+                yogas: parsedObj.yogas || [],
+                ashtakavarga: parsedObj.ashtakavarga || {},
+                special_points: parsedObj.special_points || {}
+            };
+            analyticsJson = JSON.stringify(analyticsObj);
+        } catch(e) {}
+
+        // Save raw master JSON to users.cached_kundali_json
         const saveForm = new FormData();
         saveForm.append('action', 'save_kundali_cache');
         saveForm.append('username', username);
         saveForm.append('raw_json', rawJson);
         fetch(authBase, { method: 'POST', body: saveForm }).catch(() => {});
 
+        // Save distinct calculated analytics payload to users.kundali_analytics
         const saveAnalyticsForm = new FormData();
         saveAnalyticsForm.append('action', 'save_kundali_analytics');
         saveAnalyticsForm.append('username', username);
-        saveAnalyticsForm.append('kundali_analytics', rawJson);
+        saveAnalyticsForm.append('kundali_analytics', analyticsJson);
         fetch(authBase, { method: 'POST', body: saveAnalyticsForm })
             .then(r => r.json())
-            .then(d => console.log('[Kundali Analytics] Saved to MySQL users.kundali_analytics:', d.message || d.error))
+            .then(d => console.log('[Kundali Analytics] Saved distinct payload to MySQL users.kundali_analytics:', d.message || d.error))
             .catch(() => {});
 
         localStorage.setItem('shunya-raw-kundali-json', rawJson);
-        localStorage.setItem('shunya-kundali-analytics', rawJson);
+        localStorage.setItem('shunya-kundali-analytics', analyticsJson);
         const hiddenEl = document.getElementById('hiddenRawKundaliJson');
         if (hiddenEl) hiddenEl.textContent = rawJson;
         try {
