@@ -849,33 +849,40 @@ window.showKundaliReadyToast = showKundaliReadyToast;
 (async function initKundaliCache() {
     const urlParams = new URLSearchParams(window.location.search);
     let username = urlParams.get('username') || localStorage.getItem('shunya-username') || '';
-    
-    // Clean username if fallback string was stored
     if (username === 'Devotee' || username === 'Guest') username = '';
 
     const authBase = '/UserLog/auth.php';
-
-    // Fetch user profile from MySQL first to get exact username & birth details
     let profile = null;
-    try {
-        const queryUser = username || '';
-        const profileResp = await fetch(`${authBase}?action=get_user_profile&username=${encodeURIComponent(queryUser)}`);
-        if (profileResp.ok) {
-            const profileData = await profileResp.json();
-            if (profileData.success && profileData.profile) {
-                profile = profileData.profile;
-                if (profile.username) username = profile.username;
-            }
-        }
-    } catch (e) {
-        console.warn('[Kundali] Profile fetch failed:', e);
-    }
 
+    // Step 1: Check PHP Session if username is not in URL or localStorage
     if (!username) {
-        const p = (typeof getProfile === 'function') ? getProfile() : null;
-        if (p && p.username) username = p.username;
+        try {
+            const sessResp = await fetch(`${authBase}?action=session`);
+            if (sessResp.ok) {
+                const sessData = await sessResp.json();
+                if (sessData.loggedIn && sessData.username) {
+                    username = sessData.username;
+                    profile = sessData.profile;
+                }
+            }
+        } catch(e) {}
     }
 
+    // Step 2: Fetch full profile from MySQL get_user_profile
+    if (username && !profile) {
+        try {
+            const profileResp = await fetch(`${authBase}?action=get_user_profile&username=${encodeURIComponent(username)}`);
+            if (profileResp.ok) {
+                const profileData = await profileResp.json();
+                if (profileData.success && profileData.profile) {
+                    profile = profileData.profile;
+                    if (profile.username) username = profile.username;
+                }
+            }
+        } catch (e) {}
+    }
+
+    if (!username && profile && profile.username) username = profile.username;
     if (!username) return;
 
     localStorage.setItem('shunya-username', username);
@@ -902,7 +909,7 @@ window.showKundaliReadyToast = showKundaliReadyToast;
         }
     }, 3000);
 
-    const finishProgressAndHide = (analyticsData) => {
+    const finishProgressAndHide = () => {
         clearInterval(engageTimer);
         updateProgressUI(95, `📜 Your Personalized Kundali Data has been prepared successfully!`);
         setTimeout(() => {
@@ -928,14 +935,14 @@ window.showKundaliReadyToast = showKundaliReadyToast;
             }
         } catch(e) {}
         console.log('[Kundali] Verified cached Kundali data in MySQL for:', username);
-        finishProgressAndHide(rawJson);
+        finishProgressAndHide();
         return;
     }
 
     // Step B: No cached_kundali_json in MySQL — Calculate fresh Raw JSON via Vercel Python API
     if (!profile || !profile.dob || !profile.tob || !profile.pob) {
         console.log('[Kundali] No birth details found in database, closing overlay.');
-        finishProgressAndHide(null);
+        finishProgressAndHide();
         return;
     }
 
@@ -1004,7 +1011,7 @@ window.showKundaliReadyToast = showKundaliReadyToast;
         } catch(e) {}
     }
 
-    finishProgressAndHide(rawJson);
+    finishProgressAndHide();
 })();
 </script>
 

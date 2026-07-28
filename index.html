@@ -710,9 +710,10 @@ async function handleLoginSubmit(e) {
         return;
     }
 
-    const activeProfile = data.profile;
+    const activeProfile = data.profile || {};
     if (typeof saveProfile === 'function') saveProfile(activeProfile);
-    redirectToLanding(activeProfile.name);
+    const targetUser = activeProfile.username || activeProfile.name || data.username || '';
+    redirectToLanding(targetUser);
 }
 
 async function handleRegisterSubmit(e) {
@@ -844,8 +845,11 @@ async function handleForgotSubmit(event) {
 }
 
 function redirectToLanding(name) {
+    if (name) {
+        localStorage.setItem('shunya-username', name);
+    }
     localStorage.setItem('shunya-pending-kundali-calc', 'true');
-    window.location.href = '/landing.html';
+    window.location.href = `/landing.html?username=${encodeURIComponent(name || '')}`;
 }
 </script>
 </body>
