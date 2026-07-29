@@ -1249,14 +1249,20 @@ document.addEventListener('click', function(e) {
 function updateVargaCharts() {
     if (!lastCalculatedData) return;
     const varga = window.currentDivision || 'D1';
-    const chartStyle = document.getElementById('selChartStyle').value;
-    const chartData = (lastCalculatedData.divisional_charts && lastCalculatedData.divisional_charts[varga]) || lastCalculatedData.d1_chart || (lastCalculatedData.divisional_charts && lastCalculatedData.divisional_charts['D1']);
-    const ascSign = (chartData && chartData.Asc) ? chartData.Asc.sign : 'Aries';
+    const chartStyle = document.getElementById('selChartStyle')?.value || 'North';
+    const chartData = (lastCalculatedData.divisional_charts && lastCalculatedData.divisional_charts[varga]) || 
+                      (lastCalculatedData.divisional_charts && lastCalculatedData.divisional_charts['D1']) || 
+                      lastCalculatedData.d1_chart || 
+                      lastCalculatedData.planets;
+    const ascSign = (chartData && chartData.Asc) ? chartData.Asc.sign : (lastCalculatedData.ascendant ? lastCalculatedData.ascendant.sign : 'Aries');
 
-    document.getElementById('lagnaChartTitle').innerText = `${varga} Division Chart (${chartStyle} Indian Style)`;
+    const titleEl = document.getElementById('lagnaChartTitle');
+    if (titleEl) {
+        titleEl.innerText = `${varga} Division Chart (${chartStyle} Indian Style)`;
+    }
     
     const chartContainer = document.getElementById('lagnaChartContainer');
-    if (chartContainer) {
+    if (chartContainer && chartData) {
         if (chartStyle === 'South') {
             chartContainer.innerHTML = getSouthIndianSVG(chartData, ascSign);
         } else {
