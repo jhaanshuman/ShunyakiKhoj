@@ -275,7 +275,7 @@ function renderAstrologyView() {
 
                 <!-- 3. Strengths & Dignity Sub-Group -->
                 <div id="subTabs-strength" class="sub-tabs-group" style="display: none; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; background: #1e293b; padding: 10px; border-radius: 8px; border: 1px solid #334155;">
-                    <button class="rep-tab-btn active" id="btn-tabShadbala" onclick="switchReportTab('tabShadbala')">Shadbala (6-Fold Strength)</button>
+                    <button class="rep-tab-btn" id="btn-tabShadbala" onclick="switchReportTab('tabShadbala')">Shadbala (6-Fold Strength)</button>
                     <button class="rep-tab-btn" id="btn-tabBhavabala" onclick="switchReportTab('tabBhavabala')">Bhavabala (House Strengths)</button>
                     <button class="rep-tab-btn" id="btn-tabVimsopaka" onclick="switchReportTab('tabVimsopaka')">Vimsopaka Bala (Divisional Dignity)</button>
                     <button class="rep-tab-btn" id="btn-tabDignityAvasthas" onclick="switchReportTab('tabDignityAvasthas')">Dignity &amp; Avasthas</button>

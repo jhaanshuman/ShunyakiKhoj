@@ -4690,6 +4690,12 @@ window.switchReportCategory = function(catName) {
             } else {
                 activeSubBtn.click();
             }
+        } else {
+            // Support for dropdown-based sub-tab groups (Divisional Charts & Dasha Cycles)
+            const sel = targetGroup.querySelector('select');
+            if (sel && sel.value) {
+                switchReportTab(sel.value);
+            }
         }
     }
 };
@@ -4980,15 +4986,15 @@ window.renderAstrologyViews = function(data) {
     }
     if (extraDetails) extraDetails.style.display = 'block';
 
-    // Render SVG D1 Lagna chart & active tab tables automatically on load
+    // Force default category to 'charts' (Divisional Charts) & default tab to 'tabD1' (D1 Lagna Rashi Chart)
+    if (typeof window.switchReportCategory === 'function') {
+        window.switchReportCategory('charts');
+    }
+    if (typeof window.switchReportTab === 'function') {
+        window.switchReportTab('tabD1');
+    }
     if (typeof renderAdvancedChart === 'function') {
         renderAdvancedChart();
-    }
-
-    const activeBtn = document.querySelector('.rep-tab-btn.active');
-    const currentTab = activeBtn ? activeBtn.id.replace('btn-', '') : 'tabD1';
-    if (typeof window.switchReportTab === 'function') {
-        window.switchReportTab(currentTab);
     }
 
     // Double-ensure SVG rendering after DOM layout pass
@@ -4998,7 +5004,7 @@ window.renderAstrologyViews = function(data) {
         }
     }, 50);
 
-    console.log("⚡ [Astrology Engine] Rendered SVG Chart and all Kundali views and tables successfully!");
+    console.log("⚡ [Astrology Engine] Rendered D1 Lagna Rashi Chart and all Kundali views successfully!");
 };
 
 // Format degree output based on longitude style select
