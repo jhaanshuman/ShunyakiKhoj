@@ -1572,7 +1572,10 @@ function renderAdvancedChart() {
     const style = (styleSel && styleSel.value) ? styleSel.value : (window.currentLagnaStyle || 'North');
     window.currentLagnaStyle = style;
 
-    const chartData = (data.divisional_charts && data.divisional_charts[division]) || data.divisional_charts && data.divisional_charts['D1'];
+    const chartData = (data.divisional_charts && data.divisional_charts[division]) || 
+                      (data.divisional_charts && data.divisional_charts['D1']) || 
+                      data.d1_chart || 
+                      data.planets;
     if (!chartData) return;
 
     const ascEntry = chartData['Asc'];
@@ -4962,13 +4965,18 @@ window.renderAstrologyViews = function(data) {
     }
     if (extraDetails) extraDetails.style.display = 'block';
 
+    // Render SVG chart immediately
+    if (typeof renderAdvancedChart === 'function') {
+        renderAdvancedChart();
+    }
+
     // Render active report tab or default to D1 chart
     const activeBtn = document.querySelector('.rep-tab-btn.active');
     const currentTab = activeBtn ? activeBtn.id.replace('btn-', '') : 'tabD1';
     if (typeof window.switchReportTab === 'function') {
         window.switchReportTab(currentTab);
     }
-    console.log("⚡ [Astrology Engine] Rendered all Kundali views and tables successfully!");
+    console.log("⚡ [Astrology Engine] Rendered SVG Chart and all Kundali views and tables successfully!");
 };
 
 // Format degree output based on longitude style select
