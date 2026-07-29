@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteBase /
+
+# Route /astrology/personal to /landing.html
+RewriteRule ^astrology/personal/?$ landing.html [QSA,L]

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Kundali - ShunyakiKhoj</title>
+    <script>
+        (function() {
+            const username = localStorage.getItem('shunya-username') || '';
+            const targetUrl = '/landing.html' + (username ? '?username=' + encodeURIComponent(username) : '');
+            window.location.replace(targetUrl);
+        })();
+    </script>
+</head>
+<body style="background: #0f172a; color: #fbbf24; font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+    <div style="text-align: center; padding: 2rem;">
+        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">✨ Loading Personalized Kundali... ⏳</h2>
+        <p style="color: #94a3b8; font-size: 0.9rem;">Connecting to Vedic Ephemeris Engine...</p>
+    </div>
+</body>
+</html>

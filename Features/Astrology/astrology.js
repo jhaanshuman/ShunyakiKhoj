@@ -1191,7 +1191,7 @@ window.handleKundliCalculation = async function(e) {
         try {
             const jsonStr = JSON.stringify(lastCalculatedData);
             const prof = typeof getProfile === 'function' ? getProfile() : null;
-            const userId = prof ? (prof.username || prof.name) : 'guest';
+            const userId = localStorage.getItem('shunya-username') || (prof ? (prof.username || prof.name) : null) || 'Seeker';
             const formData = new FormData();
             formData.append('action', 'save_kundali_cache');
             formData.append('user_identifier', userId);
@@ -4956,26 +4956,42 @@ window.renderAstrologyViews = function(data) {
         birthLon.value = inputDetails.lon || inputDetails.longitude || data.lon;
     }
 
-    // Display outputCard container
+    // Hide birth details card as requested for logged-in user view
+    const birthFormCard = document.querySelector('#personalKundliSection .birth-details-card') || document.querySelector('.birth-details-card');
+    if (birthFormCard) {
+        birthFormCard.style.display = 'none';
+    }
+
+    // Display outputCard container at 100% full width
     const outputCard = document.getElementById('outputCard');
     const extraDetails = document.getElementById('extraSidebarDetails');
     if (outputCard) {
         outputCard.style.display = 'flex';
         outputCard.style.flexDirection = 'column';
+        outputCard.style.flex = '1';
+        outputCard.style.width = '100%';
+        outputCard.style.maxWidth = '100%';
     }
     if (extraDetails) extraDetails.style.display = 'block';
 
-    // Render SVG chart immediately
+    // Render SVG D1 Lagna chart & active tab tables automatically on load
     if (typeof renderAdvancedChart === 'function') {
         renderAdvancedChart();
     }
 
-    // Render active report tab or default to D1 chart
     const activeBtn = document.querySelector('.rep-tab-btn.active');
     const currentTab = activeBtn ? activeBtn.id.replace('btn-', '') : 'tabD1';
     if (typeof window.switchReportTab === 'function') {
         window.switchReportTab(currentTab);
     }
+
+    // Double-ensure SVG rendering after DOM layout pass
+    setTimeout(() => {
+        if (typeof renderAdvancedChart === 'function') {
+            renderAdvancedChart();
+        }
+    }, 50);
+
     console.log("⚡ [Astrology Engine] Rendered SVG Chart and all Kundali views and tables successfully!");
 };
 
