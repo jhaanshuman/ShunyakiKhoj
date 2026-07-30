@@ -1785,12 +1785,12 @@ function renderPlacementsGrid(containerId, chart) {
 
     // Build stats table header
     const table = document.createElement('table');
-    table.style.cssText = 'width:100%; border-collapse:collapse; font-size:0.75rem; line-height:1.5;';
+    table.style.cssText = 'width:100%; border-collapse:collapse; font-size:0.75rem; line-height:1.5; color:#1e293b;';
     const hdr = document.createElement('tr');
-    hdr.style.cssText = 'border-bottom:2px solid rgba(252,194,1,0.3); font-weight:800; color:var(--accent-color);';
+    hdr.style.cssText = 'border-bottom:2px solid #991b1b; font-weight:800; color:#991b1b;';
     ['Graha','Sign','Lon°','Nakshatra','Pada','Motion','State','Strength'].forEach(h => {
         const th = document.createElement('td');
-        th.style.cssText = 'padding:4px 6px; white-space:nowrap;';
+        th.style.cssText = 'padding:6px 6px; white-space:nowrap; font-weight:800;';
         th.textContent = h;
         hdr.appendChild(th);
     });
@@ -1799,28 +1799,28 @@ function renderPlacementsGrid(containerId, chart) {
     Object.keys(chart).forEach(pName => {
         if (pName === 'Asc') return;
         const pObj = chart[pName];
-        const motion = pObj.is_retrograde ? '<span style="color:#f87171;font-weight:700;">Vakri ℞</span>' : '<span style="color:#86efac;">Margi</span>';
-        const state = pObj.is_combust ? '<span style="color:#f87171;">Asta</span>' : '<span style="color:#86efac;">Udita</span>';
-        const strClass = (pObj.strength||'').toLowerCase() === 'strong' ? '#4ade80' : (pObj.strength||'').toLowerCase() === 'weak' ? '#f87171' : '#fbbf24';
+        const motion = pObj.is_retrograde ? '<span style="color:#b91c1c;font-weight:800;">Vakri ℞</span>' : '<span style="color:#15803d;font-weight:700;">Margi</span>';
+        const state = pObj.is_combust ? '<span style="color:#b91c1c;font-weight:800;">Asta</span>' : '<span style="color:#15803d;font-weight:700;">Udita</span>';
+        const strClass = (pObj.strength||'').toLowerCase() === 'strong' ? '#15803d' : (pObj.strength||'').toLowerCase() === 'weak' ? '#b91c1c' : '#991b1b';
 
         const tr = document.createElement('tr');
-        tr.style.cssText = 'border-bottom:1px solid rgba(255,255,255,0.04); transition:background 0.2s;';
-        tr.onmouseenter = () => tr.style.background = 'rgba(252,194,1,0.05)';
+        tr.style.cssText = 'border-bottom:1px solid #e2e8f0; transition:background 0.2s;';
+        tr.onmouseenter = () => tr.style.background = 'rgba(153,27,27,0.05)';
         tr.onmouseleave = () => tr.style.background = '';
 
         const cells = [
-            `<strong style="color:var(--accent-color)">${pObj.indian||pName}</strong> <span style="opacity:0.55;font-size:0.7rem">(${pName})</span>`,
-            pObj.sign || '—',
-            (pObj.lon !== undefined ? Number(pObj.lon).toFixed(2) : '—') + '°',
-            pObj.nakshatra || '—',
-            pObj.pada !== undefined ? pObj.pada : '—',
+            `<strong style="color:#991b1b; font-weight:800;">${pObj.indian||pName}</strong> <span style="opacity:0.65;font-size:0.7rem;color:#475569;">(${pName})</span>`,
+            `<span style="color:#0f172a; font-weight:700;">${pObj.sign || '—'}</span>`,
+            `<span style="color:#334155; font-weight:600;">${(pObj.lon !== undefined ? Number(pObj.lon).toFixed(2) : '—') + '°'}</span>`,
+            `<span style="color:#1e293b; font-weight:600;">${pObj.nakshatra || '—'}</span>`,
+            `<span style="color:#475569; font-weight:600;">${pObj.pada !== undefined ? pObj.pada : '—'}</span>`,
             motion,
             state,
-            `<span style="color:${strClass};font-weight:700;">${pObj.strength || 'Moderate'}</span>`
+            `<span style="color:${strClass};font-weight:800;">${pObj.strength || 'Moderate'}</span>`
         ];
         cells.forEach(c => {
             const td = document.createElement('td');
-            td.style.cssText = 'padding:4px 6px; vertical-align:middle;';
+            td.style.cssText = 'padding:6px 6px; vertical-align:middle;';
             td.innerHTML = c;
             tr.appendChild(td);
         });
@@ -1833,11 +1833,11 @@ function renderPlacementsGrid(containerId, chart) {
     const asc = chart['Asc'];
     if (asc) {
         const ascCard = document.createElement('div');
-        ascCard.style.cssText = 'margin-bottom:8px; padding:8px 12px; background:rgba(252,194,1,0.08); border:1px solid rgba(252,194,1,0.25); border-radius:8px; font-size:0.8rem; display:flex; gap:16px; align-items:center;';
-        ascCard.innerHTML = `<strong style="color:#fbbf24;">Lagna (Ascendant)</strong>
-            <span>${asc.sign || '—'}</span>
-            <span style="opacity:0.7;">${asc.lon !== undefined ? Number(asc.lon).toFixed(2)+'°' : ''}</span>
-            <span style="opacity:0.7;">${asc.nakshatra ? asc.nakshatra : ''}</span>`;
+        ascCard.style.cssText = 'margin-bottom:10px; padding:8px 12px; background:rgba(153,27,27,0.06); border:1.5px solid #991b1b; border-radius:8px; font-size:0.8rem; display:flex; gap:16px; align-items:center; color:#1e293b;';
+        ascCard.innerHTML = `<strong style="color:#991b1b; font-weight:800;">Lagna (Ascendant)</strong>
+            <span style="font-weight:700; color:#0f172a;">${asc.sign || '—'}</span>
+            <span style="font-weight:600; color:#334155;">${asc.lon !== undefined ? Number(asc.lon).toFixed(2)+'°' : ''}</span>
+            <span style="font-weight:600; color:#334155;">${asc.nakshatra ? asc.nakshatra : ''}</span>`;
         container.insertBefore(ascCard, table);
     }
 }
@@ -6549,8 +6549,8 @@ window.renderPanchangTabularView = function() {
     const d1 = data.d1_chart || {};
 
     if (viewType === 'planets') {
-        let html = `<table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.8rem;">
-            <thead><tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+        let html = `<table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.8rem; color:#1e293b;">
+            <thead><tr style="border-bottom:2px solid #991b1b; color:#991b1b; font-weight:800;">
                 <th style="padding:6px;">Planet</th><th style="padding:6px;">Sign</th><th style="padding:6px;">Degree</th><th style="padding:6px;">Nakshatra</th>
             </tr></thead><tbody>`;
         const planetKeys = ['Asc','Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn','Rahu','Ketu'];
@@ -6558,8 +6558,8 @@ window.renderPanchangTabularView = function() {
             if (d1[p]) {
                 const info = d1[p];
                 const deg = typeof info.degree === 'number' ? info.degree.toFixed(2) + '°' : (info.degree || '0.00°');
-                html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
-                    <td style="padding:6px; font-weight:800; color:#1e3a8a;">${p}</td>
+                html += `<tr style="border-bottom:1px solid #e2e8f0;">
+                    <td style="padding:6px; font-weight:800; color:#991b1b;">${p}</td>
                     <td style="padding:6px; font-weight:800; color:#15803d;">${info.sign || info.signName || 'N/A'}</td>
                     <td style="padding:6px; font-weight:700; color:#475569;">${deg}</td>
                     <td style="padding:6px; font-weight:700; color:#334155;">${info.nakshatra || 'N/A'}</td>
@@ -6569,16 +6569,16 @@ window.renderPanchangTabularView = function() {
         html += `</tbody></table>`;
         container.innerHTML = html;
     } else if (viewType === 'nakshatra') {
-        let html = `<table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.8rem;">
-            <thead><tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+        let html = `<table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.8rem; color:#1e293b;">
+            <thead><tr style="border-bottom:2px solid #991b1b; color:#991b1b; font-weight:800;">
                 <th style="padding:6px;">Planet</th><th style="padding:6px;">Nakshatra</th><th style="padding:6px;">Pada</th><th style="padding:6px;">Lord</th>
             </tr></thead><tbody>`;
         const planetKeys = ['Asc','Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn','Rahu','Ketu'];
         planetKeys.forEach(p => {
             if (d1[p]) {
                 const info = d1[p];
-                html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
-                    <td style="padding:6px; font-weight:800; color:#1e3a8a;">${p}</td>
+                html += `<tr style="border-bottom:1px solid #e2e8f0;">
+                    <td style="padding:6px; font-weight:800; color:#991b1b;">${p}</td>
                     <td style="padding:6px; font-weight:800; color:#15803d;">${info.nakshatra || 'N/A'}</td>
                     <td style="padding:6px; font-weight:700; color:#475569;">${info.pada || 1}</td>
                     <td style="padding:6px; font-weight:700; color:#334155;">${info.nakshatra_lord || 'Saturn'}</td>
@@ -6589,16 +6589,16 @@ window.renderPanchangTabularView = function() {
         container.innerHTML = html;
     } else if (viewType === 'dignity') {
         const dignities = data.dignity || {};
-        let html = `<table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.8rem;">
-            <thead><tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+        let html = `<table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.8rem; color:#1e293b;">
+            <thead><tr style="border-bottom:2px solid #991b1b; color:#991b1b; font-weight:800;">
                 <th style="padding:6px;">Planet</th><th style="padding:6px;">Dignity State</th><th style="padding:6px;">Score</th>
             </tr></thead><tbody>`;
         ['Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn','Rahu','Ketu'].forEach(p => {
             const dig = dignities[p] || {};
-            html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
-                <td style="padding:6px; font-weight:800; color:#1e3a8a;">${p}</td>
-                <td style="padding:5px 6px; color:#4ade80;">${dig.dignity_state || 'Own Sign'}</td>
-                <td style="padding:5px 6px;">${dig.dignity_score !== undefined ? dig.dignity_score : 75}</td>
+            html += `<tr style="border-bottom:1px solid #e2e8f0;">
+                <td style="padding:6px; font-weight:800; color:#991b1b;">${p}</td>
+                <td style="padding:5px 6px; color:#15803d; font-weight:700;">${dig.dignity_state || 'Own Sign'}</td>
+                <td style="padding:5px 6px; font-weight:700; color:#334155;">${dig.dignity_score !== undefined ? dig.dignity_score : 75}</td>
             </tr>`;
         });
         html += `</tbody></table>`;
@@ -6607,57 +6607,58 @@ window.renderPanchangTabularView = function() {
         const av = data.ashtakavarga || {};
         const bindus = av.sarvashtakavarga_bindus || [30,28,32,25,31,29,27,33,26,30,34,27];
         const signs = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
-        let html = `<div style="font-weight:700; color:#fbbf24; margin-bottom:6px; font-size:0.8rem;">Sarvashtakavarga Bindus (Total Strength):</div>
+        let html = `<div style="font-weight:800; color:#991b1b; margin-bottom:8px; font-size:0.85rem;">Sarvashtakavarga Bindus (Total Strength):</div>
         <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; font-size:0.78rem;">`;
         signs.forEach((s, idx) => {
             const b = bindus[idx] !== undefined ? bindus[idx] : 28;
-            const bg = b >= 30 ? 'rgba(74,222,128,0.15)' : (b >= 25 ? 'rgba(251,191,36,0.15)' : 'rgba(248,113,113,0.15)');
-            html += `<div style="background:${bg}; padding:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); text-align:center;">
-                <div style="color:var(--text-muted); font-size:0.72rem;">${s}</div>
-                <div style="font-weight:800; font-size:0.95rem; color:#fff;">${b}</div>
+            const bg = b >= 30 ? 'rgba(21,128,61,0.12)' : (b >= 25 ? 'rgba(153,27,27,0.1)' : 'rgba(185,28,28,0.15)');
+            const textColor = b >= 30 ? '#15803d' : '#991b1b';
+            html += `<div style="background:${bg}; padding:6px; border-radius:6px; border:1px solid #cbd5e1; text-align:center;">
+                <div style="color:#475569; font-size:0.72rem; font-weight:700;">${s}</div>
+                <div style="font-weight:800; font-size:0.95rem; color:${textColor};">${b}</div>
             </div>`;
         });
         html += `</div>`;
         container.innerHTML = html;
     } else if (viewType === 'drishti') {
         const aspects = data.planetary_aspects || [];
-        let html = `<table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.78rem;">
-            <thead><tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+        let html = `<table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.78rem; color:#1e293b;">
+            <thead><tr style="border-bottom:2px solid #991b1b; color:#991b1b; font-weight:800;">
                 <th style="padding:5px;">Aspecting</th><th style="padding:5px;">Target</th><th style="padding:5px;">Orb</th><th style="padding:5px;">Strength</th>
             </tr></thead><tbody>`;
         if (aspects.length > 0) {
             aspects.slice(0, 10).forEach(a => {
-                html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                    <td style="padding:5px; font-weight:700; color:#fff;">${a.aspecting_planet}</td>
-                    <td style="padding:5px; color:#fbbf24;">${a.target_planet}</td>
-                    <td style="padding:5px;">${a.orb !== undefined ? a.orb + '°' : '2.1°'}</td>
-                    <td style="padding:5px; color:#4ade80;">${a.effective_strength || a.strength_percentage || 80}%</td>
+                html += `<tr style="border-bottom:1px solid #e2e8f0;">
+                    <td style="padding:5px; font-weight:800; color:#991b1b;">${a.aspecting_planet}</td>
+                    <td style="padding:5px; font-weight:700; color:#0f172a;">${a.target_planet}</td>
+                    <td style="padding:5px; color:#475569;">${a.orb !== undefined ? a.orb + '°' : '2.1°'}</td>
+                    <td style="padding:5px; color:#15803d; font-weight:800;">${a.effective_strength || a.strength_percentage || 80}%</td>
                 </tr>`;
             });
         } else {
-            html += `<tr><td colspan="4" style="padding:10px; color:var(--text-muted); text-align:center;">No major aspects active</td></tr>`;
+            html += `<tr><td colspan="4" style="padding:10px; color:#64748b; text-align:center;">No major aspects active</td></tr>`;
         }
         html += `</tbody></table>`;
         container.innerHTML = html;
     } else if (viewType === 'muhurtas') {
         const chog = data.choghadiya || {};
         const dayChog = chog.day || [];
-        let html = `<div style="font-weight:700; color:#fbbf24; margin-bottom:6px; font-size:0.8rem;">Day Choghadiya Muhurtas:</div>
-        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.78rem;">
-            <thead><tr style="border-bottom:1.5px solid var(--border-color); color:var(--accent-color); font-weight:700;">
+        let html = `<div style="font-weight:800; color:#991b1b; margin-bottom:8px; font-size:0.85rem;">Day Choghadiya Muhurtas:</div>
+        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.78rem; color:#1e293b;">
+            <thead><tr style="border-bottom:2px solid #991b1b; color:#991b1b; font-weight:800;">
                 <th style="padding:5px;">Name</th><th style="padding:5px;">Type</th><th style="padding:5px;">Time Window</th>
             </tr></thead><tbody>`;
         if (dayChog.length > 0) {
             dayChog.forEach(c => {
-                const color = c.type === 'Good' ? '#4ade80' : (c.type === 'Loss/Bad' ? '#f87171' : '#fbbf24');
-                html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                    <td style="padding:5px; font-weight:700; color:#fff;">${c.name}</td>
-                    <td style="padding:5px; color:${color}; font-weight:700;">${c.type}</td>
-                    <td style="padding:5px;">${c.start} - ${c.end}</td>
+                const color = c.type === 'Good' ? '#15803d' : (c.type === 'Loss/Bad' ? '#b91c1c' : '#991b1b');
+                html += `<tr style="border-bottom:1px solid #e2e8f0;">
+                    <td style="padding:5px; font-weight:800; color:#991b1b;">${c.name}</td>
+                    <td style="padding:5px; color:${color}; font-weight:800;">${c.type}</td>
+                    <td style="padding:5px; color:#334155; font-weight:600;">${c.start} - ${c.end}</td>
                 </tr>`;
             });
         } else {
-            html += `<tr><td colspan="3" style="padding:10px; color:var(--text-muted); text-align:center;">Choghadiya times calculated for New Delhi</td></tr>`;
+            html += `<tr><td colspan="3" style="padding:10px; color:#64748b; text-align:center;">Choghadiya times calculated for New Delhi</td></tr>`;
         }
         html += `</tbody></table>`;
         container.innerHTML = html;

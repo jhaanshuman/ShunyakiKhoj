@@ -388,17 +388,17 @@ window.__h82AlnkH6D91__("WyJwdWItMTM0MjE4OTU3NDg1ODY3MiIsW251bGwsbnVsbCxudWxsLCJ
                 </div>
                 
                 <!-- Side-by-Side Wrapper: Chart on Left, Tabular Control Selector on Right -->
-                <div style="display: flex; flex-direction: row; gap: 20px; align-items: flex-start; width: 100%; box-sizing: border-box; flex-wrap: wrap; justify-content: center; margin: 0 auto;">
+                <div style="display: grid; grid-template-columns: minmax(320px, 390px) 1fr; gap: 20px; align-items: start; width: 100%; box-sizing: border-box; margin: 0 auto;">
                     <!-- Left Side: SVG Chart -->
-                    <div id="lagnaChartContainer" style="flex: 0 0 380px; max-width: 100%; min-height: 250px; background: #0f172a; border-radius: 10px; border: 1px solid #334155; padding: 10px; box-sizing: border-box; display: flex; justify-content: center; align-items: center;">
+                    <div id="lagnaChartContainer" style="width: 100%; min-height: 380px; background: #0f172a; border-radius: 10px; border: 1.5px solid #334155; padding: 10px; box-sizing: border-box; display: flex; justify-content: center; align-items: center;">
                         <!-- SVG drawn dynamically -->
                     </div>
                     
                     <!-- Right Side: Dropdown Selector & Tabular Data Display -->
-                    <div style="flex: 1 1 500px; max-width: 900px; margin: 0 auto; text-align: left; background: rgba(0,0,0,0.15); border-radius: 10px; border: 1px solid #334155; padding: 12px; box-sizing: border-box;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
-                            <label for="selPanchangTabularView" style="font-size: 0.82rem; font-weight: 700; color: var(--accent-color);">📋 Tabular Dataset:</label>
-                            <select id="selPanchangTabularView" onchange="renderPanchangTabularView()" style="background:#0d1117; border:1px solid #334155; color:#fbbf24; border-radius:6px; padding:4px 8px; font-size:0.8rem; font-weight:700;">
+                    <div style="width: 100%; margin: 0 auto; text-align: left; background: #ffffff; border-radius: 10px; border: 1.5px solid #cbd5e1; padding: 14px; box-sizing: border-box; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #991b1b; padding-bottom: 8px;">
+                            <label for="selPanchangTabularView" style="font-size: 0.85rem; font-weight: 800; color: #991b1b;">📋 Tabular Dataset:</label>
+                            <select id="selPanchangTabularView" onchange="renderPanchangTabularView()" style="background:#ffffff; border:1.5px solid #991b1b; color:#991b1b; border-radius:6px; padding:4px 10px; font-size:0.82rem; font-weight:800; outline:none; cursor:pointer;">
                                 <option value="planets">🪐 Planetary Positions & Longitudes</option>
                                 <option value="nakshatra">⭐ Nakshatra & Pada Details</option>
                                 <option value="dignity">👑 Dignity & Avasthas</option>
@@ -407,7 +407,7 @@ window.__h82AlnkH6D91__("WyJwdWItMTM0MjE4OTU3NDg1ODY3MiIsW251bGwsbnVsbCxudWxsLCJ
                                 <option value="muhurtas">⏱️ Choghadiya & Hora Times</option>
                             </select>
                         </div>
-                        <div id="lagnaPlanetsContainer" style="font-size: 0.82rem; max-height: 320px; overflow-y: auto;">
+                        <div id="lagnaPlanetsContainer" style="font-size: 0.82rem; max-height: 380px; overflow-y: auto; color: #1e293b;">
                             <!-- Mapped dynamically based on dropdown selection -->
                         </div>
                     </div>
@@ -693,7 +693,7 @@ window.__h82AlnkH6D91__("WyJwdWItMTM0MjE4OTU3NDg1ODY3MiIsW251bGwsbnVsbCxudWxsLCJ
 <script src="/UserLog/auth.js?v=2.3.0"></script>
 <script src="/geocomplete.js?v=5.3.0"></script>
 <script src="/api_helper.js?v=2.2.0" defer></script>
-<script src="/Features/Astrology/astrology.js?v=7.6.0" defer></script>
+<script src="/Features/Astrology/astrology.js?v=7.7.0" defer></script>
 <script src="/Features/Astrology/astrologyView.js?v=7.2.0" defer></script>
 <script src="/Features/Dictionary/dictionaryView.js?v=2.2.0" defer></script>
 <script src="/Static/wisdomView.js?v=6.4.0" defer></script>
