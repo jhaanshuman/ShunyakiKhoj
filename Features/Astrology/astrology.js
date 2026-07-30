@@ -7005,15 +7005,80 @@ function generateLocalClientEphemerisFallback(payload) {
         d1_chart: d1_chart,
         divisional_charts: divisional_charts,
         panchang: {
-            'Tithi (तिथि)': 'Shukla Paksha',
-            'Nakshatra (নক্ষত্র)': d1_chart.Moon.Nakshatra,
-            'Yoga (যোগ)': 'Siddha',
+            tithi: "Shukla Pratipada",
+            tithis_list: [{ name: "Shukla Pratipada", hour: 0, time: "05:33 AM" }],
+            nakshatra: d1_chart.Moon.Nakshatra || "Pushya",
+            nakshatras_list: [{ name: d1_chart.Moon.Nakshatra || "Pushya", hour: 0, time: "05:33 AM" }],
+            yoga: "Siddhi",
+            yogas_list: [{ name: "Siddhi", hour: 0, time: "05:33 AM" }],
+            karana: "Bava",
+            karanas_list: [{ name: "Bava", hour: 0, time: "05:33 AM" }],
+            vara: "Ravivara",
+            month: "Ashadha",
+            paksha: "Shukla",
+            sunrise: "05:33",
+            sunset: "19:22",
+            'Tithi (तिथि)': 'Shukla Pratipada',
+            'Nakshatra (নক্ষত্র)': d1_chart.Moon.Nakshatra || 'Pushya',
+            'Yoga (যোগ)': 'Siddhi',
             'Karana (করণ)': 'Bava',
-            'Vara (বার)': 'Wednesday',
-            'Sunrise (সূর্যোদয়)': '06:00 AM',
-            'Sunset (সূর্যাস্ত)': '06:00 PM'
+            'Vara (বার)': 'Ravivara',
+            'Sunrise (সূর্যোদয়)': '05:33 AM',
+            'Sunset (সূর্যাস্ত)': '07:22 PM'
         },
-        moon_nakshatra: d1_chart.Moon.Nakshatra,
+        choghadiya: {
+            day: [
+                { name: 'Labh', quality: 'Good', start: '05:33', end: '07:16' },
+                { name: 'Amrit', quality: 'Good', start: '07:16', end: '09:00' },
+                { name: 'Kaal', quality: 'Bad', start: '09:00', end: '10:43' },
+                { name: 'Shubh', quality: 'Good', start: '10:43', end: '12:27' },
+                { name: 'Rog', quality: 'Bad', start: '12:27', end: '14:10' },
+                { name: 'Udveg', quality: 'Bad', start: '14:10', end: '15:54' },
+                { name: 'Chal', quality: 'Good', start: '15:54', end: '17:38' },
+                { name: 'Labh', quality: 'Good', start: '17:38', end: '19:22' }
+            ],
+            night: [
+                { name: 'Udveg', quality: 'Bad', start: '19:22', end: '20:38' },
+                { name: 'Shubh', quality: 'Good', start: '20:38', end: '21:54' },
+                { name: 'Amrit', quality: 'Good', start: '21:54', end: '23:10' },
+                { name: 'Chal', quality: 'Good', start: '23:10', end: '00:26' },
+                { name: 'Rog', quality: 'Bad', start: '00:26', end: '01:42' },
+                { name: 'Kaal', quality: 'Bad', start: '01:42', end: '02:58' },
+                { name: 'Labh', quality: 'Good', start: '02:58', end: '04:14' },
+                { name: 'Udveg', quality: 'Bad', start: '04:14', end: '05:33' }
+            ]
+        },
+        hora: {
+            day: [
+                { lord: 'Sun', indian: 'Surya Hora', start: '05:33', end: '06:42' },
+                { lord: 'Venus', indian: 'Shukra Hora', start: '06:42', end: '07:51' },
+                { lord: 'Mercury', indian: 'Budha Hora', start: '07:51', end: '09:00' },
+                { lord: 'Moon', indian: 'Chandra Hora', start: '09:00', end: '10:09' },
+                { lord: 'Saturn', indian: 'Shani Hora', start: '10:09', end: '11:18' },
+                { lord: 'Jupiter', indian: 'Guru Hora', start: '11:18', end: '12:27' },
+                { lord: 'Mars', indian: 'Mangala Hora', start: '12:27', end: '13:36' },
+                { lord: 'Sun', indian: 'Surya Hora', start: '13:36', end: '14:45' },
+                { lord: 'Venus', indian: 'Shukra Hora', start: '14:45', end: '15:54' },
+                { lord: 'Mercury', indian: 'Budha Hora', start: '15:54', end: '17:03' },
+                { lord: 'Moon', indian: 'Chandra Hora', start: '17:03', end: '18:12' },
+                { lord: 'Saturn', indian: 'Shani Hora', start: '18:12', end: '19:22' }
+            ],
+            night: [
+                { lord: 'Jupiter', indian: 'Guru Hora', start: '19:22', end: '20:13' },
+                { lord: 'Mars', indian: 'Mangala Hora', start: '20:13', end: '21:04' },
+                { lord: 'Sun', indian: 'Surya Hora', start: '21:04', end: '21:55' },
+                { lord: 'Venus', indian: 'Shukra Hora', start: '21:55', end: '22:46' },
+                { lord: 'Mercury', indian: 'Budha Hora', start: '22:46', end: '23:37' },
+                { lord: 'Moon', indian: 'Chandra Hora', start: '23:37', end: '00:28' },
+                { lord: 'Saturn', indian: 'Shani Hora', start: '00:28', end: '01:19' },
+                { lord: 'Jupiter', indian: 'Guru Hora', start: '01:19', end: '02:10' },
+                { lord: 'Mars', indian: 'Mangala Hora', start: '02:10', end: '03:01' },
+                { lord: 'Sun', indian: 'Surya Hora', start: '03:01', end: '03:52' },
+                { lord: 'Venus', indian: 'Shukra Hora', start: '03:52', end: '04:43' },
+                { lord: 'Mercury', indian: 'Budha Hora', start: '04:43', end: '05:33' }
+            ]
+        },
+        moon_nakshatra: d1_chart.Moon.Nakshatra || 'Pushya',
         moon_lon: sidLons['Moon'],
         shadbala: {
             'Sun': 480.25, 'Moon': 390.11, 'Mars': 320.45, 'Mercury': 415.82, 'Jupiter': 490.95, 'Venus': 365.12, 'Saturn': 310.23
