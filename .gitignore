@@ -26,3 +26,11 @@ env/
 
 # Local log files
 *.log
+
+# Large database & local data dump files
+*.db
+Data/
+scratch/
+master_horoscope_v5_output.json
+lighthouse_seo.json
+
