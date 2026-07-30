@@ -102,6 +102,10 @@ if (!$conn) {
             @mysqli_query($conn, "ALTER TABLE users ADD COLUMN $col_def");
         }
     }
+
+    // Force columns to LONGTEXT so large JSON engine payloads never get truncated
+    @mysqli_query($conn, "ALTER TABLE users MODIFY COLUMN cached_kundali_json LONGTEXT;");
+    @mysqli_query($conn, "ALTER TABLE users MODIFY COLUMN kundali_analytics LONGTEXT;");
 }
 
 function db_query($sql) {

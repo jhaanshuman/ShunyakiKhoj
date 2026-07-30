@@ -1011,7 +1011,10 @@ window.showKundaliReadyToast = showKundaliReadyToast;
         saveForm.append('action', 'save_kundali_cache');
         saveForm.append('username', username);
         saveForm.append('raw_json', rawJson);
-        fetch(authBase, { method: 'POST', body: saveForm }).catch(() => {});
+        fetch(authBase, { method: 'POST', body: saveForm })
+            .then(r => r.json())
+            .then(d => console.log('[Kundali Cache] Saved raw JSON to MySQL users.cached_kundali_json:', d.message || d.error))
+            .catch(err => console.error('[Kundali Cache] Error saving raw JSON:', err));
 
         // Save distinct calculated analytics payload to users.kundali_analytics
         const saveAnalyticsForm = new FormData();
