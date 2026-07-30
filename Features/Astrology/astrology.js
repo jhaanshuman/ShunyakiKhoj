@@ -810,6 +810,9 @@ window.switchTab = function switchTab(evt, tabId) {
     }
 };
 
+var switchTopTab = window.switchTopTab;
+var switchTab = window.switchTab;
+
 function applyLayoutStyles(tab) {
     const leftFormCard = document.querySelector('#personalKundliSection .dashboard-grid > div:first-child');
     const outputCard = document.getElementById('outputCard');

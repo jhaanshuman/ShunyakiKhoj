@@ -134,10 +134,10 @@ function renderAstrologyView() {
 
     <!-- Top Tabs for switching sections -->
     <div class="top-nav-tabs" style="margin-bottom: 20px;">
-        <button class="top-tab-btn active" onclick="switchTopTab(event, 'personalKundliSection')">Personalized Kundli</button>
-        <button class="top-tab-btn" onclick="switchTopTab(event, 'gocharSection')">Graha Gochar (Transits)</button>
-        <button class="top-tab-btn" onclick="switchTopTab(event, 'milanSection')">💞 Kundli Milan</button>
-        <button class="top-tab-btn" onclick="switchTopTab(event, 'prashnaSection')">🔮 Prashna Kundali</button>
+        <button class="top-tab-btn active" onclick="if(typeof window.switchTopTab==='function'){window.switchTopTab(event, 'personalKundliSection');}else if(typeof switchTopTab==='function'){switchTopTab(event, 'personalKundliSection');}">Personalized Kundli</button>
+        <button class="top-tab-btn" onclick="if(typeof window.switchTopTab==='function'){window.switchTopTab(event, 'gocharSection');}else if(typeof switchTopTab==='function'){switchTopTab(event, 'gocharSection');}">Graha Gochar (Transits)</button>
+        <button class="top-tab-btn" onclick="if(typeof window.switchTopTab==='function'){window.switchTopTab(event, 'milanSection');}else if(typeof switchTopTab==='function'){switchTopTab(event, 'milanSection');}">💞 Kundli Milan</button>
+        <button class="top-tab-btn" onclick="if(typeof window.switchTopTab==='function'){window.switchTopTab(event, 'prashnaSection');}else if(typeof switchTopTab==='function'){switchTopTab(event, 'prashnaSection');}">🔮 Prashna Kundali</button>
     </div>
 
     <!-- 1. Personalized Kundli Section -->
