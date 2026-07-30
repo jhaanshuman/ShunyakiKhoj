@@ -135,20 +135,8 @@ body {
     color: var(--text-color);
 }
 
-button,
-input,
-select{
-
-    background:rgba(255,252,220,.55);
-
-    border:2px solid #d79b18;
-
-    color:#5b3500;
-
-    backdrop-filter:blur(14px);
-
-    border-radius:10px;
-
+button,input,select{
+    background:rgba(255,252,220,.55);border:2px solid #d79b18;color:#5b3500;backdrop-filter:blur(14px);border-radius:10px;
 }
 
 button:hover{
@@ -195,33 +183,13 @@ button:hover{
 
 }
 
-.glass-card::before{
-
-    content:"";
-
-    position:absolute;
-    inset:0;
-
-    background:linear-gradient(
-        115deg,
-        transparent 20%,
-        rgba(255,255,255,.55) 45%,
-        transparent 70%
-    );
-
-    transform:translateX(-150%);
-    animation:goldShine 8s linear infinite;
-
-    pointer-events:none;
-
-}
-
-@keyframes goldShine{
-
-    to{
-        transform:translateX(150%);
-    }
-
+.glass-card::before,
+.status-header-card::before,
+.glass-card-gold::before {
+    display: none !important;
+    content: none !important;
+    animation: none !important;
+    background: none !important;
 }
 
 .glass-card::after {
@@ -301,18 +269,6 @@ button:hover{
 
 #headerFestivalBar {
     display: none !important;
-}
-
-.status-header-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(from 0deg, transparent, rgba(255, 153, 51, 0.03), transparent, rgba(212, 175, 55, 0.03), transparent);
-    animation: rotate-glow 8s linear infinite;
-    pointer-events: none;
 }
 
 @keyframes rotate-glow {
@@ -4874,5 +4830,56 @@ input[name*="place"]:focus {
     border-color: #16a34a !important;
     box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2) !important;
     background-color: #ffffff !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   USER CUSTOM DESIGN SPECIFICATIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* 1. Limit content sections (except top header and bottom site footer) to 80% width aligned to center */
+.main-portal-container,
+.astrology-container,
+#spaViewport,
+.container.main-portal-container {
+    width: 80% !important;
+    max-width: 80% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+}
+
+/* 2. Change about-panchang-box background to #d4af37 (warm Vedic gold) with dark text */
+.about-panchang-box,
+.about-panchang-box:hover,
+.about-panchang-box.expanded,
+.astrology-container .about-panchang-box {
+    background: #d4af37 !important;
+    color: #1f2937 !important;
+    border: 1.5px solid #b89628 !important;
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3) !important;
+}
+
+.about-panchang-box h3,
+.about-panchang-box h4,
+.about-panchang-box p,
+.about-panchang-box span,
+.about-panchang-box li,
+.astrology-container .about-panchang-box h3,
+.astrology-container .about-panchang-box p {
+    color: #1f2937 !important;
+}
+
+/* 3. Permanently remove floating ad elements and orange floating bottom borders */
+.ad-main-box,
+.ad-container,
+.adsbygoogle,
+ins.adsbygoogle,
+div[class*="ad-box"] {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    overflow: hidden !important;
 }
 
