@@ -1455,14 +1455,15 @@ window.calculateMilan = async function calculateMilan() {
                     `;
                     body.appendChild(tr);
                 });
-                alert("Match Making failed: " + data.detail);
             }
-        } catch (e) {
-            console.error(e);
-            alert("Error executing Match Making API.");
+        } else {
+            alert("Match Making failed: " + (data.detail || data.error || 'Server error'));
         }
-    });
-}
+    } catch (e) {
+        console.error(e);
+        alert("Error executing Match Making API.");
+    }
+};
 
 // ========================================
 // PRASHNA KUNDALI (Horary Astrology)
