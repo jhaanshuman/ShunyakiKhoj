@@ -473,6 +473,36 @@ if ($action === "forgot_lookup" || $action === "reset_credentials") {
     exit;
 }
 
+/* VISITOR COUNT */
+if ($action === "visitor_count") {
+    @db_query("CREATE TABLE IF NOT EXISTS site_analytics (id INT PRIMARY KEY AUTO_INCREMENT, total_visits INT DEFAULT 1250, unique_visitors INT DEFAULT 480, last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)");
+    $res = db_query("SELECT total_visits, unique_visitors FROM site_analytics WHERE id = 1");
+    $row = $res ? db_fetch($res) : null;
+    
+    if (!$row) {
+        @db_query("INSERT INTO site_analytics (id, total_visits, unique_visitors) VALUES (1, 1251, 481)");
+        $total = 1251;
+        $unique = 481;
+    } else {
+        $total = intval($row['total_visits']) + 1;
+        $unique = intval($row['unique_visitors']);
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+        $visitor_key = 'sk_vis_' . md5($ip . date('Y-m-d'));
+        if (!isset($_COOKIE[$visitor_key])) {
+            setcookie($visitor_key, '1', time() + 86400, '/');
+            $unique += 1;
+        }
+        @db_query("UPDATE site_analytics SET total_visits = $total, unique_visitors = $unique WHERE id = 1");
+    }
+    
+    echo json_encode([
+        "status" => "success",
+        "total_visits" => $total,
+        "unique_visitors" => $unique
+    ]);
+    exit;
+}
+
 /* LOGOUT */
 if ($action === "logout") {
     session_destroy();

@@ -1410,7 +1410,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (uniqueEl) uniqueEl.innerText = Number(uniqueVisitors).toLocaleString();
 
         try {
-            const apiBase = 'https://sanskritai.vercel.app/api/visitor_count';
+            const apiBase = '/UserLog/auth.php?action=visitor_count';
             const res = await fetch(apiBase, { method: 'GET' }).catch(() => null);
             if (res && res.ok) {
                 const data = await res.json().catch(() => null);
