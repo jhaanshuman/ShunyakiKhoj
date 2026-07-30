@@ -404,7 +404,7 @@
                 <button class="auth-close" onclick="closeAuth()">✕</button>
                 <h2 id="authTitle">Sign Up</h2>
                 <input id="signupUsername" placeholder="User Name" style="width:100%; margin-bottom:10px; padding:10px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#fff;">
-                <input id="signupEmail" placeholder="Email" style="width:100%; margin-bottom:10px; padding:10px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#fff;">
+                <input id="signupEmail" placeholder="example@ex.ex" style="width:100%; margin-bottom:10px; padding:10px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#fff;">
                 <input id="signupPassword" type="password" placeholder="Password" style="width:100%; margin-bottom:15px; padding:10px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#fff;">
                 <button class="primary-btn" onclick="signup()" style="width:100%; background:#a23922; border:none; padding:10px; font-weight:700; color:#fff; border-radius:6px; cursor:pointer;">Register Account</button>
             `;
