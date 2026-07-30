@@ -2504,10 +2504,10 @@ function renderPanchang(bodyId, panchang, regional) {
                 </div>
             </div>
 
-            <!-- Double Column: Panchaka Rahita Muhurta vs Udaya Lagna -->
-            <div class="drik-panchang-grid-double" style="width: 100%;">
+            <!-- Double Column: Panchaka Rahita Muhurta vs Udaya Lagna Side by Side -->
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; width: 100%; margin-top: 15px;">
                 <!-- Left: Panchaka Rahita Muhurta -->
-                <div class="drik-card">
+                <div class="drik-card" style="flex: 1 1 48%; min-width: 300px;">
                     <div class="drik-card-title">⚖️ Panchaka Rahita Muhurta for the day</div>
                     <div style="font-size: 0.9rem; max-height: 380px; overflow-y: auto; color: var(--text-color); padding-right: 5px;">
                         <table class="drik-table">
@@ -2530,7 +2530,7 @@ function renderPanchang(bodyId, panchang, regional) {
                 </div>
 
                 <!-- Right: Udaya Lagna -->
-                <div class="drik-card">
+                <div class="drik-card" style="flex: 1 1 48%; min-width: 300px;">
                     <div class="drik-card-title">🧭 Udaya Lagna Muhurta for the day</div>
                     <div style="font-size: 0.9rem; max-height: 380px; overflow-y: auto; color: var(--text-color); padding-right: 5px;">
                         <table class="drik-table">
@@ -2553,29 +2553,34 @@ function renderPanchang(bodyId, panchang, regional) {
                 </div>
             </div>
 
-            <!-- Chandrabalam & Tarabalam Lists -->
-            <div class="drik-panchang-grid-double" style="width: 100%;">
-                <div class="drik-card">
-                    <div class="drik-card-title">🌓 Chandrabalam Strength</div>
-                    <div style="font-size: 0.9rem; line-height: 1.5; color: #cbd5e1; padding: 10px; box-sizing: border-box;">
-                        ${chandrabalamHTML}
+            <!-- Chandrabalam & Tarabalam Strength Side by Side in Clean White Section -->
+            <div style="background: #ffffff; border-radius: 14px; padding: 22px; margin-top: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1.5px solid #cbd5e1; width: 100%; box-sizing: border-box;">
+                <div style="display: flex; flex-wrap: wrap; gap: 20px; width: 100%;">
+                    <div style="flex: 1 1 48%; min-width: 300px; background: #f8fafc; padding: 16px; border-radius: 10px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                        <h4 style="color: #0f172a; margin: 0 0 12px 0; font-size: 1.05rem; font-weight: 800; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px;">🌓 Chandrabalam Strength</h4>
+                        <div style="font-size: 0.9rem; line-height: 1.6; color: #1e293b;">
+                            ${chandrabalamHTML}
+                        </div>
                     </div>
-                </div>
-                <div class="drik-card">
-                    <div class="drik-card-title">⭐ Tarabalam Strength</div>
-                    <div style="font-size: 0.9rem; line-height: 1.5; color: #cbd5e1; padding: 10px; box-sizing: border-box;">
-                        ${tarabalamHTML}
+                    <div style="flex: 1 1 48%; min-width: 300px; background: #f8fafc; padding: 16px; border-radius: 10px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                        <h4 style="color: #0f172a; margin: 0 0 12px 0; font-size: 1.05rem; font-weight: 800; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px;">⭐ Tarabalam Strength</h4>
+                        <div style="font-size: 0.9rem; line-height: 1.6; color: #1e293b;">
+                            ${tarabalamHTML}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     `;
     
-    // Call the visual SVG timeline renderer
-    if (lastCalculatedData && lastCalculatedData.choghadiya) {
+    // Call the visual SVG timeline renderer unconditionally
+    try {
         const dateValStr2 = document.getElementById('panchangDateInput') ? document.getElementById('panchangDateInput').value : new Date().toISOString().split('T')[0];
         const weekdayIdx2 = new Date(dateValStr2).getDay();
-        renderDrikTimelineSVG(panchang, lastCalculatedData.choghadiya, weekdayIdx2, ascSign, ascDeg);
+        const chogData = (lastCalculatedData && lastCalculatedData.choghadiya) || panchang.choghadiya || { day: [], night: [] };
+        renderDrikTimelineSVG(panchang, chogData, weekdayIdx2, ascSign, ascDeg);
+    } catch(eHora) {
+        console.warn("Hora SVG Timeline Error:", eHora);
     }
     
     // Update the unified header subtitle
@@ -6469,11 +6474,11 @@ window.renderPanchangTabularView = function() {
             if (d1[p]) {
                 const info = d1[p];
                 const deg = typeof info.degree === 'number' ? info.degree.toFixed(2) + '°' : (info.degree || '0.00°');
-                html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                    <td style="padding:5px 6px; font-weight:700; color:#fff;">${p}</td>
-                    <td style="padding:5px 6px; color:#fbbf24;">${info.sign || info.signName || 'Aries'}</td>
-                    <td style="padding:5px 6px;">${deg}</td>
-                    <td style="padding:5px 6px;">${info.nakshatra || 'Pushya'}</td>
+                html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
+                    <td style="padding:6px; font-weight:800; color:#1e3a8a;">${p}</td>
+                    <td style="padding:6px; font-weight:800; color:#15803d;">${info.sign || info.signName || 'Aries'}</td>
+                    <td style="padding:6px; font-weight:700; color:#475569;">${deg}</td>
+                    <td style="padding:6px; font-weight:700; color:#334155;">${info.nakshatra || 'Pushya'}</td>
                 </tr>`;
             }
         });
@@ -6488,11 +6493,11 @@ window.renderPanchangTabularView = function() {
         planetKeys.forEach(p => {
             if (d1[p]) {
                 const info = d1[p];
-                html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                    <td style="padding:5px 6px; font-weight:700; color:#fff;">${p}</td>
-                    <td style="padding:5px 6px; color:#fbbf24;">${info.nakshatra || 'Pushya'}</td>
-                    <td style="padding:5px 6px;">${info.pada || 1}</td>
-                    <td style="padding:5px 6px;">${info.nakshatra_lord || 'Saturn'}</td>
+                html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
+                    <td style="padding:6px; font-weight:800; color:#1e3a8a;">${p}</td>
+                    <td style="padding:6px; font-weight:800; color:#15803d;">${info.nakshatra || 'Pushya'}</td>
+                    <td style="padding:6px; font-weight:700; color:#475569;">${info.pada || 1}</td>
+                    <td style="padding:6px; font-weight:700; color:#334155;">${info.nakshatra_lord || 'Saturn'}</td>
                 </tr>`;
             }
         });
@@ -6506,8 +6511,8 @@ window.renderPanchangTabularView = function() {
             </tr></thead><tbody>`;
         ['Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn','Rahu','Ketu'].forEach(p => {
             const dig = dignities[p] || {};
-            html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                <td style="padding:5px 6px; font-weight:700; color:#fff;">${p}</td>
+            html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
+                <td style="padding:6px; font-weight:800; color:#1e3a8a;">${p}</td>
                 <td style="padding:5px 6px; color:#4ade80;">${dig.dignity_state || 'Own Sign'}</td>
                 <td style="padding:5px 6px;">${dig.dignity_score !== undefined ? dig.dignity_score : 75}</td>
             </tr>`;
