@@ -3449,7 +3449,8 @@ window.loadDainikPanchang = async function loadDainikPanchang(dateStr, place) {
         const res = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ date: formattedDate, time: '12:00', place: reqPlace })
+            body: JSON.stringify({ date: formattedDate, time: '12:00', place: reqPlace }),
+            signal: AbortSignal.timeout(3500)
         });
         const data = await res.json();
         if (data.status === 'success') {
@@ -3577,6 +3578,12 @@ window.loadDainikPanchang = async function loadDainikPanchang(dateStr, place) {
             });
             lastCalculatedData = fallbackData;
             populatePanchangUI(fallbackData, dateStr, reqPlace);
+            renderPanchang('panchangBody', fallbackData.panchang, fallbackData.regional);
+            const choghadiyaBody = document.getElementById('choghadiyaBody');
+            if (choghadiyaBody) {
+                renderMuhurtas('choghadiyaBody', 'horaBody', fallbackData.choghadiya, fallbackData.hora);
+            }
+            initScrollAnimations();
         }
     } catch(e) {
         console.warn('loadDainikPanchang fetch error, using local ephemeris fallback:', e);
@@ -3585,6 +3592,12 @@ window.loadDainikPanchang = async function loadDainikPanchang(dateStr, place) {
         });
         lastCalculatedData = fallbackData;
         populatePanchangUI(fallbackData, dateStr, reqPlace);
+        renderPanchang('panchangBody', fallbackData.panchang, fallbackData.regional);
+        const choghadiyaBody = document.getElementById('choghadiyaBody');
+        if (choghadiyaBody) {
+            renderMuhurtas('choghadiyaBody', 'horaBody', fallbackData.choghadiya, fallbackData.hora);
+        }
+        initScrollAnimations();
     }
 }
 
