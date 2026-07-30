@@ -4888,37 +4888,81 @@ div[class*="ad-box"] {
     display: none !important;
 }
 
-/* 5. Spiritual Wisdom Portal text styling inside white background cards */
-#wisdomViewContainer,
-#wisdomViewContainer .glass-card,
-#wisdomViewContainer .modal-content,
-#wisdomViewContainer .items-grid,
-#wisdomViewContainer .category-card,
-#wisdomViewContainer .modal-body,
-#wisdomViewContainer .item-card {
-    color: #1e293b !important;
+/* 5. Spiritual Wisdom Dual Font Color System */
+
+/* SYSTEM A: Blue Colored Tiles & Dark Cards (Light Green, Light Yellow, Light Orange, Light Cream) */
+#wisdomViewContainer .item-card,
+#wisdomViewContainer .category-tile,
+#wisdomViewContainer .hero-content,
+#wisdomViewContainer .items-header {
+    color: #f8fafc !important;
 }
 
-#wisdomViewContainer p,
-#wisdomViewContainer span,
-#wisdomViewContainer h1,
-#wisdomViewContainer h2,
-#wisdomViewContainer h3,
-#wisdomViewContainer h4,
-#wisdomViewContainer div,
-#wisdomViewContainer .section-title,
-#wisdomViewContainer .section-subtitle,
-#wisdomViewContainer .items-title,
-#wisdomViewContainer .items-count,
-#wisdomViewContainer .modal-body * {
-    color: #1e293b !important;
-}
-
-#wisdomViewContainer .om-symbol,
+/* Tile & Item Titles: Vibrant Light Yellow / Gold */
+#wisdomViewContainer .item-name,
+#wisdomViewContainer .tile-name,
 #wisdomViewContainer .hero-title,
-#wisdomViewContainer .hero-subtitle,
-#wisdomViewContainer .stat-number,
-#wisdomViewContainer .stat-label {
-    color: #0f172a !important;
+#wisdomViewContainer .section-title,
+#wisdomViewContainer .items-title {
+    color: #fde047 !important; /* Vibrant Light Yellow */
+    font-weight: 700 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
 }
+
+/* Item Deity / Sub-headings: Light Emerald Green */
+#wisdomViewContainer .item-deity,
+#wisdomViewContainer .tile-icon,
+#wisdomViewContainer .hero-om {
+    color: #86efac !important; /* Light Green */
+    font-weight: 700 !important;
+}
+
+/* Item Tags, IDs & Badges: Light Orange */
+#wisdomViewContainer .item-tag,
+#wisdomViewContainer .item-id,
+#wisdomViewContainer .tile-count,
+#wisdomViewContainer .items-count {
+    color: #fed7aa !important; /* Light Orange */
+    background: rgba(251, 146, 60, 0.15) !important;
+    border: 1px solid rgba(251, 146, 60, 0.3) !important;
+}
+
+/* Item Descriptions & Subtitles: Soft Off-White / Cream */
+#wisdomViewContainer .item-description,
+#wisdomViewContainer .tile-description,
+#wisdomViewContainer .hero-subtitle,
+#wisdomViewContainer .section-subtitle {
+    color: #e2e8f0 !important; /* Crisp Light Off-White */
+}
+
+/* SYSTEM B: White Background Section ("About ShunyakiKhoj" & Modals) */
+#wisdomViewContainer #about .about-content,
+#wisdomViewContainer #about .glass-card,
+#wisdomViewContainer .modal-content,
+#wisdomViewContainer .glass-modal,
+#wisdomViewContainer .modal-body {
+    background: #ffffff !important;
+    color: #1e293b !important;
+    border: 1.5px solid #e2e8f0 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+#wisdomViewContainer #about h2,
+#wisdomViewContainer #about h3,
+#wisdomViewContainer #about h4,
+#wisdomViewContainer .modal-content h2,
+#wisdomViewContainer .modal-content h3 {
+    color: #0f172a !important; /* Deep Dark Navy */
+    font-weight: 800 !important;
+}
+
+#wisdomViewContainer #about p,
+#wisdomViewContainer #about span,
+#wisdomViewContainer #about li,
+#wisdomViewContainer .modal-body p,
+#wisdomViewContainer .modal-body span,
+#wisdomViewContainer .modal-body div {
+    color: #334155 !important; /* High-contrast Dark Charcoal */
+}
+
 
