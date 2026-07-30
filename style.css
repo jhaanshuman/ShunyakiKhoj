@@ -4883,3 +4883,42 @@ div[class*="ad-box"] {
     overflow: hidden !important;
 }
 
+/* 4. Hide astrology-settings-bar as settings are managed by astrologySettingsSidebar */
+.astrology-settings-bar {
+    display: none !important;
+}
+
+/* 5. Spiritual Wisdom Portal text styling inside white background cards */
+#wisdomViewContainer,
+#wisdomViewContainer .glass-card,
+#wisdomViewContainer .modal-content,
+#wisdomViewContainer .items-grid,
+#wisdomViewContainer .category-card,
+#wisdomViewContainer .modal-body,
+#wisdomViewContainer .item-card {
+    color: #1e293b !important;
+}
+
+#wisdomViewContainer p,
+#wisdomViewContainer span,
+#wisdomViewContainer h1,
+#wisdomViewContainer h2,
+#wisdomViewContainer h3,
+#wisdomViewContainer h4,
+#wisdomViewContainer div,
+#wisdomViewContainer .section-title,
+#wisdomViewContainer .section-subtitle,
+#wisdomViewContainer .items-title,
+#wisdomViewContainer .items-count,
+#wisdomViewContainer .modal-body * {
+    color: #1e293b !important;
+}
+
+#wisdomViewContainer .om-symbol,
+#wisdomViewContainer .hero-title,
+#wisdomViewContainer .hero-subtitle,
+#wisdomViewContainer .stat-number,
+#wisdomViewContainer .stat-label {
+    color: #0f172a !important;
+}
+

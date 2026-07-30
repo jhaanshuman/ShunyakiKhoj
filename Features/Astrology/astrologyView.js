@@ -83,75 +83,7 @@ function renderAstrologyView() {
         </div>
     </div>
 
-    <!-- Settings & Customization Header Bar with Pen Edit Icon at Left End -->
-    <div class="astrology-settings-bar" style="display: flex; gap: 10px; flex-wrap: wrap; background: rgba(15,18,29,0.8); border: 1px solid rgba(255,255,255,0.08); padding: 10px 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.8rem; box-sizing: border-box; width: 100%; align-items: center;">
-        <button class="btn-edit-details" onclick="if(typeof window.toggleBirthModal==='function'){window.toggleBirthModal(true);}" title="Edit Birth Details" style="padding: 6px 12px; background: linear-gradient(135deg, #a23922 0%, #7c1a08 100%); color: #ffffff; border: 1px solid #f59e0b; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.82rem; margin-right: 5px;">✏️ Edit Details</button>
-        
-        <div style="display:flex; flex-direction:column; min-width:110px;">
-            <label style="font-weight:600; color:var(--text-muted); margin-bottom:4px;">Chart Style</label>
-            <select id="selChartStyle" style="padding:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); border-radius:4px;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
-                <option value="North" selected>North Indian (Lagna)</option>
-                <option value="South">South Indian</option>
-            </select>
-        </div>
-        <div style="display:flex; flex-direction:column; min-width:110px;">
-            <label style="font-weight:600; color:var(--text-muted); margin-bottom:4px;">Ayanamsa</label>
-            <select id="selAyanamsa" style="padding:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); border-radius:4px;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
-                <option value="Lahiri" selected>Lahiri (Chitra Paksha)</option>
-                <option value="Raman">B.V. Raman</option>
-                <option value="KP">Krishnamurti (KP)</option>
-                <option value="Tropical">Tropical (No Ayanamsa)</option>
-                <option value="Fagan">Fagan-Bradley</option>
-                <option value="Pushya">Pushya-paksha</option>
-            </select>
-        </div>
-        <div style="display:flex; flex-direction:column; min-width:100px;">
-            <label style="font-weight:600; color:var(--text-muted); margin-bottom:4px;">Rahu/Ketu</label>
-            <select id="selNode" style="padding:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); border-radius:4px;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
-                <option value="True" selected>True Node</option>
-                <option value="Mean">Mean Node</option>
-            </select>
-        </div>
-        <div style="display:flex; flex-direction:column; min-width:100px;">
-            <label style="font-weight:600; color:var(--text-muted); margin-bottom:4px;">Rashi Numbers</label>
-            <select id="selRashiVisibility" style="padding:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); border-radius:4px;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
-                <option value="Visible" selected>Visible</option>
-                <option value="Hidden">Hidden</option>
-            </select>
-        </div>
-        <div style="display:flex; flex-direction:column; min-width:100px;">
-            <label style="font-weight:600; color:var(--text-muted); margin-bottom:4px;">Outer Planets</label>
-            <select id="selOuterPlanets" style="padding:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); border-radius:4px;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
-                <option value="Hidden" selected>Hidden</option>
-                <option value="Visible">Visible</option>
-            </select>
-        </div>
-        <div style="display:flex; flex-direction:column; min-width:100px;">
-            <label style="font-weight:600; color:var(--text-muted); margin-bottom:4px;">Terminology</label>
-            <select id="selTerminology" style="padding:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); border-radius:4px;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
-                <option value="Vedic" selected>Vedic (Guru/Shukra)</option>
-                <option value="Western">Western (Jup/Ven)</option>
-            </select>
-        </div>
-        <div style="display:flex; flex-direction:column; min-width:110px;">
-            <label style="font-weight:600; color:var(--text-muted); margin-bottom:4px;">House System</label>
-            <select id="selHouseSystem" style="padding:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); border-radius:4px;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
-                <option value="Whole Sign" selected>Whole Sign</option>
-                <option value="Equal">Equal House</option>
-                <option value="Sripati">Sripati</option>
-                <option value="Bhava Chalit">Bhava Chalit</option>
-                <option value="KP">KP System</option>
-                <option value="Placidus">Placidus</option>
-            </select>
-        </div>
-        <div style="display:flex; flex-direction:column; min-width:110px;">
-            <label style="font-weight:600; color:var(--text-muted); margin-bottom:4px;">Longitude Format</label>
-            <select id="selLongStyle" style="padding:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); border-radius:4px;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
-                <option value="DMS" selected>Deg-Min-Sec</option>
-                <option value="Decimal">Decimal Degrees</option>
-            </select>
-        </div>
-    </div>
+    <!-- Settings managed exclusively via left collapsible astrologySettingsSidebar -->
 
     <!-- Center Screen Pop-up Modal for Birth Details -->
     <div id="birthDetailsModal" class="modal-backdrop" onclick="if(event.target===this) if(typeof window.toggleBirthModal==='function') window.toggleBirthModal(false);" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); z-index: 9999; justify-content: center; align-items: center; padding: 15px; box-sizing: border-box;">
@@ -465,7 +397,7 @@ function renderAstrologyView() {
                     <label for="gocharPlace" style="display:block; margin-bottom:4px; font-weight:600; color:var(--text-color); font-size: 0.85rem;">Place (स्थान)</label>
                     <input type="text" id="gocharPlace" value="New Delhi, India" style="width:100%; padding:8px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); font-size: 0.85rem;">
                 </div>
-                <button class="btn-submit" id="btnGochar" style="width:100%; padding:10px; font-size:0.9rem; font-weight:700; border-radius:6px;">🪐 Cast Transits</button>
+                <button class="btn-submit" id="btnGochar" onclick="if(typeof calculateGochar==='function'){calculateGochar();}else if(typeof window.calculateGochar==='function'){window.calculateGochar();}" style="width:100%; padding:10px; font-size:0.9rem; font-weight:700; border-radius:6px; cursor:pointer;">🪐 Cast Transits</button>
             </div>
 
             <!-- Transit Outputs -->
@@ -550,7 +482,7 @@ function renderAstrologyView() {
                     </div>
                 </div>
 
-                <button class="btn-submit" id="btnMatch" style="width:100%; padding:12px; font-size:1rem; font-weight:700; border-radius:8px;">💞 Calculate Guna Milan</button>
+                <button class="btn-submit" id="btnMatch" onclick="if(typeof calculateMilan==='function'){calculateMilan();}else if(typeof window.calculateMilan==='function'){window.calculateMilan();}" style="width:100%; padding:12px; font-size:1rem; font-weight:700; border-radius:8px; cursor:pointer;">💞 Calculate Guna Milan</button>
             </div>
 
             <!-- Milan Outputs Display Card -->
@@ -631,7 +563,7 @@ function renderAstrologyView() {
                     <input type="text" id="prashnaPlace" value="New Delhi, India" style="width:100%; padding:10px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color);">
                 </div>
 
-                <button class="btn-submit" id="btnPrashna" style="width:100%; padding:12px; font-size:1rem; font-weight:700; border-radius:8px;">🔮 Cast Prashna Chart</button>
+                <button class="btn-submit" id="btnPrashna" onclick="if(typeof calculatePrashna==='function'){calculatePrashna();}else if(typeof window.calculatePrashna==='function'){window.calculatePrashna();}" style="width:100%; padding:12px; font-size:1rem; font-weight:700; border-radius:8px; cursor:pointer;">🔮 Cast Prashna Chart</button>
             </div>
 
             <!-- Prashna Outputs Display Card -->

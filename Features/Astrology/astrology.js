@@ -1294,97 +1294,100 @@ function updateVargaCharts() {
     }
 }
 
-// 2. Gochar Transit Calculation
-const btnGochar = document.getElementById('btnGochar');
-if (btnGochar) {
-    btnGochar.addEventListener('click', async () => {
-        const dateInput = document.getElementById('gocharDate').value;
-        const timeInput = document.getElementById('gocharTime').value;
-        const placeInput = document.getElementById('gocharPlace').value;
+// 2. Gochar Transit Calculation Function (Global)
+window.calculateGochar = async function calculateGochar() {
+    const dateInput = (document.getElementById('gocharDate') || {}).value || new Date().toISOString().split('T')[0];
+    const timeInput = (document.getElementById('gocharTime') || {}).value || '12:00';
+    const placeInput = (document.getElementById('gocharPlace') || {}).value || 'New Delhi, India';
 
-        if (!dateInput || !timeInput || !placeInput) {
-            alert("Please enter all details.");
-            return;
+    if (!dateInput || !timeInput || !placeInput) {
+        alert("Please enter date, time, and location for transit calculation.");
+        return;
+    }
+
+    const formattedDate = dateInput.replace(/-/g, '/');
+    const payload = { date: formattedDate, time: timeInput, place: placeInput };
+
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        if (data.status === 'success' || data.d1_chart) {
+            lastGocharData = data;
+            const card = document.getElementById('gocharOutputCard');
+            if (card) card.style.display = 'block';
+            
+            if (typeof window.updateGocharVargaCharts === 'function') window.updateGocharVargaCharts();
+            if (typeof renderPlacementsGrid === 'function') renderPlacementsGrid('gocharPlanets', data.d1_chart);
+            if (typeof renderPanchang === 'function') renderPanchang('gocharPanchangBody', data.panchang, data.regional);
+            if (typeof renderTransitChoghadiya === 'function') renderTransitChoghadiya(data.choghadiya);
+        } else {
+            alert("Gochar calculation failed: " + (data.detail || data.error || 'Server error'));
         }
+    } catch (e) {
+        console.error("Gochar calculation error:", e);
+        alert("Error executing Gochar API calculation.");
+    }
+};
 
-        const formattedDate = dateInput.replace(/-/g, '/');
-        const payload = { date: formattedDate, time: timeInput, place: placeInput };
+// 3. Match Making Guna Milan Function (Global)
+window.calculateMilan = async function calculateMilan() {
+    const boyDate = (document.getElementById('boyDate') || {}).value || '1995-05-15';
+    const boyTime = (document.getElementById('boyTime') || {}).value || '14:30';
+    const boyPlace = (document.getElementById('boyPlace') || {}).value || 'New Delhi, India';
+    const girlDate = (document.getElementById('girlDate') || {}).value || '1997-08-20';
+    const girlTime = (document.getElementById('girlTime') || {}).value || '08:30';
+    const girlPlace = (document.getElementById('girlPlace') || {}).value || 'New Delhi, India';
 
-        try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const data = await response.json();
-            if (data.status === 'success') {
-                lastGocharData = data;
-                document.getElementById('gocharOutputCard').style.display = 'block';
-                
-                if (typeof window.updateGocharVargaCharts === 'function') window.updateGocharVargaCharts();
-                
-                renderPlacementsGrid('gocharPlanets', data.d1_chart);
-                renderPanchang('gocharPanchangBody', data.panchang, data.regional);
-                renderTransitChoghadiya(data.choghadiya);
-            } else {
-                alert("Gochar failed: " + data.detail);
+    const payload = {
+        boy_date: boyDate.replace(/-/g, '/'),
+        boy_time: boyTime,
+        boy_place: boyPlace,
+        girl_date: girlDate.replace(/-/g, '/'),
+        girl_time: girlTime,
+        girl_place: girlPlace
+    };
+
+    try {
+        const MATCH_API_URL = API_URL.replace('/calculate', '/match');
+        const response = await fetch(MATCH_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        if (data.status === 'success' || data.milan) {
+            const card = document.getElementById('milanOutputCard');
+            if (card) card.style.display = 'block';
+            
+            const bInfo = document.getElementById('boyResultInfo');
+            const gInfo = document.getElementById('girlResultInfo');
+            if (bInfo) bInfo.innerText = `${(data.boy && data.boy.nakshatra) || 'N/A'} (${(data.boy && data.boy.rashi) || 'N/A'})`;
+            if (gInfo) gInfo.innerText = `${(data.girl && data.girl.nakshatra) || 'N/A'} (${(data.girl && data.girl.rashi) || 'N/A'})`;
+            
+            const badge = document.getElementById('milanScoreBadge');
+            if (badge && data.milan) {
+                badge.innerText = `${data.milan.total || 0} / 36 Gunas - ${data.milan.recommendation || 'Compatible'}`;
+                badge.className = `result-badge ${(data.milan.total || 0) >= 18.0 ? 'success' : 'fail'}`;
             }
-        } catch (e) {
-            console.error(e);
-            alert("Error executing Gochar API.");
-        }
-    });
-}
-
-// 3. Match Making Guna Milan
-const btnMatch = document.getElementById('btnMatch');
-if (btnMatch) {
-    btnMatch.addEventListener('click', async () => {
-        const payload = {
-            boy_date: document.getElementById('boyDate').value.replace(/-/g, '/'),
-            boy_time: document.getElementById('boyTime').value,
-            boy_place: document.getElementById('boyPlace').value,
-            girl_date: document.getElementById('girlDate').value.replace(/-/g, '/'),
-            girl_time: document.getElementById('girlTime').value,
-            girl_place: document.getElementById('girlPlace').value
-        };
-
-        try {
-            const MATCH_API_URL = API_URL.replace('/calculate', '/match');
-            const response = await fetch(MATCH_API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const data = await response.json();
-            if (data.status === 'success') {
-                document.getElementById('milanOutputCard').style.display = 'block';
-                
-                document.getElementById('boyResultInfo').innerText = `${data.boy.nakshatra} (${data.boy.rashi})`;
-                document.getElementById('girlResultInfo').innerText = `${data.girl.nakshatra} (${data.girl.rashi})`;
-                
-                const badge = document.getElementById('milanScoreBadge');
-                badge.innerText = `${data.milan.total} / 36 Gunas - ${data.milan.recommendation}`;
-                badge.className = `result-badge ${data.milan.total >= 18.0 ? 'success' : 'fail'}`;
-                
-                const body = document.getElementById('milanTableBody');
+            
+            const body = document.getElementById('milanTableBody');
+            if (body && data.milan) {
                 body.innerHTML = "";
                 const koots = ['varna', 'vashya', 'tara', 'yoni', 'graha_maitri', 'gana', 'bhakoot', 'nadi'];
                 koots.forEach(k => {
-                    const info = data.milan[k];
+                    const info = data.milan[k] || { max: 0, obtained: 0 };
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td style="text-transform: capitalize; padding: 0.75rem 1rem;">${k.replace('_', ' ')}</td>
-                        <td style="padding: 0.75rem 1rem;">${info.max}</td>
-                        <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--accent-gold);">${info.obtained}</td>
+                        <td style="text-transform: capitalize; padding: 0.75rem 1rem; color: #1e293b; font-weight: 700;">${k.replace('_', ' ')}</td>
+                        <td style="padding: 0.75rem 1rem; color: #475569;">${info.max}</td>
+                        <td style="padding: 0.75rem 1rem; font-weight: 700; color: #b83214;">${info.obtained}</td>
                     `;
                     body.appendChild(tr);
                 });
-
-                if (typeof renderMilanAnalysis === 'function') {
-                    renderMilanAnalysis(data);
-                }
-            } else {
                 alert("Match Making failed: " + data.detail);
             }
         } catch (e) {
@@ -2286,7 +2289,7 @@ function renderPanchang(bodyId, panchang, regional) {
     }
     const safePanchang = {
         tithi: panchang.tithi || "Shukla Pratipada",
-        nakshatra: panchang.nakshatra || "Pushya",
+        nakshatra: panchang.nakshatra || "N/A",
         yoga: panchang.yoga || "Siddhi",
         karana: panchang.karana || "Bava",
         vara: panchang.vara || "Ravivara",
@@ -6476,9 +6479,9 @@ window.renderPanchangTabularView = function() {
                 const deg = typeof info.degree === 'number' ? info.degree.toFixed(2) + '°' : (info.degree || '0.00°');
                 html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
                     <td style="padding:6px; font-weight:800; color:#1e3a8a;">${p}</td>
-                    <td style="padding:6px; font-weight:800; color:#15803d;">${info.sign || info.signName || 'Aries'}</td>
+                    <td style="padding:6px; font-weight:800; color:#15803d;">${info.sign || info.signName || 'N/A'}</td>
                     <td style="padding:6px; font-weight:700; color:#475569;">${deg}</td>
-                    <td style="padding:6px; font-weight:700; color:#334155;">${info.nakshatra || 'Pushya'}</td>
+                    <td style="padding:6px; font-weight:700; color:#334155;">${info.nakshatra || 'N/A'}</td>
                 </tr>`;
             }
         });
@@ -6495,7 +6498,7 @@ window.renderPanchangTabularView = function() {
                 const info = d1[p];
                 html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
                     <td style="padding:6px; font-weight:800; color:#1e3a8a;">${p}</td>
-                    <td style="padding:6px; font-weight:800; color:#15803d;">${info.nakshatra || 'Pushya'}</td>
+                    <td style="padding:6px; font-weight:800; color:#15803d;">${info.nakshatra || 'N/A'}</td>
                     <td style="padding:6px; font-weight:700; color:#475569;">${info.pada || 1}</td>
                     <td style="padding:6px; font-weight:700; color:#334155;">${info.nakshatra_lord || 'Saturn'}</td>
                 </tr>`;

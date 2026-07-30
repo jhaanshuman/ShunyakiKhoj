@@ -26,10 +26,10 @@ function renderWisdomView() {
                 </div>
             </div>
             <nav class="main-nav">
-                <a href="../index.html" class="nav-link">← Sanskrit AI</a>
-                <a href="#home" class="nav-link active">Home</a>
-                <a href="#categories" class="nav-link">Categories</a>
-                <a href="#about" class="nav-link">About</a>
+                <a href="javascript:void(0)" onclick="if(typeof switchPortalTab==='function'){switchPortalTab('panchang');}else{window.location.href='/landing.html';}" class="nav-link">← Sanskrit AI</a>
+                <a href="javascript:void(0)" onclick="document.getElementById('home').scrollIntoView({behavior:'smooth'});" class="nav-link active">Home</a>
+                <a href="javascript:void(0)" onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'});" class="nav-link">Categories</a>
+                <a href="javascript:void(0)" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'});" class="nav-link">About</a>
             </nav>
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Search spiritual content...">
