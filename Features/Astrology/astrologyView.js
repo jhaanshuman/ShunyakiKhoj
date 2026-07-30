@@ -380,7 +380,7 @@ function renderAstrologyView() {
     </div>
 
     <!-- 2. Graha Gochar Section -->
-    <div id="gocharSection" class="main-section">
+    <div id="gocharSection" class="main-section" style="display: none;">
         <div class="dashboard-grid" style="display: flex; gap: 20px; align-items: start; box-sizing: border-box; width: 100%;">
             <!-- Transit Input Details -->
             <div class="birth-details-card" style="flex: 1; max-width: 320px; background: var(--card-bg); border: var(--card-border); border-radius: 12px; padding: 20px; box-sizing: border-box;">

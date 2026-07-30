@@ -752,6 +752,64 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+window.switchTopTab = function switchTopTab(evt, sectionId) {
+    const sections = document.getElementsByClassName("main-section");
+    for (let i = 0; i < sections.length; i++) {
+        sections[i].classList.remove("active");
+        sections[i].style.display = "none";
+    }
+    const btns = document.getElementsByClassName("top-tab-btn");
+    for (let i = 0; i < btns.length; i++) {
+        btns[i].classList.remove("active");
+    }
+    const target = document.getElementById(sectionId);
+    if (target) {
+        target.classList.add("active");
+        target.style.display = "block";
+    }
+    if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.add("active");
+    }
+};
+
+window.switchTab = function switchTab(evt, tabId) {
+    if (!evt || !evt.currentTarget) return;
+    const tabContainer = evt.currentTarget.parentElement;
+    if (!tabContainer) return;
+    const parent = tabContainer.parentElement;
+    if (!parent) return;
+    const tabcontents = parent.getElementsByClassName("tab-content");
+    for (let i = 0; i < tabcontents.length; i++) {
+        tabcontents[i].classList.remove("active");
+    }
+    const tablinks = tabContainer.getElementsByClassName("tab-btn");
+    for (let i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+    }
+    const targetTab = document.getElementById(tabId);
+    if (targetTab) targetTab.classList.add("active");
+    evt.currentTarget.classList.add("active");
+
+    // Dynamic form customization based on active tab
+    const titleEl = document.querySelector('#personalKundliSection .glass-card h3');
+    const buttonEl = document.getElementById('btnCalculate');
+    if (titleEl && buttonEl) {
+        if (tabId === 'tabGemstone') {
+            titleEl.textContent = "Enter Details for Gemstones";
+            buttonEl.textContent = "Analyze Gemstones";
+        } else if (tabId === 'tabRudraksha') {
+            titleEl.textContent = "Enter Details for Rudraksha";
+            buttonEl.textContent = "Analyze Rudraksha";
+        } else if (tabId === 'tabPrashna') {
+            titleEl.textContent = "Enter Details for Horary (Prashna)";
+            buttonEl.textContent = "Cast Horary Chart";
+        } else {
+            titleEl.textContent = "Enter Birth Details";
+            buttonEl.textContent = "🔮 Generate Kundali";
+        }
+    }
+};
+
 function applyLayoutStyles(tab) {
     const leftFormCard = document.querySelector('#personalKundliSection .dashboard-grid > div:first-child');
     const outputCard = document.getElementById('outputCard');
