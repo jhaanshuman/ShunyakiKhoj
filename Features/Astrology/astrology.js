@@ -434,8 +434,14 @@ function parseAstrologyTimeStr(tStr) {
 // Initialize dates and parse URL Parameters for direct heading navigation
 window.addEventListener('DOMContentLoaded', () => {
     const today = new Date().toISOString().split('T')[0];
+    const savedPlace = sessionStorage.getItem('savedPanchangPlace') || 'New Delhi, India';
     const gocharDateEl = document.getElementById('gocharDate');
     if (gocharDateEl) gocharDateEl.value = today;
+
+    // Automatically load top Panchang header status card
+    if (typeof loadDainikPanchang === 'function') {
+        loadDainikPanchang(today, savedPlace);
+    }
 
     const params = new URLSearchParams(window.location.search);
     const tab = params.get('tab') || '';
