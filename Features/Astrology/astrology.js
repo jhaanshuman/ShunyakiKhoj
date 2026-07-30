@@ -1058,8 +1058,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+window.toggleBirthModal = function(show) {
+    const modal = document.getElementById('birthDetailsModal');
+    if (!modal) return;
+    if (show === undefined) {
+        show = modal.style.display === 'none' || modal.style.display === '';
+    }
+    modal.style.display = show ? 'flex' : 'none';
+};
+
+window.toggleSettingsSidebar = function(show) {
+    const sidebar = document.getElementById('astrologySettingsSidebar');
+    if (!sidebar) return;
+    if (show === undefined) {
+        show = sidebar.style.left !== '0px';
+    }
+    sidebar.style.left = show ? '0px' : '-320px';
+};
+
 window.handleKundliCalculation = async function(e) {
     if (e && e.preventDefault) e.preventDefault();
+
+    // Automatically hide Birth Details pop-up modal when Generate Kundali is clicked
+    if (typeof window.toggleBirthModal === 'function') {
+        window.toggleBirthModal(false);
+    }
 
     console.log("🚀 [STEP 1/5] Generate Kundali button clicked!");
 
@@ -4968,10 +4991,9 @@ window.renderAstrologyViews = function(data) {
         birthLon.value = inputDetails.lon || inputDetails.longitude || data.lon;
     }
 
-    // Hide birth details card as requested for logged-in user view
-    const birthFormCard = document.querySelector('#personalKundliSection .birth-details-card') || document.querySelector('.birth-details-card');
-    if (birthFormCard) {
-        birthFormCard.style.display = 'none';
+    // Keep birth details modal hidden by default on page load
+    if (typeof window.toggleBirthModal === 'function') {
+        window.toggleBirthModal(false);
     }
 
     // Display outputCard container at 100% full width

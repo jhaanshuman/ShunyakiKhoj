@@ -5,8 +5,88 @@ function renderAstrologyView() {
     return `<div class="container astrology-container">
     <div id="breadcrumbs" class="breadcrumbs-container"></div>
 
-    <!-- Settings & Customization Header Bar -->
-    <div class="astrology-settings-bar" style="display: flex; gap: 10px; flex-wrap: wrap; background: rgba(15,18,29,0.8); border: 1px solid rgba(255,255,255,0.08); padding: 12px 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.8rem; box-sizing: border-box; width: 100%;">
+    <!-- Floating Left Toggle Button for Custom Kundali Settings -->
+    <button id="btnCustomKundaliToggle" onclick="if(typeof window.toggleSettingsSidebar==='function'){window.toggleSettingsSidebar(true);}" onmouseenter="if(typeof window.toggleSettingsSidebar==='function'){window.toggleSettingsSidebar(true);}" style="position: fixed; top: 85px; left: 0; z-index: 9990; background: linear-gradient(135deg, #a23922 0%, #7c1a08 100%); color: #ffffff; border: 1px solid #f59e0b; border-left: none; border-radius: 0 8px 8px 0; padding: 8px 14px; font-weight: 800; font-size: 0.82rem; cursor: pointer; box-shadow: 4px 0 15px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 6px; transition: all 0.2s;">⚙️ &gt; Custom Kundali</button>
+
+    <!-- Left Collapsible Settings Sidebar (Slides out to the right on click/hover, collapses on mouseleave) -->
+    <div id="astrologySettingsSidebar" class="settings-sidebar" onmouseleave="if(typeof window.toggleSettingsSidebar==='function'){window.toggleSettingsSidebar(false);}" style="position: fixed; top: 70px; left: -320px; width: 300px; height: calc(100vh - 70px); background: rgba(15,23,42,0.97); backdrop-filter: blur(10px); border-right: 2px solid #a23922; z-index: 9995; padding: 20px; box-shadow: 8px 0 25px rgba(0,0,0,0.6); transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; color: #f8fafc; box-sizing: border-box;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #334155; padding-bottom: 10px;">
+            <span style="font-weight: 800; color: #fbbf24; font-size: 0.95rem;">⚙️ Custom Settings</span>
+            <button onclick="if(typeof window.toggleBirthModal==='function'){window.toggleBirthModal(true);}" title="Edit Birth Details" style="background: #334155; border: 1.5px solid #f59e0b; color: #fbbf24; padding: 5px 10px; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 0.8rem;">✏️ Edit Details</button>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display:flex; flex-direction:column;">
+                <label style="font-weight:600; color:#cbd5e1; margin-bottom:4px; font-size:0.8rem;">Chart Style</label>
+                <select id="selChartStyle" style="padding:8px; background:#1e293b; color:#f8fafc; border:1px solid #475569; border-radius:6px; font-size:0.82rem;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
+                    <option value="North" selected>North Indian (Lagna)</option>
+                    <option value="South">South Indian</option>
+                </select>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <label style="font-weight:600; color:#cbd5e1; margin-bottom:4px; font-size:0.8rem;">Ayanamsa</label>
+                <select id="selAyanamsa" style="padding:8px; background:#1e293b; color:#f8fafc; border:1px solid #475569; border-radius:6px; font-size:0.82rem;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
+                    <option value="Lahiri" selected>Lahiri (Chitra Paksha)</option>
+                    <option value="Raman">B.V. Raman</option>
+                    <option value="KP">Krishnamurti (KP)</option>
+                    <option value="Tropical">Tropical (No Ayanamsa)</option>
+                    <option value="Fagan">Fagan-Bradley</option>
+                    <option value="Pushya">Pushya-paksha</option>
+                </select>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <label style="font-weight:600; color:#cbd5e1; margin-bottom:4px; font-size:0.8rem;">Rahu/Ketu Node</label>
+                <select id="selNode" style="padding:8px; background:#1e293b; color:#f8fafc; border:1px solid #475569; border-radius:6px; font-size:0.82rem;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
+                    <option value="True" selected>True Node</option>
+                    <option value="Mean">Mean Node</option>
+                </select>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <label style="font-weight:600; color:#cbd5e1; margin-bottom:4px; font-size:0.8rem;">Rashi Numbers</label>
+                <select id="selRashiVisibility" style="padding:8px; background:#1e293b; color:#f8fafc; border:1px solid #475569; border-radius:6px; font-size:0.82rem;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
+                    <option value="Visible" selected>Visible</option>
+                    <option value="Hidden">Hidden</option>
+                </select>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <label style="font-weight:600; color:#cbd5e1; margin-bottom:4px; font-size:0.8rem;">Outer Planets</label>
+                <select id="selOuterPlanets" style="padding:8px; background:#1e293b; color:#f8fafc; border:1px solid #475569; border-radius:6px; font-size:0.82rem;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
+                    <option value="Hidden" selected>Hidden</option>
+                    <option value="Visible">Visible</option>
+                </select>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <label style="font-weight:600; color:#cbd5e1; margin-bottom:4px; font-size:0.8rem;">Terminology</label>
+                <select id="selTerminology" style="padding:8px; background:#1e293b; color:#f8fafc; border:1px solid #475569; border-radius:6px; font-size:0.82rem;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
+                    <option value="Vedic" selected>Vedic (Guru/Shukra)</option>
+                    <option value="Western">Western (Jup/Ven)</option>
+                </select>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <label style="font-weight:600; color:#cbd5e1; margin-bottom:4px; font-size:0.8rem;">House System</label>
+                <select id="selHouseSystem" style="padding:8px; background:#1e293b; color:#f8fafc; border:1px solid #475569; border-radius:6px; font-size:0.82rem;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
+                    <option value="Whole Sign" selected>Whole Sign</option>
+                    <option value="Equal">Equal House</option>
+                    <option value="Sripati">Sripati</option>
+                    <option value="Bhava Chalit">Bhava Chalit</option>
+                    <option value="KP">KP System</option>
+                    <option value="Placidus">Placidus</option>
+                </select>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <label style="font-weight:600; color:#cbd5e1; margin-bottom:4px; font-size:0.8rem;">Longitude Format</label>
+                <select id="selLongStyle" style="padding:8px; background:#1e293b; color:#f8fafc; border:1px solid #475569; border-radius:6px; font-size:0.82rem;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
+                    <option value="DMS" selected>Deg-Min-Sec</option>
+                    <option value="Decimal">Decimal Degrees</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings & Customization Header Bar with Pen Edit Icon at Left End -->
+    <div class="astrology-settings-bar" style="display: flex; gap: 10px; flex-wrap: wrap; background: rgba(15,18,29,0.8); border: 1px solid rgba(255,255,255,0.08); padding: 10px 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.8rem; box-sizing: border-box; width: 100%; align-items: center;">
+        <button class="btn-edit-details" onclick="if(typeof window.toggleBirthModal==='function'){window.toggleBirthModal(true);}" title="Edit Birth Details" style="padding: 6px 12px; background: linear-gradient(135deg, #a23922 0%, #7c1a08 100%); color: #ffffff; border: 1px solid #f59e0b; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.82rem; margin-right: 5px;">✏️ Edit Details</button>
+        
         <div style="display:flex; flex-direction:column; min-width:110px;">
             <label style="font-weight:600; color:var(--text-muted); margin-bottom:4px;">Chart Style</label>
             <select id="selChartStyle" style="padding:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color); border-radius:4px;" onchange="if(typeof triggerAdvancedCalc==='function'){triggerAdvancedCalc();}">
@@ -73,6 +153,52 @@ function renderAstrologyView() {
         </div>
     </div>
 
+    <!-- Center Screen Pop-up Modal for Birth Details -->
+    <div id="birthDetailsModal" class="modal-backdrop" onclick="if(event.target===this) if(typeof window.toggleBirthModal==='function') window.toggleBirthModal(false);" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); z-index: 9999; justify-content: center; align-items: center; padding: 15px; box-sizing: border-box;">
+        <div class="birth-details-card" style="flex: 1; max-width: 520px; width: 100%; background: #1e293b; border: 1.5px solid #a23922; border-radius: 12px; padding: 25px; box-sizing: border-box; position: relative; box-shadow: 0 15px 35px rgba(0,0,0,0.6); max-height: 90vh; overflow-y: auto; color: #f8fafc;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; border-bottom: 1px solid #334155; padding-bottom: 10px;">
+                <h3 style="color: #fbbf24; margin: 0; font-size: 1.2rem; font-weight: 800;">✏️ Edit Birth Details</h3>
+                <button onclick="if(typeof window.toggleBirthModal==='function') window.toggleBirthModal(false);" style="background: transparent; border: none; color: #94a3b8; font-size: 1.4rem; cursor: pointer; font-weight: 700;">✕</button>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label for="birthName" style="display:block; margin-bottom:6px; font-weight:600; color:#cbd5e1; font-size:0.85rem;">Name (नाम)</label>
+                <input type="text" id="birthName" value="Native" style="width:100%; padding:10px; border-radius:6px; background:#0f172a; color:#f8fafc; border:1px solid #475569; font-size:0.9rem;">
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label for="birthDate" style="display:block; margin-bottom:6px; font-weight:600; color:#cbd5e1; font-size:0.85rem;">Date of Birth (जन्म तिथि)</label>
+                <input type="date" id="birthDate" value="1994-01-05" style="width:100%; padding:10px; border-radius:6px; background:#0f172a; color:#f8fafc; border:1px solid #475569; font-size:0.9rem;">
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label for="birthTime" style="display:block; margin-bottom:6px; font-weight:600; color:#cbd5e1; font-size:0.85rem;">Time of Birth (जन्म समय)</label>
+                <input type="time" id="birthTime" value="20:00" style="width:100%; padding:10px; border-radius:6px; background:#0f172a; color:#f8fafc; border:1px solid #475569; font-size:0.9rem;">
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label for="birthPlace" style="display:block; margin-bottom:6px; font-weight:600; color:#cbd5e1; font-size:0.85rem;">Place of Birth (जन्म स्थान)</label>
+                <input type="text" id="birthPlace" value="Patna, Bihar, India" style="width:100%; padding:10px; border-radius:6px; background:#0f172a; color:#f8fafc; border:1px solid #475569; font-size:0.9rem;">
+                <a href="javascript:void(0)" onclick="toggleBirthMap()" style="font-size:0.8rem; color:#fbbf24; text-decoration:none; margin-top: 5px; display:inline-block;">🗺️ Pinpoint on Map for Coordinates</a>
+                <div id="birthMap" style="height: 180px; margin-top: 10px; border-radius: 8px; border: 1px solid #475569; display: none;"></div>
+            </div>
+            
+            <div class="form-row" style="display:flex; gap:10px; margin-bottom:20px;">
+                <div class="form-group" style="flex:1;">
+                    <label for="birthLat" style="display:block; margin-bottom:4px; font-size:0.8rem; color:#94a3b8;">Latitude</label>
+                    <input type="number" step="any" id="birthLat" value="25.5941" style="width:100%; padding:8px; border-radius:6px; background:#0f172a; color:#f8fafc; border:1px solid #475569;">
+                </div>
+                <div class="form-group" style="flex:1;">
+                    <label for="birthLon" style="display:block; margin-bottom:4px; font-size:0.8rem; color:#94a3b8;">Longitude</label>
+                    <input type="number" step="any" id="birthLon" value="85.1376" style="width:100%; padding:8px; border-radius:6px; background:#0f172a; color:#f8fafc; border:1px solid #475569;">
+                </div>
+            </div>
+            
+            <button class="btn-submit" id="btnCalculate" onclick="if(typeof window.handleKundliCalculation==='function'){window.handleKundliCalculation(event);}" style="width:100%; padding:12px; font-size:1rem; font-weight:700; border-radius:8px; cursor:pointer; background:linear-gradient(135deg, #a23922 0%, #7c1a08 100%); color:#fff; border:1px solid #f59e0b;">🔮 Generate Kundali</button>
+            
+            <div id="extraSidebarDetails" style="display:none; margin-top:20px; border-top:1px solid rgba(255,255,255,0.08); padding-top:15px;">
+                <button class="btn-submit" id="btnShowRawData" onclick="toggleRawPayloadModal()" style="width:100%; padding:10px; font-size:0.85rem; font-weight:700; border-radius:8px; cursor:pointer; margin-bottom:10px;">📋 Show Raw JSON Data</button>
+                <div id="rawPayloadBox" style="display:none; max-height:200px; overflow-y:auto; background:#0d1117; padding:10px; border-radius:6px; font-family:monospace; font-size:0.75rem; border:1px solid var(--border-color); color:#4ade80;"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Top Tabs for switching sections -->
     <div class="top-nav-tabs" style="margin-bottom: 20px;">
@@ -85,48 +211,6 @@ function renderAstrologyView() {
     <!-- 1. Personalized Kundli Section -->
     <div id="personalKundliSection" class="main-section active">
         <div class="dashboard-grid" style="display: flex; gap: 20px; align-items: start; box-sizing: border-box; width: 100%;">
-            
-            <!-- Birth Details Card (Starts wide, slides to left sidebar) -->
-            <div class="birth-details-card" style="flex: 1; max-width: 600px; margin: 0 auto; background: var(--card-bg); border: var(--card-border); border-radius: 12px; padding: 25px; transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); box-sizing: border-box; overflow: hidden; position: relative;">
-                <h3 style="color: var(--accent-purple); margin-top:0; margin-bottom: 1.5rem;">Enter Birth Details</h3>
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="birthName" style="display:block; margin-bottom:6px; font-weight:600; color:var(--text-color);">Name (नाम)</label>
-                    <input type="text" id="birthName" value="Native" style="width:100%; padding:10px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color);">
-                </div>
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="birthDate" style="display:block; margin-bottom:6px; font-weight:600; color:var(--text-color);">Date of Birth (जन्म तिथि)</label>
-                    <input type="date" id="birthDate" value="1994-01-05" style="width:100%; padding:10px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color);">
-                </div>
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="birthTime" style="display:block; margin-bottom:6px; font-weight:600; color:var(--text-color);">Time of Birth (जन्म समय)</label>
-                    <input type="time" id="birthTime" value="20:00" style="width:100%; padding:10px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color);">
-                </div>
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="birthPlace" style="display:block; margin-bottom:6px; font-weight:600; color:var(--text-color);">Place of Birth (जन्म स्थान)</label>
-                    <input type="text" id="birthPlace" value="Patna, Bihar, India" style="width:100%; padding:10px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color);">
-                    <a href="javascript:void(0)" onclick="toggleBirthMap()" style="font-size:0.8rem; color:var(--accent-color); text-decoration:none; margin-top: 5px; display:inline-block;">🗺️ Pinpoint on Map for Coordinates</a>
-                    <div id="birthMap" style="height: 180px; margin-top: 10px; border-radius: 8px; border: 1px solid var(--border-color); display: none;"></div>
-                </div>
-                
-                <div class="form-row" style="display:flex; gap:10px; margin-bottom:20px;">
-                    <div class="form-group" style="flex:1;">
-                        <label for="birthLat" style="display:block; margin-bottom:4px; font-size:0.8rem; color:var(--text-muted);">Latitude</label>
-                        <input type="number" step="any" id="birthLat" value="25.5941" style="width:100%; padding:8px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color);">
-                    </div>
-                    <div class="form-group" style="flex:1;">
-                        <label for="birthLon" style="display:block; margin-bottom:4px; font-size:0.8rem; color:var(--text-muted);">Longitude</label>
-                        <input type="number" step="any" id="birthLon" value="85.1376" style="width:100%; padding:8px; border-radius:6px; background:var(--tile-bg); color:var(--text-color); border:1px solid var(--border-color);">
-                    </div>
-                </div>
-                
-                <button class="btn-submit" id="btnCalculate" onclick="if(typeof window.handleKundliCalculation==='function'){window.handleKundliCalculation(event);}" style="width:100%; padding:12px; font-size:1rem; font-weight:700; border-radius:8px; cursor:pointer;">🔮 Generate Kundali</button>
-                
-                <!-- Raw Data & Extra Details (Hidden on load) -->
-                <div id="extraSidebarDetails" style="display:none; margin-top:20px; border-top:1px solid rgba(255,255,255,0.08); padding-top:15px;">
-                    <button class="btn-submit" id="btnShowRawData" onclick="toggleRawPayloadModal()" style="width:100%; padding:10px; font-size:0.85rem; font-weight:700; border-radius:8px; cursor:pointer; margin-bottom:10px;">📋 Show Raw JSON Data</button>
-                    <div id="rawPayloadBox" style="display:none; max-height:200px; overflow-y:auto; background:#0d1117; padding:10px; border-radius:6px; font-family:monospace; font-size:0.75rem; border:1px solid var(--border-color); color:#4ade80;"></div>
-                </div>
-            </div>
 
             <!-- Status Header Card (Shown during calculation progress) -->
             <div class="glass-card status-header-card" id="statusHeaderCard" style="display: none; flex: 1; background: var(--card-bg); border: var(--card-border); border-radius: 12px; padding: 40px; text-align: center; box-shadow: var(--shadow); box-sizing: border-box; flex-direction: column; align-items: center; justify-content: center; min-height: 400px;">
