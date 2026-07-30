@@ -233,6 +233,44 @@ if ($action === "save_kundali_analytics") {
     exit;
 }
 
+/* 4c. VERIFY SESSION — checks if user account exists in MySQL database */
+if ($action === "verify_session" || $action === "check_user") {
+    $username = db_escape($_GET['username'] ?? $_POST['username'] ?? '');
+
+    if (empty($username)) {
+        echo json_encode(["success" => false, "exists" => false, "error" => "Username parameter is required."]);
+        exit;
+    }
+
+    $q = db_query("SELECT id, username, email, gender, dob, tob, pob, lat, lon FROM users WHERE username='$username' OR email='$username' LIMIT 1");
+    $row = db_fetch($q);
+
+    if ($row) {
+        echo json_encode([
+            "success"  => true,
+            "exists"   => true,
+            "user"     => [
+                "id"       => $row['id'],
+                "username" => $row['username'],
+                "email"    => $row['email'],
+                "gender"   => $row['gender'],
+                "dob"      => $row['dob'],
+                "tob"      => $row['tob'],
+                "pob"      => $row['pob'],
+                "lat"      => floatval($row['lat']),
+                "lon"      => floatval($row['lon'])
+            ]
+        ]);
+    } else {
+        echo json_encode([
+            "success" => false,
+            "exists"  => false,
+            "error"   => "User account does not exist or has been deleted from database."
+        ]);
+    }
+    exit;
+}
+
 /* 5. GET KUNDALI CACHE — reads from users.cached_kundali_json & kundali_analytics directly */
 if ($action === "get_kundali_cache" || $action === "get_kundali_analytics") {
     $username = db_escape($_GET['username'] ?? $_POST['username'] ?? '');

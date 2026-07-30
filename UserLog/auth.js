@@ -422,15 +422,53 @@
     global.openSettingsModal = openSettingsModal;
     global.getProfile = getProfile;
     global.updateProfileHeaderButton = updateProfileHeaderButton;
+    global.verifyActiveSession = verifyActiveSession;
+
+    // Asynchronously verify with MySQL database whether active session user still exists
+    async function verifyActiveSession() {
+        const profile = getProfile();
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramUsername = urlParams.get('username');
+        const targetUser = paramUsername || (profile ? (profile.username || profile.name) : null);
+
+        if (!targetUser) return;
+
+        try {
+            const authBase = window.AUTH_BASE_URL || '/UserLog/auth.php';
+            const resp = await fetch(`${authBase}?action=verify_session&username=${encodeURIComponent(targetUser)}`);
+            const data = await resp.json();
+
+            if (!data || !data.success || !data.exists) {
+                console.warn(`[Auth Protection] User '${targetUser}' no longer exists in MySQL database! Clearing local session.`);
+                localStorage.removeItem('shunya-profile');
+                localStorage.removeItem('shunya_user_logged');
+                localStorage.removeItem('shunya-raw-kundali-json');
+                localStorage.removeItem('shunya-kundali-analytics');
+                
+                // If on inner portal pages (landing.html, home.html, etc.), enforce login redirect
+                const isHomePage = window.location.pathname.endsWith('/index.html') || window.location.pathname === '/';
+                if (!isHomePage) {
+                    alert(`Account '${targetUser}' does not exist or was deleted. Redirecting to login portal.`);
+                    window.location.href = '/index.html';
+                } else {
+                    updateProfileHeaderButton();
+                }
+            }
+        } catch (e) {
+            console.warn('[Auth Protection] Verification network check warning:', e);
+        }
+    }
 
     // Immediate execution on script load
     try {
         updateProfileHeaderButton();
+        verifyActiveSession();
     } catch(e) {}
 
     // Load libraries on content load
     document.addEventListener('DOMContentLoaded', () => {
         updateProfileHeaderButton();
+        verifyActiveSession();
         
         // Hide profileDropdown when clicking outside
         document.addEventListener('click', () => {
