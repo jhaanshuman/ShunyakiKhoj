@@ -10,7 +10,7 @@
     <script>
         (function() {
             const username = localStorage.getItem('shunya-username') || '';
-            const targetUrl = '/landing.html' + (username ? '?username=' + encodeURIComponent(username) : '');
+            const targetUrl = '/landing.html?tab=kundli' + (username ? '&username=' + encodeURIComponent(username) : '');
             window.location.replace(targetUrl);
         })();
     </script>
