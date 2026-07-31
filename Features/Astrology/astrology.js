@@ -3058,6 +3058,15 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     `;
 
     let boundaries = [];
+
+    function formatMinsToTime(mins) {
+        let m = Math.round(mins) % 1440;
+        let h = Math.floor(m / 60);
+        let min = Math.floor(m % 60);
+        let ampm = h >= 12 ? 'PM' : 'AM';
+        let displayH = h % 12 === 0 ? 12 : h % 12;
+        return `${String(displayH).padStart(2,'0')}:${String(min).padStart(2,'0')} ${ampm}`;
+    }
     
     function drawTrack(title, y, segments) {
         svg += `<text x="8" y="${y + 20}" font-size="13" font-weight="800" fill="#7c2d12">${title}</text>`;
@@ -3080,7 +3089,7 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
             if (width > 0) {
                 svg += `
                     <g class="glossary-term" data-term="${seg.name.toLowerCase()}" style="cursor:pointer;">
-                        <rect x="${drawStartX}" y="${y + 4}" width="${width}" height="24" fill="none" stroke="rgba(124,45,18,0.1)" stroke-width="1" />
+                        <rect x="${drawStartX}" y="${y + 4}" width="${width}" height="24" fill="rgba(255,255,255,0.35)" stroke="rgba(124,45,18,0.2)" stroke-width="1" />
                 `;
                 if (width > 20) {
                     svg += `<text x="${drawStartX + width/2}" y="${y + 20}" font-size="12" font-weight="700" fill="#431407" text-anchor="middle">${displayName}</text>`;
@@ -3089,11 +3098,12 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
             }
             
             // Draw transition dashed line and label if end time is within the timeline range
-            if (seg.endLabel && seg.end <= 1800) {
+            if (endX >= 130 && endX <= 960 && seg.end < 1800) {
+                let labelTxt = seg.endLabel || formatMinsToTime(seg.end);
                 svg += `
-                    <text x="${endX}" y="${y + 32}" font-size="9" font-weight="700" fill="#b33922" text-anchor="middle">${seg.endLabel}</text>
-                    <polygon points="${endX},${y+22} ${endX-4},${y+26} ${endX+4},${y+26}" fill="#b33922" />
-                    <line x1="${endX}" y1="${y}" x2="${endX}" y2="${y + 22}" stroke="#b33922" stroke-width="1.2" stroke-dasharray="3,3" />
+                    <text x="${endX}" y="${y + 33}" font-size="9" font-weight="700" fill="#b33922" text-anchor="middle">${labelTxt}</text>
+                    <polygon points="${endX},${y+24} ${endX-3},28 ${endX+3},28" fill="#b33922" />
+                    <line x1="${endX}" y1="${y}" x2="${endX}" y2="${y + 24}" stroke="#b33922" stroke-width="1.2" stroke-dasharray="3,3" />
                 `;
             }
         });
@@ -3101,7 +3111,11 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
 
     function getListSegments(list, defaultVal, srMins) {
         if (!list || list.length === 0) {
-            return [{ start: 300, end: 1800, name: defaultVal, endLabel: "" }];
+            let midMins = srMins + 540;
+            return [
+                { start: srMins, end: midMins, name: defaultVal || "Shukla Pratipada", endLabel: formatMinsToTime(midMins) },
+                { start: midMins, end: srMins + 1440, name: defaultVal || "Shukla Pratipada", endLabel: "" }
+            ];
         }
         let segs = [];
         for (let i = 0; i < list.length; i++) {
@@ -3109,16 +3123,13 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
             let nextItem = list[i + 1];
             
             // start is 300 for the first element, otherwise calculated from hour offset
-            let startMins = (i === 0) ? 300 : Math.round(srMins + item.hour * 60);
+            let startMins = (i === 0) ? srMins : Math.round(srMins + item.hour * 60);
             
             // end is calculated from next element's hour offset, or 1800 (end of timeline) for the last element
-            let endMins = nextItem ? Math.round(srMins + nextItem.hour * 60) : 1800;
+            let endMins = nextItem ? Math.round(srMins + nextItem.hour * 60) : srMins + 1440;
             
             // Format end time label
-            let endLabel = "";
-            if (nextItem && nextItem.time) {
-                endLabel = nextItem.time.split(' ')[0];
-            }
+            let endLabel = nextItem ? (nextItem.time ? nextItem.time.split(' ')[0] : formatMinsToTime(endMins)) : "";
             
             segs.push({
                 start: startMins,
@@ -3153,6 +3164,7 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
         return descs[name.toLowerCase()] || '';
     }
 
+    // 5. Choghadiya Track
     svg += `<text x="15" y="238" font-size="12" font-weight="700" fill="#7c2d12">Choghadiya</text>`;
     svg += `<line x1="130" y1="220" x2="960" y2="220" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
     
@@ -3220,14 +3232,20 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
         if (w > 0) {
             let color = p.quality === 'Good' ? '#15803d' : '#b91c1c';
             const desc = getChoghadiyaDesc(p.name);
+            const timeTxt = formatMinsToTime(endM);
             svg += `
                 <g style="cursor: help;" class="glossary-term" data-term="${p.name.toLowerCase()}">
-                    <title>${desc}</title>
+                    <title>${desc} (${formatMinsToTime(startM)} - ${timeTxt})</title>
                     <rect x="${startX}" y="224" width="${w}" height="22" fill="rgba(255,255,255,0.4)" stroke="rgba(124,45,18,0.2)" />
                     <line x1="${startX}" y1="220" x2="${startX}" y2="246" stroke="rgba(124,45,18,0.2)" stroke-width="1" />
                     <text x="${startX + w/2}" y="238" font-size="9" font-weight="700" fill="${color}" text-anchor="middle">${p.name}</text>
                 </g>
             `;
+            if (endX >= 130 && endX <= 960) {
+                svg += `
+                    <line x1="${endX}" y1="220" x2="${endX}" y2="246" stroke="#b33922" stroke-width="1" stroke-dasharray="2,2" />
+                `;
+            }
         }
     });
 
@@ -3285,14 +3303,20 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
         let w = endX - startX;
         if (w > 0) {
             let nameShort = h.name.split(' ')[0];
+            const timeTxt = formatMinsToTime(endM);
             svg += `
                 <g style="cursor: help;">
-                    <title>Planetary Hora: ${h.name}</title>
+                    <title>Planetary Hora: ${h.name} (${formatMinsToTime(startM)} - ${timeTxt})</title>
                     <rect x="${startX}" y="264" width="${w}" height="22" fill="rgba(255,255,255,0.4)" stroke="rgba(124,45,18,0.2)" />
                     <line x1="${startX}" y1="260" x2="${startX}" y2="286" stroke="rgba(124,45,18,0.2)" stroke-width="1" />
                     <text x="${startX + w/2}" y="278" font-size="8" font-weight="700" fill="#7c2d12" text-anchor="middle">${nameShort}</text>
                 </g>
             `;
+            if (endX >= 130 && endX <= 960) {
+                svg += `
+                    <line x1="${endX}" y1="260" x2="${endX}" y2="286" stroke="#b33922" stroke-width="1" stroke-dasharray="2,2" />
+                `;
+            }
         }
     });
 
