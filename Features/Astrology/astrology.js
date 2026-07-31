@@ -446,10 +446,10 @@ window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get('tab') || '';
     
-    // Keep the top-tab navigation buttons bar visible
+    // Keep top-tab navigation buttons hidden
     const topNavTabs = document.querySelector('.top-nav-tabs');
     if (topNavTabs) {
-        topNavTabs.style.display = 'flex';
+        topNavTabs.style.display = 'none';
     }
 
     // Homepage load routing

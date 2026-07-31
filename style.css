@@ -2222,6 +2222,18 @@ button:hover{
    DYNAMICALLY APPENDED: ASTROLOGY SUITE STYLES
    ========================================================================= */
 
+.astrology-container {
+    width: 80% !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+}
+
+@media (max-width: 768px) {
+    .astrology-container {
+        width: 95% !important;
+    }
+}
+
 .astrology-container .top-nav-tabs {
 
     display: flex;

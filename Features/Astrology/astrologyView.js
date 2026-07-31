@@ -2,7 +2,7 @@
  * Dynamic View Builder for Astrology Suite
  */
 function renderAstrologyView() {
-    return `<div class="container astrology-container">
+    return `<div class="container astrology-container" style="width: 80% !important; max-width: 1400px !important; margin: 0 auto !important;">
     <div id="breadcrumbs" class="breadcrumbs-container"></div>
 
     <!-- Floating Left Toggle Button for Custom Kundali Settings -->
@@ -132,12 +132,8 @@ function renderAstrologyView() {
         </div>
     </div>
 
-    <!-- Top Tabs for switching sections -->
-    <div class="top-nav-tabs" style="margin-bottom: 20px;">
-        <button class="top-tab-btn active" onclick="if(typeof window.switchTopTab==='function'){window.switchTopTab(event, 'personalKundliSection');}else if(typeof switchTopTab==='function'){switchTopTab(event, 'personalKundliSection');}">Personalized Kundli</button>
-        <button class="top-tab-btn" onclick="if(typeof window.switchTopTab==='function'){window.switchTopTab(event, 'gocharSection');}else if(typeof switchTopTab==='function'){switchTopTab(event, 'gocharSection');}">Graha Gochar (Transits)</button>
-        <button class="top-tab-btn" onclick="if(typeof window.switchTopTab==='function'){window.switchTopTab(event, 'milanSection');}else if(typeof switchTopTab==='function'){switchTopTab(event, 'milanSection');}">💞 Kundli Milan</button>
-        <button class="top-tab-btn" onclick="if(typeof window.switchTopTab==='function'){window.switchTopTab(event, 'prashnaSection');}else if(typeof switchTopTab==='function'){switchTopTab(event, 'prashnaSection');}">🔮 Prashna Kundali</button>
+    <!-- Hidden Top Nav Tabs (Section navigation buttons removed as requested) -->
+    <div class="top-nav-tabs" style="display: none !important;">
     </div>
 
     <!-- 1. Personalized Kundli Section -->
@@ -155,7 +151,7 @@ function renderAstrologyView() {
             </div>
 
             <!-- Output Display Container (Scrollable & High Contrast Dark Theme) -->
-            <div class="glass-card" id="outputCard" style="display: none; flex: 1; min-width: 0; background: #0f172a; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); flex-direction: column; max-height: 82vh; overflow-y: auto; color: #f8fafc;">
+            <div class="glass-card" id="outputCard" style="display: flex; flex: 1; min-width: 0; background: #0f172a; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); flex-direction: column; max-height: 82vh; overflow-y: auto; color: #f8fafc;">
                 
                 <!-- Mobile Report Selector (Visible on Mobile only) -->
                 <div class="mobile-report-selector-container" style="margin-bottom: 15px; display: none; width: 100%;">
@@ -214,19 +210,23 @@ function renderAstrologyView() {
                     </select>
                 </div>
 
-                <div class="report-category-tabs" style="display: flex; gap: 8px; margin-bottom: 15px; border-bottom: 2px solid #334155; padding-bottom: 10px; overflow-x: auto; width: 100%; white-space: nowrap; -webkit-overflow-scrolling: touch;">
-                    <button class="cat-tab-btn active" style="padding: 8px 16px; background: #1e293b; border: 1px solid #475569; border-radius: 6px; color: #fbbf24; font-weight: 700; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('charts')">🗺️ Divisional Charts</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('dasha')">⏳ Dasha Cycles (19 Systems)</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('strength')">⚖️ Strengths &amp; Dignity</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('aspects')">👁️ Aspects &amp; Conjunctions</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('ashtakavarga')">📊 Ashtakavarga</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('panchanga')">🕉️ Panchanga &amp; Astronomy</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('yogas')">🧘 Yogas &amp; Doshas</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('jaimini_kp')">🎯 Jaimini &amp; KP</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('domains')">🔮 27 Life Domains</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('ai_workspace')">🤖 AI Intelligence Workspace</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('graphs_tables')">📈 Graphs &amp; Tables</button>
-                    <button class="cat-tab-btn" style="padding: 8px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; cursor: pointer; font-size: 0.82rem; transition: all 0.3s;" onclick="switchReportCategory('developer_tools')">🛠️ Developer Audit</button>
+                <!-- Dropdown Category Selector (Replaces Scrolling Button Bar) -->
+                <div class="report-category-selector-wrapper" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; border-bottom: 2px solid #334155; padding-bottom: 12px; width: 100%;">
+                    <label for="selReportCategory" style="font-size: 0.9rem; font-weight: 800; color: #fbbf24; white-space: nowrap;">📊 Astrological Category:</label>
+                    <select id="selReportCategory" onchange="switchReportCategory(this.value)" style="flex: 1; max-width: 480px; background: #1e293b; color: #f8fafc; border: 1.5px solid #a23922; border-radius: 8px; padding: 8px 14px; font-size: 0.9rem; font-weight: 700; cursor: pointer; outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+                        <option value="charts">🗺️ Divisional Charts (D1 - D144)</option>
+                        <option value="dasha">⏳ Dasha Cycles (19 Systems)</option>
+                        <option value="strength">⚖️ Strengths &amp; Dignity</option>
+                        <option value="aspects">👁️ Aspects &amp; Conjunctions</option>
+                        <option value="ashtakavarga">📊 Ashtakavarga Matrix</option>
+                        <option value="panchanga">🕉️ Panchanga &amp; Astronomy</option>
+                        <option value="yogas">🧘 Yogas &amp; Doshas</option>
+                        <option value="jaimini_kp">🎯 Jaimini &amp; KP Systems</option>
+                        <option value="domains">🔮 27 Life Domains</option>
+                        <option value="ai_workspace">🤖 AI Intelligence Workspace</option>
+                        <option value="graphs_tables">📈 Graphs &amp; Tables</option>
+                        <option value="developer_tools">🛠️ Developer Audit</option>
+                    </select>
                 </div>
 
                 <!-- 1. Divisional Charts Sub-Group: Searchable Selector & Side Panel -->
