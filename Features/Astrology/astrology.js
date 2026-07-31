@@ -3157,68 +3157,144 @@ function renderDrikTimelineSVG(panchang, choghadiya, weekdayIdx, ascSign, ascDeg
     svg += `<line x1="130" y1="220" x2="960" y2="220" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
     
     let choghadiyaParts = [];
-    if (choghadiya && choghadiya.day && choghadiya.night) {
-        choghadiya.day.forEach(p => {
-            choghadiyaParts.push({ start: p.start, end: p.end, name: p.name, quality: p.quality });
+    const chogSource = choghadiya || (panchang && panchang.choghadiya) || (lastCalculatedData && lastCalculatedData.choghadiya);
+    if (chogSource && chogSource.day && chogSource.night) {
+        chogSource.day.forEach(p => {
+            choghadiyaParts.push({ start: p.start, end: p.end, name: p.name, quality: p.quality || p.type });
         });
-        choghadiya.night.forEach(p => {
-            choghadiyaParts.push({ start: p.start, end: p.end, name: p.name, quality: p.quality });
+        chogSource.night.forEach(p => {
+            choghadiyaParts.push({ start: p.start, end: p.end, name: p.name, quality: p.quality || p.type });
+        });
+    } else {
+        // Dynamic 8-Day & 8-Night Choghadiya Fallback
+        const dayLen = ssMins - srMins;
+        const dayPart = dayLen / 8.0;
+        const nightLen = (srMins + 1440) - ssMins;
+        const nightPart = nightLen / 8.0;
+        const daySeq = [
+            { name: 'Labh', quality: 'Good' }, { name: 'Amrit', quality: 'Good' },
+            { name: 'Kaal', quality: 'Bad' },  { name: 'Shubh', quality: 'Good' },
+            { name: 'Rog', quality: 'Bad' },   { name: 'Udveg', quality: 'Bad' },
+            { name: 'Chal', quality: 'Good' }, { name: 'Labh', quality: 'Good' }
+        ];
+        const nightSeq = [
+            { name: 'Udveg', quality: 'Bad' }, { name: 'Shubh', quality: 'Good' },
+            { name: 'Amrit', quality: 'Good' }, { name: 'Chal', quality: 'Good' },
+            { name: 'Rog', quality: 'Bad' },   { name: 'Kaal', quality: 'Bad' },
+            { name: 'Labh', quality: 'Good' },  { name: 'Udveg', quality: 'Bad' }
+        ];
+        daySeq.forEach((item, i) => {
+            choghadiyaParts.push({
+                startMins: srMins + i * dayPart,
+                endMins: srMins + (i + 1) * dayPart,
+                name: item.name,
+                quality: item.quality
+            });
+        });
+        nightSeq.forEach((item, i) => {
+            choghadiyaParts.push({
+                startMins: ssMins + i * nightPart,
+                endMins: ssMins + (i + 1) * nightPart,
+                name: item.name,
+                quality: item.quality
+            });
         });
     }
 
-    if (choghadiyaParts.length > 0) {
-        choghadiyaParts.forEach(p => {
-            let startX = getX(parseTimeStr(p.start));
-            let endX = getX(parseTimeStr(p.end));
-            let w = endX - startX;
-            if (w > 0) {
-                let color = p.quality === 'Good' ? '#15803d' : '#b91c1c';
-                const desc = getChoghadiyaDesc(p.name);
-                svg += `
-                    <g style="cursor: help;" class="glossary-term" data-term="${p.name.toLowerCase()}">
-                        <title>${desc}</title>
-                        <rect x="${startX}" y="224" width="${w}" height="22" fill="none" stroke="rgba(124,45,18,0.1)" />
-                        <line x1="${startX}" y1="220" x2="${startX}" y2="246" stroke="rgba(124,45,18,0.2)" stroke-width="1" />
-                        <text x="${startX + w/2}" y="238" font-size="9" font-weight="700" fill="${color}" text-anchor="middle">${p.name}</text>
-                    </g>
-                `;
-            }
-        });
-    }
+    let prevChogMins = srMins;
+    choghadiyaParts.forEach(p => {
+        let startM, endM;
+        if (p.startMins !== undefined) {
+            startM = p.startMins;
+            endM = p.endMins;
+        } else {
+            startM = parseTimeStr(p.start);
+            endM = parseTimeStr(p.end);
+            if (startM < prevChogMins) startM += 1440;
+            if (endM <= startM) endM += 1440;
+            prevChogMins = startM;
+        }
+        let startX = getX(startM);
+        let endX = getX(endM);
+        let w = endX - startX;
+        if (w > 0) {
+            let color = p.quality === 'Good' ? '#15803d' : '#b91c1c';
+            const desc = getChoghadiyaDesc(p.name);
+            svg += `
+                <g style="cursor: help;" class="glossary-term" data-term="${p.name.toLowerCase()}">
+                    <title>${desc}</title>
+                    <rect x="${startX}" y="224" width="${w}" height="22" fill="rgba(255,255,255,0.4)" stroke="rgba(124,45,18,0.2)" />
+                    <line x1="${startX}" y1="220" x2="${startX}" y2="246" stroke="rgba(124,45,18,0.2)" stroke-width="1" />
+                    <text x="${startX + w/2}" y="238" font-size="9" font-weight="700" fill="${color}" text-anchor="middle">${p.name}</text>
+                </g>
+            `;
+        }
+    });
 
-    // New Hora track
+    // 6. Hora Track
     svg += `<text x="15" y="278" font-size="12" font-weight="700" fill="#7c2d12">Hora</text>`;
     svg += `<line x1="130" y1="260" x2="960" y2="260" stroke="rgba(124,45,18,0.15)" stroke-width="1" />`;
     
     let horaParts = [];
-    const horaData = (lastCalculatedData && lastCalculatedData.hora) ? lastCalculatedData.hora : null;
-    if (horaData && horaData.day && horaData.night) {
-        horaData.day.forEach(h => {
+    const horaSource = (lastCalculatedData && lastCalculatedData.hora) || (panchang && panchang.hora);
+    if (horaSource && horaSource.day && horaSource.night) {
+        horaSource.day.forEach(h => {
             horaParts.push({ start: h.start, end: h.end, name: h.indian || h.lord });
         });
-        horaData.night.forEach(h => {
+        horaSource.night.forEach(h => {
             horaParts.push({ start: h.start, end: h.end, name: h.indian || h.lord });
         });
+    } else {
+        // Dynamic 12-Day & 12-Night Hora Fallback
+        const dayLen = ssMins - srMins;
+        const dayPart = dayLen / 12.0;
+        const nightLen = (srMins + 1440) - ssMins;
+        const nightPart = nightLen / 12.0;
+        const lords = ['Surya', 'Shukra', 'Budha', 'Chandra', 'Shani', 'Guru', 'Mangala'];
+        for (let i = 0; i < 12; i++) {
+            horaParts.push({
+                startMins: srMins + i * dayPart,
+                endMins: srMins + (i + 1) * dayPart,
+                name: lords[i % 7]
+            });
+        }
+        for (let i = 0; i < 12; i++) {
+            horaParts.push({
+                startMins: ssMins + i * nightPart,
+                endMins: ssMins + (i + 1) * nightPart,
+                name: lords[(i + 5) % 7]
+            });
+        }
     }
-    
-    if (horaParts.length > 0) {
-        horaParts.forEach(h => {
-            let startX = getX(parseTimeStr(h.start));
-            let endX = getX(parseTimeStr(h.end));
-            let w = endX - startX;
-            if (w > 0) {
-                let nameShort = h.name.split(' ')[0];
-                svg += `
-                    <g style="cursor: help;">
-                        <title>Planetary Hora: ${h.name} (${h.start} - ${h.end})</title>
-                        <rect x="${startX}" y="264" width="${w}" height="22" fill="none" stroke="rgba(124,45,18,0.1)" />
-                        <line x1="${startX}" y1="260" x2="${startX}" y2="286" stroke="rgba(124,45,18,0.2)" stroke-width="1" />
-                        <text x="${startX + w/2}" y="278" font-size="8" font-weight="700" fill="#7c2d12" text-anchor="middle">${nameShort}</text>
-                    </g>
-                `;
-            }
-        });
-    }
+
+    let prevHoraMins = srMins;
+    horaParts.forEach(h => {
+        let startM, endM;
+        if (h.startMins !== undefined) {
+            startM = h.startMins;
+            endM = h.endMins;
+        } else {
+            startM = parseTimeStr(h.start);
+            endM = parseTimeStr(h.end);
+            if (startM < prevHoraMins) startM += 1440;
+            if (endM <= startM) endM += 1440;
+            prevHoraMins = startM;
+        }
+        let startX = getX(startM);
+        let endX = getX(endM);
+        let w = endX - startX;
+        if (w > 0) {
+            let nameShort = h.name.split(' ')[0];
+            svg += `
+                <g style="cursor: help;">
+                    <title>Planetary Hora: ${h.name}</title>
+                    <rect x="${startX}" y="264" width="${w}" height="22" fill="rgba(255,255,255,0.4)" stroke="rgba(124,45,18,0.2)" />
+                    <line x1="${startX}" y1="260" x2="${startX}" y2="286" stroke="rgba(124,45,18,0.2)" stroke-width="1" />
+                    <text x="${startX + w/2}" y="278" font-size="8" font-weight="700" fill="#7c2d12" text-anchor="middle">${nameShort}</text>
+                </g>
+            `;
+        }
+    });
 
     // New Weekday / Vaar track
     svg += `<g class="glossary-term" data-term="var" style="cursor:pointer;">`;

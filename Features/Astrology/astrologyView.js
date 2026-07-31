@@ -2,7 +2,7 @@
  * Dynamic View Builder for Astrology Suite
  */
 function renderAstrologyView() {
-    return `<div class="container astrology-container" style="width: 80% !important; max-width: 1400px !important; margin: 0 auto !important;">
+    return `<div class="container astrology-container" style="width: 90% !important; max-width: 1600px !important; margin: 0 auto !important;">
     <div id="breadcrumbs" class="breadcrumbs-container"></div>
 
     <!-- Floating Left Toggle Button for Custom Kundali Settings -->

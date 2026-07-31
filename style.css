@@ -2222,15 +2222,26 @@ button:hover{
    DYNAMICALLY APPENDED: ASTROLOGY SUITE STYLES
    ========================================================================= */
 
-.astrology-container {
-    width: 80% !important;
-    max-width: 1400px !important;
+.astrology-container,
+.main-portal-container,
+.panchang-unified-wrapper,
+.monthly-panchang-wrapper,
+#panchangMainSection,
+body > div:not(header):not(footer):not(#top-nav):not(.nav-header):not(.site-footer) {
+    width: 90% !important;
+    max-width: 1600px !important;
     margin: 0 auto !important;
 }
 
 @media (max-width: 768px) {
-    .astrology-container {
-        width: 95% !important;
+    .astrology-container,
+    .main-portal-container,
+    .panchang-unified-wrapper,
+    .monthly-panchang-wrapper,
+    #panchangMainSection,
+    body > div:not(header):not(footer):not(#top-nav):not(.nav-header):not(.site-footer) {
+        width: 98% !important;
+        margin: 0 auto !important;
     }
 }
 
