@@ -1,0 +1,119 @@
+{
+  "system_name": "Whole Sign",
+  "ascendant_sidereal_lon": 118.38129286263185,
+  "ascendant_sign": "Cancer",
+  "ascendant_sign_lord": "Moon",
+  "mc_sidereal_lon": 26.26511734770599,
+  "cusps": [
+    {
+      "house_number": 1,
+      "cusp_sidereal_lon": 90.0,
+      "sign_index": 3,
+      "sign_name": "Cancer",
+      "sign_lord": "Moon",
+      "sign_degree": 0.0
+    },
+    {
+      "house_number": 2,
+      "cusp_sidereal_lon": 120.0,
+      "sign_index": 4,
+      "sign_name": "Leo",
+      "sign_lord": "Sun",
+      "sign_degree": 0.0
+    },
+    {
+      "house_number": 3,
+      "cusp_sidereal_lon": 150.0,
+      "sign_index": 5,
+      "sign_name": "Virgo",
+      "sign_lord": "Mercury",
+      "sign_degree": 0.0
+    },
+    {
+      "house_number": 4,
+      "cusp_sidereal_lon": 180.0,
+      "sign_index": 6,
+      "sign_name": "Libra",
+      "sign_lord": "Venus",
+      "sign_degree": 0.0
+    },
+    {
+      "house_number": 5,
+      "cusp_sidereal_lon": 210.0,
+      "sign_index": 7,
+      "sign_name": "Scorpio",
+      "sign_lord": "Mars",
+      "sign_degree": 0.0
+    },
+    {
+      "house_number": 6,
+      "cusp_sidereal_lon": 240.0,
+      "sign_index": 8,
+      "sign_name": "Sagittarius",
+      "sign_lord": "Jupiter",
+      "sign_degree": 0.0
+    },
+    {
+      "house_number": 7,
+      "cusp_sidereal_lon": 270.0,
+      "sign_index": 9,
+      "sign_name": "Capricorn",
+      "sign_lord": "Saturn",
+      "sign_degree": 0.0
+    },
+    {
+      "house_number": 8,
+      "cusp_sidereal_lon": 300.0,
+      "sign_index": 10,
+      "sign_name": "Aquarius",
+      "sign_lord": "Saturn",
+      "sign_degree": 0.0
+    },
+    {
+      "house_number": 9,
+      "cusp_sidereal_lon": 330.0,
+      "sign_index": 11,
+      "sign_name": "Pisces",
+      "sign_lord": "Jupiter",
+      "sign_degree": 0.0
+    },
+    {
+      "house_number": 10,
+      "cusp_sidereal_lon": 0.0,
+      "sign_index": 0,
+      "sign_name": "Aries",
+      "sign_lord": "Mars",
+      "sign_degree": 0.0
+    },
+    {
+      "house_number": 11,
+      "cusp_sidereal_lon": 30.0,
+      "sign_index": 1,
+      "sign_name": "Taurus",
+      "sign_lord": "Venus",
+      "sign_degree": 0.0
+    },
+    {
+      "house_number": 12,
+      "cusp_sidereal_lon": 60.0,
+      "sign_index": 2,
+      "sign_name": "Gemini",
+      "sign_lord": "Mercury",
+      "sign_degree": 0.0
+    }
+  ],
+  "planet_house_mapping": {
+    "Sun": 6,
+    "Moon": 3,
+    "Mars": 6,
+    "Mercury": 6,
+    "Jupiter": 4,
+    "Venus": 6,
+    "Saturn": 8,
+    "Uranus": 6,
+    "Neptune": 6,
+    "Pluto": 5,
+    "Rahu": 5,
+    "Ketu": 11
+  }
+}

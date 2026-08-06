@@ -1,0 +1,31 @@
+{
+  "event_id": "EVT_CAR_PROMOTION",
+  "event_name": "Career Promotion & Executive Power",
+  "domain_code": "CAREER_AND_PROFESSION",
+  "rule_namespace": "CAREER",
+  "citation_namespace": "CAREER",
+  "required_indicators": {
+    "houses": [10, 6, 11, 2],
+    "karakas": ["Sun", "Saturn", "Jupiter"],
+    "varga_chart": "D10"
+  },
+  "classical_citations": [
+    {
+      "text": "Brihat Parashara Hora Shastra",
+      "chapter": 39,
+      "verse": "14-15"
+    },
+    {
+      "text": "Uttara Kalamrita",
+      "chapter": 4,
+      "verse": "22"
+    }
+  ],
+  "remedies": [
+    {
+      "target": "Sun / 10th Lord",
+      "action": "Offer Surya Arghya in early morning",
+      "rationale": "Strengthens executive authority and leadership aura."
+    }
+  ]
+}

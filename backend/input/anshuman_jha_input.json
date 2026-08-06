@@ -1,0 +1,23 @@
+{
+  "user_profile": {
+    "name": "Anshuman Kumar Jha",
+    "gender": "Male",
+    "dob": "1994/01/05",
+    "tob": "20:00",
+    "pob": "Patna, Bihar, India",
+    "latitude": 25.5941,
+    "longitude": 85.1376,
+    "tz_offset": 5.5,
+    "timezone_name": "Asia/Kolkata"
+  },
+  "calculation_options": {
+    "ayanamsa": "Lahiri",
+    "node_type": "True",
+    "house_system": "Whole Sign",
+    "zodiac": "Sidereal",
+    "varga_list": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 20, 24, 27, 30, 40, 45, 60],
+    "dasha_systems": ["Vimshottari", "Yogini", "Char"],
+    "include_source_texts": true
+  },
+  "requested_modules": ["ALL"]
+}

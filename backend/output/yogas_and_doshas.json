@@ -1,0 +1,73 @@
+{
+  "yogas": {
+    "total_active": 3,
+    "categories_breakdown": {
+      "Raja Yoga": 2,
+      "Vipareeta Raja Yoga": 1
+    },
+    "yogas": [
+      {
+        "name": "Budhaditya Yoga",
+        "category": "Raja Yoga",
+        "formula": "Sun and Mercury conjunct in the same house",
+        "participating_planets": [
+          "Sun",
+          "Mercury"
+        ],
+        "participating_houses": [
+          6
+        ],
+        "description": "Sharp intellect, analytical capability, government favor, administrative skills, and professional acclaim.",
+        "confidence": "85.0%",
+        "priority": "Medium",
+        "affected_areas": [
+          "Intellect",
+          "Administration",
+          "Status"
+        ]
+      },
+      {
+        "name": "Dharma-Karma Adhipati Yoga",
+        "category": "Raja Yoga",
+        "formula": "9th Lord (Sun) and 10th Lord (Mercury) conjunct in House 6",
+        "participating_planets": [
+          "Sun",
+          "Mercury"
+        ],
+        "participating_houses": [
+          6
+        ],
+        "description": "Grants high administrative authority, executive leadership, righteous conduct, and career prosperity.",
+        "confidence": "95%",
+        "priority": "High",
+        "affected_areas": [
+          "Career",
+          "Status",
+          "Leadership"
+        ]
+      },
+      {
+        "name": "Harsha / Sarala Vipareeta Raja Yoga",
+        "category": "Vipareeta Raja Yoga",
+        "formula": "Dusthana lord placed in another Dusthana house",
+        "participating_planets": [
+          "Saturn",
+          "Jupiter"
+        ],
+        "participating_houses": [
+          8,
+          4
+        ],
+        "description": "Rise to power, wealth, and prominence through sudden unexpected opportunities or defeat of rivals.",
+        "confidence": "88%",
+        "priority": "High",
+        "affected_areas": [
+          "Unexpected Rise",
+          "Victory",
+          "Resilience"
+        ]
+      }
+    ]
+  },
+  "doshas": {}
+}

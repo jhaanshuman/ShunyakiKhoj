@@ -1,0 +1,420 @@
+{
+  "version": "AIContextEngine v1.0",
+  "chart_summary": {
+    "lagna_sign": "Cancer",
+    "lagna_lord": "Moon",
+    "lagna_lord_house": 3,
+    "lagna_lord_strength": "Strong",
+    "moon_sign": "Virgo",
+    "sun_sign": "Sagittarius",
+    "total_active_yogas": 3,
+    "total_active_rules": 9,
+    "overall_chart_strength": 50.0,
+    "primary_life_theme": "Balanced"
+  },
+  "yogakaraka": {
+    "planet": "Mars",
+    "strength": "Moderate",
+    "house": 6,
+    "dignity": "Great Friend (Adhi Mitra)",
+    "message": "Mars is the most powerful planet for Cancer Lagna, ruling both a Kendra and a Trikona."
+  },
+  "current_dasha": {
+    "mahadasha_lord": "Mars",
+    "antardasha_lord": "",
+    "pratyantardasha_lord": "",
+    "md_start": "1990-12-12T14:12:39.565432",
+    "md_end": "1997-12-12T06:57:03.565432",
+    "interpretation": "period of action, property, siblings, accidents, and courage-driven initiatives",
+    "md_lord_strength": "Moderate",
+    "ad_lord_strength": "Moderate"
+  },
+  "top_predictions": [
+    {
+      "domain": "Health & Immunity",
+      "score": 64.8,
+      "summary": "Strong immune system, high physical stamina, and quick recovery.",
+      "rule_count": 0,
+      "yoga_count": 0,
+      "conflicting_factors": []
+    },
+    {
+      "domain": "Parents & Ancestors",
+      "score": 60.7,
+      "summary": "Father's fortune and blessings guide the native's life path.",
+      "rule_count": 0,
+      "yoga_count": 0,
+      "conflicting_factors": []
+    },
+    {
+      "domain": "Fame & Recognition",
+      "score": 58.7,
+      "summary": "Exceptional public reputation; fame that extends beyond normal professional achievement.",
+      "rule_count": 0,
+      "yoga_count": 0,
+      "conflicting_factors": []
+    },
+    {
+      "domain": "Business & Commerce",
+      "score": 58.4,
+      "summary": "Independent business ventures, entrepreneurial spirit, and self-made success.",
+      "rule_count": 0,
+      "yoga_count": 0,
+      "conflicting_factors": []
+    },
+    {
+      "domain": "Litigation & Enemies",
+      "score": 57.9,
+      "summary": "Legal disputes or conflicts are possible; need for legal vigilance.",
+      "rule_count": 0,
+      "yoga_count": 0,
+      "conflicting_factors": []
+    }
+  ],
+  "yoga_narratives": [
+    {
+      "name": "Dharma-Karma Adhipati Yoga",
+      "category": "Raja Yoga",
+      "description": "Grants high administrative authority, executive leadership, righteous conduct, and career prosperity."
+    },
+    {
+      "name": "Harsha / Sarala Vipareeta Raja Yoga",
+      "category": "Vipareeta Raja Yoga",
+      "description": "Rise to power, wealth, and prominence through sudden unexpected opportunities or defeat of rivals."
+    },
+    {
+      "name": "Budhaditya Yoga",
+      "category": "Raja Yoga",
+      "description": "Sharp intellect, analytical capability, government favor, administrative skills, and professional acclaim."
+    }
+  ],
+  "house_themes": [
+    {
+      "house": 1,
+      "theme": "physical vitality and self-image",
+      "lord": "Moon",
+      "lord_strength": "Strong",
+      "house_score": 65.0,
+      "is_afflicted": false,
+      "is_protected": false
+    },
+    {
+      "house": 2,
+      "theme": "family wealth and speech",
+      "lord": "Sun",
+      "lord_strength": "Moderate",
+      "house_score": 50.0,
+      "is_afflicted": false,
+      "is_protected": false
+    },
+    {
+      "house": 3,
+      "theme": "courage, communication, and siblings",
+      "lord": "Mercury",
+      "lord_strength": "Moderate",
+      "house_score": 60.0,
+      "is_afflicted": false,
+      "is_protected": true
+    },
+    {
+      "house": 4,
+      "theme": "home, mother, property, and emotional security",
+      "lord": "Venus",
+      "lord_strength": "Moderate",
+      "house_score": 60.0,
+      "is_afflicted": false,
+      "is_protected": true
+    },
+    {
+      "house": 5,
+      "theme": "intelligence, creativity, children, and investments",
+      "lord": "Mars",
+      "lord_strength": "Moderate",
+      "house_score": 31.0,
+      "is_afflicted": true,
+      "is_protected": false
+    },
+    {
+      "house": 6,
+      "theme": "health challenges, enemies, and service",
+      "lord": "Jupiter",
+      "lord_strength": "Strong",
+      "house_score": 67.0,
+      "is_afflicted": false,
+      "is_protected": false
+    },
+    {
+      "house": 7,
+      "theme": "marriage, partnerships, and trade",
+      "lord": "Saturn",
+      "lord_strength": "Strong",
+      "house_score": 60.0,
+      "is_afflicted": false,
+      "is_protected": false
+    },
+    {
+      "house": 8,
+      "theme": "longevity, transformation, and hidden matters",
+      "lord": "Saturn",
+      "lord_strength": "Strong",
+      "house_score": 51.0,
+      "is_afflicted": true,
+      "is_protected": false
+    },
+    {
+      "house": 9,
+      "theme": "fortune, father, dharma, and higher knowledge",
+      "lord": "Jupiter",
+      "lord_strength": "Strong",
+      "house_score": 65.0,
+      "is_afflicted": false,
+      "is_protected": false
+    },
+    {
+      "house": 10,
+      "theme": "career, reputation, and public authority",
+      "lord": "Mars",
+      "lord_strength": "Moderate",
+      "house_score": 50.0,
+      "is_afflicted": false,
+      "is_protected": false
+    },
+    {
+      "house": 11,
+      "theme": "income, gains, and social networks",
+      "lord": "Venus",
+      "lord_strength": "Moderate",
+      "house_score": 36.0,
+      "is_afflicted": true,
+      "is_protected": false
+    },
+    {
+      "house": 12,
+      "theme": "foreign lands, spiritual liberation, and losses",
+      "lord": "Mercury",
+      "lord_strength": "Moderate",
+      "house_score": 50.0,
+      "is_afflicted": false,
+      "is_protected": false
+    }
+  ],
+  "planet_context": [
+    {
+      "planet": "Sun",
+      "house": 6,
+      "dignity": "Great Friend (Adhi Mitra)",
+      "strength": "Moderate",
+      "interpretation": "cooperative and supportive energy",
+      "life_areas": [
+        "Career",
+        "Enemies",
+        "Fame",
+        "Family",
+        "Father",
+        "Government",
+        "Health",
+        "Litigation",
+        "Service",
+        "Speech",
+        "Wealth"
+      ],
+      "functional_role": "Natural Malefic"
+    },
+    {
+      "planet": "Moon",
+      "house": 3,
+      "dignity": "Great Friend (Adhi Mitra)",
+      "strength": "Strong",
+      "interpretation": "cooperative and supportive energy",
+      "life_areas": [
+        "Communication",
+        "Courage",
+        "Emotions",
+        "Health",
+        "Mind",
+        "Mother",
+        "Personality",
+        "Property",
+        "Self",
+        "Siblings"
+      ],
+      "functional_role": "Natural Benefic"
+    },
+    {
+      "planet": "Mars",
+      "house": 6,
+      "dignity": "Great Friend (Adhi Mitra)",
+      "strength": "Moderate",
+      "interpretation": "cooperative and supportive energy",
+      "life_areas": [
+        "Accidents",
+        "Authority",
+        "Career",
+        "Children",
+        "Courage",
+        "Education",
+        "Enemies",
+        "Fame",
+        "Government",
+        "Health",
+        "Intelligence",
+        "Litigation",
+        "Property",
+        "Service",
+        "Siblings",
+        "Speculation"
+      ],
+      "functional_role": "Functional Benefic"
+    },
+    {
+      "planet": "Mercury",
+      "house": 6,
+      "dignity": "Friend (Mitra)",
+      "strength": "Moderate",
+      "interpretation": "generally positive expression",
+      "life_areas": [
+        "Business",
+        "Communication",
+        "Courage",
+        "Education",
+        "Enemies",
+        "Foreign Travel",
+        "Health",
+        "Litigation",
+        "Losses",
+        "Moksha",
+        "Service",
+        "Siblings",
+        "Spirituality",
+        "Trade"
+      ],
+      "functional_role": "Functional Malefic"
+    },
+    {
+      "planet": "Jupiter",
+      "house": 4,
+      "dignity": "Neutral (Sama)",
+      "strength": "Strong",
+      "interpretation": "neutral expression; dependent on aspects",
+      "life_areas": [
+        "Children",
+        "Education",
+        "Enemies",
+        "Father",
+        "Foreign Travel",
+        "Fortune",
+        "Health",
+        "Litigation",
+        "Marriage",
+        "Mother",
+        "Property",
+        "Service",
+        "Spirituality",
+        "Vehicles",
+        "Wealth"
+      ],
+      "functional_role": "Functional Benefic"
+    },
+    {
+      "planet": "Venus",
+      "house": 6,
+      "dignity": "Friend (Mitra)",
+      "strength": "Moderate",
+      "interpretation": "generally positive expression",
+      "life_areas": [
+        "Arts",
+        "Education",
+        "Elder Siblings",
+        "Enemies",
+        "Friends",
+        "Gains",
+        "Health",
+        "Litigation",
+        "Luxury",
+        "Marriage",
+        "Mother",
+        "Property",
+        "Service",
+        "Vehicles",
+        "Wealth"
+      ],
+      "functional_role": "Functional Malefic"
+    },
+    {
+      "planet": "Saturn",
+      "house": 8,
+      "dignity": "Moolatrikona",
+      "strength": "Strong",
+      "interpretation": "near-maximum strength in primary domain",
+      "life_areas": [
+        "Accidents",
+        "Business",
+        "Career",
+        "Children",
+        "Education",
+        "Inheritance",
+        "Intelligence",
+        "Litigation",
+        "Longevity",
+        "Marriage",
+        "Occult",
+        "Partnerships",
+        "Property",
+        "Service",
+        "Speculation"
+      ],
+      "functional_role": "Functional Malefic"
+    },
+    {
+      "planet": "Rahu",
+      "house": 5,
+      "dignity": "Debilitated",
+      "strength": "Weak",
+      "interpretation": "weakest expression; potential Neecha Bhanga if cancelled",
+      "life_areas": [
+        "Children",
+        "Education",
+        "Elder Siblings",
+        "Fame",
+        "Foreign Travel",
+        "Friends",
+        "Gains",
+        "Intelligence",
+        "Speculation",
+        "Technology",
+        "Unexpected Events",
+        "Wealth"
+      ],
+      "functional_role": "Natural Malefic"
+    },
+    {
+      "planet": "Ketu",
+      "house": 11,
+      "dignity": "Debilitated",
+      "strength": "Weak",
+      "interpretation": "weakest expression; potential Neecha Bhanga if cancelled",
+      "life_areas": [
+        "Accidents",
+        "Children",
+        "Education",
+        "Elder Siblings",
+        "Friends",
+        "Gains",
+        "Intelligence",
+        "Liberation",
+        "Longevity",
+        "Speculation",
+        "Spirituality",
+        "Wealth"
+      ],
+      "functional_role": "Natural Malefic"
+    }
+  ],
+  "recommended_focus_areas": [
+    "Health & Immunity",
+    "Parents & Ancestors",
+    "Fame & Recognition"
+  ],
+  "total_yogas_detected": 3,
+  "total_rules_matched": 9
+}

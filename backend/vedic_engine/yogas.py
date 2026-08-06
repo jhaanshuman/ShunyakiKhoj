@@ -81,7 +81,8 @@ class YogaEngine:
             ))
 
         # Hamsa (Jupiter in Kendra in Cancer, Sagittarius, Pisces)
-        if jup_h in [1, 4, 7, 10] and planets_data['Jupiter'].sign_name in ['Cancer', 'Sagittarius', 'Pisces']:
+        jup_sign = planets_data['Jupiter'].sign_name if hasattr(planets_data['Jupiter'], 'sign_name') else planets_data['Jupiter'].get('sign_name', '')
+        if jup_h in [1, 4, 7, 10] and jup_sign in ['Cancer', 'Sagittarius', 'Pisces']:
             active_yogas.append(YogaResult(
                 name="Hamsa Yoga",
                 category="Pancha Mahapurusha",

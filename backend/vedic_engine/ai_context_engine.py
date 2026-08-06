@@ -119,7 +119,7 @@ class AIContextEngine:
             })
 
         # Top active yogas (by confidence)
-        all_yogas = list(yogas) + list(advanced_yogas)
+        all_yogas = [y for y in (list(yogas) + list(advanced_yogas)) if isinstance(y, dict)]
         top_yogas = sorted(all_yogas, key=lambda y: y.get('confidence', 0), reverse=True)[:10]
         yoga_narratives = [
             {"name": y.get('name', ''), "category": y.get('category', ''), "description": y.get('description', '')}

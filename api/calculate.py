@@ -613,13 +613,15 @@ def get_tithi_times(p):
             })
     return times_info
 
+import tempfile
+
+def get_festivals_db_path():
+    return os.path.join(tempfile.gettempdir(), "festivals.db")
+
 def init_festivals_db():
     try:
-        db_path = "/tmp/festivals.db"
-        try:
-            conn = sqlite3.connect(db_path)
-        except Exception:
-            conn = sqlite3.connect(":memory:")
+        db_path = get_festivals_db_path()
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS festivals (
@@ -654,9 +656,9 @@ def get_festivals_get(year: int = None, month: int = None, date: str = None):
     return query_festivals(year, month, date)
 
 def query_festivals(year: int, month: int, date: str):
-    db_path = "/tmp/festivals.db"
+    db_path = get_festivals_db_path()
     if not os.path.exists(db_path):
-        run_db_initializer()
+        init_festivals_db()
         
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShunyakiKhoj — Backend Engine Research Portal</title>
+    <link rel="icon" href="/logo.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/backend/research_dashboard.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="dashboard-header">
+        <div class="brand-row">
+            <div class="brand-title-box">
+                <img src="/logo.png" alt="ShunyakiKhoj Logo" class="brand-logo" onerror="this.style.display='none'">
+                <div class="brand-text">
+                    <h1>SHUNYAKIKHOJ — BACKEND ENGINE RESEARCH PORTAL</h1>
+                    <p>Analytical Dashboard for Vedic Ephemeris, Astrological Calculations & Engine Upgradations</p>
+                </div>
+            </div>
+            <div class="status-badge">
+                <span class="status-dot"></span> Engine V5.0 Active (Drik Ganita / Swiss Ephemeris)
+            </div>
+        </div>
+
+        <!-- Benchmark Native Profile Header Card -->
+        <div class="benchmark-card">
+            <h3>👤 BENCHMARK USER PROFILE & INPUT DETAILS</h3>
+            <div class="user-grid">
+                <div class="user-item">
+                    <div class="label">NATIVE NAME</div>
+                    <div class="value" id="hdr-name">Anshuman Kumar Jha</div>
+                </div>
+                <div class="user-item">
+                    <div class="label">DATE OF BIRTH (DOB)</div>
+                    <div class="value" id="hdr-dob">1994/01/05</div>
+                </div>
+                <div class="user-item">
+                    <div class="label">TIME OF BIRTH (TOB)</div>
+                    <div class="value" id="hdr-tob">20:00</div>
+                </div>
+                <div class="user-item">
+                    <div class="label">PLACE OF BIRTH (POB)</div>
+                    <div class="value" id="hdr-pob">Patna, Bihar, India</div>
+                </div>
+                <div class="user-item">
+                    <div class="label">COORDINATES</div>
+                    <div class="value" id="hdr-coords">25.5941° N, 85.1376° E</div>
+                </div>
+                <div class="user-item">
+                    <div class="label">TIMEZONE OFFSET</div>
+                    <div class="value" id="hdr-tz">UTC +5.5 (Asia/Kolkata)</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Original Core 7 Categorical Navigation Tabs (Extended) -->
+    <nav class="dashboard-nav">
+        <button class="tab-btn active" data-tab="planets">🪐 Planetary Positions & Strengths</button>
+        <button class="tab-btn" data-tab="divisional">📐 Divisional Charts (D1-D60) & Lagnas</button>
+        <button class="tab-btn" data-tab="dashas">⏳ Dasha Systems & Forecasts</button>
+        <button class="tab-btn" data-tab="panchang">☀️ Daily Panchang & Auspicious Timings</button>
+        <button class="tab-btn" data-tab="ashtakvarga">📊 Ashtakvarga & House Analysis</button>
+        <button class="tab-btn" data-tab="yogasdoshas">🧘 Yogas, Doshas & Jaimini Engine</button>
+        <button class="tab-btn" data-tab="inspector">💻 Categorical API Input & Output Inspector</button>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="dashboard-container">
+
+        <!-- TAB 1: Planetary Positions & Strengths -->
+        <section class="tab-content active" id="tab-planets">
+            <div class="table-container" style="margin-bottom: 24px;">
+                <div class="table-header">
+                    <h2>🪐 D1 Planetary Positions & Longitudes</h2>
+                    <span class="badge badge-own">Lahiri Ayanamsa</span>
+                </div>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Body / Planet</th>
+                                <th>Sign Name</th>
+                                <th>Degree in Sign</th>
+                                <th>Sidereal Longitude</th>
+                                <th>Nakshatra</th>
+                                <th>Pada</th>
+                                <th>House</th>
+                                <th>State</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-planets-d1">
+                            <!-- Dynamic rendering -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sub-Extension: 1 & 2. Shadbala & Ishta/Kashta Bala -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>⚖️ Sub-Engine Extension: Shadbala (6-Fold Strength) & Ishta/Kashta Phala</h2>
+                    <span class="badge badge-exalt">Sub-Module 1 & 2</span>
+                </div>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Planet</th>
+                                <th>Sthana Bala</th>
+                                <th>Dig Bala</th>
+                                <th>Kala Bala</th>
+                                <th>Cheshta Bala</th>
+                                <th>Naisargika</th>
+                                <th>Drik Bala</th>
+                                <th>Total (Virupas)</th>
+                                <th>Total (Rupas)</th>
+                                <th>Required R</th>
+                                <th>Ratio</th>
+                                <th>Ishta Bala</th>
+                                <th>Kashta Bala</th>
+                                <th>Evaluation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-shadbala">
+                            <!-- Dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: Divisional Charts (D1-D60) & Special Lagnas -->
+        <section class="tab-content" id="tab-divisional">
+            <div class="table-container" style="margin-bottom: 24px;">
+                <div class="table-header">
+                    <h2>📐 Divisional Charts (Varga Charts D1 to D60)</h2>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <label for="select-divisional-chart" style="font-weight:700; color:var(--gold-primary); font-size:0.9rem;">Select Varga Chart:</label>
+                        <select id="select-divisional-chart" class="search-input" style="background:#0f172a; color:#fff; font-weight:700; padding:6px 14px;">
+                            <option value="D1">D1 — Rashi (Main Chart)</option>
+                            <option value="D2">D2 — Hora (Wealth)</option>
+                            <option value="D3">D3 — Drekkana (Siblings)</option>
+                            <option value="D4">D4 — Chaturthamsha (Property)</option>
+                            <option value="D7">D7 — Saptamsha (Children)</option>
+                            <option value="D9">D9 — Navamsha (Spouse & Dharma)</option>
+                            <option value="D10">D10 — Dashamsha (Career & Power)</option>
+                            <option value="D12">D12 — Dwadashamsha (Parents)</option>
+                            <option value="D16">D16 — Shodashamsha (Vehicles)</option>
+                            <option value="D20">D20 — Vimshamsha (Spirituality)</option>
+                            <option value="D24">D24 — Chaturvimshamsha (Education)</option>
+                            <option value="D27">D27 — Saptavimshamsha (Strengths)</option>
+                            <option value="D30">D30 — Trimshamsha (Misfortunes)</option>
+                            <option value="D40">D40 — Khavedamsha (Auspiciousness)</option>
+                            <option value="D45">D45 — Akshavedamsha (General Well-being)</option>
+                            <option value="D60">D60 — Shashtiamsha (Past Karma)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Planet</th>
+                                <th>Sign in Selected Varga</th>
+                                <th>Sign Lord</th>
+                                <th>House Number</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-divisional">
+                            <!-- Dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sub-Extension: 3, 4 & 5. Arudha Padas, Upagrahas & Special Lagnas -->
+            <div class="grid-two">
+                <div class="table-container">
+                    <div class="table-header"><h2>🚩 Sub-Engine Extension 3: Arudha Padas (AL..UL)</h2></div>
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Pada Code</th><th>House Number</th><th>Sign Name</th><th>Sign Lord</th></tr>
+                            </thead>
+                            <tbody id="tbody-arudhas"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <div class="table-header"><h2>✨ Sub-Engine Extension 4 & 5: Upagrahas & Special Lagnas</h2></div>
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Point Name</th><th>Sidereal Longitude</th><th>Sign Name</th><th>Nakshatra</th><th>House</th></tr>
+                            </thead>
+                            <tbody id="tbody-upagrahas-lagnas"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: Dasha Systems & Forecasts -->
+        <section class="tab-content" id="tab-dashas">
+            <div class="table-container" style="margin-bottom: 24px;">
+                <div class="table-header">
+                    <h2>⏳ Major Dasha Systems (Vimshottari & Conditional Systems)</h2>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <label for="select-dasha-system" style="font-weight:700; color:var(--gold-primary); font-size:0.9rem;">Select Dasha System:</label>
+                        <select id="select-dasha-system" class="search-input" style="background:#0f172a; color:#fff; font-weight:700;">
+                            <option value="Vimshottari">Vimshottari Dasha (120 Years)</option>
+                            <option value="Ashtottari">Ashtottari Dasha (108 Years)</option>
+                            <option value="Chara">Jaimini Chara Dasha</option>
+                            <option value="Yogini">Yogini Dasha (36 Years)</option>
+                            <option value="Kalachakra">Kalachakra Dasha</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Mahadasha Lord</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Duration (Years)</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-dashas-main">
+                            <!-- Dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sub-Extension 19: Dasha Interpretations -->
+            <div class="table-container">
+                <div class="table-header"><h2>⏳ Sub-Engine Extension 19: Dasha Period Domain Interpretations</h2></div>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Mahadasha Period</th><th>Primary Focus</th><th>Forecast Narrative & Opportunity Level</th></tr>
+                        </thead>
+                        <tbody id="tbody-dashainterp"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: Daily Panchang & Auspicious Timings -->
+        <section class="tab-content" id="tab-panchang">
+            <div class="table-container" style="margin-bottom:24px;">
+                <div class="table-header">
+                    <h2>☀️ Classical Daily Panchanga</h2>
+                    <span class="badge badge-own">Drik Ganita</span>
+                </div>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Panchang Element</th>
+                                <th>Value</th>
+                                <th>Deity / Lord</th>
+                                <th>Auspiciousness</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-panchang-main">
+                            <!-- Dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sub-Extension 18: Choghadiya & Muhurtas -->
+            <div class="table-container">
+                <div class="table-header"><h2>☀️ Sub-Engine Extension 18: Expanded Choghadiya & Auspicious Muhurtas</h2></div>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Timing / Muhurta</th><th>Time Window / Value</th><th>Nature / Significance</th></tr>
+                        </thead>
+                        <tbody id="tbody-panchangaexp"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: Ashtakvarga & House Analysis -->
+        <section class="tab-content" id="tab-ashtakvarga">
+            <div class="table-container" style="margin-bottom:24px;">
+                <div class="table-header">
+                    <h2>📊 Samudaya Ashtakvarga (SAV) Points per House</h2>
+                </div>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>House Number</th>
+                                <th>Zodiac Sign</th>
+                                <th>SAV Bindus</th>
+                                <th>Strength Assessment</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-ashtakvarga-main">
+                            <!-- Dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sub-Extension 7, 8 & 9: House Strengths & Avasthas -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>🏰 Sub-Engine Extension 7, 8 & 9: House & Planet Strengths / Avasthas</h2>
+                </div>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Planet</th><th>Jagrat/Swapna/Sushupta</th><th>Lajjitadi Avastha</th><th>Functional Role</th><th>Friendship State</th></tr>
+                        </thead>
+                        <tbody id="tbody-houseplanets"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: Yogas, Doshas & Jaimini Engine -->
+        <section class="tab-content" id="tab-yogasdoshas">
+            <!-- Sub-Engine 10: 300+ Yogas -->
+            <div class="table-container" style="margin-bottom:24px;">
+                <div class="table-header">
+                    <h2>🕉️ Evaluated Classical Vedic Yogas</h2>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <label for="select-yoga-category" style="font-size:0.85rem; font-weight:700; color:#d4af37;">Filter Category:</label>
+                        <select id="select-yoga-category" class="search-input" style="background:#0f172a; color:#fff;">
+                            <option value="ALL">All Categories</option>
+                            <option value="Raja Yoga">Raja Yogas</option>
+                            <option value="Dhana Yoga">Dhana Yogas</option>
+                            <option value="Vipareeta Raja Yoga">Vipareeta Raja Yogas</option>
+                            <option value="Pancha Mahapurusha">Pancha Mahapurusha Yogas</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Yoga Name</th>
+                                <th>Category</th>
+                                <th>Formula & Placement</th>
+                                <th>Description & Effects</th>
+                                <th>Confidence</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-yogas300">
+                            <!-- Dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sub-Engine 11: Dosha Suite -->
+            <div class="table-container" style="margin-bottom:24px;">
+                <div class="table-header"><h2>🛡️ Comprehensive Dosha Suite & Severity Analysis</h2></div>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Dosha Name</th><th>Severity Level</th><th>Cancellation (Neecha Bhanga)</th><th>Analysis & Impact</th></tr>
+                        </thead>
+                        <tbody id="tbody-doshasall"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sub-Engine 6: Jaimini Engine -->
+            <div class="table-container">
+                <div class="table-header"><h2>🧘 Sub-Engine Extension 6: Jaimini Engine (Chara Karakas AK..DK)</h2></div>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Karaka Role</th><th>Planet Assigned</th><th>Sign Name</th><th>Degree</th></tr>
+                        </thead>
+                        <tbody id="tbody-jaimini"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 7: Categorical API Input & Output Inspector -->
+        <section class="tab-content" id="tab-inspector">
+            <div class="table-container" style="margin-bottom:24px; padding:18px 24px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                    <div>
+                        <h2 style="color:var(--gold-primary); font-size:1.15rem; margin-bottom:4px;">💻 Categorical API Inspector & Payload Viewer</h2>
+                        <p style="color:var(--text-muted); font-size:0.85rem;">Select an API category to view its exact input payload, executing API backend module, and returned result JSON.</p>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <label for="api-category-select" style="font-weight:700; color:var(--text-primary); font-size:0.9rem;">Select API Category:</label>
+                        <select id="api-category-select" class="search-input" style="padding:8px 16px; font-weight:700; color:var(--gold-light); background:#0f172a; border-color:var(--gold-primary); cursor:pointer;">
+                            <option value="full_horoscope">🌟 Full Master Horoscope (V5 Engine)</option>
+                            <option value="shadbala">⚖️ 1 & 2. Shadbala & Ishta/Kashta Bala</option>
+                            <option value="lagnas">🚩 3, 4 & 5. Arudhas, Upagrahas & Special Lagnas</option>
+                            <option value="jaimini">🧘 6. Jaimini Engine</option>
+                            <option value="houseplanets">🏰 7, 8 & 9. House & Planet Strengths / Avasthas</option>
+                            <option value="yogas">🕉️ 10. 300+ Evaluated Yogas</option>
+                            <option value="doshas">🛡️ 11. Comprehensive Doshas</option>
+                            <option value="aspects">👁️ 12, 13 & 14. Aspects, Argala & Bhavat Bhavam</option>
+                            <option value="kp">📐 15. KP Engine (CSL & Ruling Planets)</option>
+                            <option value="marriage">💖 16. Advanced Marriage & Synastry</option>
+                            <option value="eventtriggers">🎯 17. Event Prediction Windows</option>
+                            <option value="panchang">☀️ 18. Expanded Panchanga</option>
+                            <option value="dashas">⏳ 19. Dasha Interpretations</option>
+                            <option value="aireasoning">🤖 20. AI Reasoning & Synthesis</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active API Module Badge Banner -->
+            <div style="background: rgba(30, 41, 59, 0.9); border: 1.5px solid var(--gold-primary); border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; font-weight: 700;">Active API Backend Module:</span>
+                    <span id="active-api-path" style="color: var(--accent-green); font-family: monospace; font-weight: 700; margin-left: 8px; font-size: 0.95rem;">backend/api/horoscope_api.py</span>
+                </div>
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; font-weight: 700;">Output File:</span>
+                    <span id="active-output-file" style="color: var(--accent-blue); font-family: monospace; font-weight: 700; margin-left: 8px; font-size: 0.95rem;">backend/output/anshuman_jha_output.json</span>
+                </div>
+            </div>
+
+            <div class="grid-two">
+                <div class="table-container">
+                    <div class="table-header"><h2 id="title-input-box">📥 API Input Payload</h2></div>
+                    <div style="padding: 16px;"><pre class="json-box" id="json-input-box">Loading input payload...</pre></div>
+                </div>
+                <div class="table-container">
+                    <div class="table-header"><h2 id="title-output-box">📤 API Execution Result Output JSON</h2></div>
+                    <div style="padding: 16px;"><pre class="json-box" id="json-output-box">Loading output JSON result...</pre></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="/backend/research_dashboard.js"></script>
+</body>
+</html>

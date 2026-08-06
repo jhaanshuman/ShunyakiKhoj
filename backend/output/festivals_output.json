@@ -1,0 +1,5 @@
+{
+  "status": "success",
+  "festivals": [],
+  "api_module": "backend/api/festivals_api.py"
+}

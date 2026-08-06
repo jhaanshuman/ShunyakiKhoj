@@ -5103,35 +5103,57 @@ textarea:focus {
     background: #ffffff !important;
 }
 
-/* ── Modern Glassmorphic Cards & Containers ── */
+/* ── Modern Glassmorphic Cards & Containers (5-10% Background Leakage & 5px Max Padding) ── */
 .glass-card,
 .welcome-card,
+.about-panchang-box,
 .center-feature-showcase .glass-card,
 .astrology-container .output-card,
-.panchang-card {
-    border-radius: 16px !important;
-    border: 1.5px solid rgba(245, 158, 11, 0.25) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    box-shadow: 0 12px 35px -8px rgba(0, 0, 0, 0.1) !important;
+.panchang-card,
+.tile-card,
+.item-card,
+.category-tile,
+.hero-content,
+.about-content,
+.items-header {
+    border-radius: 12px !important;
+    border: 1.5px solid rgba(245, 158, 11, 0.3) !important;
+    background: rgba(255, 255, 255, 0.12) !important; /* 5-10% Translucent Background Leakage */
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    box-shadow: 0 8px 30px -8px rgba(0, 0, 0, 0.2) !important;
+    padding: 5px !important; /* Max 5px Padding Rule */
+    margin-bottom: 8px !important;
     transition: transform 0.28s ease, box-shadow 0.28s ease !important;
 }
 
-/* ── Center Feature Showcase: Side-by-side Desktop Grid ── */
+body.theme-dark .glass-card,
+body.theme-dark .welcome-card,
+body.theme-dark .about-panchang-box,
+body.dark-theme .glass-card,
+body.dark-theme .welcome-card,
+body.dark-theme .about-panchang-box {
+    background: rgba(15, 23, 42, 0.25) !important; /* 5-10% Translucent Dark Leakage */
+}
+
+/* ── Center Feature Showcase: Side-by-side Desktop Grid with 200px Max Height ── */
 .center-feature-showcase {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    gap: 24px !important;
+    gap: 16px !important;
     align-items: stretch !important;
 }
 
 .center-feature-showcase .welcome-card,
 .center-feature-showcase .about-panchang-box {
     margin-bottom: 0 !important;
-    height: 100% !important;
+    max-height: 200px !important;
+    height: 200px !important;
+    overflow-y: auto !important;
+    padding: 5px !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: space-between !important;
+    justify-content: flex-start !important;
 }
 
 @media (max-width: 992px) {

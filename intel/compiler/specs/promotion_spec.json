@@ -1,0 +1,47 @@
+{
+  "event_id": "EVT_CAR_PROMOTION",
+  "event_name": "Career Promotion & Executive Power",
+  "domain_code": "CAREER",
+  "required_indicators": {
+    "houses": [10, 11, 2, 6],
+    "karakas": ["Sun", "Saturn", "Mercury"],
+    "varga_chart": "D10"
+  },
+  "optional_indicators": {
+    "planets": ["Jupiter", "Mars"],
+    "yogas": ["Dharma-Karma Adhipati", "Raja Yoga"],
+    "jaimini_karaka": "Amatyakaraka"
+  },
+  "timing_rules": {
+    "dashas": ["10th Lord", "11th Lord", "Sun", "Saturn"],
+    "transits": ["Jupiter transit aspecting 10th house", "Saturn transit in 11th house"],
+    "ashtakvarga_sav_threshold": 28
+  },
+  "negative_factors": [
+    "10th Lord in 8th house during Antardasha",
+    "Saturn transit over 10th house during low SAV bindus (<25)",
+    "Rahu eclipse on 10th lord"
+  ],
+  "cancellation_rules": [
+    "Benefic Jupiter transit over 10th house neutralizes minor Antardasha afflictions"
+  ],
+  "classical_citations": [
+    {
+      "text": "Brihat Parashara Hora Shastra",
+      "chapter": 39,
+      "verse": "14-15"
+    },
+    {
+      "text": "Uttara Kalamrita",
+      "chapter": 4,
+      "verse": "22"
+    }
+  ],
+  "remedies": [
+    {
+      "target": "Sun",
+      "action": "Offer Surya Arghya in early morning",
+      "rationale": "Strengthens executive authority and leadership aura"
+    }
+  ]
+}

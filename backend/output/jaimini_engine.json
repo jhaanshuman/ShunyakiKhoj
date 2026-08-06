@@ -1,0 +1,94 @@
+{
+  "chara_karakas": {
+    "AK": "Moon",
+    "AmK": "Mercury",
+    "BK": "Sun",
+    "MK": "Mars",
+    "PK": "Venus",
+    "GK": "Jupiter",
+    "DK": "Saturn"
+  },
+  "karakamsha_sign": "Virgo",
+  "swamsha_sign": "Virgo",
+  "arudha_padas": {
+    "A1": 8,
+    "A2": 1,
+    "A3": 12,
+    "A4": 11,
+    "A5": 10,
+    "A6": 5,
+    "A7": 12,
+    "A8": 8,
+    "A9": 2,
+    "A10": 5,
+    "A11": 4,
+    "A12": 12,
+    "AL": 8,
+    "UL": 12
+  },
+  "raj_yogas": [
+    "AmK and PK are conjunct in sign Sagittarius (Jaimini Raj Yoga)."
+  ],
+  "aspects": {
+    "1": [
+      5,
+      8,
+      11
+    ],
+    "2": [
+      4,
+      7,
+      10
+    ],
+    "3": [
+      6,
+      9,
+      12
+    ],
+    "4": [
+      2,
+      8,
+      11
+    ],
+    "5": [
+      1,
+      7,
+      10
+    ],
+    "6": [
+      3,
+      9,
+      12
+    ],
+    "7": [
+      2,
+      5,
+      11
+    ],
+    "8": [
+      1,
+      4,
+      10
+    ],
+    "9": [
+      3,
+      6,
+      12
+    ],
+    "10": [
+      2,
+      5,
+      8
+    ],
+    "11": [
+      1,
+      4,
+      7
+    ],
+    "12": [
+      3,
+      6,
+      9
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "event_id": "EVT_CHILD_FIRST_BIRTH",
+  "event_name": "First Childbirth & Progeny Arrival",
+  "domain_code": "CHILDREN_AND_PARENTHOOD",
+  "rule_namespace": "CHILDREN",
+  "citation_namespace": "CHILDREN",
+  "required_indicators": {
+    "houses": [5, 2, 9, 11],
+    "karakas": ["Jupiter", "Moon"],
+    "varga_chart": "D7"
+  },
+  "classical_citations": [
+    {
+      "text": "Brihat Parashara Hora Shastra",
+      "chapter": 16,
+      "verse": "3-5"
+    },
+    {
+      "text": "Phaladeepika",
+      "chapter": 12,
+      "verse": "1-4"
+    }
+  ],
+  "remedies": [
+    {
+      "target": "Jupiter / 5th Lord",
+      "action": "Recite Santan Gopal Mantra & offer yellow sweets on Thursdays",
+      "rationale": "Strengthens progeny Karaka Jupiter and removes obstacles."
+    }
+  ]
+}

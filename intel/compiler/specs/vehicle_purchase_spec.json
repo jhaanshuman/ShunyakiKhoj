@@ -1,0 +1,47 @@
+{
+  "event_id": "EVT_VEHICLE_LUXURY_PURCHASE",
+  "event_name": "Luxury Vehicle Acquisition & Car Purchase",
+  "domain_code": "PROPERTY_AND_VEHICLES",
+  "required_indicators": {
+    "houses": [4, 11, 2, 9],
+    "karakas": ["Venus", "Mars", "Moon"],
+    "varga_chart": "D4"
+  },
+  "optional_indicators": {
+    "planets": ["Jupiter", "Mercury"],
+    "yogas": ["Vahana Yoga", "Dhana Yoga"],
+    "chaturthamsha_d4": true
+  },
+  "timing_rules": {
+    "dashas": ["4th Lord", "Venus", "Mars", "11th Lord"],
+    "transits": ["Jupiter transit aspecting 4th house", "Venus transiting in 4th/11th house"],
+    "ashtakvarga_sav_threshold": 28
+  },
+  "negative_factors": [
+    "4th Lord in 8th house",
+    "Saturn aspecting 4th house causing vehicle delay",
+    "Afflicted Venus in D4"
+  ],
+  "cancellation_rules": [
+    "Exalted Venus or strong Mars neutralizes 4th house delay factors"
+  ],
+  "classical_citations": [
+    {
+      "text": "Brihat Parashara Hora Shastra",
+      "chapter": 15,
+      "verse": "5-7"
+    },
+    {
+      "text": "Phaladeepika",
+      "chapter": 16,
+      "verse": "12"
+    }
+  ],
+  "remedies": [
+    {
+      "target": "Venus / Mars",
+      "action": "Offer red flowers to Goddess Lakshmi and worship Lord Ganesha on Fridays",
+      "rationale": "Strengthens Vahana Karaka Venus and removes obstacles to luxury vehicle purchase"
+    }
+  ]
+}

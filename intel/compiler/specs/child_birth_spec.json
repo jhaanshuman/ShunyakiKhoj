@@ -1,0 +1,48 @@
+{
+  "event_id": "EVT_CHILD_FIRST_BIRTH",
+  "event_name": "First Childbirth & Progeny Arrival",
+  "domain_code": "CHILDREN_AND_PARENTHOOD",
+  "required_indicators": {
+    "houses": [5, 2, 9, 11],
+    "karakas": ["Jupiter", "Moon"],
+    "varga_chart": "D7",
+    "jaimini_karaka": "Putrakaraka"
+  },
+  "optional_indicators": {
+    "planets": ["Sun", "Venus"],
+    "yogas": ["Santan Yoga", "Gauri Yoga"],
+    "saptamsha_d7": true
+  },
+  "timing_rules": {
+    "dashas": ["5th Lord", "Jupiter", "Putrakaraka", "9th Lord"],
+    "transits": ["Jupiter transit aspecting 5th house", "Saturn/Jupiter double transit on 5th house"],
+    "ashtakvarga_sav_threshold": 28
+  },
+  "negative_factors": [
+    "5th Lord in 8th house",
+    "Rahu / Ketu affliction on 5th house without Jupiter aspect",
+    "Santan Pratibandhak Dosha"
+  ],
+  "cancellation_rules": [
+    "Jupiter aspecting 5th house neutralizes malefic afflictions"
+  ],
+  "classical_citations": [
+    {
+      "text": "Brihat Parashara Hora Shastra",
+      "chapter": 16,
+      "verse": "3-5"
+    },
+    {
+      "text": "Phaladeepika",
+      "chapter": 12,
+      "verse": "1-4"
+    }
+  ],
+  "remedies": [
+    {
+      "target": "Jupiter / 5th Lord",
+      "action": "Recite Santan Gopal Mantra and offer yellow sweets on Thursdays",
+      "rationale": "Strengthens progeny Karaka Jupiter and removes obstacles to childbirth"
+    }
+  ]
+}
