@@ -4988,4 +4988,100 @@ div[class*="ad-box"] {
     color: #334155 !important; /* High-contrast Dark Charcoal */
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   KUNDLIGPT-INSPIRED MODERN DESIGN & INTERACTION ENGINE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Modern Button Architecture & Micro-Interactions ── */
+.ph-today-btn,
+button.btn,
+.btn-primary,
+.cta-button,
+a.ph-today-btn,
+.astrology-container button,
+.welcome-card a {
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    font-family: 'Poppins', sans-serif !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1) !important;
+    line-height: 1.4 !important;
+}
+
+.ph-today-btn:hover,
+button.btn:hover,
+.btn-primary:hover,
+.cta-button:hover,
+a.ph-today-btn:hover,
+.astrology-container button:hover,
+.welcome-card a:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.35) !important;
+    filter: brightness(1.05) !important;
+}
+
+.ph-today-btn:active,
+button.btn:active,
+.btn-primary:active,
+a.ph-today-btn:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* ── Form Inputs & Interactive Controls ── */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+    border-radius: 10px !important;
+    padding: 12px 16px !important;
+    min-height: 46px !important;
+    font-size: 0.95rem !important;
+    font-family: 'Poppins', sans-serif !important;
+    border: 1.5px solid rgba(245, 158, 11, 0.3) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #1e293b !important;
+    transition: all 0.2s ease-in-out !important;
+    outline: none !important;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #f59e0b !important;
+    box-shadow: 0 0 0 3.5px rgba(245, 158, 11, 0.2) !important;
+    background: #ffffff !important;
+}
+
+/* ── Modern Glassmorphic Cards & Containers ── */
+.glass-card,
+.welcome-card,
+.center-feature-showcase .glass-card,
+.astrology-container .output-card,
+.panchang-card {
+    border-radius: 16px !important;
+    border: 1.5px solid rgba(245, 158, 11, 0.25) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    box-shadow: 0 12px 35px -8px rgba(0, 0, 0, 0.1) !important;
+    transition: transform 0.28s ease, box-shadow 0.28s ease !important;
+}
+
+.glass-card:hover,
+.welcome-card:hover {
+    box-shadow: 0 18px 42px -10px rgba(0, 0, 0, 0.15) !important;
+}
+
 
