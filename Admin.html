@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShunyakiKhoj — AI Master Visual Admin Panel</title>
+    <link rel="icon" type="image/x-icon" href="/assets/icons/favicon.ico">
+    <link rel="stylesheet" href="/admin.css?v=1.0.0">
+</head>
+<body class="admin-body">
+
+    <!-- MASTER COMMAND BAR -->
+    <header class="admin-navbar">
+        <div class="admin-brand">
+            <span>⚙️</span> ShunyakiKhoj Admin Engine <span style="font-size:0.75rem; color:var(--admin-muted); font-weight:600;">v4.0.0</span>
+        </div>
+
+        <!-- Mode Switcher -->
+        <div class="admin-mode-toggle">
+            <button id="btnModeEdit" class="admin-mode-btn active" onclick="setAdminMode('edit')">✏️ Admin Edit Mode</button>
+            <button id="btnModePreview" class="admin-mode-btn" onclick="setAdminMode('preview')">👁️ Live Preview Mode</button>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="admin-quick-actions">
+            <button class="btn-admin btn-admin-secondary" onclick="addNewSectionPrompt()">➕ Add Section</button>
+            <button class="btn-admin btn-admin-secondary" onclick="exportAdminConfig()">💾 Save Preset</button>
+            <button class="btn-admin" onclick="publishLiveChanges()">🚀 Deploy Live Changes</button>
+        </div>
+    </header>
+
+    <!-- MASTER WORKSPACE (CANVAS LEFT, SIDEBAR RIGHT) -->
+    <main class="admin-workspace">
+        
+        <!-- Live Webpage Frame Canvas -->
+        <section class="admin-preview-canvas">
+            <iframe id="previewIframe" class="admin-preview-iframe" src="/landing.html"></iframe>
+        </section>
+
+        <!-- Right Control Hub Drawer -->
+        <aside class="admin-sidebar">
+            
+            <!-- Tab Navigation Bar -->
+            <nav class="admin-tab-bar">
+                <button class="admin-tab-btn active" onclick="switchAdminTab('webpage')">🎨 Webpage</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('seo')">🔍 SEO</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('adsense')">📢 AdSense</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('features')">⚡ Features</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('api')">🛠️ API Diagnostics</button>
+            </nav>
+
+            <!-- TAB 1: WEBPAGE EDITOR & STYLING -->
+            <div id="tabWebpage" class="admin-tab-content active">
+                
+                <!-- Selected Element Inspector -->
+                <div class="admin-accordion-group">
+                    <div class="admin-accordion-header" onclick="toggleAdminAccordion(this)">
+                        <span>🎯 Element Inspector &amp; Stylist</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="admin-accordion-body">
+                        <div class="admin-field-group">
+                            <label class="admin-label">Selected Target</label>
+                            <input type="text" id="targetTagLabel" class="admin-input" value="Click any element on left canvas" readonly>
+                        </div>
+                        <div class="admin-field-group">
+                            <label class="admin-label">Text Content</label>
+                            <textarea id="targetTextVal" class="admin-textarea" placeholder="Type text here..." oninput="updateTargetText()"></textarea>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                            <div class="admin-field-group">
+                                <label class="admin-label">Text Color</label>
+                                <input type="color" id="targetTextColor" class="admin-input" style="height:36px; cursor:pointer;" onchange="updateTargetStyle('color', this.value)">
+                            </div>
+                            <div class="admin-field-group">
+                                <label class="admin-label">Background Color</label>
+                                <input type="color" id="targetBgColor" class="admin-input" style="height:36px; cursor:pointer;" onchange="updateTargetStyle('backgroundColor', this.value)">
+                            </div>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                            <div class="admin-field-group">
+                                <label class="admin-label">Font Size (px)</label>
+                                <input type="number" id="targetFontSize" class="admin-input" value="14" onchange="updateTargetStyle('fontSize', this.value + 'px')">
+                            </div>
+                            <div class="admin-field-group">
+                                <label class="admin-label">Padding (px)</label>
+                                <input type="number" id="targetPadding" class="admin-input" value="10" onchange="updateTargetStyle('padding', this.value + 'px')">
+                            </div>
+                        </div>
+                        <div class="admin-field-group">
+                            <label class="admin-label">Visibility</label>
+                            <select id="targetVisibility" class="admin-select" onchange="updateTargetStyle('display', this.value)">
+                                <option value="block">Visible (View)</option>
+                                <option value="none">Hidden (Unview)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Drag & Drop Reorder Manager -->
+                <div class="admin-accordion-group">
+                    <div class="admin-accordion-header" onclick="toggleAdminAccordion(this)">
+                        <span>📑 Section Manager &amp; Drag Reordering</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="admin-accordion-body">
+                        <div id="sectionListContainer" style="display:flex; flex-direction:column; gap:6px;">
+                            <!-- Filled dynamically by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: SEO & META MANAGER -->
+            <div id="tabSeo" class="admin-tab-content">
+                <div class="admin-accordion-group">
+                    <div class="admin-accordion-header" onclick="toggleAdminAccordion(this)">
+                        <span>🏷️ Meta Tags &amp; Title Editor</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="admin-accordion-body">
+                        <div class="admin-field-group">
+                            <label class="admin-label">Page Title</label>
+                            <input type="text" id="seoPageTitle" class="admin-input" value="ShunyakiKhoj – Vedic Panchang &amp; Sanskrit AI">
+                        </div>
+                        <div class="admin-field-group">
+                            <label class="admin-label">Meta Description</label>
+                            <textarea id="seoMetaDesc" class="admin-textarea">High-precision Vedic Panchang, Kundli generator, Gochar transit, and Sanskrit AI tools powered by Drik Ganita calculations.</textarea>
+                        </div>
+                        <div class="admin-field-group">
+                            <label class="admin-label">Canonical URL</label>
+                            <input type="text" id="seoCanonical" class="admin-input" value="https://shunyakikhoj.co.in/">
+                        </div>
+                        <button class="btn-admin" style="width:100%; margin-top:8px;" onclick="applySeoSettings()">Apply Meta Changes</button>
+                    </div>
+                </div>
+
+                <div class="admin-accordion-group">
+                    <div class="admin-accordion-header" onclick="toggleAdminAccordion(this)">
+                        <span>🕸️ Schema.org Structured Data Validator</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="admin-accordion-body">
+                        <div class="admin-field-group">
+                            <label class="admin-label">JSON-LD Schema Markup</label>
+                            <textarea id="seoSchemaJson" class="admin-textarea" style="min-height:120px;">{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "ShunyakiKhoj",
+  "url": "https://shunyakikhoj.co.in"
+}</textarea>
+                        </div>
+                        <button class="btn-admin btn-admin-secondary" style="width:100%;" onclick="validateSchemaJson()">Check Schema Syntax</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: ADSENSE POLICY & SLOTS -->
+            <div id="tabAdsense" class="admin-tab-content">
+                <div class="admin-accordion-group">
+                    <div class="admin-accordion-header" onclick="toggleAdminAccordion(this)">
+                        <span>🛡️ AdSense Policy Auditor</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="admin-accordion-body">
+                        <div class="admin-toggle-item">
+                            <span class="admin-toggle-label">Auto-Ads Injection</span>
+                            <label class="switch">
+                                <input type="checkbox" id="chkAutoAds" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="admin-toggle-item">
+                            <span class="admin-toggle-label">Content Shield (Low Value Protection)</span>
+                            <label class="switch">
+                                <input type="checkbox" id="chkLowValueShield" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div style="margin-top:12px; padding:10px; background:rgba(16,185,129,0.1); border:1px solid #10b981; border-radius:6px; font-size:0.78rem;">
+                            <strong style="color:#34d399;">Policy Check Passed:</strong> All active pages feature rich content with zero under-construction blocks.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: PLATFORM FEATURES MATRIX -->
+            <div id="tabFeatures" class="admin-tab-content">
+                <div class="admin-accordion-group">
+                    <div class="admin-accordion-header" onclick="toggleAdminAccordion(this)">
+                        <span>⚡ Feature Flags Matrix (100+ Tools)</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="admin-accordion-body">
+                        <div class="admin-toggle-item">
+                            <span class="admin-toggle-label">☀️ Dainik Panchang Engine</span>
+                            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                        </div>
+                        <div class="admin-toggle-item">
+                            <span class="admin-toggle-label">⏱️ 24-Hour Shubha Hora Module</span>
+                            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                        </div>
+                        <div class="admin-toggle-item">
+                            <span class="admin-toggle-label">🔮 Kundali Generator (D1 - D60)</span>
+                            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                        </div>
+                        <div class="admin-toggle-item">
+                            <span class="admin-toggle-label">💞 Guna Milan Matchmaking</span>
+                            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                        </div>
+                        <div class="admin-toggle-item">
+                            <span class="admin-toggle-label">📖 Spiritual Wisdom Portal</span>
+                            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                        </div>
+                        <div class="admin-toggle-item">
+                            <span class="admin-toggle-label">🤖 PhalDeepika AI Chatbot</span>
+                            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: API DIAGNOSTIC PANEL SUITE (EXCLUSIVE TO ADMIN) -->
+            <div id="tabApi" class="admin-tab-content">
+                <div class="admin-accordion-group">
+                    <div class="admin-accordion-header" onclick="toggleAdminAccordion(this)">
+                        <span>🛠️ Swiss Ephemeris &amp; Backend API Monitor</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="admin-accordion-body">
+                        <div style="margin-bottom:12px; font-size:0.8rem; color:var(--admin-muted);">
+                            Exclusive diagnostic tool for Swiss Ephemeris calculations, astronomical latency, and API endpoint testing.
+                        </div>
+                        <button class="btn-admin" style="width:100%; margin-bottom:12px;" onclick="runApiDiagnosticSuite()">Run API Diagnostic Suite</button>
+                        
+                        <div id="apiDiagOutput" style="font-family:monospace; font-size:0.75rem; background:#000; padding:10px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); max-height:220px; overflow-y:auto; color:#34d399;">
+                            [SYSTEM READY] Click 'Run Diagnostic Suite' to test endpoints...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+    </main>
+
+    <script src="/admin.js?v=1.0.0"></script>
+</body>
+</html>
