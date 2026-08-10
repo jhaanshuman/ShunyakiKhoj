@@ -292,6 +292,10 @@ let favorites = JSON.parse(localStorage.getItem('shunya-favorites')) || [
 function getPrettyUrl(rawUrl) {
     if (!rawUrl || rawUrl === '#') return '#';
     try {
+        // If rawUrl is already a direct clean path, return it directly
+        if (rawUrl.startsWith('/') || rawUrl.startsWith('http://') || rawUrl.startsWith('https://')) {
+            return rawUrl;
+        }
         const base = window.location.protocol === 'file:' ? window.location.href : window.location.origin;
         let cleanUrl = rawUrl;
         if (window.location.protocol === 'file:' && rawUrl.startsWith('/')) {
@@ -301,62 +305,12 @@ function getPrettyUrl(rawUrl) {
         const path = url.pathname;
         const pageParam = url.searchParams.get('page') || '';
         const tabParam = url.searchParams.get('tab') || '';
-        const categoryParam = url.searchParams.get('category') || '';
-        const region = url.searchParams.get('region') || '';
-        const varga = url.searchParams.get('varga') || '';
         
-        if (window.location.protocol === 'file:') {
-            if (path.includes('Static') && path.includes('index.html')) {
-                return 'Static/index.html';
-            }
-            if (path.includes('Dictionary.html')) {
-                return 'Features/Dictionary/Dictionary.html';
-            }
-            let query = '';
-            if (pageParam) {
-                query = `page=${pageParam}`;
-            }
-            if (tabParam) {
-                query += (query ? '&' : '') + `tab=${tabParam}`;
-            }
-            if (categoryParam) {
-                query += (query ? '&' : '') + `category=${categoryParam}`;
-            }
-            if (region) query += (query ? '&' : '') + `region=${region}`;
-            if (varga) query += (query ? '&' : '') + `varga=${varga}`;
-            return 'index.html' + (query ? '?' + query : '');
+        if (pageParam === 'wisdom') {
+            const cat = url.searchParams.get('category') || '';
+            return `landing.html?page=wisdom${cat ? '&category=' + cat : ''}`;
         }
-
-        let pretty = '/';
-        const isAstrologyTab = ['kundli', 'milan', 'prashna', 'rashifal', 'dasha', 'gemstone', 'rudraksha', 'gochar', 'transit'].includes(tabParam.toLowerCase());
-        const isHomeTab = ['panchang', 'maasik', 'muhurtas'].includes(tabParam.toLowerCase());
-
-        if (pageParam === 'wisdom' || path.includes('/Static/') || path.includes('wisdom')) {
-            pretty = '/wisdom';
-        } else if (pageParam === 'dictionary' || path.includes('Dictionary.html') || path.includes('dictionary')) {
-            pretty = '/dictionary';
-        } else if (pageParam === 'astrology' || isAstrologyTab) {
-            pretty = `/astrology/${tabParam || 'personal'}`;
-        } else if (isHomeTab) {
-            pretty = `/home/${tabParam}`;
-        } else if (path.includes('astrology.html')) {
-            if (isHomeTab) {
-                pretty = `/home/${tabParam}`;
-            } else {
-                pretty = `/astrology/${tabParam || 'personal'}`;
-            }
-        } else if (path.includes('Dictionary.html')) {
-            pretty = '/dictionary';
-        }
-        
-        const q = [];
-        if (categoryParam) q.push(`category=${categoryParam}`);
-        if (region) q.push(`region=${region}`);
-        if (varga) q.push(`varga=${varga}`);
-        if (q.length > 0) {
-            pretty += '?' + q.join('&');
-        }
-        return pretty;
+        return rawUrl;
     } catch(e) {
         return rawUrl;
     }

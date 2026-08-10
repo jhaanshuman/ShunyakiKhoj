@@ -1154,25 +1154,25 @@ button:hover{
     position: fixed;
     top: 0;
     left: -100%;
-    width: 15% !important;
-    min-width: 220px !important;
-    max-width: 280px !important;
+    width: 50vw !important;
+    min-width: 50vw !important;
+    max-width: 50vw !important;
     height: 100%;
-    background: linear-gradient(135deg, rgba(255, 165, 0, 0.92) 0%, rgba(163, 106, 0, 0.92) 100%) !important;
+    background: rgba(15, 23, 42, 0.96) !important;
     backdrop-filter: blur(24px) saturate(150%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(150%) !important;
-    box-shadow: 6px 0 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 6px 0 40px rgba(0, 0, 0, 0.6);
     transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     padding-top: 80px;
     z-index: 999999 !important;
-    border-right: 2px solid rgba(255, 153, 51, 0.4);
+    border-right: 2px solid rgba(245, 158, 11, 0.4);
 }
 
 @media (max-width: 768px) {
     .mobile-menu {
-        width: 100% !important;
-        min-width: 100% !important;
-        max-width: 100vw !important;
+        width: 50vw !important;
+        min-width: 50vw !important;
+        max-width: 50vw !important;
     }
 }
 
@@ -5188,5 +5188,33 @@ p, body, button, input, select {
         font-size: 14px !important;
     }
 }
+
+/* ── Sectional Header & Content Contrast for Reddish-Yellow Background ── */
+h1, h2, h3, .section-header, .dainik-card-header-title, .panchang-unified-header-title {
+    color: #000000 !important;
+    font-weight: 800 !important;
+}
+
+p, .card-content, .info-text {
+    color: #ffffff !important;
+}
+
+/* ── Desktop & Mobile Menu Width Adjustments ── */
+@media (min-width: 1025px) {
+    .desktop-sidebar, .left-nav-sidebar, #desktopSidebar {
+        width: 100px !important;
+        min-width: 100px !important;
+        max-width: 100px !important;
+    }
+}
+
+@media (max-width: 1024px) {
+    .mobile-menu, #mobileDrawer {
+        width: 50vw !important;
+        min-width: 50vw !important;
+        max-width: 50vw !important;
+    }
+}
+
 
 
