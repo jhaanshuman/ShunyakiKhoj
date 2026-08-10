@@ -67,14 +67,22 @@ function setupIframeListeners() {
     const styleEl = iframeDoc.createElement('style');
     styleEl.innerHTML = `
         .admin-editable-hover { outline: 2px dashed #fbbf24 !important; cursor: pointer !important; }
-        .admin-editable-selected { outline: 2.5px solid #ef4444 !important; box-shadow: 0 0 12px rgba(239, 68, 68, 0.5) !important; }
+        .admin-editable-selected { outline: 2.5px solid #ef4444 !important; box-shadow: 0 0 12px rgba(239, 68, 68, 0.5) !important; position: relative !important; }
+        .admin-move-bar { position: absolute; top: -32px; left: 50%; transform: translateX(-50%); background: #a23922; color: #ffffff; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: grab; display: flex; align-items: center; gap: 6px; z-index: 100000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); user-select: none; border: 1px solid #fbbf24; }
+        .admin-resize-handle { position: absolute; width: 10px; height: 10px; background: #fbbf24; border: 1px solid #000; border-radius: 50%; z-index: 100000; }
+        .admin-resize-se { bottom: -5px; right: -5px; cursor: se-resize; }
+        .admin-resize-sw { bottom: -5px; left: -5px; cursor: sw-resize; }
+        .admin-resize-ne { top: -5px; right: -5px; cursor: ne-resize; }
+        .admin-resize-nw { top: -5px; left: -5px; cursor: nw-resize; }
+        .admin-resize-s  { bottom: -5px; left: 50%; transform: translateX(-50%); cursor: s-resize; }
+        .admin-resize-e  { top: 50%; right: -5px; transform: translateY(-50%); cursor: e-resize; }
     `;
     iframeDoc.head.appendChild(styleEl);
 
     iframeDoc.body.addEventListener('mouseover', (e) => {
         if (currentAdminMode !== 'edit') return;
         const target = e.target;
-        if (target && target !== iframeDoc.body) {
+        if (target && target !== iframeDoc.body && !target.classList.contains('admin-resize-handle') && !target.classList.contains('admin-move-bar')) {
             target.classList.add('admin-editable-hover');
         }
     });
@@ -89,20 +97,131 @@ function setupIframeListeners() {
 
     iframeDoc.body.addEventListener('click', (e) => {
         if (currentAdminMode !== 'edit') return;
+        const target = e.target;
+        if (!target || target.classList.contains('admin-resize-handle') || target.classList.contains('admin-move-bar')) return;
+
         e.preventDefault();
         e.stopPropagation();
 
-        const target = e.target;
-        if (!target) return;
-
-        if (selectedElement) {
-            selectedElement.classList.remove('admin-editable-selected');
-        }
+        clearElementOverlayHandles(iframeDoc);
 
         selectedElement = target;
         selectedElement.classList.add('admin-editable-selected');
+        attachElementOverlayHandles(selectedElement, iframeDoc);
         inspectTargetElement(selectedElement);
     });
+}
+
+function clearElementOverlayHandles(iframeDoc) {
+    iframeDoc.querySelectorAll('.admin-editable-selected').forEach(el => el.classList.remove('admin-editable-selected'));
+    iframeDoc.querySelectorAll('.admin-move-bar, .admin-resize-handle').forEach(el => el.remove());
+}
+
+function attachElementOverlayHandles(el, iframeDoc) {
+    if (!el) return;
+
+    // Attach Hand Move Bar (✋ Move Position)
+    const moveBar = iframeDoc.createElement('div');
+    moveBar.className = 'admin-move-bar';
+    moveBar.innerHTML = `
+        <span style="cursor:grab;">✋ Drag / Move</span>
+        <button onclick="parent.moveSelectedElementPos(0, -5)" style="background:none; border:none; color:#fff; cursor:pointer; font-size:10px;">▲</button>
+        <button onclick="parent.moveSelectedElementPos(0, 5)" style="background:none; border:none; color:#fff; cursor:pointer; font-size:10px;">▼</button>
+        <button onclick="parent.moveSelectedElementPos(-5, 0)" style="background:none; border:none; color:#fff; cursor:pointer; font-size:10px;">◄</button>
+        <button onclick="parent.moveSelectedElementPos(5, 0)" style="background:none; border:none; color:#fff; cursor:pointer; font-size:10px;">►</button>
+    `;
+    el.appendChild(moveBar);
+
+    // Make Hand Bar Draggable
+    let isDragging = false;
+    let startX, startY, initialLeft, initialTop;
+
+    moveBar.addEventListener('mousedown', (e) => {
+        e.stopPropagation();
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+
+        const compStyle = iframeDoc.defaultView.getComputedStyle(el);
+        if (compStyle.position === 'static') {
+            el.style.position = 'relative';
+        }
+        initialLeft = parseInt(compStyle.left) || 0;
+        initialTop = parseInt(compStyle.top) || 0;
+
+        const onMouseMove = (moveEvt) => {
+            if (!isDragging) return;
+            pushUndoState();
+            const dx = moveEvt.clientX - startX;
+            const dy = moveEvt.clientY - startY;
+            el.style.left = (initialLeft + dx) + 'px';
+            el.style.top = (initialTop + dy) + 'px';
+            document.getElementById('targetCssRaw').value = el.style.cssText;
+        };
+
+        const onMouseUp = () => {
+            isDragging = false;
+            iframeDoc.removeEventListener('mousemove', onMouseMove);
+            iframeDoc.removeEventListener('mouseup', onMouseUp);
+        };
+
+        iframeDoc.addEventListener('mousemove', onMouseMove);
+        iframeDoc.addEventListener('mouseup', onMouseUp);
+    });
+
+    // Attach 8-Point Resize Handles (Arrows for Width/Height)
+    const handlePositions = ['se', 'sw', 'ne', 'nw', 's', 'e'];
+    handlePositions.forEach(pos => {
+        const handle = iframeDoc.createElement('div');
+        handle.className = `admin-resize-handle admin-resize-${pos}`;
+        el.appendChild(handle);
+
+        handle.addEventListener('mousedown', (e) => {
+            e.stopPropagation();
+            let isResizing = true;
+            const startX = e.clientX;
+            const startY = e.clientY;
+            const startWidth = el.offsetWidth;
+            const startHeight = el.offsetHeight;
+
+            const onMouseMove = (moveEvt) => {
+                if (!isResizing) return;
+                pushUndoState();
+                const dx = moveEvt.clientX - startX;
+                const dy = moveEvt.clientY - startY;
+
+                if (pos.includes('e')) el.style.width = (startWidth + dx) + 'px';
+                if (pos.includes('s')) el.style.height = (startHeight + dy) + 'px';
+                if (pos.includes('w')) el.style.width = (startWidth - dx) + 'px';
+                if (pos.includes('n')) el.style.height = (startHeight - dy) + 'px';
+
+                document.getElementById('targetCssRaw').value = el.style.cssText;
+            };
+
+            const onMouseUp = () => {
+                isResizing = false;
+                iframeDoc.removeEventListener('mousemove', onMouseMove);
+                iframeDoc.removeEventListener('mouseup', onMouseUp);
+            };
+
+            iframeDoc.addEventListener('mousemove', onMouseMove);
+            iframeDoc.addEventListener('mouseup', onMouseUp);
+        });
+    });
+}
+
+function moveSelectedElementPos(dx, dy) {
+    if (!selectedElement) return;
+    pushUndoState();
+    const compStyle = selectedElement.ownerDocument.defaultView.getComputedStyle(selectedElement);
+    if (compStyle.position === 'static') {
+        selectedElement.style.position = 'relative';
+    }
+    const currentLeft = parseInt(compStyle.left) || 0;
+    const currentTop = parseInt(compStyle.top) || 0;
+    selectedElement.style.left = (currentLeft + dx) + 'px';
+    selectedElement.style.top = (currentTop + dy) + 'px';
+    document.getElementById('targetCssRaw').value = selectedElement.style.cssText;
 }
 
 let editHistoryStack = [];

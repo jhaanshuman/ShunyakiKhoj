@@ -100,6 +100,63 @@ body.admin-body {
     box-shadow: 0 4px 12px rgba(162, 57, 34, 0.4);
 }
 
+/* Live Editor Overlay Handles & Resize Grips (Injected into preview iframe) */
+.admin-editable-hover {
+    outline: 2px dashed #fbbf24 !important;
+    cursor: pointer !important;
+}
+
+.admin-editable-selected {
+    outline: 2.5px solid #ef4444 !important;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.5) !important;
+    position: relative !important;
+}
+
+/* Hand Move Bar */
+.admin-move-bar {
+    position: absolute;
+    top: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #a23922;
+    color: #ffffff;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 100000;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    user-select: none;
+    border: 1px solid #fbbf24;
+}
+
+.admin-move-bar:active {
+    cursor: grabbing;
+}
+
+/* 8-Point Resize Handles */
+.admin-resize-handle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #fbbf24;
+    border: 1px solid #000;
+    border-radius: 50%;
+    z-index: 100000;
+}
+
+.admin-resize-se { bottom: -5px; right: -5px; cursor: se-resize; }
+.admin-resize-sw { bottom: -5px; left: -5px; cursor: sw-resize; }
+.admin-resize-ne { top: -5px; right: -5px; cursor: ne-resize; }
+.admin-resize-nw { top: -5px; left: -5px; cursor: nw-resize; }
+.admin-resize-s  { bottom: -5px; left: 50%; transform: translateX(-50%); cursor: s-resize; }
+.admin-resize-e  { top: 50%; right: -5px; transform: translateY(-50%); cursor: e-resize; }
+
+
 .btn-admin-secondary {
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.2);
