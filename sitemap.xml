@@ -1,103 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemapindex.com/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-    <loc>https://shunyakikhoj.co.in</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://shunyakikhoj.co.in/index.html</loc>
+    <loc>https://shunyakikhoj.co.in/</loc>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://shunyakikhoj.co.in/landing.html</loc>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://shunyakikhoj.co.in/jyotish_window.html</loc>
+    <loc>https://shunyakikhoj.co.in/research/</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/panchang/</loc>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://shunyakikhoj.co.in/kundli/</loc>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://shunyakikhoj.co.in/divisional-charts/</loc>
-    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://shunyakikhoj.co.in/dasha-systems/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://shunyakikhoj.co.in/panchang/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://shunyakikhoj.co.in/muhurta/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://shunyakikhoj.co.in/kundli-matching/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://shunyakikhoj.co.in/planets/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://shunyakikhoj.co.in/zodiac-signs/</loc>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.85</priority>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/sanskrit-dictionary/</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://shunyakikhoj.co.in/yogas/</loc>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://shunyakikhoj.co.in/doshas/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://shunyakikhoj.co.in/remedies/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://shunyakikhoj.co.in/sanskrit-dictionary/</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://shunyakikhoj.co.in/muhurta/</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://shunyakikhoj.co.in/festivals/</loc>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://shunyakikhoj.co.in/temples/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://shunyakikhoj.co.in/planets/</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://shunyakikhoj.co.in/ai-astrology/</loc>
+    <loc>https://shunyakikhoj.co.in/zodiac-signs/</loc>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.95</priority>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/remedies/</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/dasha-systems/</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/divisional-charts/</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://shunyakikhoj.co.in/life-predictions/</loc>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/about/</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/editorial-policy/</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shunyakikhoj.co.in/contact/</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 </urlset>

@@ -6,6 +6,11 @@ ehthumbs.db
 Desktop.ini
 
 # Python temporary files
+__*.zip
+backend/output/
+intel/
+node_modules/
+.pytest_cache/__/
 __pycache__/
 *.pyc
 *.pyo
