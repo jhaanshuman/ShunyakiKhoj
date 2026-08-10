@@ -64,10 +64,8 @@ body {
 
 /* ── THEME 1: SURYA AARTI BRIGHT THEME (YELLOW-ORANGE) ── */
 body.theme-bright {
-    --bg-color:       #fff8dc; /* Turmeric Yellow Glow */
-    --bg-gradient:    radial-gradient(ellipse at 20% 0%, rgba(255, 153, 81, 0.15) 0%, transparent 50%),
-                      radial-gradient(ellipse at 80% 100%, rgba(212, 175, 55, 0.2) 0%, transparent 50%),
-                      linear-gradient(135deg, #fff8dc 0%, #ffe4b5 50%, #ffd700 100%);
+    --bg-color:       transparent;
+    --bg-gradient:    transparent;
     --text-color:     #2c1e11; /* Dark Sandalwood */
     --text-muted:     #e23d28; /* Vermilion */
     --text-gold:      #d4af37; /* Temple Gold */
@@ -4447,10 +4445,11 @@ font-size:15px;
 
 /* ── ANIMATED COSMIC BACKGROUND (SCI-FI & ASTROLOGICAL MOVIE STYLE) ── */
 .cosmic-bg {
+    display: none !important;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     z-index: -2;
-    background: linear-gradient(135deg, #fff8dc 0%, #ffe4b5 50%, #ffd700 100%) !important;
+    background: transparent !important;
     overflow: hidden;
     pointer-events: none;
 }
