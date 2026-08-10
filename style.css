@@ -1156,18 +1156,26 @@ button:hover{
     min-width: 50vw !important;
     max-width: 50vw !important;
     height: 100%;
-    background: rgba(15, 23, 42, 0.96) !important;
+    background: #0f172a !important;
     backdrop-filter: blur(24px) saturate(150%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(150%) !important;
-    box-shadow: 6px 0 40px rgba(0, 0, 0, 0.6);
+    box-shadow: 6px 0 40px rgba(0, 0, 0, 0.8);
     transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    padding-top: 80px;
+    padding-top: 60px;
     z-index: 999999 !important;
-    border-right: 2px solid rgba(245, 158, 11, 0.4);
+    border-right: 2px solid #a23922;
 }
 
-@media (max-width: 768px) {
-    .mobile-menu {
+@media (min-width: 1025px) {
+    .mobile-menu, #mobileDrawer, .desktop-sidebar, .left-nav-sidebar, #desktopSidebar {
+        width: 100px !important;
+        min-width: 100px !important;
+        max-width: 100px !important;
+    }
+}
+
+@media (max-width: 1024px) {
+    .mobile-menu, #mobileDrawer {
         width: 50vw !important;
         min-width: 50vw !important;
         max-width: 50vw !important;
@@ -1178,19 +1186,20 @@ button:hover{
     left: 0;
 }
 
-.mobile-menu a, .mobile-menu span, .mobile-menu p, .mobile-menu .accordion-subitem-link {
-    color: #000000 !important;
+.mobile-menu a, .mobile-menu span, .mobile-menu p, .mobile-menu .accordion-subitem-link, .mobile-menu .accordion-trigger, .mobile-menu .accordion-title {
+    color: #ffffff !important;
     font-weight: 700 !important;
 }
 
 .mobile-menu a {
     display: block;
-    padding: 18px 25px;
-    font-size: 1rem;
+    padding: 12px 16px;
+    font-size: 0.9rem;
     text-decoration: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: var(--transition-smooth);
     position: relative;
+    color: #ffffff !important;
 }
 
 .mobile-menu a::before {
@@ -1200,15 +1209,15 @@ button:hover{
     top: 0;
     bottom: 0;
     width: 3px;
-    background: #000000;
+    background: #fbbf24;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .mobile-menu a:hover {
-    background: rgba(0, 0, 0, 0.08);
-    color: #000000 !important;
-    padding-left: 32px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fbbf24 !important;
+    padding-left: 20px;
 }
 
 .mobile-menu a:hover::before {

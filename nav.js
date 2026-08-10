@@ -383,8 +383,8 @@ function renderDrawerContent(accordionContainer, menuItems) {
             li.style.cssText = 'display:flex; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px 12px; margin-bottom:6px; border-radius:6px; cursor:grab;';
             
             li.innerHTML = `
-                <span class="drag-handle" style="margin-right:8px; cursor:move; color:rgba(255,255,255,0.25); user-select:none;">☰</span>
-                <a href="${f.url}" class="accordion-subitem-link" data-label="${f.label}" data-icon="${f.icon}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:var(--text-color); font-size:0.85rem; font-weight:600;">
+                <span class="drag-handle" style="margin-right:8px; cursor:move; color:rgba(255,255,255,0.4); user-select:none;">☰</span>
+                <a href="${f.url}" class="accordion-subitem-link" data-label="${f.label}" data-icon="${f.icon}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-size:0.85rem; font-weight:700;">
                     <span style="margin-right:6px;">${f.icon}</span> ${f.label}
                 </a>
                 <span class="star-toggle" data-url="${f.url}" data-label="${f.label}" data-icon="${f.icon}" style="cursor:pointer; color:#fbbf24; font-size:1.15rem; padding: 2px 5px;">★</span>
@@ -403,7 +403,7 @@ function renderDrawerContent(accordionContainer, menuItems) {
 
         const trigger = document.createElement('button');
         trigger.className = 'accordion-trigger';
-        trigger.innerHTML = `<span>${item.icon} ${item.label}</span> <span class="arrow">▼</span>`;
+        trigger.innerHTML = `<span style="color:#ffffff !important; font-weight:800;">${item.icon} ${item.label}</span> <span class="arrow" style="color:#fbbf24;">▼</span>`;
         group.appendChild(trigger);
 
         const content = document.createElement('div');
@@ -418,10 +418,10 @@ function renderDrawerContent(accordionContainer, menuItems) {
                 
                 li.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:4px 0;';
                 li.innerHTML = `
-                    <a href="${pretty}" class="accordion-subitem-link" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:var(--text-color); font-size:0.85rem; font-weight:600; padding:6px 0;">
+                    <a href="${pretty}" class="accordion-subitem-link" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-size:0.85rem; font-weight:700; padding:6px 0;">
                         <span style="margin-right:6px;">${sub.icon || '🔸'}</span> ${sub.label}
                     </a>
-                    <span class="star-toggle" data-url="${pretty}" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.15)'}; font-size:1.15rem; padding: 2px 5px;">${isFav ? '★' : '☆'}</span>
+                    <span class="star-toggle" data-url="${pretty}" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.3)'}; font-size:1.15rem; padding: 2px 5px;">${isFav ? '★' : '☆'}</span>
                 `;
                 ul.appendChild(li);
             });
@@ -430,7 +430,7 @@ function renderDrawerContent(accordionContainer, menuItems) {
             item.columns.forEach(col => {
                 const colTitle = document.createElement('div');
                 colTitle.className = 'accordion-col-title';
-                colTitle.style.cssText = 'font-size:0.75rem; text-transform:uppercase; color:var(--accent-color); font-weight:800; padding:8px 0 4px; border-bottom:1px solid rgba(255,255,255,0.05); margin-bottom:6px;';
+                colTitle.style.cssText = 'font-size:0.75rem; text-transform:uppercase; color:#fbbf24 !important; font-weight:800; padding:8px 0 4px; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:6px;';
                 colTitle.innerText = col.title || '';
                 content.appendChild(colTitle);
 
@@ -442,10 +442,10 @@ function renderDrawerContent(accordionContainer, menuItems) {
                     
                     li.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:4px 0;';
                     li.innerHTML = `
-                        <a href="${pretty}" class="accordion-subitem-link" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:var(--text-color); font-size:0.85rem; font-weight:600; padding:6px 0;">
+                        <a href="${pretty}" class="accordion-subitem-link" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-size:0.85rem; font-weight:700; padding:6px 0;">
                             <span style="margin-right:6px;">${sub.icon || '🔸'}</span> ${sub.label}
                         </a>
-                        <span class="star-toggle" data-url="${pretty}" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.15)'}; font-size:1.15rem; padding: 2px 5px;">${isFav ? '★' : '☆'}</span>
+                        <span class="star-toggle" data-url="${pretty}" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.3)'}; font-size:1.15rem; padding: 2px 5px;">${isFav ? '★' : '☆'}</span>
                     `;
                     ul.appendChild(li);
                 });
@@ -456,10 +456,10 @@ function renderDrawerContent(accordionContainer, menuItems) {
             const pretty = getPrettyUrl(item.url);
             const isFav = isFavorite(pretty);
             trigger.innerHTML = `
-                <a href="${pretty}" class="accordion-subitem-link" data-label="${item.label}" data-icon="${item.icon}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:var(--title-color); font-weight:800;">
+                <a href="${pretty}" class="accordion-subitem-link" data-label="${item.label}" data-icon="${item.icon}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-weight:800;">
                     <span style="margin-right:8px;">${item.icon}</span> ${item.label}
                 </a>
-                <span class="star-toggle" data-url="${pretty}" data-label="${item.label}" data-icon="${item.icon}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.15)'}; font-size:1.15rem; padding: 2px 5px; margin-left:auto;">${isFav ? '★' : '☆'}</span>
+                <span class="star-toggle" data-url="${pretty}" data-label="${item.label}" data-icon="${item.icon}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.3)'}; font-size:1.15rem; padding: 2px 5px; margin-left:auto;">${isFav ? '★' : '☆'}</span>
             `;
             trigger.style.display = 'flex';
             trigger.style.alignItems = 'center';
