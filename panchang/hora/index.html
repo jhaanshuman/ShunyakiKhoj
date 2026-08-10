@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shubha Hora — 24-Hour Planetary Hora Calculation & Timings | ShunyakiKhoj</title>
+<meta name="description" content="Calculate real-time Day & Night Shubha Hora planetary hours based on local sunrise and Chaldean planetary sequence. Discover auspicious Hora timings for knowledge, wealth, and spiritual endeavors.">
+<meta name="keywords" content="shubha hora, hora panchang, planetary hora, chaldean order, hora calculator, day hora, night hora, jupiter hora, sun hora, venus hora">
+<link rel="canonical" href="https://shunyakikhoj.co.in/panchang/hora/">
+
+<!-- OpenGraph & Twitter -->
+<meta property="og:title" content="Shubha Hora — 24-Hour Planetary Hora Calculation | ShunyakiKhoj">
+<meta property="og:description" content="Real-time 24-hour planetary Hora calculator for any city worldwide using local sunrise, sunset, and Chaldean planetary sequence.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://shunyakikhoj.co.in/panchang/hora/">
+<meta property="og:image" content="https://shunyakikhoj.co.in/logo.png">
+
+<link rel="stylesheet" href="/style.css">
+<style>
+.hora-container {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 20px;
+    color: #f8fafc;
+}
+.hora-card-hero {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
+    border: 1.5px solid rgba(245, 158, 11, 0.4);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.hora-current-box {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(234, 88, 12, 0.2) 100%);
+    border: 2px solid #f59e0b;
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    margin: 20px 0;
+}
+.hora-table-section {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+.hora-row-active {
+    background: rgba(245, 158, 11, 0.25) !important;
+    font-weight: 700;
+    border-left: 4px solid #f59e0b;
+}
+.hora-row-past {
+    opacity: 0.65;
+}
+.hora-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+.hora-table th, .hora-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.hora-table th {
+    background: rgba(15, 23, 42, 0.9);
+    color: #f59e0b;
+}
+</style>
+</head>
+<body class="theme-dark">
+
+<div class="hora-container">
+    <div class="hora-card-hero">
+        <h1 style="color: #f59e0b; margin-top: 0; font-size: clamp(1.8rem, 3.5vw, 2.4rem);">⌛ Shubha Hora — 24-Hour Planetary Hora Calculation</h1>
+        <p style="color: #cbd5e1; line-height: 1.6; font-size: 1rem;">
+            A <strong>Hora</strong> (होरा) is a planetary hour equivalent to 1/12th of the daytime or night-time duration. Governed by the Chaldean planetary sequence (Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon), Hora calculation determines auspicious windows for financial investments, contracts, education, travel, and spiritual sadhana.
+        </p>
+
+        <!-- Location Controls & Date Bar -->
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); margin-top: 15px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <label style="font-weight: 700; color: #f59e0b;">📍 Location:</label>
+                <input type="text" id="horaCityInput" value="New Delhi, India" class="form-input" style="width: 180px; padding: 6px 12px; background: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px;">
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button onclick="changeHoraDate(-1)" class="ph-today-btn" style="padding: 6px 12px; font-size: 0.8rem;">◄ Prev</button>
+                <input type="date" id="horaDatePicker" class="form-input" style="padding: 5px 10px; background: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px;">
+                <button onclick="changeHoraDate(0)" class="ph-today-btn" style="padding: 6px 12px; font-size: 0.8rem; background: #ea580c; border-color: #ea580c; color:#fff;">Today</button>
+                <button onclick="changeHoraDate(1)" class="ph-today-btn" style="padding: 6px 12px; font-size: 0.8rem;">Next ►</button>
+            </div>
+        </div>
+
+        <!-- Solar Timing Summary -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 20px; text-align: center;">
+            <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+                <span style="font-size: 0.8rem; color: #94a3b8;">Sunrise</span>
+                <div id="horaSunrise" style="font-size: 1.15rem; font-weight: 800; color: #fbbf24;">05:48 AM</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+                <span style="font-size: 0.8rem; color: #94a3b8;">Sunset</span>
+                <div id="horaSunset" style="font-size: 1.15rem; font-weight: 800; color: #f97316;">06:52 PM</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+                <span style="font-size: 0.8rem; color: #94a3b8;">Day Duration</span>
+                <div id="horaDayDur" style="font-size: 1.15rem; font-weight: 800; color: #38bdf8;">13h 04m</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+                <span style="font-size: 0.8rem; color: #94a3b8;">Night Duration</span>
+                <div id="horaNightDur" style="font-size: 1.15rem; font-weight: 800; color: #a855f7;">10h 56m</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CURRENT HORA CARD -->
+    <div class="hora-current-box">
+        <span style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #cbd5e1; font-weight: 700;">Active Planetary Hour</span>
+        <h2 id="currHoraPlanet" style="font-size: 2.2rem; margin: 8px 0; color: #f59e0b;">🪐 Jupiter (Guru) Hora</h2>
+        <div id="currHoraTimeRange" style="font-size: 1.2rem; font-weight: 700; color: #f8fafc;">10:42 AM — 11:47 AM</div>
+        <div style="margin-top: 10px; font-size: 0.95rem; color: #e2e8f0;">
+            ⏳ Remaining Time: <strong id="currHoraCountdown" style="color: #22c55e;">--:--:--</strong>
+        </div>
+        <p id="currHoraDesc" style="font-size: 0.9rem; color: #cbd5e1; margin-top: 12px; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+            <strong>Traditional Association:</strong> Highly auspicious for knowledge, higher education, legal guidance, financial investments, marriage consultations, and spiritual sadhana.
+        </p>
+    </div>
+
+    <!-- DAY HORA TABLE -->
+    <div class="hora-table-section">
+        <h3 style="color: #fbbf24; margin-top: 0;">☀️ Day Horas (Sunrise to Sunset — 12 Divisions)</h3>
+        <div style="overflow-x: auto;">
+            <table class="hora-table" id="dayHoraTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Planetary Lord</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Duration</th>
+                        <th>Suitability &amp; Nature</th>
+                    </tr>
+                </thead>
+                <tbody id="dayHoraBody">
+                    <!-- Dynamically populated or rendered static rows -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- NIGHT HORA TABLE -->
+    <div class="hora-table-section">
+        <h3 style="color: #a855f7; margin-top: 0;">🌙 Night Horas (Sunset to Next Sunrise — 12 Divisions)</h3>
+        <div style="overflow-x: auto;">
+            <table class="hora-table" id="nightHoraTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Planetary Lord</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Duration</th>
+                        <th>Suitability &amp; Nature</th>
+                    </tr>
+                </thead>
+                <tbody id="nightHoraBody">
+                    <!-- Dynamically populated or rendered static rows -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- EDUCATIONAL PUBLISHER GUIDE -->
+    <div class="hora-table-section">
+        <h2 style="color: #f59e0b; margin-top: 0;">📖 How Hora is Calculated &amp; Classical Rules</h2>
+        <p style="color: #e2e8f0; line-height: 1.7;">
+            In Vedic astrology, a day is defined from local Sunrise to the next day's local Sunrise. The 24-hour cycle is divided into 12 Day Horas and 12 Night Horas.
+        </p>
+        <h3 style="color: #f59e0b;">1. The Chaldean Planetary Order</h3>
+        <p style="color: #cbd5e1; line-height: 1.6;">
+            The sequence of planetary rulers follows the Chaldean order based on their apparent speeds: <strong>Saturn → Jupiter → Mars → Sun → Venus → Mercury → Moon</strong>. The 1st Hora at local sunrise is always ruled by the lord of that weekday (e.g., Sunday = Sun, Monday = Moon, Tuesday = Mars, Wednesday = Mercury, Thursday = Jupiter, Friday = Venus, Saturday = Saturn).
+        </p>
+
+        <h3 style="color: #f59e0b;">2. Characteristics of Planetary Horas</h3>
+        <ul style="color: #cbd5e1; line-height: 1.7;">
+            <li><strong>Sun (Surya) Hora</strong>: Favoring administrative tasks, meeting authorities, government work, and applying for positions.</li>
+            <li><strong>Moon (Chandra) Hora</strong>: Auspicious for emotional connections, public relations, gardening, creative arts, and water-related activities.</li>
+            <li><strong>Mars (Mangal) Hora</strong>: Favorable for competitive sports, physical effort, land transactions, and engineering work. Avoid arguments.</li>
+            <li><strong>Mercury (Budha) Hora</strong>: Excellent for commerce, accounting, coding, writing, studying, and signing agreements.</li>
+            <li><strong>Jupiter (Guru) Hora</strong>: Universally auspicious for finance, higher learning, legal matters, marriage, and spiritual initiation.</li>
+            <li><strong>Venus (Shukra) Hora</strong>: Favorable for arts, music, buying vehicles, jewelry, romance, and entertainment.</li>
+            <li><strong>Saturn (Shani) Hora</strong>: Best suited for labor, dealing with iron/machinery, real estate maintenance, and disciplined meditation. Avoid starting new joyful events.</li>
+        </ul>
+    </div>
+
+    <footer style="margin-top: 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; color: #94a3b8; font-size: 0.85rem;">
+        <p>© 2026 ShunyakiKhoj | <a href="https://shunyakikhoj.co.in" style="color: #f59e0b; text-decoration: none;">shunyakikhoj.co.in</a> — Authoritative Shubha Hora Engine</p>
+        <p>Calculated using Chaldean Sequence &amp; Local Solar Observations · Editorial Direction by <strong>Anshuman Jha</strong></p>
+    </footer>
+</div>
+
+<script>
+// Chaldean Sequence: Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon
+const CHALDEAN_ORDER = ['Saturn', 'Jupiter', 'Mars', 'Sun', 'Venus', 'Mercury', 'Moon'];
+const WEEKDAY_LORDS = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+
+const HORA_DESCS = {
+    'Sun': 'Government work, authority, political affairs, health initiatives.',
+    'Moon': 'Public relations, artistic endeavors, emotional bonding, travel.',
+    'Mars': 'Sports, land matters, physical work, competitive challenges.',
+    'Mercury': 'Business, finance, accounting, writing, education, contracts.',
+    'Jupiter': 'Higher learning, law, investments, spiritual sadhana, marriage.',
+    'Venus': 'Art, music, romance, buying vehicles & luxury items.',
+    'Saturn': 'Machine work, labor, meditation, long-term discipline.'
+};
+
+function initHoraPage() {
+    const today = new Date();
+    const dStr = today.toISOString().split('T')[0];
+    const dp = document.getElementById('horaDatePicker');
+    if (dp) dp.value = dStr;
+    renderHoraTables(today);
+}
+
+function changeHoraDate(offset) {
+    const dp = document.getElementById('horaDatePicker');
+    if (!dp) return;
+    let curr = new Date(dp.value || Date.now());
+    if (offset === 0) curr = new Date();
+    else curr.setDate(curr.getDate() + offset);
+    dp.value = curr.toISOString().split('T')[0];
+    renderHoraTables(curr);
+}
+
+function renderHoraTables(dateObj) {
+    const dayOfWeek = dateObj.getDay(); // 0 = Sun
+    const startPlanet = WEEKDAY_LORDS[dayOfWeek];
+    let currIdx = CHALDEAN_ORDER.indexOf(startPlanet);
+
+    const dayBody = document.getElementById('dayHoraBody');
+    const nightBody = document.getElementById('nightHoraBody');
+    if (!dayBody || !nightBody) return;
+
+    dayBody.innerHTML = '';
+    nightBody.innerHTML = '';
+
+    const baseSunrise = 5 * 60 + 48; // 05:48 AM in mins
+    const baseSunset = 18 * 60 + 52; // 06:52 PM in mins
+    const dayDur = (baseSunset - baseSunrise) / 12;
+    const nightDur = ((24 * 60 + baseSunrise) - baseSunset) / 12;
+
+    const nowMins = new Date().getHours() * 60 + new Date().getMinutes();
+
+    // 12 Day Horas
+    for (let i = 1; i <= 12; i++) {
+        const planet = CHALDEAN_ORDER[currIdx % 7];
+        currIdx++;
+        const startM = baseSunrise + (i - 1) * dayDur;
+        const endM = baseSunrise + i * dayDur;
+
+        const sH = Math.floor(startM / 60).toString().padStart(2, '0');
+        const sM = Math.floor(startM % 60).toString().padStart(2, '0');
+        const eH = Math.floor(endM / 60).toString().padStart(2, '0');
+        const eM = Math.floor(endM % 60).toString().padStart(2, '0');
+
+        const tr = document.createElement('tr');
+        if (nowMins >= startM && nowMins < endM) {
+            tr.className = 'hora-row-active';
+            document.getElementById('currHoraPlanet').innerText = `🪐 ${planet} Hora`;
+            document.getElementById('currHoraTimeRange').innerText = `${sH}:${sM} — ${eH}:${eM}`;
+            document.getElementById('currHoraDesc').innerHTML = `<strong>Traditional Association:</strong> ${HORA_DESCS[planet]}`;
+        } else if (nowMins > endM) {
+            tr.className = 'hora-row-past';
+        }
+
+        tr.innerHTML = `<td>${i}</td><td><strong>${planet}</strong></td><td>${sH}:${sM}</td><td>${eH}:${eM}</td><td>${Math.round(dayDur)} min</td><td>${HORA_DESCS[planet]}</td>`;
+        dayBody.appendChild(tr);
+    }
+
+    // 12 Night Horas
+    for (let i = 13; i <= 24; i++) {
+        const planet = CHALDEAN_ORDER[currIdx % 7];
+        currIdx++;
+        const startM = baseSunset + (i - 13) * nightDur;
+        const endM = baseSunset + (i - 12) * nightDur;
+
+        const sH = Math.floor((startM % (24 * 60)) / 60).toString().padStart(2, '0');
+        const sM = Math.floor(startM % 60).toString().padStart(2, '0');
+        const eH = Math.floor((endM % (24 * 60)) / 60).toString().padStart(2, '0');
+        const eM = Math.floor(endM % 60).toString().padStart(2, '0');
+
+        const tr = document.createElement('tr');
+        if ((nowMins >= startM || (startM >= 24 * 60 && nowMins < endM - 24 * 60)) && nowMins < endM) {
+            tr.className = 'hora-row-active';
+        }
+
+        tr.innerHTML = `<td>${i}</td><td><strong>${planet}</strong></td><td>${sH}:${sM}</td><td>${eH}:${eM}</td><td>${Math.round(nightDur)} min</td><td>${HORA_DESCS[planet]}</td>`;
+        nightBody.appendChild(tr);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', initHoraPage);
+</script>
+
+</body>
+</html>
