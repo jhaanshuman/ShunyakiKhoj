@@ -2456,64 +2456,60 @@ function renderPanchang(bodyId, panchang, regional) {
                     50% { box-shadow: 0 0 0 2px rgba(255,215,0,0.35), 0 12px 50px rgba(212,175,55,0.32), 4px 4px 20px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.3); }
                 }
                 </style>
-                <div class="drik-card-title" style="margin-bottom: 15px; font-size: 1.1rem; border-bottom: 2px solid rgba(212,175,55,0.5); padding-bottom: 10px; color: var(--title-color); letter-spacing: 0.5px;">☀️ Vedic Panchang Elements (पञ्चाङ्ग तालिका)</div>
-                <table class="drik-table" style="width: 100%; border-collapse: separate; border-spacing: 0 4px; text-align: left; font-size: 0.9rem;">
+                <div class="drik-card-title" style="margin-bottom: 8px; font-size: 13px; font-weight: 800; border-bottom: 1.5px solid #a23922; padding-bottom: 4px; color: #3d1200; text-transform: uppercase;">☀️ Panchang Elements (पञ्चाङ्ग तालिका)</div>
+                <table class="drik-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 11.5px; line-height: 1.35;">
                     <thead>
-                        <tr style="font-weight: 800; color: #D4AF37;">
-                            <th style="padding: 12px 14px; border-bottom: 2px solid rgba(212,175,55,0.5);">Panchang Limb (अंग)</th>
-                            <th style="padding: 12px 14px; border-bottom: 2px solid rgba(212,175,55,0.5);">Calculated Value (मान)</th>
-                            <th style="padding: 12px 14px; border-bottom: 2px solid rgba(212,175,55,0.5);">Duration / Ending Time / Details (विवरण)</th>
+                        <tr style="font-weight: 800; color: #3d1200; background: rgba(162,57,34,0.1); font-size: 11.5px;">
+                            <th style="padding: 4px 8px; border-bottom: 1.5px solid #a23922;">Panchang Limb (अंग)</th>
+                            <th style="padding: 4px 8px; border-bottom: 1.5px solid #a23922;">Calculated Value (मान)</th>
+                            <th style="padding: 4px 8px; border-bottom: 1.5px solid #a23922;">Duration / Details (विवरण)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style="background: rgba(212,175,55,0.06); border-radius: 8px;">
-                            <td style="padding: 10px 14px; font-weight: 600; color: var(--text-gold); border-left: 3px solid rgba(212,175,55,0.5); border-radius: 6px 0 0 6px;">Tithi (तिथि)</td>
-                            <td style="padding: 10px 14px; color: var(--text-color);"><strong>${panchang.tithi}</strong></td>
-                            <td style="padding: 10px 14px; color: var(--text-muted);">${richTithi}</td>
+                        <tr style="background: rgba(247,231,196,0.3);">
+                            <td style="padding: 3px 8px; font-weight: 700; color: #000000;">Tithi (तिथि)</td>
+                            <td style="padding: 3px 8px; color: #a23922; font-weight: 700;">${panchang.tithi}</td>
+                            <td style="padding: 3px 8px; color: #7c1a08; font-weight: 600;">${richTithi}</td>
                         </tr>
-                        <tr style="background: rgba(212,175,55,0.03);">
-                            <td style="padding: 10px 14px; font-weight: 600; color: var(--text-gold); border-left: 3px solid rgba(212,175,55,0.3); border-radius: 6px 0 0 6px;">Nakshatra (नक्षत्र)</td>
-                            <td style="padding: 10px 14px; color: var(--text-color);"><strong>${panchang.nakshatra}</strong></td>
-                            <td style="padding: 10px 14px; color: var(--text-muted);">${richNak}</td>
+                        <tr style="background: rgba(255,255,255,0.4);">
+                            <td style="padding: 3px 8px; font-weight: 700; color: #000000;">Nakshatra (नक्षत्र)</td>
+                            <td style="padding: 3px 8px; color: #a23922; font-weight: 700;">${panchang.nakshatra}</td>
+                            <td style="padding: 3px 8px; color: #7c1a08; font-weight: 600;">${richNak}</td>
                         </tr>
-                        <tr style="background: rgba(212,175,55,0.06);">
-                            <td style="padding: 10px 14px; font-weight: 600; color: var(--text-gold); border-left: 3px solid rgba(212,175,55,0.5); border-radius: 6px 0 0 6px;">Yoga (योग)</td>
-                            <td style="padding: 10px 14px; color: var(--text-color);"><strong>${panchang.yoga}</strong></td>
-                            <td style="padding: 10px 14px; color: var(--text-muted);">${richYoga}</td>
+                        <tr style="background: rgba(247,231,196,0.3);">
+                            <td style="padding: 3px 8px; font-weight: 700; color: #000000;">Yoga (योग)</td>
+                            <td style="padding: 3px 8px; color: #a23922; font-weight: 700;">${panchang.yoga}</td>
+                            <td style="padding: 3px 8px; color: #7c1a08; font-weight: 600;">${richYoga}</td>
                         </tr>
-                        <tr style="background: rgba(212,175,55,0.03);">
-                            <td style="padding: 10px 14px; font-weight: 600; color: var(--text-gold); border-left: 3px solid rgba(212,175,55,0.3); border-radius: 6px 0 0 6px;">Karana (करण)</td>
-                            <td style="padding: 10px 14px; color: var(--text-color);"><strong>${panchang.karana}</strong></td>
-                            <td style="padding: 10px 14px; color: var(--text-muted);">${richKarana}</td>
+                        <tr style="background: rgba(255,255,255,0.4);">
+                            <td style="padding: 3px 8px; font-weight: 700; color: #000000;">Karana (करण)</td>
+                            <td style="padding: 3px 8px; color: #a23922; font-weight: 700;">${panchang.karana}</td>
+                            <td style="padding: 3px 8px; color: #7c1a08; font-weight: 600;">${richKarana}</td>
                         </tr>
-                        <tr style="background: rgba(212,175,55,0.06);">
-                            <td style="padding: 10px 14px; font-weight: 600; color: var(--text-gold); border-left: 3px solid rgba(212,175,55,0.5); border-radius: 6px 0 0 6px;">Weekday (वार)</td>
-                            <td style="padding: 10px 14px; color: var(--text-color);"><strong>${panchang.vara}</strong></td>
-                            <td style="padding: 10px 14px; color: var(--text-muted);">All Day (सूर्योदय से सूर्योदय तक)</td>
+                        <tr style="background: rgba(247,231,196,0.3);">
+                            <td style="padding: 3px 8px; font-weight: 700; color: #000000;">Weekday (वार)</td>
+                            <td style="padding: 3px 8px; color: #a23922; font-weight: 700;">${panchang.vara}</td>
+                            <td style="padding: 3px 8px; color: #7c1a08; font-weight: 600;">All Day (सूर्योदय से सूर्योदय तक)</td>
                         </tr>
-                        <tr style="background: rgba(212,175,55,0.03);">
-                            <td style="padding: 10px 14px; font-weight: 600; color: var(--text-gold); border-left: 3px solid rgba(212,175,55,0.3); border-radius: 6px 0 0 6px;">Paksha (पक्ष)</td>
-                            <td style="padding: 10px 14px; color: var(--text-color);"><strong>${ext.paksha || 'Krishna Paksha'}</strong></td>
-                            <td style="padding: 10px 14px; color: var(--text-muted);">Fortnight of the Moon phase</td>
+                        <tr style="background: rgba(255,255,255,0.4);">
+                            <td style="padding: 3px 8px; font-weight: 700; color: #000000;">Paksha (पक्ष)</td>
+                            <td style="padding: 3px 8px; color: #a23922; font-weight: 700;">${ext.paksha || 'Krishna Paksha'}</td>
+                            <td style="padding: 3px 8px; color: #7c1a08; font-weight: 600;">Fortnight of the Moon phase</td>
                         </tr>
-                        <tr style="background: rgba(212,175,55,0.06);">
-                            <td style="padding: 10px 14px; font-weight: 600; color: var(--text-gold); border-left: 3px solid rgba(212,175,55,0.5); border-radius: 6px 0 0 6px;">Sunsign &amp; Moonsign</td>
-                            <td style="padding: 10px 14px; color: var(--text-color);"><strong>Sun: ${cleanSunSign} | Moon: ${cleanMoonSign}</strong></td>
-                            <td style="padding: 10px 14px; color: var(--text-muted);">${richMoonsign}</td>
+                        <tr style="background: rgba(247,231,196,0.3);">
+                            <td style="padding: 3px 8px; font-weight: 700; color: #000000;">Sunsign &amp; Moonsign</td>
+                            <td style="padding: 3px 8px; color: #a23922; font-weight: 700;">Sun: ${cleanSunSign} | Moon: ${cleanMoonSign}</td>
+                            <td style="padding: 3px 8px; color: #7c1a08; font-weight: 600;">${richMoonsign}</td>
                         </tr>
-                        <tr style="background: rgba(212,175,55,0.03);">
-                            <td style="padding: 10px 14px; font-weight: 600; color: var(--text-gold); border-left: 3px solid rgba(212,175,55,0.3); border-radius: 6px 0 0 6px;">Nakshatra Pada</td>
-                            <td style="padding: 10px 14px; color: var(--text-color);" colspan="2"><span style="font-size:0.8rem; line-height:1.6;">${richNakPada}</span></td>
+                        <tr style="background: rgba(255,255,255,0.4);">
+                            <td style="padding: 3px 8px; font-weight: 700; color: #000000;">Sunrise / Sunset</td>
+                            <td style="padding: 3px 8px; color: #a23922; font-weight: 700;">🌅 ${sunriseStr} AM / 🌇 ${sunsetStr} PM</td>
+                            <td style="padding: 3px 8px; color: #7c1a08; font-weight: 600;">Dinamana: 13h 48m | Madhyahna: 12:27 PM</td>
                         </tr>
-                        <tr style="background: rgba(212,175,55,0.06);">
-                            <td style="padding: 10px 14px; font-weight: 600; color: var(--text-gold); border-left: 3px solid rgba(212,175,55,0.5); border-radius: 6px 0 0 6px;">Sunrise / Sunset</td>
-                            <td style="padding: 10px 14px; color: var(--text-color);"><strong>🌅 ${sunriseStr} AM / 🌇 ${sunsetStr} PM</strong></td>
-                            <td style="padding: 10px 14px; color: var(--text-muted);">Dinamana: 13h 48m | Madhyahna: 12:27 PM</td>
-                        </tr>
-                        <tr style="background: rgba(212,175,55,0.03);">
-                            <td style="padding: 10px 14px; font-weight: 600; color: var(--text-gold); border-left: 3px solid rgba(212,175,55,0.3); border-radius: 6px 0 0 6px; border-radius: 6px 0 0 6px;">Moonrise / Moonset</td>
-                            <td style="padding: 10px 14px; color: var(--text-color);"><strong>🌙 ${panchang.moonrise || 'No Moonrise'} / ${panchang.moonset || '07:32 PM'}</strong></td>
-                            <td style="padding: 10px 14px; color: var(--text-muted);">Ratrimana: 10h 11m</td>
+                        <tr style="background: rgba(247,231,196,0.3);">
+                            <td style="padding: 3px 8px; font-weight: 700; color: #000000;">Moonrise / Moonset</td>
+                            <td style="padding: 3px 8px; color: #a23922; font-weight: 700;">🌙 ${panchang.moonrise || 'No Moonrise'} / ${panchang.moonset || '07:32 PM'}</td>
+                            <td style="padding: 3px 8px; color: #7c1a08; font-weight: 600;">Ratrimana: 10h 11m</td>
                         </tr>
                     </tbody>
                 </table>

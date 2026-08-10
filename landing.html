@@ -326,90 +326,66 @@ window.__h82AlnkH6D91__("WyJwdWItMTM0MjE4OTU3NDg1ODY3MiIsW251bGwsbnVsbCxudWxsLCJ
             </div>
         </div>
 
-        <!-- 1. Panchang for Today (Spread across width) -->
-        <div style="margin-bottom: 1.5rem; width: 100%; box-sizing: border-box;">
-            <h3 class="dainik-card-header-title">☀️ Panchang for Today</h3>
-            <div class="time-format-toggle" style="display: flex; gap: 8px; margin-bottom: 15px;">
-                <button class="ph-today-btn active" id="btn12Hr" onclick="setFormat('12')" style="font-size: 0.75rem; padding: 4px 10px;">12 Hour</button>
-                <button class="ph-today-btn" id="btn24Hr" onclick="setFormat('24')" style="font-size: 0.75rem; padding: 4px 10px;">24 Hour</button>
-                <button class="ph-today-btn" id="btn24Plus" onclick="setFormat('24Plus')" style="font-size: 0.75rem; padding: 4px 10px;">24 Plus</button>
-            </div>
-            <div id="panchangBody">
-                <!-- Filled dynamically by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Bottom Grid: 2x2 Layout -->
-        <div class="dainik-bottom-two-grid">
-            <!-- Top Left: Lagna Kundali with Right-Side Tabular Dropdown Selector Control -->
-            <div class="glass-card chart-card dainik-layout-card animated-in" id="lagnaKundaliCard" style="padding: 20px; box-sizing: border-box; text-align: center; display: flex; flex-direction: column; width: 100%;">
-                <h3 class="dainik-card-header-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap:wrap; gap:4px;">
-                    <span>☸️ <span id="divisionLabel">Rasi (D1) — Lagna</span></span>
+        <!-- 3-Column Compact Daily Panchang Grid (Panchang | Lagna Kundali | Festivals) -->
+        <div class="daily-panchang-three-col" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px;">
+            <!-- Column 1: Panchang for Today -->
+            <div class="glass-card col-card" style="padding: 10px 14px; background: rgba(247, 231, 196, 0.95); border: 1.5px solid #a23922; border-radius: 8px; height: 350px; overflow-y: auto;">
+                <h3 class="dainik-card-header-title" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 13px; font-weight: 800; color: #3d1200;">
+                    <span>☀️ Panchang for Today</span>
                     <div style="display: flex; gap: 4px;">
-                        <select id="selChartStyle" onchange="renderAdvancedChart()" style="background:#0d1117; border:1px solid rgba(252,194,1,0.3); color:#fbbf24; border-radius:4px; padding:3px 8px; font-size:0.72rem; font-weight:700;">
-                            <option value="North">North Indian</option>
-                            <option value="South">South Indian</option>
-                        </select>
+                        <button class="ph-today-btn active" id="btn12Hr" onclick="setFormat('12')" style="font-size: 10px; padding: 2px 6px;">12H</button>
+                        <button class="ph-today-btn" id="btn24Hr" onclick="setFormat('24')" style="font-size: 10px; padding: 2px 6px;">24H</button>
                     </div>
                 </h3>
-                
-                <!-- Advanced Controls Panel -->
-                <div class="kundli-advanced-controls" style="display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-bottom:15px; padding:8px 4px; border-bottom:1.5px solid rgba(252,194,1,0.15); font-size:0.75rem; background:rgba(0,0,0,0.12); border-radius:6px;">
-                    <select id="selChartCenter" onchange="triggerAdvancedCalc()" style="background:#0d1117; border:var(--card-border); color:#fff; border-radius:4px; padding:3px 6px; font-size:0.72rem; font-weight:700;">
+                <div id="panchangBody" style="font-size: 11.5px; line-height: 1.4; color: #000;">
+                    <!-- Filled dynamically by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Column 2: Lagna Kundali & Planet Positions -->
+            <div class="glass-card col-card" style="padding: 10px 14px; background: rgba(247, 231, 196, 0.95); border: 1.5px solid #a23922; border-radius: 8px; height: 350px; overflow-y: auto;">
+                <h3 class="dainik-card-header-title" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 13px; font-weight: 800; color: #3d1200;">
+                    <span>☸️ Lagna Kundali</span>
+                    <select id="selChartCenter" onchange="triggerAdvancedCalc()" style="background:#ffffff; border:1px solid #a23922; color:#3d1200; border-radius:4px; padding:2px 4px; font-size:10px; font-weight:700;">
                         <option value="D1">D1 (Lagna)</option>
                         <option value="D9">D9 (Navamsha)</option>
                         <option value="D10">D10 (Dashamsha)</option>
-                        <option value="D3">D3 (Drekkana)</option>
-                        <option value="D7">D7 (Saptamsha)</option>
-                        <option value="D12">D12 (Dwadamsha)</option>
-                        <option value="D30">D30 (Trishamsha)</option>
-                        <option value="D60">D60 (Shastiamsha)</option>
                     </select>
-                    <select id="selAyanamsa" onchange="triggerAdvancedCalc()" style="background:#0d1117; border:var(--card-border); color:#fff; border-radius:4px; padding:3px 6px; font-size:0.72rem; font-weight:700;">
-                        <option value="Lahiri">Lahiri</option>
-                        <option value="Raman">Raman</option>
-                        <option value="Krishnamurti">KP</option>
-                        <option value="Tropical">Tropical</option>
-                    </select>
-                    <select id="selNode" onchange="triggerAdvancedCalc()" style="background:#0d1117; border:var(--card-border); color:#fff; border-radius:4px; padding:3px 6px; font-size:0.72rem; font-weight:700;">
-                        <option value="True">True Rahu</option>
-                        <option value="Mean">Mean Rahu</option>
-                    </select>
-                    <select id="selZodiacStyle" onchange="triggerAdvancedCalc()" style="background:#0d1117; border:var(--card-border); color:#fff; border-radius:4px; padding:3px 6px; font-size:0.72rem; font-weight:700;">
-                        <option value="Sidereal">Sidereal</option>
-                        <option value="Tropical">Sayana</option>
-                    </select>
-                    <button onclick="toggleRashiNumDisplay()" class="ph-today-btn" id="btnToggleRashiNum" style="font-size:0.7rem; padding:2px 6px; border-radius:4px; font-weight:700; background:rgba(0,0,0,0.2);">🔢 Rashi</button>
-                    <button onclick="toggleOuterPlanetsDisplay()" class="ph-today-btn" id="btnToggleOuter" style="font-size:0.7rem; padding:2px 6px; border-radius:4px; font-weight:700; background:rgba(0,0,0,0.2);">🪐 Outer</button>
+                </h3>
+                <div id="lagnaChartContainer" style="width: 100%; height: 170px; background: #ebd9b4; border-radius: 6px; border: 1px solid #a23922; display: flex; justify-content: center; align-items: center; margin-bottom: 6px;">
+                    <!-- SVG Chart -->
                 </div>
-                
-                <!-- Side-by-Side Wrapper: Chart on Left, Tabular Control Selector on Right -->
-                <div style="display: grid; grid-template-columns: minmax(320px, 390px) 1fr; gap: 20px; align-items: start; width: 100%; box-sizing: border-box; margin: 0 auto;">
-                    <!-- Left Side: SVG Chart -->
-                    <div id="lagnaChartContainer" style="width: 100%; min-height: 380px; background: #0f172a; border-radius: 10px; border: 1.5px solid #334155; padding: 10px; box-sizing: border-box; display: flex; justify-content: center; align-items: center;">
-                        <!-- SVG drawn dynamically -->
-                    </div>
-                    
-                    <!-- Right Side: Dropdown Selector & Tabular Data Display -->
-                    <div style="width: 100%; margin: 0 auto; text-align: left; background: #ffffff; border-radius: 10px; border: 1.5px solid #cbd5e1; padding: 14px; box-sizing: border-box; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #991b1b; padding-bottom: 8px;">
-                            <label for="selPanchangTabularView" style="font-size: 0.85rem; font-weight: 800; color: #991b1b;">📋 Tabular Dataset:</label>
-                            <select id="selPanchangTabularView" onchange="renderPanchangTabularView()" style="background:#ffffff; border:1.5px solid #991b1b; color:#991b1b; border-radius:6px; padding:4px 10px; font-size:0.82rem; font-weight:800; outline:none; cursor:pointer;">
-                                <option value="planets">🪐 Planetary Positions & Longitudes</option>
-                                <option value="nakshatra">⭐ Nakshatra & Pada Details</option>
-                                <option value="dignity">👑 Dignity & Avasthas</option>
-                                <option value="ashtakavarga">📊 Ashtakavarga Score Summary</option>
-                                <option value="drishti">👁️ Graha Drishti (Aspects)</option>
-                                <option value="muhurtas">⏱️ Choghadiya & Hora Times</option>
-                            </select>
-                        </div>
-                        <div id="lagnaPlanetsContainer" style="font-size: 0.82rem; max-height: 380px; overflow-y: auto; color: #1e293b;">
-                            <!-- Mapped dynamically based on dropdown selection -->
-                        </div>
-                    </div>
+                <div id="lagnaPlanetsContainer" style="font-size: 11px; color: #000; line-height: 1.35;">
+                    <!-- Mapped dynamically -->
                 </div>
             </div>
 
+            <!-- Column 3: Upcoming Upavas & Festivals -->
+            <div class="glass-card col-card" style="padding: 10px 14px; background: rgba(247, 231, 196, 0.95); border: 1.5px solid #a23922; border-radius: 8px; height: 350px; overflow-y: auto;">
+                <h3 class="dainik-card-header-title" style="font-size: 13px; font-weight: 800; color: #3d1200; margin-bottom: 6px;">🪔 Upcoming Upavas &amp; Festivals</h3>
+                <div id="upcomingFestivalsContainer" style="font-size: 11.5px; line-height: 1.4; color: #000;">
+                    <div style="background: rgba(230,131,131,0.3); border-left: 3px solid #b33922; padding: 6px; margin-bottom: 6px; border-radius: 4px;">
+                        <strong style="color: #a23922;">Kamika Ekadashi Parana</strong> <span style="font-weight: 700; color: #b33922;">(Today)</span>
+                        <div style="font-size: 10.5px; color: #555;">August 10, 2026, Monday</div>
+                    </div>
+                    <div style="background: rgba(230,131,131,0.3); border-left: 3px solid #b33922; padding: 6px; margin-bottom: 6px; border-radius: 4px;">
+                        <strong style="color: #a23922;">Soma Pradosh Vrat</strong> <span style="font-weight: 700; color: #b33922;">(Today)</span>
+                        <div style="font-size: 10.5px; color: #555;">August 10, 2026, Monday</div>
+                    </div>
+                    <div style="padding: 6px; border-bottom: 1px solid rgba(162,57,34,0.15);">
+                        <strong>Sawan Shivaratri</strong> <span style="font-size: 10.5px; color: #7c1a08;">(1 Day)</span>
+                        <div style="font-size: 10.5px; color: #555;">August 11, 2026, Tuesday</div>
+                    </div>
+                    <div style="padding: 6px; border-bottom: 1px solid rgba(162,57,34,0.15);">
+                        <strong>Second Mangala Gauri Vrat</strong> <span style="font-size: 10.5px; color: #7c1a08;">(1 Day)</span>
+                        <div style="font-size: 10.5px; color: #555;">August 11, 2026, Tuesday</div>
+                    </div>
+                    <div style="padding: 6px; border-bottom: 1px solid rgba(162,57,34,0.15);">
+                        <strong>Hariyali Amavasya</strong> <span style="font-size: 10.5px; color: #7c1a08;">(2 Days)</span>
+                        <div style="font-size: 10.5px; color: #555;">August 12, 2026, Wednesday</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

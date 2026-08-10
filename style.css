@@ -5189,30 +5189,83 @@ p, body, button, input, select {
     }
 }
 
-/* ── Sectional Header & Content Contrast for Reddish-Yellow Background ── */
-h1, h2, h3, .section-header, .dainik-card-header-title, .panchang-unified-header-title {
-    color: #000000 !important;
+/* ── Global Compact Typography & Tight Density System ── */
+.glass-card, .widget-box, .dainik-layout-card, .drik-card, .info-card {
+    padding: 8px 12px !important;
+    margin-bottom: 10px !important;
+    border: 1.5px solid #a23922 !important;
+    border-radius: 8px !important;
+    background: rgba(247, 231, 196, 0.95) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Card Header Titles */
+.dainik-card-header-title, .ph-title, .widget-box h3, .widget-box h4, .section-header-title {
+    font-size: 13px !important;
     font-weight: 800 !important;
+    color: #3d1200 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin: 0 0 6px 0 !important;
+    padding-bottom: 4px !important;
+    border-bottom: 1px solid rgba(162, 57, 34, 0.25) !important;
 }
 
-p, .card-content, .info-text {
-    color: #ffffff !important;
+/* Data Field Labels & Values */
+.panchang-row, .panchang-key-val, .field-row {
+    font-size: 11.5px !important;
+    line-height: 1.4 !important;
+    padding: 3px 0 !important;
 }
 
-/* ── Desktop & Mobile Menu Width Adjustments ── */
-@media (min-width: 1025px) {
-    .desktop-sidebar, .left-nav-sidebar, #desktopSidebar {
-        width: 100px !important;
-        min-width: 100px !important;
-        max-width: 100px !important;
-    }
+.panchang-label, .field-label, .lbl-text {
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+}
+
+.panchang-val, .field-val, .val-text {
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    color: #a23922 !important;
+}
+
+.end-time, .time-stamp, .sub-time {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: #7c1a08 !important;
+}
+
+/* Compact Buttons & Controls */
+.ph-today-btn, .ph-nav-btn, .ph-view-btn, button.btn-compact {
+    font-size: 11px !important;
+    padding: 3px 10px !important;
+    border-radius: 4px !important;
+    font-weight: 700 !important;
+}
+
+/* 3-Column Equal Height Grid System */
+.daily-panchang-three-col {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+    margin-top: 10px !important;
+}
+
+.daily-panchang-three-col .col-card {
+    height: 350px !important;
+    max-height: 350px !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
 }
 
 @media (max-width: 1024px) {
-    .mobile-menu, #mobileDrawer {
-        width: 50vw !important;
-        min-width: 50vw !important;
-        max-width: 50vw !important;
+    .daily-panchang-three-col {
+        grid-template-columns: 1fr !important;
+    }
+    .daily-panchang-three-col .col-card {
+        height: auto !important;
+        max-height: none !important;
     }
 }
 
