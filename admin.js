@@ -105,29 +105,172 @@ function setupIframeListeners() {
     });
 }
 
+let editHistoryStack = [];
+let originalElementStates = new WeakMap();
+
 function inspectTargetElement(el) {
-    document.getElementById('targetTagLabel').value = `<${el.tagName.toLowerCase()}> ${el.className ? '.' + el.className.split(' ')[0] : ''}`;
+    if (!el) return;
+
+    // Save original state for Reset feature
+    if (!originalElementStates.has(el)) {
+        originalElementStates.set(el, {
+            cssText: el.style.cssText,
+            innerHTML: el.innerHTML
+        });
+    }
+
+    document.getElementById('targetTagLabel').value = `<${el.tagName.toLowerCase()}> ${el.className ? '.' + Array.from(el.classList).filter(c => c !== 'admin-editable-selected' && c !== 'admin-editable-hover').join('.') : ''}`;
     document.getElementById('targetTextVal').value = el.innerText || '';
 
     const compStyle = window.getComputedStyle(el);
     document.getElementById('targetTextColor').value = rgbToHex(compStyle.color) || '#ffffff';
     document.getElementById('targetBgColor').value = rgbToHex(compStyle.backgroundColor) || '#0f172a';
-    document.getElementById('targetFontSize').value = parseInt(compStyle.fontSize) || 14;
-    document.getElementById('targetPadding').value = parseInt(compStyle.padding) || 10;
     document.getElementById('targetVisibility').value = compStyle.display === 'none' ? 'none' : 'block';
+    document.getElementById('targetCssRaw').value = el.style.cssText;
 
+    // Render DevTools Style Applicable CSS Grid
+    renderDevToolsCssGrid(el, compStyle);
     switchAdminTab('webpage');
+}
+
+function renderDevToolsCssGrid(el, compStyle) {
+    const grid = document.getElementById('devtoolsCssGrid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    const cssProperties = [
+        'color',
+        'background-color',
+        'font-size',
+        'font-weight',
+        'font-family',
+        'padding',
+        'margin',
+        'border',
+        'border-radius',
+        'box-shadow',
+        'display',
+        'line-height',
+        'text-align',
+        'opacity',
+        'width',
+        'height'
+    ];
+
+    cssProperties.forEach(prop => {
+        const inlineVal = el.style[camelize(prop)];
+        const computedVal = compStyle.getPropertyValue(prop);
+        const activeVal = inlineVal || computedVal || '';
+
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex; align-items:center; justify-content:space-between; gap:6px; font-family:monospace; font-size:0.75rem; border-bottom:1px solid rgba(255,255,255,0.06); padding:2px 0;';
+        row.innerHTML = `
+            <span style="color:#60a5fa; font-weight:700; width:110px; flex-shrink:0;">${prop}:</span>
+            <input type="text" value="${activeVal}" onchange="updateSingleCssProperty('${prop}', this.value)" style="flex:1; background:transparent; border:none; color:#ffffff; font-family:monospace; font-size:0.75rem; border-bottom:1px dashed rgba(255,255,255,0.2); outline:none;">
+        `;
+        grid.appendChild(row);
+    });
+}
+
+function updateSingleCssProperty(prop, val) {
+    if (!selectedElement) return;
+    pushUndoState();
+    selectedElement.style[camelize(prop)] = val;
+    document.getElementById('targetCssRaw').value = selectedElement.style.cssText;
+}
+
+function applyRawCssOverride() {
+    if (!selectedElement) return;
+    pushUndoState();
+    selectedElement.style.cssText = document.getElementById('targetCssRaw').value;
+}
+
+function addNewCssRuleField() {
+    if (!selectedElement) return;
+    const prop = prompt("Enter CSS Property Name (e.g. border-radius, font-family, flex):", "border-radius");
+    if (!prop) return;
+    const val = prompt(`Enter value for ${prop}:`, "12px");
+    if (!val) return;
+
+    updateSingleCssProperty(prop, val);
+    const compStyle = window.getComputedStyle(selectedElement);
+    renderDevToolsCssGrid(selectedElement, compStyle);
 }
 
 function updateTargetText() {
     if (!selectedElement) return;
+    pushUndoState();
     const text = document.getElementById('targetTextVal').value;
     selectedElement.innerText = text;
 }
 
 function updateTargetStyle(prop, val) {
     if (!selectedElement) return;
+    pushUndoState();
     selectedElement.style[prop] = val;
+    document.getElementById('targetCssRaw').value = selectedElement.style.cssText;
+}
+
+// UNDO | SAVE | RESET LOGIC
+function pushUndoState() {
+    if (!selectedElement) return;
+    editHistoryStack.push({
+        element: selectedElement,
+        cssText: selectedElement.style.cssText,
+        innerText: selectedElement.innerText
+    });
+    if (editHistoryStack.length > 50) editHistoryStack.shift();
+}
+
+function undoLastChange() {
+    if (editHistoryStack.length === 0) {
+        alert("No actions to undo.");
+        return;
+    }
+    const lastState = editHistoryStack.pop();
+    if (lastState && lastState.element) {
+        lastState.element.style.cssText = lastState.cssText;
+        lastState.element.innerText = lastState.innerText;
+        inspectTargetElement(lastState.element);
+    }
+}
+
+function saveSelectedElement() {
+    if (!selectedElement) {
+        alert("No element selected to save.");
+        return;
+    }
+    const tag = selectedElement.tagName.toLowerCase();
+    const savedConfigs = JSON.parse(localStorage.getItem('shunyaki_admin_configs') || '{}');
+    savedConfigs[tag + '_' + Date.now()] = {
+        cssText: selectedElement.style.cssText,
+        innerText: selectedElement.innerText
+    };
+    localStorage.setItem('shunyaki_admin_configs', JSON.stringify(savedConfigs));
+    alert("💾 Element styling and content saved to LocalStorage successfully!");
+}
+
+function resetSelectedElement() {
+    if (!selectedElement) {
+        alert("No element selected to reset.");
+        return;
+    }
+    if (originalElementStates.has(selectedElement)) {
+        const orig = originalElementStates.get(selectedElement);
+        pushUndoState();
+        selectedElement.style.cssText = orig.cssText;
+        selectedElement.innerHTML = orig.innerHTML;
+        inspectTargetElement(selectedElement);
+        alert("🔄 Element restored to its original unedited state!");
+    } else {
+        selectedElement.style.cssText = '';
+        inspectTargetElement(selectedElement);
+    }
+}
+
+function camelize(str) {
+    return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
 
 // 5. SECTION MANAGER & DRAG REORDERING

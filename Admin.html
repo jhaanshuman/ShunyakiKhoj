@@ -52,22 +52,50 @@
             <!-- TAB 1: WEBPAGE EDITOR & STYLING -->
             <div id="tabWebpage" class="admin-tab-content active">
                 
-                <!-- Selected Element Inspector -->
+                <!-- Selected Element Inspector & DevTools CSS Editor -->
                 <div class="admin-accordion-group">
                     <div class="admin-accordion-header" onclick="toggleAdminAccordion(this)">
-                        <span>🎯 Element Inspector &amp; Stylist</span>
+                        <span>🎯 Element Inspector &amp; Developer Mode Stylist</span>
                         <span>▼</span>
                     </div>
                     <div class="admin-accordion-body">
-                        <div class="admin-field-group">
-                            <label class="admin-label">Selected Target</label>
-                            <input type="text" id="targetTagLabel" class="admin-input" value="Click any element on left canvas" readonly>
+                        <!-- Action Bar: Undo | Save | Reset -->
+                        <div style="display:flex; gap:6px; margin-bottom:12px;">
+                            <button class="btn-admin btn-admin-secondary" style="flex:1; font-size:0.75rem; padding:6px 4px;" onclick="undoLastChange()">↺ Undo</button>
+                            <button class="btn-admin" style="flex:1; font-size:0.75rem; padding:6px 4px;" onclick="saveSelectedElement()">💾 Save</button>
+                            <button class="btn-admin btn-admin-secondary" style="flex:1; font-size:0.75rem; padding:6px 4px; background:#7c1a08;" onclick="resetSelectedElement()">🔄 Reset</button>
                         </div>
+
+                        <div class="admin-field-group">
+                            <label class="admin-label">Selected Target (DOM Node)</label>
+                            <input type="text" id="targetTagLabel" class="admin-input" value="Click any element on left canvas" readonly style="font-family:monospace; color:#fbbf24; font-weight:700;">
+                        </div>
+
                         <div class="admin-field-group">
                             <label class="admin-label">Text Content</label>
                             <textarea id="targetTextVal" class="admin-textarea" placeholder="Type text here..." oninput="updateTargetText()"></textarea>
                         </div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+
+                        <!-- DevTools Style CSS Rules Panel -->
+                        <div class="admin-field-group" style="margin-top:14px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                                <label class="admin-label" style="color:#fbbf24; font-weight:800; margin:0;">💻 DevTools CSS Rules Inspector</label>
+                                <button onclick="addNewCssRuleField()" class="btn-admin btn-admin-secondary" style="font-size:0.7rem; padding:2px 8px;">+ Add Rule</button>
+                            </div>
+                            
+                            <!-- Dynamic Property-Value Grid -->
+                            <div id="devtoolsCssGrid" style="display:flex; flex-direction:column; gap:6px; max-height:220px; overflow-y:auto; background:#000000; padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.15);">
+                                <div style="font-size:0.75rem; color:#94a3b8; text-align:center; padding:10px;">Click any element on the left canvas to view applicable CSS rules</div>
+                            </div>
+                        </div>
+
+                        <!-- Raw Live CSS Code Injector Box -->
+                        <div class="admin-field-group" style="margin-top:10px;">
+                            <label class="admin-label" style="color:#94a3b8;">Custom CSS Override String (style.cssText)</label>
+                            <textarea id="targetCssRaw" class="admin-textarea" placeholder="color: #fff; background: #000; padding: 10px;" oninput="applyRawCssOverride()"></textarea>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
                             <div class="admin-field-group">
                                 <label class="admin-label">Text Color</label>
                                 <input type="color" id="targetTextColor" class="admin-input" style="height:36px; cursor:pointer;" onchange="updateTargetStyle('color', this.value)">
@@ -77,16 +105,7 @@
                                 <input type="color" id="targetBgColor" class="admin-input" style="height:36px; cursor:pointer;" onchange="updateTargetStyle('backgroundColor', this.value)">
                             </div>
                         </div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                            <div class="admin-field-group">
-                                <label class="admin-label">Font Size (px)</label>
-                                <input type="number" id="targetFontSize" class="admin-input" value="14" onchange="updateTargetStyle('fontSize', this.value + 'px')">
-                            </div>
-                            <div class="admin-field-group">
-                                <label class="admin-label">Padding (px)</label>
-                                <input type="number" id="targetPadding" class="admin-input" value="10" onchange="updateTargetStyle('padding', this.value + 'px')">
-                            </div>
-                        </div>
+
                         <div class="admin-field-group">
                             <label class="admin-label">Visibility</label>
                             <select id="targetVisibility" class="admin-select" onchange="updateTargetStyle('display', this.value)">
