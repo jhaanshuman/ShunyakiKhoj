@@ -373,21 +373,20 @@ function renderDrawerContent(accordionContainer, menuItems) {
 
     // Render Categories (Home is #1 at Top)
     menuItems.forEach((item) => {
+        const isAccordion = (item.type === 'dropdown' || item.type === 'megamenu' || item.label === 'Favourites');
         const group = document.createElement('div');
         group.className = 'accordion-group';
 
-        const trigger = document.createElement('button');
+        const trigger = document.createElement(isAccordion ? 'button' : 'div');
         trigger.className = 'accordion-trigger';
-        trigger.style.padding = '6px 10px';
-        trigger.innerHTML = `<span style="color:#ffffff !important; font-weight:800; font-size:0.78rem;">${item.icon} ${item.label}</span> <span class="arrow" style="color:#fbbf24; font-size:0.75rem;">▼</span>`;
-        group.appendChild(trigger);
-
+        trigger.style.cssText = 'padding:6px 10px; display:flex; align-items:center; justify-content:space-between; width:100%; box-sizing:border-box; border:none; background:none; text-align:left; cursor:pointer;';
+        
         const content = document.createElement('div');
         content.className = 'accordion-content';
 
         if (item.label === 'Favourites') {
             trigger.style.background = 'rgba(251,191,36,0.06)';
-            trigger.innerHTML = `<span style="color:#fbbf24; font-weight:800; font-size:0.78rem;">⭐ Favourites</span> <span class="arrow">▼</span>`;
+            trigger.innerHTML = `<span style="color:#fbbf24; font-weight:800; font-size:0.78rem;">⭐ Favourites</span> <span class="arrow" style="color:#fbbf24; font-size:0.75rem;">▼</span>`;
             group.classList.add('active');
             content.style.display = 'block';
 
@@ -411,7 +410,6 @@ function renderDrawerContent(accordionContainer, menuItems) {
                         <span class="star-toggle" data-url="${f.url}" data-label="${f.label}" data-icon="${f.icon}" style="cursor:pointer; color:#fbbf24; font-size:0.95rem; padding:1px 3px; flex-shrink:0;">★</span>
                     `;
 
-                    // Universal Click Handler on Item & Link
                     const executeNav = (e) => {
                         if (e.target.classList.contains('star-toggle')) return;
                         e.preventDefault();
@@ -453,27 +451,60 @@ function renderDrawerContent(accordionContainer, menuItems) {
                 content.appendChild(ul);
             }
         } else if (item.type === 'dropdown' && item.items) {
+            trigger.innerHTML = `<span style="color:#ffffff !important; font-weight:800; font-size:0.78rem;">${item.icon} ${item.label}</span> <span class="arrow" style="color:#fbbf24; font-size:0.75rem;">▼</span>`;
             const ul = document.createElement('ul');
             item.items.forEach(sub => {
                 const li = document.createElement('li');
                 const pretty = getPrettyUrl(sub.url);
                 const isFav = isFavorite(pretty);
                 
-                li.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:3px 0;';
+                li.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:3px 0; min-width:0; overflow:hidden;';
                 li.innerHTML = `
-                    <a href="${pretty}" class="accordion-subitem-link" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-size:0.75rem; font-weight:700; padding:4px 0;">
-                        <span style="margin-right:6px;">${sub.icon || '🔸'}</span> ${sub.label}
+                    <a href="${pretty}" class="accordion-subitem-link" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-size:0.75rem; font-weight:700; padding:4px 0; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                        <span style="margin-right:6px; flex-shrink:0;">${sub.icon || '🔸'}</span>
+                        <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; min-width:0;">${sub.label}</span>
                     </a>
-                    <span class="star-toggle" data-url="${pretty}" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.3)'}; font-size:1rem; padding: 2px 4px;">${isFav ? '★' : '☆'}</span>
+                    <span class="star-toggle" data-url="${pretty}" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.3)'}; font-size:1rem; padding: 2px 4px; flex-shrink:0;">${isFav ? '★' : '☆'}</span>
                 `;
+
+                const aLink = li.querySelector('a');
+                if (aLink) {
+                    aLink.onclick = (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const leftDrawer = document.getElementById('leftDrawerMenu');
+                        if (leftDrawer) leftDrawer.classList.remove('active');
+                        const overlay = document.getElementById('leftDrawerOverlay');
+                        if (overlay) overlay.style.display = 'none';
+
+                        if (pretty.includes('#phalDeepikaChat')) {
+                            const pChat = document.getElementById('phalDeepikaChat');
+                            if (pChat) {
+                                pChat.scrollIntoView({ behavior: 'smooth' });
+                                return;
+                            }
+                            window.location.href = '/landing.html#phalDeepikaChat';
+                            return;
+                        }
+                        if (pretty.startsWith('#')) {
+                            const targetEl = document.querySelector(pretty);
+                            if (targetEl) {
+                                targetEl.scrollIntoView({ behavior: 'smooth' });
+                                return;
+                            }
+                        }
+                        window.location.href = pretty;
+                    };
+                }
                 ul.appendChild(li);
             });
             content.appendChild(ul);
         } else if (item.type === 'megamenu' && item.columns) {
+            trigger.innerHTML = `<span style="color:#ffffff !important; font-weight:800; font-size:0.78rem;">${item.icon} ${item.label}</span> <span class="arrow" style="color:#fbbf24; font-size:0.75rem;">▼</span>`;
             item.columns.forEach(col => {
                 const colTitle = document.createElement('div');
                 colTitle.className = 'accordion-col-title';
-                colTitle.style.cssText = 'font-size:0.75rem; text-transform:uppercase; color:#fbbf24 !important; font-weight:800; padding:8px 0 4px; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:6px;';
+                colTitle.style.cssText = 'font-size:0.75rem; text-transform:uppercase; color:#fbbf24 !important; font-weight:800; padding:6px 0 4px; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:4px;';
                 colTitle.innerText = col.title || '';
                 content.appendChild(colTitle);
 
@@ -483,56 +514,82 @@ function renderDrawerContent(accordionContainer, menuItems) {
                     const pretty = getPrettyUrl(sub.url);
                     const isFav = isFavorite(pretty);
                     
-                    li.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:4px 0;';
+                    li.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:3px 0; min-width:0; overflow:hidden;';
                     li.innerHTML = `
-                        <a href="${pretty}" class="accordion-subitem-link" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-size:0.85rem; font-weight:700; padding:6px 0;">
-                            <span style="margin-right:6px;">${sub.icon || '🔸'}</span> ${sub.label}
+                        <a href="${pretty}" class="accordion-subitem-link" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-size:0.75rem; font-weight:700; padding:4px 0; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                            <span style="margin-right:6px; flex-shrink:0;">${sub.icon || '🔸'}</span>
+                            <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; min-width:0;">${sub.label}</span>
                         </a>
-                        <span class="star-toggle" data-url="${pretty}" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.3)'}; font-size:1.15rem; padding: 2px 5px;">${isFav ? '★' : '☆'}</span>
+                        <span class="star-toggle" data-url="${pretty}" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.3)'}; font-size:1rem; padding: 2px 4px; flex-shrink:0;">${isFav ? '★' : '☆'}</span>
                     `;
+
+                    const aLink = li.querySelector('a');
+                    if (aLink) {
+                        aLink.onclick = (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const leftDrawer = document.getElementById('leftDrawerMenu');
+                            if (leftDrawer) leftDrawer.classList.remove('active');
+                            const overlay = document.getElementById('leftDrawerOverlay');
+                            if (overlay) overlay.style.display = 'none';
+                            window.location.href = pretty;
+                        };
+                    }
                     ul.appendChild(li);
                 });
                 content.appendChild(ul);
             });
         } else {
-            // direct link
+            // Direct Link (e.g. Home)
             const pretty = getPrettyUrl(item.url);
             const isFav = isFavorite(pretty);
             trigger.innerHTML = `
-                <a href="${pretty}" class="accordion-subitem-link" data-label="${item.label}" data-icon="${item.icon}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-weight:800;">
-                    <span style="margin-right:8px;">${item.icon}</span> ${item.label}
+                <a href="${pretty}" class="accordion-subitem-link" data-label="${item.label}" data-icon="${item.icon}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-weight:800; font-size:0.78rem;">
+                    <span style="margin-right:8px; flex-shrink:0;">${item.icon}</span> ${item.label}
                 </a>
-                <span class="star-toggle" data-url="${pretty}" data-label="${item.label}" data-icon="${item.icon}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.3)'}; font-size:1.15rem; padding: 2px 5px; margin-left:auto;">${isFav ? '★' : '☆'}</span>
+                <span class="star-toggle" data-url="${pretty}" data-label="${item.label}" data-icon="${item.icon}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.3)'}; font-size:1rem; padding: 2px 4px; margin-left:auto; flex-shrink:0;">${isFav ? '★' : '☆'}</span>
             `;
-            trigger.style.display = 'flex';
-            trigger.style.alignItems = 'center';
+
+            const aLink = trigger.querySelector('a');
+            if (aLink) {
+                aLink.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const leftDrawer = document.getElementById('leftDrawerMenu');
+                    if (leftDrawer) leftDrawer.classList.remove('active');
+                    const overlay = document.getElementById('leftDrawerOverlay');
+                    if (overlay) overlay.style.display = 'none';
+                    window.location.href = pretty;
+                };
+            }
         }
 
         group.appendChild(content);
         accordionContainer.appendChild(group);
 
-        // Accordion Header Toggle logic
-        trigger.addEventListener('click', (e) => {
-            if (e.target.closest('.star-toggle') || e.target.closest('a')) return;
-            const isActive = group.classList.contains('active');
-            
-            // Collapse other accordion groups (excluding favorites if it's the target)
-            accordionContainer.querySelectorAll('.accordion-group').forEach(g => {
-                if (g !== group) {
-                    g.classList.remove('active');
-                    const c = g.querySelector('.accordion-content');
-                    if (c) c.style.display = 'none';
+        // Accordion Header Toggle logic (for categories with dropdown items)
+        if (isAccordion) {
+            trigger.addEventListener('click', (e) => {
+                if (e.target.closest('.star-toggle') || e.target.closest('a')) return;
+                const isActive = group.classList.contains('active');
+                
+                accordionContainer.querySelectorAll('.accordion-group').forEach(g => {
+                    if (g !== group) {
+                        g.classList.remove('active');
+                        const c = g.querySelector('.accordion-content');
+                        if (c) c.style.display = 'none';
+                    }
+                });
+
+                if (isActive) {
+                    group.classList.remove('active');
+                    content.style.display = 'none';
+                } else {
+                    group.classList.add('active');
+                    content.style.display = 'block';
                 }
             });
-            
-            if (isActive) {
-                group.classList.remove('active');
-                content.style.display = 'none';
-            } else {
-                group.classList.add('active');
-                content.style.display = 'block';
-            }
-        });
+        }
     });
 
     // Attach click triggers to star-toggles

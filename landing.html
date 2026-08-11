@@ -671,15 +671,15 @@ window.__h82AlnkH6D91__("WyJwdWItMTM0MjE4OTU3NDg1ODY3MiIsW251bGwsbnVsbCxudWxsLCJ
 }
 </style>
 <div class="menu-overlay" id="leftDrawerOverlay"></div>
-<div class="mobile-menu" id="leftDrawerMenu" style="display:flex; flex-direction:column; padding-top: 0;">
-    <div class="drawer-header" style="display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: rgba(255,255,255,0.15); border-bottom: 1px solid rgba(0,0,0,0.08);">
+<div class="mobile-menu" id="leftDrawerMenu" style="display:flex; flex-direction:column; padding-top: 0; max-height: 100vh; overflow-y: auto !important; -webkit-overflow-scrolling: touch;">
+    <div class="drawer-header" style="display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: rgba(255,255,255,0.15); border-bottom: 1px solid rgba(0,0,0,0.08); flex-shrink: 0;">
         <div style="display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 1.4rem;">🕉️</span>
             <span style="font-weight: 800; font-size: 1.15rem; color: var(--title-color);">Sanskrit AI Menu</span>
         </div>
         <button id="leftDrawerCloseBtn" style="background: none; border: none; color: #000000; font-size: 1.3rem; cursor: pointer; padding: 4px;">✕</button>
     </div>
-    <div class="drawer-content" id="drawerAccordion" style="flex:1; overflow-y:auto; padding: 10px 0 30px;">
+    <div class="drawer-content" id="drawerAccordion" style="flex:1; overflow-y:auto !important; max-height: calc(100vh - 60px) !important; padding: 10px 0 100px !important;">
         <!-- Filled dynamically by JavaScript -->
     </div>
 </div>
