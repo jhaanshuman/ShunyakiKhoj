@@ -2272,7 +2272,7 @@ button:hover{
 .panchang-unified-wrapper,
 .monthly-panchang-wrapper,
 #panchangMainSection,
-body > div:not(header):not(footer):not(#top-nav):not(.nav-header):not(.site-footer) {
+body > div:not(header):not(footer):not(#top-nav):not(.nav-header):not(.site-footer):not(.mobile-menu):not(#leftDrawerMenu):not(#apiTestPanel):not(.auth-modal):not(.mobile-bottom-bar) {
     width: 90% !important;
     max-width: 1600px !important;
     margin: 0 auto !important;
@@ -2284,7 +2284,7 @@ body > div:not(header):not(footer):not(#top-nav):not(.nav-header):not(.site-foot
     .panchang-unified-wrapper,
     .monthly-panchang-wrapper,
     #panchangMainSection,
-    body > div:not(header):not(footer):not(#top-nav):not(.nav-header):not(.site-footer) {
+    body > div:not(header):not(footer):not(#top-nav):not(.nav-header):not(.site-footer):not(.mobile-menu):not(#leftDrawerMenu):not(#apiTestPanel):not(.auth-modal):not(.mobile-bottom-bar) {
         width: 98% !important;
         margin: 0 auto !important;
     }
@@ -5271,7 +5271,12 @@ p, body, button, input, select {
 
 /* 1. Mobile Drawer Width Enforcement (40% width on Mobile; 15% on Desktop) */
 @media (max-width: 1024px) {
-    .mobile-menu, .mobile-menu.active {
+    body > div#leftDrawerMenu,
+    body > div#leftDrawerMenu.mobile-menu,
+    body > div#leftDrawerMenu.mobile-menu.active,
+    #leftDrawerMenu,
+    .mobile-menu,
+    .mobile-menu.active {
         width: 40% !important;
         min-width: 40% !important;
         max-width: 40% !important;
@@ -5279,7 +5284,12 @@ p, body, button, input, select {
 }
 
 @media (min-width: 1025px) {
-    .mobile-menu, .mobile-menu.active {
+    body > div#leftDrawerMenu,
+    body > div#leftDrawerMenu.mobile-menu,
+    body > div#leftDrawerMenu.mobile-menu.active,
+    #leftDrawerMenu,
+    .mobile-menu,
+    .mobile-menu.active {
         width: 15% !important;
         min-width: 15% !important;
         max-width: 15% !important;
