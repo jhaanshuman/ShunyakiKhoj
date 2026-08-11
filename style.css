@@ -1152,9 +1152,9 @@ button:hover{
     position: fixed;
     top: 0;
     left: -100%;
-    width: 50vw !important;
-    min-width: 50vw !important;
-    max-width: 50vw !important;
+    width: 40% !important;
+    min-width: 40% !important;
+    max-width: 40% !important;
     height: 100%;
     background: #0f172a !important;
     backdrop-filter: blur(24px) saturate(150%) !important;
@@ -1167,18 +1167,18 @@ button:hover{
 }
 
 @media (min-width: 1025px) {
-    .mobile-menu, #mobileDrawer, .desktop-sidebar, .left-nav-sidebar, #desktopSidebar {
-        width: 100px !important;
-        min-width: 100px !important;
-        max-width: 100px !important;
+    .mobile-menu, .mobile-menu.active, #mobileDrawer, .desktop-sidebar, .left-nav-sidebar, #desktopSidebar {
+        width: 15% !important;
+        min-width: 15% !important;
+        max-width: 15% !important;
     }
 }
 
 @media (max-width: 1024px) {
-    .mobile-menu, #mobileDrawer {
-        width: 50vw !important;
-        min-width: 50vw !important;
-        max-width: 50vw !important;
+    .mobile-menu, .mobile-menu.active, #mobileDrawer {
+        width: 40% !important;
+        min-width: 40% !important;
+        max-width: 40% !important;
     }
 }
 
@@ -5269,20 +5269,20 @@ p, body, button, input, select {
 
 /* ── MOBILE-FIRST UX & RESPONSIVE BREAKPOINT SYSTEM ── */
 
-/* 1. Mobile Drawer Width Enforcement (50% width on Mobile; 100px on Desktop) */
+/* 1. Mobile Drawer Width Enforcement (40% width on Mobile; 15% on Desktop) */
 @media (max-width: 1024px) {
-    .mobile-menu {
-        width: 50vw !important;
-        min-width: 50vw !important;
-        max-width: 50vw !important;
+    .mobile-menu, .mobile-menu.active {
+        width: 40% !important;
+        min-width: 40% !important;
+        max-width: 40% !important;
     }
 }
 
 @media (min-width: 1025px) {
-    .mobile-menu {
-        width: 100px !important;
-        min-width: 100px !important;
-        max-width: 100px !important;
+    .mobile-menu, .mobile-menu.active {
+        width: 15% !important;
+        min-width: 15% !important;
+        max-width: 15% !important;
     }
 }
 

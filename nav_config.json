@@ -7,6 +7,27 @@
       "icon": "🏠"
     },
     {
+      "label": "Favourites",
+      "type": "dropdown",
+      "icon": "⭐",
+      "items": [
+        { "label": "Chat with Phaldeepika", "url": "#phalDeepikaChat", "icon": "🕉️" },
+        { "label": "Dainik Panchang", "url": "/panchang/daily/", "icon": "☀️" },
+        { "label": "Shubha Hora", "url": "/panchang/hora/", "icon": "⌛" },
+        { "label": "Free Janma Kundali", "url": "/kundli/generate/", "icon": "🧘" }
+      ]
+    },
+    {
+      "label": "PhalDeepika",
+      "type": "dropdown",
+      "icon": "🕉️",
+      "items": [
+        { "label": "Chat with Phaldeepika", "url": "#phalDeepikaChat", "icon": "🤖" },
+        { "label": "PhalDeepika AI Engine", "url": "/ai-astrology/", "icon": "🔮" },
+        { "label": "Classical Yogas Library", "url": "/yogas/", "icon": "📖" }
+      ]
+    },
+    {
       "label": "Panchang",
       "type": "dropdown",
       "icon": "📅",

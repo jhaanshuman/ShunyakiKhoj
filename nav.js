@@ -284,9 +284,10 @@ function renderDesktopNav(menuItems) {
 // MOBILE ACCORDION HAMBURGER MENU RENDERING
 // ==========================================
 let favorites = JSON.parse(localStorage.getItem('shunya-favorites')) || [
-    { label: "Dainik Panchang", url: "/home/panchang", icon: "☀️" },
-    { label: "Month Panchang", url: "/home/maasik", icon: "🗓️" },
-    { label: "Personalized Kundli", url: "/astrology/personal", icon: "🧘" }
+    { label: "Chat with Phaldeepika", url: "#phalDeepikaChat", icon: "🕉️" },
+    { label: "Dainik Panchang", url: "/panchang/daily/", icon: "☀️" },
+    { label: "Month Panchang", url: "/panchang/monthly/", icon: "🗓️" },
+    { label: "Personalized Kundli", url: "/kundli/generate/", icon: "🧘" }
 ];
 
 function getPrettyUrl(rawUrl) {
