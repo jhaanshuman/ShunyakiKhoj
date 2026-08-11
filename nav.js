@@ -458,20 +458,30 @@ function toggleFavorite(item) {
 }
 
 function renderDrawerContent(accordionContainer, menuItems) {
+    if (!accordionContainer) return;
+    
+    // Safety Fallback: Ensure menuItems is always a valid populated array
+    if (!menuItems || !Array.isArray(menuItems) || menuItems.length === 0) {
+        menuItems = (window.lastMenuItems && Array.isArray(window.lastMenuItems) && window.lastMenuItems.length > 0)
+            ? window.lastMenuItems
+            : DEFAULT_NAV_CONFIG.menu;
+    }
+    window.lastMenuItems = menuItems;
     accordionContainer.innerHTML = '';
 
     // Render Categories (Home is #1 at Top)
     menuItems.forEach((item) => {
-        const isAccordion = (item.type === 'dropdown' || item.type === 'megamenu' || item.label === 'Favourites');
-        const group = document.createElement('div');
-        group.className = 'accordion-group';
+        try {
+            const isAccordion = (item.type === 'dropdown' || item.type === 'megamenu' || item.label === 'Favourites');
+            const group = document.createElement('div');
+            group.className = 'accordion-group';
 
-        const trigger = document.createElement(isAccordion ? 'button' : 'div');
-        trigger.className = 'accordion-trigger';
-        trigger.style.cssText = 'padding:6px 10px; display:flex; align-items:center; justify-content:space-between; width:100%; box-sizing:border-box; border:none; background:none; text-align:left; cursor:pointer;';
-        
-        const content = document.createElement('div');
-        content.className = 'accordion-content';
+            const trigger = document.createElement(isAccordion ? 'button' : 'div');
+            trigger.className = 'accordion-trigger';
+            trigger.style.cssText = 'padding:6px 10px; display:flex; align-items:center; justify-content:space-between; width:100%; box-sizing:border-box; border:none; background:none; text-align:left; cursor:pointer;';
+            
+            const content = document.createElement('div');
+            content.className = 'accordion-content';
 
         if (item.label === 'Favourites') {
             trigger.style.background = 'rgba(251,191,36,0.06)';
@@ -678,6 +688,9 @@ function renderDrawerContent(accordionContainer, menuItems) {
                     content.style.display = 'block';
                 }
             });
+        }
+        } catch(err) {
+            console.error("Error rendering menu item:", err);
         }
     });
 
