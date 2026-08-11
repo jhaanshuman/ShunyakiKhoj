@@ -1148,164 +1148,213 @@ button:hover{
     transform: scale(1.1);
 }
 
-.mobile-menu {
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 40% !important;
-    min-width: 40% !important;
-    max-width: 40% !important;
-    height: 100%;
-    background: #0f172a !important;
-    backdrop-filter: blur(24px) saturate(150%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(150%) !important;
-    box-shadow: 6px 0 40px rgba(0, 0, 0, 0.8);
-    transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    padding-top: 60px;
-    z-index: 999999 !important;
-    border-right: 2px solid #a23922;
-}
+/* ==========================================================================
+   MASTER GLASSMORPHIC MENU DRAWER DESIGN SYSTEM (v11.0.0)
+   - Mobile Width: 40% (max-width: 1024px)
+   - Desktop Width: 15% (min-width: 1025px)
+   - 100% High-Contrast White/Gold Glass Cards
+   - Full Vertical Scrolling (-webkit-overflow-scrolling: touch)
+   - Compact Zero-Overflow Text Truncation
+   ========================================================================== */
 
-@media (min-width: 1025px) {
-    .mobile-menu, .mobile-menu.active, #mobileDrawer, .desktop-sidebar, .left-nav-sidebar, #desktopSidebar {
-        width: 15% !important;
-        min-width: 15% !important;
-        max-width: 15% !important;
-    }
+.mobile-menu, #leftDrawerMenu {
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: -100% !important;
+    height: 100vh !important;
+    background: rgba(15, 23, 42, 0.96) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    box-shadow: 6px 0 35px rgba(0, 0, 0, 0.7) !important;
+    transition: left 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    z-index: 999999 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.12) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding-top: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
 }
 
 @media (max-width: 1024px) {
-    .mobile-menu, .mobile-menu.active, #mobileDrawer {
+    .mobile-menu, #leftDrawerMenu, .mobile-menu.active {
         width: 40% !important;
         min-width: 40% !important;
         max-width: 40% !important;
     }
 }
 
-.mobile-menu.active {
-    left: 0;
+@media (min-width: 1025px) {
+    .mobile-menu, #leftDrawerMenu, .mobile-menu.active, .left-nav-sidebar, #sidebarAccordion {
+        width: 15% !important;
+        min-width: 15% !important;
+        max-width: 15% !important;
+    }
 }
 
-.mobile-menu a, .mobile-menu span, .mobile-menu p, .mobile-menu .accordion-subitem-link, .mobile-menu .accordion-trigger, .mobile-menu .accordion-title {
-    color: #ffffff !important;
-    font-weight: 700 !important;
+.mobile-menu.active, #leftDrawerMenu.active {
+    left: 0 !important;
 }
 
-.mobile-menu a {
-    display: block;
-    padding: 12px 16px;
-    font-size: 0.9rem;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: var(--transition-smooth);
-    position: relative;
-    color: #ffffff !important;
-}
-
-.mobile-menu a::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: #fbbf24;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.mobile-menu a:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #fbbf24 !important;
-    padding-left: 20px;
-}
-
-.mobile-menu a:hover::before {
-    opacity: 1;
-}
-
-/* Overlay */
-.menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+.menu-overlay, #leftDrawerOverlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease !important;
     z-index: 999998 !important;
 }
 
-.menu-overlay.active {
-    opacity: 1;
-    visibility: visible;
+.menu-overlay.active, #leftDrawerOverlay.active {
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
-/* Left Accordion Drawer & Favourites styles */
-.drawer-content {
-    display: flex;
-    flex-direction: column;
-}
-.accordion-group {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 2px 0;
-}
-.accordion-trigger {
-    width: 100%;
+.drawer-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 12px 14px !important;
     background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    flex-shrink: 0 !important;
+}
+
+.drawer-content, #drawerAccordion, #sidebarAccordion {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    max-height: calc(100vh - 60px) !important;
+    padding: 8px 6px 90px !important;
+    box-sizing: border-box !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+.drawer-content::-webkit-scrollbar,
+#drawerAccordion::-webkit-scrollbar,
+#sidebarAccordion::-webkit-scrollbar,
+.mobile-menu::-webkit-scrollbar {
+    width: 4px !important;
+}
+
+.drawer-content::-webkit-scrollbar-thumb,
+#drawerAccordion::-webkit-scrollbar-thumb,
+#sidebarAccordion::-webkit-scrollbar-thumb,
+.mobile-menu::-webkit-scrollbar-thumb {
+    background: #fbbf24 !important;
+    border-radius: 4px !important;
+}
+
+.accordion-group {
+    margin-bottom: 3px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+}
+
+.accordion-trigger {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 6px 10px !important;
+    min-height: 32px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 6px !important;
     color: #ffffff !important;
-    padding: 8px 12px;
-    font-size: 0.8rem;
+    font-size: 0.78rem !important;
     font-weight: 800 !important;
-    text-align: left;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background 0.2s;
-    margin-bottom: 4px;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+    transition: background 0.2s ease, border-color 0.2s ease !important;
 }
+
 .accordion-trigger:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.14) !important;
+    border-color: rgba(251, 191, 36, 0.4) !important;
 }
+
 .accordion-trigger .arrow {
-    font-size: 0.75rem;
     color: #fbbf24 !important;
-    transition: transform 0.2s ease;
+    font-size: 0.72rem !important;
+    transition: transform 0.2s ease !important;
+    flex-shrink: 0 !important;
 }
+
 .accordion-group.active .accordion-trigger .arrow {
-    transform: rotate(180deg);
+    transform: rotate(180deg) !important;
 }
+
 .accordion-content {
     display: none;
-    padding: 5px 20px 15px 25px;
-    background: rgba(255, 255, 255, 0.15) !important;
-    border-radius: 6px;
-    margin-bottom: 8px;
+    padding: 3px 4px 6px 8px !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 6px !important;
+    margin-top: 2px !important;
+    margin-bottom: 4px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
 }
+
 .accordion-group.active .accordion-content {
-    display: block;
+    display: block !important;
 }
+
 .accordion-content ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
+
 .accordion-subitem-link {
-    transition: all 0.2s ease;
+    display: flex !important;
+    align-items: center !important;
+    color: #ffffff !important;
+    font-size: 0.73rem !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    padding: 4px 6px !important;
+    border-radius: 4px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    transition: background 0.2s ease, color 0.2s ease !important;
 }
+
 .accordion-subitem-link:hover {
-    color: var(--accent-color) !important;
-    transform: translateX(4px);
+    background: rgba(251, 191, 36, 0.12) !important;
+    color: #fbbf24 !important;
 }
+
 .fav-draggable-item {
-    transition: border 0.2s, background 0.2s, opacity 0.2s;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 4px 6px !important;
+    margin-bottom: 3px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    transition: background 0.2s ease !important;
+}
+
+.fav-draggable-item:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(251, 191, 36, 0.3) !important;
 }
 .fav-draggable-item.over {
     border: 2.5px dashed #fbbf24 !important;
@@ -5356,53 +5405,6 @@ p, body, button, input, select {
     button, select, input, .card, .glass-card, .drawer-item {
         min-height: 40px;
     }
-}
-
-/* ── COMPACT DRAWER MENU OVERFLOW & TEXT TRUNCATION PREVENTER ── */
-.mobile-menu .accordion-group {
-    margin-bottom: 2px !important;
-    min-width: 0 !important;
-    overflow: hidden !important;
-}
-
-.mobile-menu .accordion-trigger {
-    padding: 6px 10px !important;
-    font-size: 11.5px !important;
-    min-height: 32px !important;
-    min-width: 0 !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    color: #ffffff !important;
-    background: rgba(255, 255, 255, 0.06) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: 6px !important;
-    margin-bottom: 3px !important;
-}
-
-.mobile-menu .accordion-content {
-    padding: 2px 6px !important;
-    min-width: 0 !important;
-    overflow: hidden !important;
-}
-
-.mobile-menu .accordion-subitem-link {
-    font-size: 11px !important;
-    padding: 3px 0 !important;
-    min-width: 0 !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-}
-
-.mobile-menu .fav-draggable-item {
-    padding: 3px 6px !important;
-    margin-bottom: 2px !important;
-    min-width: 0 !important;
-    overflow: hidden !important;
 }
 
 
