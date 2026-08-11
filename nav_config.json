@@ -22,9 +22,7 @@
       "type": "dropdown",
       "icon": "🕉️",
       "items": [
-        { "label": "Chat with Phaldeepika", "url": "#phalDeepikaChat", "icon": "🤖" },
-        { "label": "PhalDeepika AI Engine", "url": "/ai-astrology/", "icon": "🔮" },
-        { "label": "Classical Yogas Library", "url": "/yogas/", "icon": "📖" }
+        { "label": "Chat with Phaldeepika", "url": "#phalDeepikaChat", "icon": "🤖" }
       ]
     },
     {
