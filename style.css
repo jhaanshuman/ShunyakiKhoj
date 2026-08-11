@@ -1256,11 +1256,11 @@ button:hover{
 }
 .accordion-trigger {
     width: 100%;
-    background: rgba(255, 255, 255, 0.25) !important;
-    border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
-    color: #802b00 !important;
-    padding: 12px 20px;
-    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+    padding: 8px 12px;
+    font-size: 0.8rem;
     font-weight: 800 !important;
     text-align: left;
     display: flex;
@@ -1269,14 +1269,14 @@ button:hover{
     cursor: pointer;
     border-radius: 6px;
     transition: background 0.2s;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 .accordion-trigger:hover {
-    background: rgba(255, 255, 255, 0.45) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
 }
 .accordion-trigger .arrow {
-    font-size: 0.7rem;
-    color: #802b00 !important;
+    font-size: 0.75rem;
+    color: #fbbf24 !important;
     transition: transform 0.2s ease;
 }
 .accordion-group.active .accordion-trigger .arrow {
@@ -5366,7 +5366,7 @@ p, body, button, input, select {
 }
 
 .mobile-menu .accordion-trigger {
-    padding: 6px 8px !important;
+    padding: 6px 10px !important;
     font-size: 11.5px !important;
     min-height: 32px !important;
     min-width: 0 !important;
@@ -5376,6 +5376,11 @@ p, body, button, input, select {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 6px !important;
+    margin-bottom: 3px !important;
 }
 
 .mobile-menu .accordion-content {
