@@ -5358,5 +5358,47 @@ p, body, button, input, select {
     }
 }
 
+/* ── COMPACT DRAWER MENU OVERFLOW & TEXT TRUNCATION PREVENTER ── */
+.mobile-menu .accordion-group {
+    margin-bottom: 2px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+}
+
+.mobile-menu .accordion-trigger {
+    padding: 6px 8px !important;
+    font-size: 11.5px !important;
+    min-height: 32px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.mobile-menu .accordion-content {
+    padding: 2px 6px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+}
+
+.mobile-menu .accordion-subitem-link {
+    font-size: 11px !important;
+    padding: 3px 0 !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.mobile-menu .fav-draggable-item {
+    padding: 3px 6px !important;
+    margin-bottom: 2px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+}
+
 
 

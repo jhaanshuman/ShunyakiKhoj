@@ -283,12 +283,37 @@ function renderDesktopNav(menuItems) {
 // ==========================================
 // MOBILE ACCORDION HAMBURGER MENU RENDERING
 // ==========================================
-let favorites = JSON.parse(localStorage.getItem('shunya-favorites')) || [
-    { label: "Chat with Phaldeepika", url: "#phalDeepikaChat", icon: "🕉️" },
+// MOBILE ACCORDION HAMBURGER MENU RENDERING
+// ==========================================
+const DEFAULT_FAVORITES = [
+    { label: "Chat with Phaldeepika", url: "/landing.html#phalDeepikaChat", icon: "🕉️" },
     { label: "Dainik Panchang", url: "/panchang/daily/", icon: "☀️" },
-    { label: "Month Panchang", url: "/panchang/monthly/", icon: "🗓️" },
+    { label: "Maasik Panchang", url: "/panchang/monthly/", icon: "🗓️" },
     { label: "Personalized Kundli", url: "/kundli/generate/", icon: "🧘" }
 ];
+
+let favorites = DEFAULT_FAVORITES;
+try {
+    const stored = localStorage.getItem('shunya-favorites');
+    if (stored) {
+        let parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+            // Upgrade old stored items (rename Month Panchang -> Maasik Panchang & fix legacy URLs)
+            favorites = parsed.map(f => {
+                let lbl = f.label;
+                let u = f.url;
+                if (lbl === "Month Panchang") lbl = "Maasik Panchang";
+                if (u === "/home/panchang") u = "/panchang/daily/";
+                if (u === "/home/maasik") u = "/panchang/monthly/";
+                if (u === "/astrology/personal") u = "/kundli/generate/";
+                if (u === "#phalDeepikaChat") u = "/landing.html#phalDeepikaChat";
+                return { label: lbl, url: u, icon: f.icon || '⭐' };
+            });
+        }
+    }
+} catch(e) {
+    favorites = DEFAULT_FAVORITES;
+}
 
 function getPrettyUrl(rawUrl) {
     if (!rawUrl || rawUrl === '#') return '#';
@@ -374,43 +399,55 @@ function renderDrawerContent(accordionContainer, menuItems) {
                 favorites.forEach(f => {
                     const li = document.createElement('li');
                     li.className = 'fav-draggable-item';
-                    li.setAttribute('draggable', 'true');
                     li.setAttribute('data-url', f.url);
-                    li.style.cssText = 'display:flex; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:4px 8px; margin-bottom:3px; border-radius:6px; cursor:pointer;';
+                    li.style.cssText = 'display:flex; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:3px 6px; margin-bottom:3px; border-radius:6px; cursor:pointer; min-width:0; overflow:hidden;';
                     
                     li.innerHTML = `
-                        <span class="drag-handle" style="margin-right:6px; cursor:move; color:rgba(255,255,255,0.4); user-select:none; font-size:11px;">☰</span>
-                        <a href="${f.url}" class="accordion-subitem-link" data-label="${f.label}" data-icon="${f.icon}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-size:0.75rem; font-weight:700;">
-                            <span style="margin-right:6px;">${f.icon}</span> ${f.label}
+                        <span class="drag-handle" style="margin-right:4px; cursor:grab; color:rgba(255,255,255,0.4); user-select:none; font-size:11px; flex-shrink:0;">☰</span>
+                        <a href="${f.url}" class="accordion-subitem-link" data-label="${f.label}" data-icon="${f.icon}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-size:0.72rem; font-weight:700; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                            <span style="margin-right:4px; flex-shrink:0;">${f.icon}</span>
+                            <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; min-width:0;">${f.label}</span>
                         </a>
-                        <span class="star-toggle" data-url="${f.url}" data-label="${f.label}" data-icon="${f.icon}" style="cursor:pointer; color:#fbbf24; font-size:1rem; padding: 2px 4px;">★</span>
+                        <span class="star-toggle" data-url="${f.url}" data-label="${f.label}" data-icon="${f.icon}" style="cursor:pointer; color:#fbbf24; font-size:0.95rem; padding:1px 3px; flex-shrink:0;">★</span>
                     `;
 
-                    // Direct Click Listener for Favourites Links
-                    const aLink = li.querySelector('a');
-                    if (aLink) {
-                        aLink.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            const targetUrl = f.url;
-                            const leftDrawer = document.getElementById('leftDrawerMenu');
-                            if (leftDrawer) leftDrawer.classList.remove('active');
+                    // Universal Click Handler on Item & Link
+                    const executeNav = (e) => {
+                        if (e.target.classList.contains('star-toggle')) return;
+                        e.preventDefault();
+                        e.stopPropagation();
 
-                            if (targetUrl === '#phalDeepikaChat') {
-                                const targetEl = document.getElementById('phalDeepikaChat');
-                                if (targetEl) {
-                                    targetEl.scrollIntoView({ behavior: 'smooth' });
-                                } else {
-                                    window.location.href = '/ai-astrology/';
-                                }
-                            } else if (targetUrl.startsWith('#')) {
-                                const targetEl = document.querySelector(targetUrl);
-                                if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth' });
-                            } else {
-                                window.location.href = targetUrl;
+                        const leftDrawer = document.getElementById('leftDrawerMenu');
+                        if (leftDrawer) leftDrawer.classList.remove('active');
+                        const overlay = document.getElementById('leftDrawerOverlay');
+                        if (overlay) overlay.style.display = 'none';
+
+                        let targetUrl = f.url;
+                        if (!targetUrl || targetUrl === '#') targetUrl = '/landing.html';
+
+                        if (targetUrl.includes('#phalDeepikaChat')) {
+                            const pChat = document.getElementById('phalDeepikaChat');
+                            if (pChat) {
+                                pChat.scrollIntoView({ behavior: 'smooth' });
+                                return;
                             }
-                        });
-                    }
+                            window.location.href = '/landing.html#phalDeepikaChat';
+                            return;
+                        }
+                        if (targetUrl.startsWith('#')) {
+                            const targetEl = document.querySelector(targetUrl);
+                            if (targetEl) {
+                                targetEl.scrollIntoView({ behavior: 'smooth' });
+                                return;
+                            }
+                        }
+                        window.location.href = targetUrl;
+                    };
+
+                    li.onclick = executeNav;
+                    const aLink = li.querySelector('a');
+                    if (aLink) aLink.onclick = executeNav;
+
                     ul.appendChild(li);
                 });
                 content.appendChild(ul);
