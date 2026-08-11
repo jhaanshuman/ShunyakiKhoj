@@ -346,83 +346,88 @@ function toggleFavorite(item) {
 function renderDrawerContent(accordionContainer, menuItems) {
     accordionContainer.innerHTML = '';
 
-    // 1. Favourites Section
-    const favGroup = document.createElement('div');
-    favGroup.className = 'accordion-group active'; // Expand by default
-
-    const favTrigger = document.createElement('button');
-    favTrigger.className = 'accordion-trigger';
-    favTrigger.style.background = 'rgba(251,191,36,0.06)';
-    favTrigger.innerHTML = `<span style="color:#fbbf24; font-weight:800;">⭐ Favourites</span> <span class="arrow">▼</span>`;
-    favGroup.appendChild(favTrigger);
-
-    const favContent = document.createElement('div');
-    favContent.className = 'accordion-content';
-    favContent.style.display = 'block';
-
-    favTrigger.addEventListener('click', () => {
-        const isActive = favGroup.classList.contains('active');
-        if (isActive) {
-            favGroup.classList.remove('active');
-            favContent.style.display = 'none';
-        } else {
-            favGroup.classList.add('active');
-            favContent.style.display = 'block';
-        }
-    });
-
-    if (favorites.length === 0) {
-        favContent.innerHTML = `<div style="padding:12px 15px; font-size:0.8rem; color:var(--text-muted); font-style:italic;">No favorites added yet. Right-click any link or tap the star icon to add.</div>`;
-    } else {
-        const ul = document.createElement('ul');
-        ul.className = 'favorites-list';
-        favorites.forEach(f => {
-            const li = document.createElement('li');
-            li.className = 'fav-draggable-item';
-            li.setAttribute('draggable', 'true');
-            li.setAttribute('data-url', f.url);
-            li.style.cssText = 'display:flex; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px 12px; margin-bottom:6px; border-radius:6px; cursor:grab;';
-            
-            li.innerHTML = `
-                <span class="drag-handle" style="margin-right:8px; cursor:move; color:rgba(255,255,255,0.4); user-select:none;">☰</span>
-                <a href="${f.url}" class="accordion-subitem-link" data-label="${f.label}" data-icon="${f.icon}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-size:0.85rem; font-weight:700;">
-                    <span style="margin-right:6px;">${f.icon}</span> ${f.label}
-                </a>
-                <span class="star-toggle" data-url="${f.url}" data-label="${f.label}" data-icon="${f.icon}" style="cursor:pointer; color:#fbbf24; font-size:1.15rem; padding: 2px 5px;">★</span>
-            `;
-            ul.appendChild(li);
-        });
-        favContent.appendChild(ul);
-    }
-    favGroup.appendChild(favContent);
-    accordionContainer.appendChild(favGroup);
-
-    // 2. Add Regular Categories
+    // Render Categories (Home is #1 at Top)
     menuItems.forEach((item) => {
         const group = document.createElement('div');
         group.className = 'accordion-group';
 
         const trigger = document.createElement('button');
         trigger.className = 'accordion-trigger';
-        trigger.innerHTML = `<span style="color:#ffffff !important; font-weight:800;">${item.icon} ${item.label}</span> <span class="arrow" style="color:#fbbf24;">▼</span>`;
+        trigger.style.padding = '6px 10px';
+        trigger.innerHTML = `<span style="color:#ffffff !important; font-weight:800; font-size:0.78rem;">${item.icon} ${item.label}</span> <span class="arrow" style="color:#fbbf24; font-size:0.75rem;">▼</span>`;
         group.appendChild(trigger);
 
         const content = document.createElement('div');
         content.className = 'accordion-content';
 
-        if (item.type === 'dropdown' && item.items) {
+        if (item.label === 'Favourites') {
+            trigger.style.background = 'rgba(251,191,36,0.06)';
+            trigger.innerHTML = `<span style="color:#fbbf24; font-weight:800; font-size:0.78rem;">⭐ Favourites</span> <span class="arrow">▼</span>`;
+            group.classList.add('active');
+            content.style.display = 'block';
+
+            if (favorites.length === 0) {
+                content.innerHTML = `<div style="padding:8px 10px; font-size:0.75rem; color:var(--text-muted); font-style:italic;">No favorites added yet.</div>`;
+            } else {
+                const ul = document.createElement('ul');
+                ul.className = 'favorites-list';
+                favorites.forEach(f => {
+                    const li = document.createElement('li');
+                    li.className = 'fav-draggable-item';
+                    li.setAttribute('draggable', 'true');
+                    li.setAttribute('data-url', f.url);
+                    li.style.cssText = 'display:flex; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:4px 8px; margin-bottom:3px; border-radius:6px; cursor:pointer;';
+                    
+                    li.innerHTML = `
+                        <span class="drag-handle" style="margin-right:6px; cursor:move; color:rgba(255,255,255,0.4); user-select:none; font-size:11px;">☰</span>
+                        <a href="${f.url}" class="accordion-subitem-link" data-label="${f.label}" data-icon="${f.icon}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-size:0.75rem; font-weight:700;">
+                            <span style="margin-right:6px;">${f.icon}</span> ${f.label}
+                        </a>
+                        <span class="star-toggle" data-url="${f.url}" data-label="${f.label}" data-icon="${f.icon}" style="cursor:pointer; color:#fbbf24; font-size:1rem; padding: 2px 4px;">★</span>
+                    `;
+
+                    // Direct Click Listener for Favourites Links
+                    const aLink = li.querySelector('a');
+                    if (aLink) {
+                        aLink.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const targetUrl = f.url;
+                            const leftDrawer = document.getElementById('leftDrawerMenu');
+                            if (leftDrawer) leftDrawer.classList.remove('active');
+
+                            if (targetUrl === '#phalDeepikaChat') {
+                                const targetEl = document.getElementById('phalDeepikaChat');
+                                if (targetEl) {
+                                    targetEl.scrollIntoView({ behavior: 'smooth' });
+                                } else {
+                                    window.location.href = '/ai-astrology/';
+                                }
+                            } else if (targetUrl.startsWith('#')) {
+                                const targetEl = document.querySelector(targetUrl);
+                                if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth' });
+                            } else {
+                                window.location.href = targetUrl;
+                            }
+                        });
+                    }
+                    ul.appendChild(li);
+                });
+                content.appendChild(ul);
+            }
+        } else if (item.type === 'dropdown' && item.items) {
             const ul = document.createElement('ul');
             item.items.forEach(sub => {
                 const li = document.createElement('li');
                 const pretty = getPrettyUrl(sub.url);
                 const isFav = isFavorite(pretty);
                 
-                li.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:4px 0;';
+                li.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:3px 0;';
                 li.innerHTML = `
-                    <a href="${pretty}" class="accordion-subitem-link" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-size:0.85rem; font-weight:700; padding:6px 0;">
+                    <a href="${pretty}" class="accordion-subitem-link" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="flex:1; display:flex; align-items:center; text-decoration:none; color:#ffffff !important; font-size:0.75rem; font-weight:700; padding:4px 0;">
                         <span style="margin-right:6px;">${sub.icon || '🔸'}</span> ${sub.label}
                     </a>
-                    <span class="star-toggle" data-url="${pretty}" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.3)'}; font-size:1.15rem; padding: 2px 5px;">${isFav ? '★' : '☆'}</span>
+                    <span class="star-toggle" data-url="${pretty}" data-label="${sub.label}" data-icon="${sub.icon || '🔸'}" style="cursor:pointer; color:${isFav ? '#fbbf24' : 'rgba(255,255,255,0.3)'}; font-size:1rem; padding: 2px 4px;">${isFav ? '★' : '☆'}</span>
                 `;
                 ul.appendChild(li);
             });

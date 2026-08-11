@@ -22,7 +22,7 @@
 <meta name="theme-color" content="#D4AF37">
 <link rel="icon" href="/logo.png" type="image/png">
 <link rel="apple-touch-icon" href="/logo.png">
-<link rel="stylesheet" href="/style.css?v=7.0.0">
+<link rel="stylesheet" href="/style.css?v=8.0.0">
 <link rel="stylesheet" href="/UserLog/auth.css?v=2.2.0">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -493,22 +493,7 @@ window.__h82AlnkH6D91__("WyJwdWItMTM0MjE4OTU3NDg1ODY3MiIsW251bGwsbnVsbCxudWxsLCJ
             </aside>
             
             <!-- Center Content: Feature Showcase -->
-            <main class="center-feature-showcase">
-                <div class="glass-card welcome-card" style="padding: 30px; margin-bottom: 2rem; background: var(--card-bg); border: var(--card-border); border-radius: 12px; box-shadow: var(--shadow); text-align: center;">
-            <h2 style="color: #000000 !important; margin-top: 0; font-size: 1.8rem; font-weight: 900; text-transform: capitalize;">🕉️ Welcome to Sanskrit AI Astrological Suite</h2>
-            <p style="color: #ffffff !important; font-size: 0.95rem; max-width: 700px; margin: 15px auto; line-height: 1.6;">
-                Explore real-time planetary transits, personalized Kundli generation, Guna Milan matchmaking, and regional Moon phase panjikas. Choose any tool below to begin.
-            </p>
-            <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
-                <a href="/home/panchang" onclick="if(typeof switchPancView==='function'){switchPancView('day'); return false;}" class="ph-today-btn" style="text-decoration: none; padding: 10px 24px; font-size: 0.95rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">☀️ Dainik Panchang</a>
-                <a href="/home/maasik" onclick="if(typeof switchPancView==='function'){switchPancView('month'); return false;}" class="ph-today-btn" style="text-decoration: none; padding: 10px 24px; font-size: 0.95rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; background: #ea580c; border-color: #ea580c; color: white;">🗓️ Maasik Calendar</a>
-                <a href="/Static/index.html" class="ph-today-btn" style="text-decoration: none; padding: 10px 24px; font-size: 0.95rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; background: #8b5cf6; border-color: #8b5cf6; color: white;">📖 Spiritual Wisdom</a>
-                <a href="/webpage/phaldeepika.php" class="ph-today-btn" style="text-decoration: none; padding: 10px 24px; font-size: 0.95rem; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-color: #f59e0b; color: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-                    <img src="/phaldeepika_logo.jpg" alt="PhalDeepika" style="width: 22px; height: 22px; border-radius: 50%; object-fit: cover; border: 1.5px solid #f59e0b;">
-                    Chat with PhalDeepika
-                </a>
-            </div>
-        </div>
+            <main class="center-feature-showcase" id="phalDeepikaChat">
 
 
 
@@ -669,6 +654,22 @@ window.__h82AlnkH6D91__("WyJwdWItMTM0MjE4OTU3NDg1ODY3MiIsW251bGwsbnVsbCxudWxsLCJ
 
 
 <!-- LEFT ACCORDION DRAWER MENU -->
+<style>
+@media (max-width: 1024px) {
+    div#leftDrawerMenu, div#leftDrawerMenu.mobile-menu, div#leftDrawerMenu.mobile-menu.active {
+        width: 40% !important;
+        min-width: 40% !important;
+        max-width: 40% !important;
+    }
+}
+@media (min-width: 1025px) {
+    div#leftDrawerMenu, div#leftDrawerMenu.mobile-menu, div#leftDrawerMenu.mobile-menu.active {
+        width: 15% !important;
+        min-width: 15% !important;
+        max-width: 15% !important;
+    }
+}
+</style>
 <div class="menu-overlay" id="leftDrawerOverlay"></div>
 <div class="mobile-menu" id="leftDrawerMenu" style="display:flex; flex-direction:column; padding-top: 0;">
     <div class="drawer-header" style="display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: rgba(255,255,255,0.15); border-bottom: 1px solid rgba(0,0,0,0.08);">
