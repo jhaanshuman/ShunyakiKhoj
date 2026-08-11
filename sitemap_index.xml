@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://shunyakikhoj.co.in/sitemap-main.xml</loc>
+    <lastmod>2026-08-11</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://shunyakikhoj.co.in/sitemap-cities.xml</loc>
+    <lastmod>2026-08-11</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://shunyakikhoj.co.in/sitemap-wisdom.xml</loc>
+    <lastmod>2026-08-11</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://shunyakikhoj.co.in/sitemap-topics.xml</loc>
+    <lastmod>2026-08-11</lastmod>
+  </sitemap>
+</sitemapindex>

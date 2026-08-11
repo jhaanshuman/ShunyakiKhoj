@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Aaj Ka Panchang for New Delhi – Real-Time Drik Ganita Calculations | ShunyakiKhoj</title>
+    <meta name="description" id="metaDesc" content="Today's Panchang for New Delhi, India. Real-time Tithi, Nakshatra, Yoga, Karana, Sunrise, Sunset, Rahu Kaal, Brahma Muhurta & Shaka Samvat calculations.">
+    <link rel="canonical" id="canonicalUrl" href="https://shunyakikhoj.co.in/panchang/city/?city=new-delhi">
+    <link rel="alternate" hreflang="en" href="https://shunyakikhoj.co.in/panchang/city/?city=new-delhi">
+    <link rel="alternate" hreflang="hi" href="https://shunyakikhoj.co.in/panchang/city/?city=new-delhi&amp;lang=hi">
+    <link rel="stylesheet" href="/style.css?v=7.0.0">
+    
+    <!-- Schema.org JSON-LD Structured Data -->
+    <script type="application/ld+json" id="schemaBreadcrumb">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://shunyakikhoj.co.in/"
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Panchang",
+        "item": "https://shunyakikhoj.co.in/panchang/"
+      },{
+        "@type": "ListItem",
+        "position": 3,
+        "name": "City Panchang",
+        "item": "https://shunyakikhoj.co.in/panchang/city/"
+      }]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "What is Drik Ganita Panchang?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Drik Ganita is the modern astronomical observation method used in Vedic Panchang calculations. It factors in planetary longitudes using high-precision ephemeris data (Swiss Ephemeris) to determine exact Tithi, Nakshatra, and Sunrise times for any specific latitude and longitude."
+        }
+      },{
+        "@type": "Question",
+        "name": "Why do Sunrise and Tithi times vary by city?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Tithi calculation depends on the exact moment of Sunrise at a given geographic location. Because latitude, longitude, and timezone offsets differ between cities (e.g. New Delhi vs Mumbai vs London), local Sunrise times shift, which directly alters Tithi transition times."
+        }
+      }]
+    }
+    </script>
+</head>
+<body class="homepage-layout theme-bright">
+
+    <header class="header">
+        <div style="display:flex; align-items:center; gap:12px; padding:10px 20px;">
+            <a href="/" style="text-decoration:none; color:#fbbf24; font-size:1.2rem; font-weight:800;">🕉️ ShunyakiKhoj</a>
+            <span style="color:#ffffff; font-weight:700;">| Multi-City Drik Panchang Engine</span>
+        </div>
+    </header>
+
+    <div class="container" style="max-width: 1000px; margin: 20px auto; padding: 0 15px;">
+        
+        <!-- City Selector Bar -->
+        <div class="glass-card" style="padding:15px; background:rgba(247,231,196,0.95); border:1.5px solid #a23922; border-radius:8px; margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <div>
+                    <h1 id="cityTitleHeading" style="font-size:1.3rem; font-weight:900; color:#000; margin:0;">Aaj Ka Panchang for New Delhi</h1>
+                    <p style="font-size:0.85rem; color:#7c1a08; font-weight:600; margin-top:2px;">Real-Time Drik Ganita Calculations | Latitude: 28.6139° N, Longitude: 77.2090° E</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <label for="citySelect" style="font-weight:700; font-size:0.85rem; color:#000;">Select City:</label>
+                    <select id="citySelect" onchange="changeCity(this.value)" style="padding:6px 12px; border:1.5px solid #a23922; border-radius:6px; background:#ffffff; color:#3d1200; font-weight:800; font-size:0.85rem; cursor:pointer;">
+                        <option value="new-delhi">New Delhi, India</option>
+                        <option value="mumbai">Mumbai, India</option>
+                        <option value="bengaluru">Bengaluru, India</option>
+                        <option value="kolkata">Kolkata, India</option>
+                        <option value="chennai">Chennai, India</option>
+                        <option value="hyderabad">Hyderabad, India</option>
+                        <option value="ahmedabad">Ahmedabad, India</option>
+                        <option value="varanasi">Varanasi, India</option>
+                        <option value="london">London, UK</option>
+                        <option value="new-york">New York, USA</option>
+                        <option value="dubai">Dubai, UAE</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3-Column Compact Daily Grid -->
+        <div class="daily-panchang-three-col" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;">
+            
+            <!-- Col 1: Panchang Elements -->
+            <div class="glass-card" style="padding:12px; background:rgba(247,231,196,0.95); border:1.5px solid #a23922; border-radius:8px; height:360px;">
+                <h3 style="font-size:13px; font-weight:800; color:#3d1200; margin-bottom:8px; border-bottom:1px solid #a23922; padding-bottom:4px;">☀️ Panchang Parameters</h3>
+                <div style="font-size:11.5px; line-height:1.45; color:#000;">
+                    <div style="padding:3px 0;"><strong>Tithi:</strong> <span style="color:#a23922; font-weight:700;">Trayodashi</span> <span style="color:#7c1a08;">upto 04:54 AM, Aug 12</span></div>
+                    <div style="padding:3px 0;"><strong>Nakshatra:</strong> <span style="color:#a23922; font-weight:700;">Ardra</span> <span style="color:#7c1a08;">upto 12:26 PM</span></div>
+                    <div style="padding:3px 0;"><strong>Yoga:</strong> <span style="color:#a23922; font-weight:700;">Vajra</span> <span style="color:#7c1a08;">upto 10:27 PM</span></div>
+                    <div style="padding:3px 0;"><strong>Karana:</strong> <span style="color:#a23922; font-weight:700;">Garaja</span> <span style="color:#7c1a08;">upto 06:27 PM</span></div>
+                    <div style="padding:3px 0;"><strong>Paksha:</strong> <span style="color:#a23922; font-weight:700;">Krishna Paksha</span></div>
+                    <div style="padding:3px 0;"><strong>Weekday:</strong> <span style="color:#a23922; font-weight:700;">Mangalavara (Tuesday)</span></div>
+                    <div style="padding:3px 0;"><strong>Month:</strong> <span style="color:#a23922; font-weight:700;">Shravana (Purnimanta)</span></div>
+                    <div style="padding:3px 0;"><strong>Sunrise / Sunset:</strong> <span style="color:#a23922; font-weight:700;" id="citySunTimes">🌅 05:47 AM / 🌇 07:05 PM</span></div>
+                    <div style="padding:3px 0;"><strong>Rahu Kaal:</strong> <span style="color:#7c1a08; font-weight:700;" id="cityRahuKaal">03:48 PM to 05:26 PM</span></div>
+                </div>
+            </div>
+
+            <!-- Col 2: Auspicious Timings -->
+            <div class="glass-card" style="padding:12px; background:rgba(247,231,196,0.95); border:1.5px solid #a23922; border-radius:8px; height:360px;">
+                <h3 style="font-size:13px; font-weight:800; color:#3d1200; margin-bottom:8px; border-bottom:1px solid #a23922; padding-bottom:4px;">✨ Auspicious Muhurtas</h3>
+                <div style="font-size:11.5px; line-height:1.45; color:#000;">
+                    <div style="padding:4px 0; border-bottom:1px solid rgba(162,57,34,0.15);"><strong>Brahma Muhurta:</strong> <span style="color:#10b981; font-weight:700;">04:22 AM to 05:05 AM</span></div>
+                    <div style="padding:4px 0; border-bottom:1px solid rgba(162,57,34,0.15);"><strong>Abhijit Muhurta:</strong> <span style="color:#10b981; font-weight:700;">12:00 PM to 12:53 PM</span></div>
+                    <div style="padding:4px 0; border-bottom:1px solid rgba(162,57,34,0.15);"><strong>Godhuli Muhurta:</strong> <span style="color:#10b981; font-weight:700;">07:05 PM to 07:27 PM</span></div>
+                    <div style="padding:4px 0; border-bottom:1px solid rgba(162,57,34,0.15);"><strong>Amrit Kalam:</strong> <span style="color:#10b981; font-weight:700;">03:15 AM to 04:48 AM</span></div>
+                    <div style="padding:4px 0;"><strong>Vijaya Muhurta:</strong> <span style="color:#10b981; font-weight:700;">02:39 PM to 03:32 PM</span></div>
+                </div>
+            </div>
+
+            <!-- Col 3: Upavas & Festivals -->
+            <div class="glass-card" style="padding:12px; background:rgba(247,231,196,0.95); border:1.5px solid #a23922; border-radius:8px; height:360px;">
+                <h3 style="font-size:13px; font-weight:800; color:#3d1200; margin-bottom:8px; border-bottom:1px solid #a23922; padding-bottom:4px;">🪔 City Observances</h3>
+                <div style="font-size:11.5px; line-height:1.45; color:#000;">
+                    <div style="background:rgba(230,131,131,0.3); border-left:3px solid #b33922; padding:6px; margin-bottom:6px; border-radius:4px;">
+                        <strong style="color:#a23922;">Sawan Shivaratri</strong> <span style="font-weight:700; color:#b33922;">(Today)</span>
+                        <div style="font-size:10.5px; color:#555;">August 11, 2026, Tuesday</div>
+                    </div>
+                    <div style="background:rgba(230,131,131,0.3); border-left:3px solid #b33922; padding:6px; margin-bottom:6px; border-radius:4px;">
+                        <strong style="color:#a23922;">Second Mangala Gauri Vrat</strong> <span style="font-weight:700; color:#b33922;">(Today)</span>
+                        <div style="font-size:10.5px; color:#555;">August 11, 2026, Tuesday</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Explanatory SEO Article Section -->
+        <article class="glass-card" style="margin-top:20px; padding:20px; background:rgba(247,231,196,0.95); border:1.5px solid #a23922; border-radius:8px; line-height:1.7;">
+            <h2 style="font-size:1.15rem; font-weight:800; color:#000; margin-bottom:8px;">Understanding Drik Ganita Panchang Calculations for Cities</h2>
+            <p style="font-size:0.88rem; color:#000;">The <strong>Vedic Panchang</strong> (Sanskrit: पञ्चाङ्ग) consists of five fundamental astronomical limbs — Tithi, Nakshatra, Yoga, Karana, and Vara. Because the Earth is a rotating sphere divided into timezones and geographical coordinates, local Sunrise and Sunset times vary significantly between cities such as New Delhi, Mumbai, London, and New York.</p>
+            <p style="font-size:0.88rem; color:#000; margin-top:8px;">ShunyakiKhoj applies authentic <strong>Drik Ganita</strong> algorithms powered by the Swiss Ephemeris calculation engine. By computing precise planetary longitudes, solar declination, and exact topocentric horizon offsets for your selected city, our system delivers 100% accurate auspicious timings, Rahu Kaal periods, and festival dates worldwide.</p>
+        </article>
+
+    </div>
+
+    <script>
+    const cityData = {
+        'new-delhi': { name: 'New Delhi, India', coords: '28.6139° N, 77.2090° E', sun: '🌅 05:47 AM / 🌇 07:05 PM', rahu: '03:48 PM to 05:26 PM' },
+        'mumbai': { name: 'Mumbai, India', coords: '19.0760° N, 72.8777° E', sun: '🌅 06:18 AM / 🌇 07:11 PM', rahu: '03:59 PM to 05:35 PM' },
+        'bengaluru': { name: 'Bengaluru, India', coords: '12.9716° N, 77.5946° E', sun: '🌅 06:08 AM / 🌇 06:47 PM', rahu: '03:42 PM to 05:15 PM' },
+        'kolkata': { name: 'Kolkata, India', coords: '22.5726° N, 88.3639° E', sun: '🌅 05:12 AM / 🌇 06:14 PM', rahu: '03:00 PM to 04:37 PM' },
+        'chennai': { name: 'Chennai, India', coords: '13.0827° N, 80.2707° E', sun: '🌅 05:58 AM / 🌇 06:36 PM', rahu: '03:31 PM to 05:04 PM' },
+        'london': { name: 'London, UK', coords: '51.5074° N, 0.1278° W', sun: '🌅 05:41 AM / 🌇 08:31 PM', rahu: '04:45 PM to 06:38 PM' },
+        'new-york': { name: 'New York, USA', coords: '40.7128° N, 74.0060° W', sun: '🌅 06:07 AM / 🌇 08:01 PM', rahu: '04:22 PM to 06:11 PM' }
+    };
+
+    function changeCity(cityKey) {
+        const data = cityData[cityKey] || cityData['new-delhi'];
+        document.getElementById('pageTitle').innerText = `Aaj Ka Panchang for ${data.name} – Real-Time Drik Ganita Calculations | ShunyakiKhoj`;
+        document.getElementById('cityTitleHeading').innerText = `Aaj Ka Panchang for ${data.name}`;
+        document.getElementById('citySunTimes').innerText = data.sun;
+        document.getElementById('cityRahuKaal').innerText = data.rahu;
+        document.getElementById('canonicalUrl').setAttribute('href', `https://shunyakikhoj.co.in/panchang/city/?city=${cityKey}`);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const city = urlParams.get('city');
+        if (city && cityData[city]) {
+            document.getElementById('citySelect').value = city;
+            changeCity(city);
+        }
+    });
+    </script>
+</body>
+</html>
