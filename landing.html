@@ -1072,6 +1072,30 @@ window.showKundaliReadyToast = showKundaliReadyToast;
 })();
 </script>
 
+<!-- FIXED MOBILE BOTTOM ACTION BAR -->
+<div class="mobile-bottom-bar" id="mobileBottomNav">
+    <button class="mobile-bottom-item" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+        <span class="mobile-bottom-icon">📅</span>
+        <span>Panchang</span>
+    </button>
+    <button class="mobile-bottom-item" onclick="if(typeof toggle24hTimeline === 'function') toggle24hTimeline(); else window.location.href='/panchang/hora/';">
+        <span class="mobile-bottom-icon">⏳</span>
+        <span>Hora</span>
+    </button>
+    <button class="mobile-bottom-item" onclick="const kForm = document.getElementById('kundaliForm'); if(kForm) kForm.scrollIntoView({behavior:'smooth'}); else window.location.href='/kundli/';">
+        <span class="mobile-bottom-icon">📜</span>
+        <span>Kundli</span>
+    </button>
+    <button class="mobile-bottom-item" onclick="const pChat = document.getElementById('phalDeepikaChat'); if(pChat) pChat.scrollIntoView({behavior:'smooth'});">
+        <span class="mobile-bottom-icon">🕉️</span>
+        <span>AI Chat</span>
+    </button>
+    <button class="mobile-bottom-item" onclick="const menuDrawer = document.getElementById('leftDrawerMenu'); if(menuDrawer) menuDrawer.classList.toggle('active');">
+        <span class="mobile-bottom-icon">☰</span>
+        <span>Menu</span>
+    </button>
+</div>
+
 <!-- Vercel Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
 

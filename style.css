@@ -5267,13 +5267,84 @@ p, body, button, input, select {
     box-sizing: border-box !important;
 }
 
+/* ── MOBILE-FIRST UX & RESPONSIVE BREAKPOINT SYSTEM ── */
+
+/* 1. Mobile Drawer Width Enforcement (50% width on Mobile; 100px on Desktop) */
 @media (max-width: 1024px) {
-    .daily-panchang-three-col {
-        grid-template-columns: 1fr !important;
+    .mobile-menu {
+        width: 50vw !important;
+        min-width: 50vw !important;
+        max-width: 50vw !important;
     }
-    .daily-panchang-three-col .col-card {
-        height: auto !important;
-        max-height: none !important;
+}
+
+@media (min-width: 1025px) {
+    .mobile-menu {
+        width: 100px !important;
+        min-width: 100px !important;
+        max-width: 100px !important;
+    }
+}
+
+/* 2. Fixed Mobile Bottom Action Navigation Bar */
+.mobile-bottom-bar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1.5px solid rgba(251, 191, 36, 0.3);
+    z-index: 99999;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+    padding: 0 4px;
+}
+
+@media (max-width: 768px) {
+    .mobile-bottom-bar {
+        display: flex !important;
+        justify-content: space-around;
+        align-items: center;
+    }
+    body {
+        padding-bottom: 60px !important;
+    }
+}
+
+.mobile-bottom-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 700;
+    flex: 1;
+    min-height: 48px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+
+.mobile-bottom-item:active, .mobile-bottom-item.active {
+    color: #fbbf24;
+    transform: scale(1.05);
+}
+
+.mobile-bottom-icon {
+    font-size: 18px;
+    margin-bottom: 2px;
+}
+
+/* Touch-Friendly Targets on Mobile */
+@media (max-width: 768px) {
+    button, select, input, .card, .glass-card, .drawer-item {
+        min-height: 40px;
     }
 }
 
