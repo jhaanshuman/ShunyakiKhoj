@@ -1,5 +1,9 @@
 RewriteEngine On
 RewriteBase /
 
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
 # Route /astrology/personal to /landing.html
 RewriteRule ^astrology/personal/?$ landing.html [QSA,L]
