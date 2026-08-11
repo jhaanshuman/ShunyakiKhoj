@@ -89,28 +89,117 @@ window.parseUrlPath = parseUrlPath;
 const DEFAULT_NAV_CONFIG = {
   "menu": [
     {
-      "label": "Jyotish Utilities",
+      "label": "Home",
+      "type": "link",
+      "url": "/",
+      "icon": "🏠"
+    },
+    {
+      "label": "Favourites",
       "type": "dropdown",
-      "icon": "🔮",
+      "icon": "⭐",
       "items": [
-        { "label": "Personalised Kundali", "url": "index.html?tab=kundli", "icon": "🧘" },
-        { "label": "Dainik Panchang", "url": "index.html?tab=panchang", "icon": "☀️" },
-        { "label": "Maasik Panchang", "url": "index.html?tab=maasik", "icon": "📆" },
-        { "label": "Prashna Kundali", "url": "index.html?tab=prashna", "icon": "❓" },
-        { "label": "Rashifal Predictions", "url": "index.html?tab=rashifal", "icon": "🦁" }
+        { "label": "Chat with Phaldeepika", "url": "/landing.html#phalDeepikaChat", "icon": "🕉️" },
+        { "label": "Dainik Panchang", "url": "/panchang/daily/", "icon": "☀️" },
+        { "label": "Maasik Panchang", "url": "/panchang/monthly/", "icon": "📆" },
+        { "label": "Free Janma Kundali", "url": "/kundli/generate/", "icon": "🧘" }
       ]
     },
     {
-      "label": "Other Utilities",
+      "label": "PhalDeepika",
       "type": "dropdown",
-      "icon": "📿",
+      "icon": "🕉️",
       "items": [
-        { "label": "Festival Calendar", "url": "index.html?page=wisdom&category=festival", "icon": "📅" },
-        { "label": "Vrat and Upavas", "url": "index.html?page=wisdom&category=vrat", "icon": "🛐" },
-        { "label": "Vrat Katha", "url": "index.html?page=wisdom&category=vrat_katha", "icon": "📜" },
-        { "label": "Puja Vidhi", "url": "index.html?page=wisdom&category=puja", "icon": "🔥" },
-        { "label": "Vedic Mantra", "url": "index.html?page=wisdom&category=mantra", "icon": "☀️" },
-        { "label": "Deity Yantra", "url": "index.html?page=wisdom&category=yantra", "icon": "🛡️" }
+        { "label": "Chat with Phaldeepika", "url": "/landing.html#phalDeepikaChat", "icon": "🤖" }
+      ]
+    },
+    {
+      "label": "Panchang",
+      "type": "dropdown",
+      "icon": "📅",
+      "items": [
+        { "label": "Panchang Hub & Guide", "url": "/panchang/", "icon": "📖" },
+        { "label": "Dainik Panchang", "url": "/panchang/daily/", "icon": "☀️" },
+        { "label": "Maasik Panchang", "url": "/panchang/monthly/", "icon": "📆" },
+        { "label": "Shubha Hora", "url": "/panchang/hora/", "icon": "⌛" },
+        { "label": "Choghadiya", "url": "/panchang/choghadiya/", "icon": "⏱️" },
+        { "label": "Rahu Kaal & Timings", "url": "/panchang/rahu-kalam/", "icon": "🛡️" }
+      ]
+    },
+    {
+      "label": "Jyotisha",
+      "type": "dropdown",
+      "icon": "🔮",
+      "items": [
+        { "label": "Personalized Kundali", "url": "/kundli/generate/", "icon": "🧘" },
+        { "label": "Kundli Educational Hub", "url": "/kundli/", "icon": "📖" },
+        { "label": "Kundli Milan (Matchmaking)", "url": "/kundli-matching/", "icon": "💞" },
+        { "label": "Vimshottari Dasha Tree", "url": "/dasha-systems/", "icon": "🌳" },
+        { "label": "Divisional Charts (D1-D60)", "url": "/divisional-charts/", "icon": "📐" },
+        { "label": "Rashifal Predictions", "url": "/landing.html?tab=rashifal", "icon": "🦁" }
+      ]
+    },
+    {
+      "label": "Muhurta",
+      "type": "dropdown",
+      "icon": "⏰",
+      "items": [
+        { "label": "Muhurta Finder Hub", "url": "/muhurta/", "icon": "✨" },
+        { "label": "Shubha Hora Muhurta", "url": "/panchang/hora/", "icon": "⌛" },
+        { "label": "Choghadiya Muhurta", "url": "/panchang/choghadiya/", "icon": "⏱️" }
+      ]
+    },
+    {
+      "label": "Vrat & Festivals",
+      "type": "dropdown",
+      "icon": "🪔",
+      "items": [
+        { "label": "Festival Calendar", "url": "/festivals/", "icon": "📅" },
+        { "label": "Vrat & Upavas Guide", "url": "/vrat/", "icon": "🛐" },
+        { "label": "Vrat Katha Library", "url": "/landing.html?page=wisdom&category=vrat_katha", "icon": "📜" },
+        { "label": "Puja Vidhi", "url": "/landing.html?page=wisdom&category=puja", "icon": "🔥" },
+        { "label": "Vedic Mantra", "url": "/landing.html?page=wisdom&category=mantra", "icon": "☀️" },
+        { "label": "Deity Yantra", "url": "/landing.html?page=wisdom&category=yantra", "icon": "🛡️" },
+        { "label": "Stotra & Ashtakam", "url": "/landing.html?page=wisdom&category=stotra", "icon": "📿" }
+      ]
+    },
+    {
+      "label": "Sanskrit",
+      "type": "dropdown",
+      "icon": "📜",
+      "items": [
+        { "label": "Sanskrit Grammar Hub", "url": "/sanskrit-dictionary/", "icon": "🏛️" },
+        { "label": "Sanskrit AI Engine", "url": "/Static/index.html", "icon": "🤖" }
+      ]
+    },
+    {
+      "label": "Dharma",
+      "type": "dropdown",
+      "icon": "🛕",
+      "items": [
+        { "label": "Puja Vidhi Guides", "url": "/landing.html?page=wisdom&category=puja", "icon": "🔥" },
+        { "label": "Vedic Mantras", "url": "/landing.html?page=wisdom&category=mantra", "icon": "☀️" },
+        { "label": "Deity Yantras", "url": "/landing.html?page=wisdom&category=yantra", "icon": "🛡️" }
+      ]
+    },
+    {
+      "label": "Astronomy",
+      "type": "dropdown",
+      "icon": "🌌",
+      "items": [
+        { "label": "Planetary Positions & Events", "url": "/planets/", "icon": "🪐" },
+        { "label": "Research Library", "url": "/research/", "icon": "📚" }
+      ]
+    },
+    {
+      "label": "About",
+      "type": "dropdown",
+      "icon": "ℹ️",
+      "items": [
+        { "label": "About ShunyakiKhoj", "url": "/about/", "icon": "🏛️" },
+        { "label": "Editorial Policy", "url": "/editorial-policy/", "icon": "📜" },
+        { "label": "Contact Us", "url": "/contact/", "icon": "📬" },
+        { "label": "HTML Sitemap Directory", "url": "/sitemap/", "icon": "🗺️" }
       ]
     }
   ]
