@@ -1,9 +1,9 @@
 /**
- * ShunyakiKhoj DrikPanchang-Style Landing Page Hydrator Engine (v8.0.0)
+ * ShunyakiKhoj DrikPanchang-Style Landing Page Hydrator Engine (v9.0.0)
  * Handles progressive data hydration for 15 grid cards + Lagna Kundali + Vedic Clock
  * Synchronized with Geo-Synced Global Location Search (geocomplete.js / Nominatim API)
- * Initial Load Splash Modal: Fast 2.5-second message cycling (auto-close at 8s).
- * Realtime Location Hydration: Instant sync for city name & ephemeris data.
+ * Smart Caching: Skips initial load splash popup entirely for returning users with cached data!
+ * First-Time Setup Notice: Explains initial calculation time for new users.
  */
 
 (function () {
@@ -42,25 +42,41 @@
         hydrateAllSections();
     });
 
-    // 0. INITIAL PAGE LOAD SPLASH MODAL (Fast 2.5s Cycle, Auto-close at 8s)
+    // 0. SMART INITIAL LOAD SPLASH MODAL (Skips entirely if data is already present)
     function initInitialLoadSplashModal() {
         const splashModal = document.getElementById('initialLoadSplashModal');
         const msgEl = document.getElementById('splashCycleMessage');
         const progressBar = document.getElementById('splashProgressBar');
-        if (!splashModal || !msgEl) return;
+        if (!splashModal) return;
+
+        // Check if user profile & calculated data are already present in localStorage/PHP session
+        const hasCachedProfile = localStorage.getItem('shunya-profile') || localStorage.getItem('shunya-user-birth-place');
+        const hasCachedData = localStorage.getItem('shunya-kundali-cache') || sessionStorage.getItem('shunya-session-ready');
+
+        // IF DATA ALREADY PRESENT: SKIP SPLASH POPUP ENTIRELY FOR RETURNING USERS
+        if (hasCachedProfile && hasCachedData) {
+            console.log("⚡ Returning User detected with cached calculations. Skipping initial splash popup!");
+            splashModal.style.display = 'none';
+            splashModal.style.opacity = '0';
+            return;
+        }
+
+        // FIRST TIME USER / UNCACHED USER: SHOW SETUP NOTICE & CACHE DATA
+        console.log("🪔 First-time user setup: Generating personalized calculations...");
 
         const loadingMessages = [
+            "🪔 Generating your personalized VedicKundali & Ephemeris data for the first time...",
             "✨ Calculating Sidereal Planetary Longitudes & House Positions...",
-            "🪔 Computing Drik Ganita Tithi, Nakshatra, Yoga & Karana...",
-            "📜 Rendering North Indian Lagna Kundali & Planet Placement...",
-            "🌟 Synchronizing Daily Rashifals & Panchang Utilities...",
-            "🕉️ Calculations Complete! Opening ShunyakiKhoj Portal..."
+            "📜 Rendering North Indian Lagna Kundali & Storing Calculations...",
+            "🕉️ Setup Complete! Saving calculations for instant future loads..."
         ];
 
         let msgIdx = 0;
         let progress = 0;
 
         window.closeInitialLoadSplash = function() {
+            sessionStorage.setItem('shunya-session-ready', 'true');
+            localStorage.setItem('shunya-kundali-cache', 'true');
             if (splashModal) {
                 splashModal.style.opacity = '0';
                 setTimeout(() => { splashModal.style.display = 'none'; }, 500);
@@ -69,7 +85,7 @@
 
         const interval = setInterval(() => {
             msgIdx++;
-            progress += 25;
+            progress += 33;
 
             if (msgIdx < loadingMessages.length && msgEl) {
                 msgEl.style.opacity = '0';
@@ -85,9 +101,9 @@
 
             if (progress >= 100 || msgIdx >= loadingMessages.length) {
                 clearInterval(interval);
-                setTimeout(() => { window.closeInitialLoadSplash(); }, 800);
+                setTimeout(() => { window.closeInitialLoadSplash(); }, 600);
             }
-        }, 2000); // 2 seconds per engaging message
+        }, 2200);
     }
 
     function setupGeoSyncedCitySearch() {

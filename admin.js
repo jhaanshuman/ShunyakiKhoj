@@ -545,30 +545,28 @@ function fetchAdminUserDataList() {
     const tbody = document.getElementById('adminUserTableBody');
     if (!tbody) return;
 
-    tbody.innerHTML = `<tr><td colspan="5" style="padding:10px; text-align:center; color:#fbbf24;">Loading real-time user database from PHP...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="3" style="padding:12px; text-align:center; color:#fbbf24;">Loading real-time user database from PHP...</td></tr>`;
 
     fetch('/UserLog/auth.php?action=get_all_users')
         .then(res => res.json())
         .then(data => {
             if (data.success && Array.isArray(data.users)) {
                 if (data.users.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" style="padding:10px; text-align:center; color:#94a3b8;">No registered users found in MySQL database.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="3" style="padding:12px; text-align:center; color:#94a3b8;">No registered users found in MySQL database.</td></tr>`;
                     return;
                 }
                 tbody.innerHTML = data.users.map(u => `
                     <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                        <td style="padding:6px; font-weight:800; color:#fbbf24;">${u.id}</td>
-                        <td style="padding:6px; font-weight:700; color:#ffffff;">${u.username}</td>
-                        <td style="padding:6px; color:#cbd5e1;">${u.email}</td>
-                        <td style="padding:6px; color:#cbd5e1;">${u.mobile}</td>
-                        <td style="padding:6px; font-weight:700; color:#34d399;">${u.last_login}</td>
+                        <td style="padding:8px 12px; font-weight:800; color:#fbbf24;">${u.id}</td>
+                        <td style="padding:8px 12px; font-weight:700; color:#ffffff;">${u.username}</td>
+                        <td style="padding:8px 12px; font-weight:700; color:#34d399;">${u.last_login}</td>
                     </tr>
                 `).join('');
             } else {
-                tbody.innerHTML = `<tr><td colspan="5" style="padding:10px; text-align:center; color:#ef4444;">Failed to fetch users: ${data.error || 'Unknown error'}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="3" style="padding:12px; text-align:center; color:#ef4444;">Failed to fetch users: ${data.error || 'Unknown error'}</td></tr>`;
             }
         })
         .catch(err => {
-            tbody.innerHTML = `<tr><td colspan="5" style="padding:10px; text-align:center; color:#ef4444;">API Connection Error: ${err.message}</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="3" style="padding:12px; text-align:center; color:#ef4444;">API Connection Error: ${err.message}</td></tr>`;
         });
 }
