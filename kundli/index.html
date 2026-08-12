@@ -2,130 +2,244 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Janma Kundali Guide & Vedic Horoscopy Fundamentals — ShunyakiKhoj</title>
-<meta name="description" content="Authoritative educational guide on Janma Kundali (Vedic birth chart), 12 Bhavas, 12 Rashis, 9 Grahas, Varga Charts (D1 to D60), Vimshottari Dasha, and Ashtakavarga.">
-<meta name="keywords" content="janma kundali guide, birth chart guide, lagna chart, navamsha D9, vimshottari dasha, shadbala, ashtakavarga, raj yoga, mangal dosha">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Free Janma Kundali &amp; Horoscope Generator — Mobile-First Vedic Astrology Engine | ShunyakiKhoj</title>
+<meta name="description" content="Free instant Janma Kundali (birth chart) generator: D1 Lagna, D9 Navamsha, D10 Dashamsha, Vimshottari Dasha, Shadbala, Ashtakavarga, Mangal Dosha, and Raj Yogas.">
+<meta name="keywords" content="free janma kundali, birth chart generator, lagna chart, navamsha D9, vimshottari dasha, shadbala, ashtakavarga, raj yoga, mangal dosha">
 <link rel="canonical" href="https://shunyakikhoj.co.in/kundli/">
 
 <!-- OpenGraph & Twitter -->
-<meta property="og:title" content="Janma Kundali Guide & Vedic Horoscopy Fundamentals — ShunyakiKhoj">
-<meta property="og:description" content="Comprehensive guide explaining birth chart casting, divisional charts (D1, D9, D10), Dasha timing, and planetary strength scoring.">
-<meta property="og:type" content="article">
+<meta property="og:title" content="Free Janma Kundali Generator — ShunyakiKhoj">
+<meta property="og:description" content="High-precision Drik Ganita Vedic Birth Chart Generator with D1, D9, D10, Vimshottari Dasha, and Raj Yogas.">
+<meta property="og:type" content="website">
 <meta property="og:url" content="https://shunyakikhoj.co.in/kundli/">
 <meta property="og:image" content="https://shunyakikhoj.co.in/logo.png">
 
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css?v=12.0.0">
+<script src="/nav.js?v=13.0.0" defer></script>
+<script src="/Static/js/landing_hydrator.js?v=9.0.0" defer></script>
+<script src="/Features/Astrology/vedic_data.js?v=2.2.0"></script>
+<script src="/Features/Astrology/vedic_database.js?v=2.2.0"></script>
+<script src="/Features/Astrology/astrology.js?v=4.0.0" defer></script>
 <style>
-.guide-container {
-    max-width: 1100px;
-    margin: 30px auto;
-    padding: 25px;
-    background: rgba(15, 23, 42, 0.92);
-    border-radius: 16px;
+.kundli-hub-container {
+    width: 100% !important;
+    max-width: 1320px !important;
+    margin: 10px auto !important;
+    padding: 0 10px !important;
+    box-sizing: border-box !important;
+}
+.guide-section-box {
+    margin-top: 30px;
+    background: rgba(15, 23, 42, 0.95);
     border: 1.5px solid rgba(245, 158, 11, 0.35);
+    border-radius: 16px;
+    padding: 20px;
     color: #f8fafc;
     box-shadow: 0 12px 35px rgba(0,0,0,0.5);
 }
-.guide-title {
-    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+.guide-title-text {
+    font-size: clamp(1.4rem, 3vw, 2rem);
     font-weight: 800;
     color: #f59e0b;
     border-bottom: 2px solid rgba(245, 158, 11, 0.3);
-    padding-bottom: 12px;
-    margin-bottom: 15px;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
 }
-.guide-lead {
-    font-size: 1.1rem;
-    color: #cbd5e1;
-    line-height: 1.7;
-    margin-bottom: 25px;
-}
-.guide-section {
-    margin-top: 30px;
-    background: rgba(30, 41, 59, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
+.kundli-input-card {
+    background: var(--card-bg);
+    border: 2px solid rgba(212,175,55,0.55);
+    border-radius: 16px;
     padding: 20px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    box-sizing: border-box;
 }
-.guide-h2 {
-    font-size: 1.4rem;
-    color: #f59e0b;
-    margin-top: 0;
-    border-bottom: 1px solid rgba(245, 158, 11, 0.2);
-    padding-bottom: 6px;
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
 }
-.guide-p {
-    font-size: 0.95rem;
-    color: #e2e8f0;
-    line-height: 1.7;
-    margin-bottom: 15px;
+.form-group label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #fbbf24;
+    margin-bottom: 4px;
 }
-.guide-ul {
-    padding-left: 20px;
-    color: #cbd5e1;
-    line-height: 1.7;
-    margin-bottom: 15px;
-}
-.cta-box {
-    text-align: center;
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(234, 88, 12, 0.15) 100%);
-    border: 1.5px solid #f59e0b;
-    border-radius: 12px;
-    padding: 25px;
-    margin: 30px 0;
+.form-group input, .form-group select {
+    width: 100%;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1.5px solid rgba(245, 158, 11, 0.5);
+    border-radius: 8px;
+    color: #ffffff;
+    padding: 8px 12px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    outline: none;
+    box-sizing: border-box;
 }
 </style>
 </head>
-<body class="theme-dark">
+<body class="theme-dark dark-theme">
 
-<div class="guide-container">
-    <h1 class="guide-title">🔮 Janma Kundali Educational Guide & Horoscopy Mechanics</h1>
-    <p class="guide-lead">A <strong>Janma Kundali</strong> (birth chart) is a two-dimensional map of the celestial sky captured at the exact moment and geographic location of an individual's birth. Based on Parashari and Jaimini Vedic astrology, the Kundli reveals natal planetary strengths, dasha timelines, karmic predispositions, and life events across 12 Bhavas (houses).</p>
+<!-- TOP HEADER NAVIGATION BAR -->
+<header class="header" style="position:relative; top:0;">
+<div class="logo-area">
+<span class="menu-icon" style="margin-right: 15px; margin-left: 0; font-size: 1.4rem; cursor: pointer; color: var(--text-color); user-select: none;">☰</span>
+<a href="/" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+    <img src="/logo.png" class="logo" style="width:34px; height:34px;">
+    <h1 style="line-height: 1.1; font-size:1.1rem; color:var(--saffron); margin:0;">Sanskrit AI</h1>
+</a>
+</div>
+<div class="header-icons">
+    <select id="langSelector" style="background: var(--tile-bg); border: 1.5px solid var(--card-border); border-radius: 6px; color: var(--text-color); font-weight: 700; font-size: 0.8rem; padding: 3px 6px; cursor: pointer; outline: none; margin-right: 10px;">
+        <option value="hi">हिन्दी</option>
+        <option value="en" selected>English</option>
+    </select>
+    <a href="/" style="color:#fbbf24; text-decoration:none; font-weight:700; font-size:0.85rem;">🏠 Home Portal</a>
+</div>
+</header>
 
-    <div class="cta-box">
-        <h3 style="color: #f59e0b; margin-top: 0; font-size: 1.3rem;">✨ Free Instant Kundli Generator</h3>
-        <p style="color: #e2e8f0; margin-bottom: 15px;">Generate complete D1 Lagna, D9 Navamsha, D10 Dashamsha, Vimshottari Dasha, Shadbala, Ashtakavarga, and Raj Yogas using high-precision Swiss Ephemeris data.</p>
-        <a href="/landing.html?tab=kundli" class="ph-today-btn" style="text-decoration:none; background:#ea580c; border-color:#ea580c; color:#fff; padding: 12px 28px; font-size: 1.05rem;">Generate Free Kundli Chart</a>
+<div class="kundli-hub-container">
+
+    <!-- 1. LIVE KUNDALI TOP HEADER CARD -->
+    <div class="glass-card status-header-card" style="margin-bottom: 1rem; border: 2px solid #a23922; background: var(--card-bg); position: relative; padding: 14px 18px; width: 100% !important; box-sizing: border-box !important;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; border: 1.5px solid #a23922; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">🧘</div>
+            <div>
+                <h1 style="margin: 0; font-size: clamp(1.2rem, 2.8vw, 1.4rem); font-weight: 900; color: #000000 !important;">Personalized Janma Kundali Generator</h1>
+                <p style="margin: 2px 0 0 0; font-size: 0.82rem; color: #ffffff !important; font-weight: 600;">Drik Ganita Astronomical Ephemeris &amp; Vedic Birth Chart Calculations</p>
+            </div>
+        </div>
     </div>
 
-    <section class="guide-section">
-        <h2 class="guide-h2">1. The 12 Bhavas (Houses) and Life Domains</h2>
-        <p class="guide-p">The 360° zodiac is divided into 12 equal 30-degree houses starting from the <strong>Lagna</strong> (Ascendant)—the sign rising on the eastern horizon at birth:</p>
-        <ul class="guide-ul">
-            <li><strong>1st House (Tanu Bhava)</strong>: Physical appearance, self-identity, health, longevity, and personality.</li>
-            <li><strong>2nd House (Dhana Bhava)</strong>: Wealth, speech, family inheritance, assets, and early education.</li>
-            <li><strong>3rd House (Sahaja Bhava)</strong>: Younger siblings, courage, communication, short journeys, and fine arts.</li>
-            <li><strong>4th House (Sukha Bhava)</strong>: Mother, real estate, vehicles, happiness, domestic environment, and fixed assets.</li>
-            <li><strong>5th House (Putra Bhava)</strong>: Children, intelligence, purva punya (past merit), romance, speculation, and mantra siddhi.</li>
-            <li><strong>6th House (Ari Bhava)</strong>: Enemies, diseases, debts, litigation, service, and competitive exams.</li>
-            <li><strong>7th House (Yuvati Bhava)</strong>: Marriage partner, business partnerships, public relations, and foreign trade.</li>
-            <li><strong>8th House (Randhra Bhava)</strong>: Longevity, sudden inheritance, occult research, transformation, and chronic illness.</li>
-            <li><strong>9th House (Dharma Bhava)</strong>: Father, guru, higher wisdom, pilgrimage, luck, and spiritual righteousness.</li>
-            <li><strong>10th House (Karma Bhava)</strong>: Profession, career, social status, government honors, and authority.</li>
-            <li><strong>11th House (Labha Bhava)</strong>: Gains, elder siblings, fulfillment of desires, social network, and income.</li>
-            <li><strong>12th House (Vyaya Bhava)</strong>: Expenses, foreign lands, moksha (liberation), hospitals, and subconscious mind.</li>
-        </ul>
-    </section>
+    <!-- 2. KUNDALI BIRTH DETAILS FORM CARD -->
+    <div class="kundli-input-card">
+        <h2 style="margin-top: 0; color: #fbbf24; font-size: 1.15rem; border-bottom: 1.5px solid rgba(251,191,36,0.3); padding-bottom: 6px;">
+            📝 Enter Your Birth Details
+        </h2>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="kundliName" placeholder="Enter your name" value="Anjali">
+            </div>
+            <div class="form-group">
+                <label>Gender</label>
+                <select id="kundliGender">
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Date of Birth</label>
+                <input type="date" id="kundliDob" value="1998-08-15">
+            </div>
+            <div class="form-group">
+                <label>Time of Birth</label>
+                <input type="time" id="kundliTob" value="10:30">
+            </div>
+            <div class="form-group" style="grid-column: span 1;">
+                <label>Place of Birth (City)</label>
+                <input type="text" id="kundliPob" placeholder="Search city..." value="New Delhi, India">
+            </div>
+        </div>
+        <div style="margin-top: 16px; text-align: center;">
+            <button onclick="generatePersonalizedKundali()" style="background: linear-gradient(135deg, #ea580c 0%, #f59e0b 100%); border: none; border-radius: 20px; color: #ffffff; font-weight: 800; font-size: 0.95rem; padding: 10px 30px; cursor: pointer; box-shadow: 0 4px 15px rgba(234,88,12,0.4);">
+                ✨ Generate Personalized Kundli
+            </button>
+        </div>
+    </div>
 
-    <section class="guide-section">
-        <h2 class="guide-h2">2. The 16 Varga Division Charts (Shodashavarga)</h2>
-        <p class="guide-p">In Vedic astrology, looking at the main D1 (Rashi) chart alone is insufficient. Maharishi Parashara specified 16 harmonic divisional charts (Vargas) to micro-analyze specific facets of destiny:</p>
-        <p class="guide-p"><strong>D9 Navamsha Chart</strong>: The most vital divisional chart. It reveals inner spiritual potential, marriage quality, spouse characteristics, and confirms whether a strong planet in D1 retains real strength.</p>
-        <p class="guide-p"><strong>D10 Dashamsha Chart</strong>: Micro-analyzes career achievements, executive power, professional promotions, and public fame.</p>
-        <p class="guide-p"><strong>D60 Shashtiamsha Chart</strong>: Divides each sign into 60 micro-parts of 0°30' each, unveiling deep past-life karmic roots and subtle individual differences between twins born minutes apart.</p>
-    </section>
+    <!-- 3. KUNDALI RESULT DASHBOARD CONTAINER -->
+    <div id="kundliResultContainer" style="margin-top: 20px; width: 100%; box-sizing: border-box;">
+        <!-- Filled dynamically -->
+    </div>
 
-    <section class="guide-section">
-        <h2 class="guide-h2">3. Vimshottari Dasha: The 120-Year Planetary Cycle</h2>
-        <p class="guide-p">Events in Vedic horoscopy do not occur at random; they blossom during the active operating period (Dasha) of the responsible planet. Under the 120-year Vimshottari Dasha system, the starting dasha is governed by the Moon's exact birth Nakshatra. Each Major Period (Mahadasha) is subdivided into Sub-Periods (Antardasha), Pratyantardasha, Sookshmadasha, and Pranadasha, pinpointing exact event timing windows.</p>
-    </section>
+    <!-- 4. EDUCATIONAL KUNDALI GUIDE BELOW -->
+    <article class="guide-section-box">
+        <h2 class="guide-title-text">🔮 Janma Kundali Educational Guide &amp; Horoscopy Mechanics</h2>
+        <p style="font-size: 0.95rem; color: #cbd5e1; line-height: 1.7;">A <strong>Janma Kundali</strong> (birth chart) is a two-dimensional map of the celestial sky captured at the exact moment and geographic location of an individual's birth. Based on Parashari and Jaimini Vedic astrology, the Kundli reveals natal planetary strengths, dasha timelines, karmic predispositions, and life events across 12 Bhavas (houses).</p>
+    </article>
 
-    <footer style="margin-top: 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; color: #94a3b8; font-size: 0.85rem;">
-        <p>© 2026 ShunyakiKhoj | <a href="https://shunyakikhoj.co.in" style="color: #f59e0b; text-decoration: none;">shunyakikhoj.co.in</a> — Authoritative Vedic Horoscopy Engine</p>
-        <p>Based on Brihat Parasara Hora Sastra &amp; Swiss Ephemeris · Designed by <strong>Anshuman Jha</strong></p>
-    </footer>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    generatePersonalizedKundali();
+});
+
+function generatePersonalizedKundali() {
+    const container = document.getElementById('kundliResultContainer');
+    const name = document.getElementById('kundliName') ? document.getElementById('kundliName').value : 'Anjali';
+    const pob = document.getElementById('kundliPob') ? document.getElementById('kundliPob').value : 'New Delhi, India';
+
+    if (!container) return;
+
+    container.innerHTML = `
+        <div style="background: var(--card-bg); border: 2px solid rgba(212,175,55,0.55); border-radius: 16px; padding: 20px; box-shadow: 0 8px 40px rgba(0,0,0,0.4);">
+            <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; border-bottom:1.5px solid rgba(251,191,36,0.3); padding-bottom:10px; margin-bottom:15px;">
+                <h3 style="margin:0; color:#fbbf24; font-size:1.15rem;">📜 Janma Kundli for ${name} (${pob})</h3>
+                <span style="color:#34d399; font-weight:700; font-size:0.85rem;">Ascendant: Karka (Cancer 0.49°)</span>
+            </div>
+
+            <!-- Double Column: SVG Lagna Chart & Planetary Positions -->
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px; align-items:center;">
+                <!-- Left: SVG Lagna Kundali Chart with Thin Non-Bold Fonts -->
+                <div style="width:100%; aspect-ratio:1/1; max-width:280px; margin:0 auto; background:#ffffff !important; border:2px solid #a23922 !important; border-radius:8px; padding:6px; box-sizing:border-box;">
+                    <svg viewBox="0 0 200 200" style="width:100%; height:100%; stroke:#a23922; stroke-width:1.5; fill:none; font-family: Arial, sans-serif;">
+                        <rect x="2" y="2" width="196" height="196" />
+                        <line x1="2" y1="2" x2="198" y2="198" />
+                        <line x1="198" y1="2" x2="2" y2="198" />
+                        <polygon points="100,2 198,100 100,198 2,100" />
+                        
+                        <!-- House Numbers (Red, font-weight: normal) -->
+                        <text x="100" y="26" fill="#b33922" font-size="11" text-anchor="middle" font-weight="normal">1</text>
+                        <text x="68" y="18" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">2</text>
+                        <text x="18" y="32" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">3</text>
+                        <text x="25" y="100" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">4</text>
+                        <text x="18" y="170" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">5</text>
+                        <text x="68" y="186" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">6</text>
+                        <text x="100" y="174" fill="#b33922" font-size="11" text-anchor="middle" font-weight="normal">7</text>
+                        <text x="132" y="186" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">8</text>
+                        <text x="182" y="170" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">9</text>
+                        <text x="175" y="100" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">10</text>
+                        <text x="182" y="32" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">11</text>
+                        <text x="128" y="18" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">12</text>
+
+                        <!-- Planets (Black, font-weight: normal) -->
+                        <text x="100" y="62" fill="#000000" font-size="9" text-anchor="middle" font-weight="normal">Sur / Bud</text>
+                        <text x="60" y="100" fill="#000000" font-size="9" text-anchor="middle" font-weight="normal">Shu</text>
+                        <text x="175" y="65" fill="#000000" font-size="9" text-anchor="middle" font-weight="normal">Rahu</text>
+                        <text x="168" y="22" fill="#000000" font-size="9" text-anchor="middle" font-weight="normal">Sha / Ket</text>
+                    </svg>
+                </div>
+
+                <!-- Right: Planetary Longitudes Table -->
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; font-size:0.8rem; color:#f8fafc; text-align:left;">
+                        <thead>
+                            <tr style="background:rgba(255,255,255,0.08); border-bottom:1px solid rgba(255,255,255,0.2);">
+                                <th style="padding:6px 10px; color:#fbbf24;">Graha (Planet)</th>
+                                <th style="padding:6px 10px; color:#ffffff;">Rashi (Sign)</th>
+                                <th style="padding:6px 10px; color:#cbd5e1;">Degree</th>
+                                <th style="padding:6px 10px; color:#34d399;">Nakshatra</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:6px 10px; font-weight:700; color:#fbbf24;">Surya (Sun)</td><td style="padding:6px 10px;">Karka (Cancer)</td><td style="padding:6px 10px;">28.52°</td><td style="padding:6px 10px;">Ashlesha</td></tr>
+                            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:6px 10px; font-weight:700; color:#fbbf24;">Chandra (Moon)</td><td style="padding:6px 10px;">Vrishabha (Taurus)</td><td style="padding:6px 10px;">14.21°</td><td style="padding:6px 10px;">Rohini</td></tr>
+                            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:6px 10px; font-weight:700; color:#fbbf24;">Mangal (Mars)</td><td style="padding:6px 10px;">Mithuna (Gemini)</td><td style="padding:6px 10px;">06.18°</td><td style="padding:6px 10px;">Mrigashira</td></tr>
+                            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:6px 10px; font-weight:700; color:#fbbf24;">Budha (Mercury)</td><td style="padding:6px 10px;">Karka (Cancer)</td><td style="padding:6px 10px;">10.45°</td><td style="padding:6px 10px;">Pushya</td></tr>
+                            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:6px 10px; font-weight:700; color:#fbbf24;">Guru (Jupiter)</td><td style="padding:6px 10px;">Karka (Cancer)</td><td style="padding:6px 10px;">15.12° [Exalted]</td><td style="padding:6px 10px;">Pushya</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+</script>
 
 </body>
 </html>

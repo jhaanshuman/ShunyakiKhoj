@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maasik Panchang — Monthly Hindu Calendar, Vrats &amp; Festivals | ShunyakiKhoj</title>
-<meta name="description" content="Complete Maasik Panchang: Monthly Hindu calendar with all major Tithis, Vrats, Festivals, Ekadashi, Pradosh, Amavasya, Purnima, and Drik Ganita ephemeris dates for this month.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Maasik Panchang — Mobile-First Monthly Hindu Calendar, Vrats &amp; Festivals | ShunyakiKhoj</title>
+<meta name="description" content="Complete Maasik Panchang: Mobile-first monthly Hindu calendar with all Tithis, Vrats, Festivals, Ekadashi, Pradosh, Amavasya, Purnima, and Drik Ganita ephemeris dates for this month.">
 <meta name="keywords" content="maasik panchang, monthly hindu calendar, ekadashi dates, purnima tithi, amavasya dates, vrat festival calendar, drik ganita">
 <link rel="canonical" href="https://shunyakikhoj.co.in/panchang/monthly/">
 
@@ -25,45 +25,49 @@
 .panchang-hub-container {
     width: 100% !important;
     max-width: 1320px !important;
-    margin: 15px auto !important;
-    padding: 0 12px !important;
+    margin: 10px auto !important;
+    padding: 0 10px !important;
     box-sizing: border-box !important;
 }
 .guide-section-box {
-    margin-top: 35px;
+    margin-top: 30px;
     background: rgba(15, 23, 42, 0.95);
     border: 1.5px solid rgba(245, 158, 11, 0.35);
     border-radius: 16px;
-    padding: 30px;
+    padding: 20px;
     color: #f8fafc;
     box-shadow: 0 12px 35px rgba(0,0,0,0.5);
 }
 .guide-title-text {
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-size: clamp(1.4rem, 3vw, 2rem);
     font-weight: 800;
     color: #f59e0b;
     border-bottom: 2px solid rgba(245, 158, 11, 0.3);
-    padding-bottom: 12px;
-    margin-bottom: 15px;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
 }
 .maasik-grid-30 {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    margin-top: 15px;
+    gap: 6px;
+    margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
 }
 .maasik-cell {
     background: rgba(247, 231, 196, 0.95);
     border: 1.5px solid #a23922;
     border-radius: 8px;
-    padding: 8px;
+    padding: 6px 4px;
     color: #000000;
-    min-height: 110px;
+    min-height: 105px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
+    user-select: none;
+    box-sizing: border-box;
 }
 .maasik-cell:hover {
     transform: translateY(-2px);
@@ -71,8 +75,73 @@
 }
 .maasik-cell.today-cell {
     background: #fef3c7 !important;
-    border: 2px solid #ea580c !important;
+    border: 2.5px solid #ea580c !important;
     box-shadow: 0 0 12px rgba(234, 88, 12, 0.5) !important;
+}
+
+/* Mobile-First Adaptations */
+@media (max-width: 768px) {
+    .panchang-hub-container {
+        padding: 0 6px !important;
+    }
+    .maasik-grid-30 {
+        gap: 3px !important;
+    }
+    .maasik-cell {
+        padding: 3px 2px !important;
+        min-height: 85px !important;
+        border-radius: 6px !important;
+        border-width: 1px !important;
+    }
+    .maasik-cell .cell-day-num {
+        font-size: 1.15rem !important;
+    }
+    .maasik-cell .cell-tithi {
+        font-size: 0.55rem !important;
+    }
+    .maasik-cell .cell-nak {
+        display: none !important;
+    }
+    .desktop-sidebar-container {
+        display: none !important;
+    }
+}
+
+/* Mobile Date Detail Modal Popup */
+.mobile-date-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999999;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
+}
+.mobile-date-modal-overlay.active {
+    display: flex !important;
+}
+.mobile-date-modal-card {
+    background: #0f172a;
+    border: 2px solid #fbbf24;
+    border-radius: 18px;
+    padding: 20px;
+    width: 100%;
+    max-width: 420px;
+    color: #f8fafc;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.8);
+    position: relative;
+    animation: modalPopIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes modalPopIn {
+    from { transform: scale(0.85); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 </style>
 </head>
@@ -99,49 +168,49 @@
 <div class="panchang-hub-container">
 
     <!-- 1. LIVE MAASIK PANCHANG TOP HEADER CARD & CONTROLS -->
-    <div class="glass-card status-header-card" style="margin-bottom: 1.5rem; border: 2px solid #a23922; background: var(--card-bg); position: relative; padding: 14px 20px; width: 100% !important; box-sizing: border-box !important; overflow: visible !important; z-index: 99999 !important;">
-        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 14px;">
-                <div class="moon-phase-icon-container" style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; border: 1.5px solid #a23922; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">📆</div>
+    <div class="glass-card status-header-card" style="margin-bottom: 1rem; border: 2px solid #a23922; background: var(--card-bg); position: relative; padding: 12px 16px; width: 100% !important; box-sizing: border-box !important; overflow: visible !important; z-index: 99999 !important;">
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="moon-phase-icon-container" style="width: 40px; height: 40px; border-radius: 50%; background: #0f172a; border: 1.5px solid #a23922; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">📆</div>
                 <div>
-                    <h1 id="maasikHeaderTitle" style="margin: 0; font-size: 1.3rem; font-weight: 900; color: #000000 !important;">Maasik Panchang — August 2026</h1>
-                    <p style="margin: 2px 0 0 0; font-size: 0.82rem; color: #ffffff !important; font-weight: 600;">Monthly 31-Day Hindu Almanac, Vrats, Festivals &amp; Tithi Calendar | Drik Ganita Mode</p>
+                    <h1 id="maasikHeaderTitle" style="margin: 0; font-size: clamp(1.1rem, 2.5vw, 1.3rem); font-weight: 900; color: #000000 !important;">Maasik Panchang — August 2026</h1>
+                    <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: #ffffff !important; font-weight: 600;">Monthly 31-Day Hindu Almanac &amp; Festivals | Drik Ganita</p>
                 </div>
             </div>
 
             <!-- Month Picker & Location Searcher -->
-            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                <input type="month" id="maasikMonthInput" value="2026-08" style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid #fbbf24; border-radius: 20px; color: #ffffff; font-weight: 700; font-size: 0.82rem; padding: 5px 12px; outline: none; cursor: pointer;">
-                <div style="display: flex; align-items: center; gap: 6px; position: relative; z-index: 999999 !important;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; width: 100%; max-width: 500px; justify-content: flex-end;">
+                <input type="month" id="maasikMonthInput" value="2026-08" style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid #fbbf24; border-radius: 20px; color: #ffffff; font-weight: 700; font-size: 0.8rem; padding: 5px 10px; outline: none; cursor: pointer;">
+                <div style="display: flex; align-items: center; gap: 6px; position: relative; z-index: 999999 !important; flex: 1; min-width: 180px;">
                     <span style="font-size: 1.1rem; line-height: 1;">📍</span>
-                    <input type="text" id="landingCitySearchInput" placeholder="Search city worldwide..." autocomplete="off" style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid #fbbf24; border-radius: 20px; color: #ffffff; font-weight: 800; font-size: 0.82rem; padding: 6px 14px; cursor: text; outline: none; width: 240px; max-width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+                    <input type="text" id="landingCitySearchInput" placeholder="Search city worldwide..." autocomplete="off" style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid #fbbf24; border-radius: 20px; color: #ffffff; font-weight: 800; font-size: 0.8rem; padding: 5px 12px; cursor: text; outline: none; width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
                 </div>
             </div>
         </div>
     </div>
 
     <!-- 2. INTERACTIVE MAASIK PANCHANG GRID & SIDEBAR DASHBOARD -->
-    <div style="display: flex; gap: 20px; flex-wrap: wrap; width: 100%; box-sizing: border-box; margin-bottom: 30px;">
+    <div style="display: flex; gap: 16px; flex-wrap: wrap; width: 100%; box-sizing: border-box; margin-bottom: 20px;">
         <!-- Left: 7-Column Full Monthly Grid Calendar -->
-        <div style="flex: 1 1 68%; min-width: 320px; background: var(--card-bg); border: 2px solid rgba(212,175,55,0.55); border-radius: 18px; padding: 18px; box-shadow: 0 8px 40px rgba(0,0,0,0.4);">
-            <div style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 800; color: #fbbf24; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem;">
+        <div style="flex: 1 1 66%; min-width: 290px; background: var(--card-bg); border: 2px solid rgba(212,175,55,0.55); border-radius: 16px; padding: 12px; box-shadow: 0 8px 40px rgba(0,0,0,0.4); box-sizing: border-box; overflow-x: hidden;">
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 800; color: #fbbf24; padding-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.78rem;">
                 <div>SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div>
             </div>
 
             <div id="maasikCalGrid" class="maasik-grid-30">
-                <div style="grid-column: span 7; text-align: center; padding: 30px; color: #fbbf24; font-size: 1rem; font-weight: 700;">
-                    ⏳ Rendering Full Monthly 31-Day Maasik Panchang Grid...
+                <div style="grid-column: span 7; text-align: center; padding: 25px; color: #fbbf24; font-size: 0.95rem; font-weight: 700;">
+                    ⏳ Rendering Mobile-First 31-Day Maasik Panchang Grid...
                 </div>
             </div>
         </div>
 
-        <!-- Right: Selected Date Detail Drawer Sidebar -->
-        <div style="flex: 1 1 28%; min-width: 280px; background: var(--card-bg); border: 2px solid rgba(212,175,55,0.55); border-radius: 18px; padding: 18px; box-shadow: 0 8px 40px rgba(0,0,0,0.4);">
-            <h3 style="margin-top: 0; color: #fbbf24; font-size: 1.1rem; border-bottom: 1.5px solid rgba(251,191,36,0.3); padding-bottom: 6px;" id="sidebarSelectedDateTitle">
+        <!-- Right Desktop Sidebar Container -->
+        <div class="desktop-sidebar-container" style="flex: 1 1 28%; min-width: 260px; background: var(--card-bg); border: 2px solid rgba(212,175,55,0.55); border-radius: 16px; padding: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.4);">
+            <h3 style="margin-top: 0; color: #fbbf24; font-size: 1rem; border-bottom: 1.5px solid rgba(251,191,36,0.3); padding-bottom: 6px;" id="sidebarSelectedDateTitle">
                 📅 Selected Date Details
             </h3>
             <div id="maasikSidebarDetails" style="font-size: 0.82rem; color: #f8fafc; line-height: 1.6;">
-                <p style="color: #cbd5e1;">Click any date cell in the grid to inspect full Tithi, Nakshatra, Yoga, Karana, and Shubh Muhurta details.</p>
+                <p style="color: #cbd5e1;">Tap any date cell in the grid to inspect full Tithi, Nakshatra, Yoga, Karana, and Shubh Muhurta details.</p>
             </div>
         </div>
     </div>
@@ -149,13 +218,26 @@
     <!-- 3. EDUCATIONAL MAASIK GUIDE BELOW -->
     <article class="guide-section-box">
         <h2 class="guide-title-text">📆 Understanding Maasik Panchang &amp; Hindu Calendar Months</h2>
-        <p style="font-size: 1rem; color: #cbd5e1; line-height: 1.7;">The <strong>Maasik Panchang</strong> (मासिक पञ्चाङ्ग) tracks the complete 30-day lunar cycle across 12 traditional months (Chaitra to Phalguna). It is evaluated in two classical calendar systems:</p>
-        <ul style="padding-left: 20px; color: #e2e8f0; line-height: 1.7; font-size: 0.95rem;">
+        <p style="font-size: 0.95rem; color: #cbd5e1; line-height: 1.7;">The <strong>Maasik Panchang</strong> (मासिक पञ्चाङ्ग) tracks the complete 30-day lunar cycle across 12 traditional months (Chaitra to Phalguna). It is evaluated in two classical calendar systems:</p>
+        <ul style="padding-left: 20px; color: #e2e8f0; line-height: 1.7; font-size: 0.9rem;">
             <li><strong>Purnimanta System</strong>: Month begins on the day after Purnima (Full Moon). Followed predominantly in North India.</li>
             <li><strong>Amanta System</strong>: Month begins on the day after Amavasya (New Moon). Followed in Maharashtra, Gujarat, South India.</li>
         </ul>
     </article>
 
+</div>
+
+<!-- 4. MOBILE SELECTED DATE POPUP MODAL -->
+<div id="mobileDateModalOverlay" class="mobile-date-modal-overlay">
+    <div class="mobile-date-modal-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #fbbf24; padding-bottom: 8px; margin-bottom: 12px;">
+            <h3 id="mobileModalDateTitle" style="margin: 0; color: #fbbf24; font-size: 1.1rem; font-weight: 800;">📅 Date Details</h3>
+            <button onclick="closeMobileDateModal()" style="background: #ef4444; border: none; color: #ffffff; width: 28px; height: 28px; border-radius: 50%; font-weight: 900; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.5);">✖</button>
+        </div>
+        <div id="mobileModalDateBody" style="font-size: 0.88rem; color: #f8fafc; line-height: 1.65;">
+            <!-- Hydrated dynamically -->
+        </div>
+    </div>
 </div>
 
 <script>
@@ -214,7 +296,7 @@ function renderFullMonthMaasikGrid() {
 
     let html = '';
     // Empty leading cells for weekday offset
-    html += '<div class="maasik-cell" style="opacity:0.25; pointer-events:none; min-height:100px;"></div>'.repeat(firstDayOfWeek);
+    html += '<div class="maasik-cell" style="opacity:0.25; pointer-events:none; min-height:85px;"></div>'.repeat(firstDayOfWeek);
 
     for (let d = 1; d <= daysInMonth; d++) {
         const isToday = (d === 12);
@@ -225,24 +307,23 @@ function renderFullMonthMaasikGrid() {
 
         html += `
             <div class="maasik-cell${isToday ? ' today-cell' : ''}" onclick="selectMaasikDateCell('${d}', '${tithi}', '${paksha}', '${nak}', '${fest}')">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:0.6rem; color:#4b5563; font-weight:700;">${nak.substring(0, 8)}</span>
-                    <span style="font-size:1.3rem; font-weight:900; color:#000;">${d}</span>
+                <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                    <span class="cell-nak" style="font-size:0.58rem; color:#4b5563; font-weight:700;">${nak.substring(0, 7)}</span>
+                    <span class="cell-day-num" style="font-size:1.25rem; font-weight:900; color:#000;">${d}</span>
                 </div>
-                <div style="font-size:0.65rem; font-weight:800; color:#1e293b; text-align:center; margin-top:2px;">
-                    ${tithi} (${paksha.charAt(0)})
+                <div class="cell-tithi" style="font-size:0.62rem; font-weight:800; color:#1e293b; text-align:center; margin-top:1px;">
+                    ${tithi.substring(0, 8)} (${paksha.charAt(0)})
                 </div>
-                ${fest ? `<div style="font-size:0.68rem; color:#a23922; font-weight:800; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${fest}</div>` : ''}
-                <div style="display:flex; justify-content:space-between; font-size:0.58rem; color:#4b5563; border-top:1px solid rgba(0,0,0,0.1); padding-top:2px; margin-top:2px;">
-                    <span>🌅05:4${d % 10}</span>
-                    <span>🌇07:0${9 - (d % 10)}</span>
+                ${fest ? `<div style="font-size:0.6rem; color:#a23922; font-weight:800; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${fest}</div>` : ''}
+                <div style="display:flex; justify-content:space-between; font-size:0.55rem; color:#4b5563; border-top:1px solid rgba(0,0,0,0.1); padding-top:1px; margin-top:2px;">
+                    <span>🌅5:4${d % 10}</span>
+                    <span>🌇7:0${9 - (d % 10)}</span>
                 </div>
             </div>
         `;
     }
 
     gridEl.innerHTML = html;
-    selectMaasikDateCell(12, "Amavasya", "Krishna", "Pushya", "🌑 Hariyali Amavasya");
 }
 
 function selectMaasikDateCell(dayNum, tithi, paksha, nak, fest) {
@@ -251,12 +332,8 @@ function selectMaasikDateCell(dayNum, tithi, paksha, nak, fest) {
     const [year, month] = val.split('-').map(Number);
     const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-    const sidebarTitle = document.getElementById('sidebarSelectedDateTitle');
-    const sidebarBody = document.getElementById('maasikSidebarDetails');
-    if (!sidebarTitle || !sidebarBody) return;
-
-    sidebarTitle.innerText = `📅 ${MONTH_NAMES[month-1]} ${dayNum}, ${year} Details`;
-    sidebarBody.innerHTML = `
+    const titleText = `📅 ${MONTH_NAMES[month-1]} ${dayNum}, ${year} Details`;
+    const detailsHTML = `
         <div style="background:rgba(255,255,255,0.05); padding:14px; border-radius:10px; border:1px solid rgba(255,255,255,0.12);">
             <div style="font-weight:800; color:#fbbf24; font-size:1rem;">Tithi: ${tithi} (${paksha} Paksha)</div>
             <div style="font-size:0.88rem; color:#e2e8f0; margin-top:6px;"><strong>Nakshatra:</strong> ${nak}</div>
@@ -269,6 +346,33 @@ function selectMaasikDateCell(dayNum, tithi, paksha, nak, fest) {
             </div>
         </div>
     `;
+
+    // Desktop Sidebar Update
+    const sidebarTitle = document.getElementById('sidebarSelectedDateTitle');
+    const sidebarBody = document.getElementById('maasikSidebarDetails');
+    if (sidebarTitle && sidebarBody) {
+        sidebarTitle.innerText = titleText;
+        sidebarBody.innerHTML = detailsHTML;
+    }
+
+    // Mobile Popup Modal Trigger for mobile viewports
+    if (window.innerWidth <= 768) {
+        const modalOverlay = document.getElementById('mobileDateModalOverlay');
+        const modalTitle = document.getElementById('mobileModalDateTitle');
+        const modalBody = document.getElementById('mobileModalDateBody');
+        if (modalOverlay && modalTitle && modalBody) {
+            modalTitle.innerText = titleText;
+            modalBody.innerHTML = detailsHTML;
+            modalOverlay.classList.add('active');
+        }
+    }
+}
+
+function closeMobileDateModal() {
+    const modalOverlay = document.getElementById('mobileDateModalOverlay');
+    if (modalOverlay) {
+        modalOverlay.classList.remove('active');
+    }
 }
 </script>
 
