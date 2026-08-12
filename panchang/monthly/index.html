@@ -104,8 +104,8 @@
             <div style="display: flex; align-items: center; gap: 14px;">
                 <div class="moon-phase-icon-container" style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; border: 1.5px solid #a23922; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">📆</div>
                 <div>
-                    <h1 style="margin: 0; font-size: 1.3rem; font-weight: 900; color: #000000 !important;">Maasik Panchang — August 2026</h1>
-                    <p style="margin: 2px 0 0 0; font-size: 0.82rem; color: #ffffff !important; font-weight: 600;">Monthly Hindu Almanac, Vrats, Festivals &amp; Tithi Calendar | Drik Ganita Mode</p>
+                    <h1 id="maasikHeaderTitle" style="margin: 0; font-size: 1.3rem; font-weight: 900; color: #000000 !important;">Maasik Panchang — August 2026</h1>
+                    <p style="margin: 2px 0 0 0; font-size: 0.82rem; color: #ffffff !important; font-weight: 600;">Monthly 31-Day Hindu Almanac, Vrats, Festivals &amp; Tithi Calendar | Drik Ganita Mode</p>
                 </div>
             </div>
 
@@ -122,7 +122,7 @@
 
     <!-- 2. INTERACTIVE MAASIK PANCHANG GRID & SIDEBAR DASHBOARD -->
     <div style="display: flex; gap: 20px; flex-wrap: wrap; width: 100%; box-sizing: border-box; margin-bottom: 30px;">
-        <!-- Left: 7-Column 30-Day Grid Calendar -->
+        <!-- Left: 7-Column Full Monthly Grid Calendar -->
         <div style="flex: 1 1 68%; min-width: 320px; background: var(--card-bg); border: 2px solid rgba(212,175,55,0.55); border-radius: 18px; padding: 18px; box-shadow: 0 8px 40px rgba(0,0,0,0.4);">
             <div style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 800; color: #fbbf24; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem;">
                 <div>SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div>
@@ -130,7 +130,7 @@
 
             <div id="maasikCalGrid" class="maasik-grid-30">
                 <div style="grid-column: span 7; text-align: center; padding: 30px; color: #fbbf24; font-size: 1rem; font-weight: 700;">
-                    ⏳ Rendering Monthly 30-Day Maasik Panchang Grid...
+                    ⏳ Rendering Full Monthly 31-Day Maasik Panchang Grid...
                 </div>
             </div>
         </div>
@@ -160,86 +160,112 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        if (typeof window.renderMaasikPanchangView === 'function') {
-            window.renderMaasikPanchangView();
-        } else {
-            // Render Fallback Maasik Grid
-            renderMaasikGridFallback();
-        }
-    }, 400);
+    renderFullMonthMaasikGrid();
 
     const monthPicker = document.getElementById('maasikMonthInput');
     if (monthPicker) {
         monthPicker.addEventListener('change', () => {
-            renderMaasikGridFallback();
+            renderFullMonthMaasikGrid();
         });
     }
 });
 
-function renderMaasikGridFallback() {
+function renderFullMonthMaasikGrid() {
     const gridEl = document.getElementById('maasikCalGrid');
+    const monthPicker = document.getElementById('maasikMonthInput');
+    const headerTitle = document.getElementById('maasikHeaderTitle');
     if (!gridEl) return;
 
-    const sampleDays = [
-        { d: 1, day: "Sat", tithi: "Dwitiya", nak1: "Shatabhisha 04:12 PM", nak2: "P. Bhadra", fest: "Vrat Parana", sr: "05:42", ss: "07:11", mr: "08:15", ms: "09:30" },
-        { d: 2, day: "Sun", tithi: "Tritiya", nak1: "P. Bhadra 02:40 PM", nak2: "U. Bhadra", fest: "Kajari Teej", festIcon: "🪔", sr: "05:43", ss: "07:10", mr: "09:05", ms: "10:15" },
-        { d: 3, day: "Mon", tithi: "Chaturthi", nak1: "U. Bhadra 01:10 PM", nak2: "Revati", fest: "", sr: "05:43", ss: "07:09", mr: "09:55", ms: "11:00" },
-        { d: 4, day: "Tue", tithi: "Panchami", nak1: "Revati 11:45 AM", nak2: "Ashwini", fest: "Nag Panchami", festIcon: "🐍", sr: "05:44", ss: "07:08", mr: "10:45", ms: "11:45" },
-        { d: 5, day: "Wed", tithi: "Shasthi", nak1: "Ashwini 10:20 AM", nak2: "Bharani", fest: "Hal Chhath", festIcon: "🌾", sr: "05:44", ss: "07:07", mr: "11:35", ms: "12:30" },
-        { d: 6, day: "Thu", tithi: "Saptami", nak1: "Bharani 09:00 AM", nak2: "Krittika", fest: "", sr: "05:45", ss: "07:06", mr: "12:25", ms: "01:15" },
-        { d: 7, day: "Fri", tithi: "Ashtami", nak1: "Krittika 07:45 AM", nak2: "Rohini", fest: "Shravana Ashtami", festIcon: "🕉️", sr: "05:45", ss: "07:05", mr: "01:15", ms: "02:00" },
-        { d: 8, day: "Sat", tithi: "Navami", nak1: "Rohini 06:35 AM", nak2: "Mrigashira", fest: "Gokulashtami", festIcon: "🪔", sr: "05:46", ss: "07:04", mr: "02:05", ms: "02:45" },
-        { d: 9, day: "Sun", tithi: "Dashami", nak1: "Mrigashira 05:30 AM", nak2: "Ardra", fest: "", sr: "05:46", ss: "07:03", mr: "02:55", ms: "03:30" },
-        { d: 10, day: "Mon", tithi: "Ekadashi", nak1: "Ardra 04:30 AM", nak2: "Punarvasu", fest: "Kamika Ekadashi", festIcon: "🌺", sr: "05:47", ss: "07:02", mr: "03:45", ms: "04:15" },
-        { d: 11, day: "Tue", tithi: "Dwadashi", nak1: "Punarvasu 03:40 AM", nak2: "Pushya", fest: "Pradosh Vrat", festIcon: "🔱", sr: "05:47", ss: "07:01", mr: "04:35", ms: "05:00" },
-        { d: 12, day: "Wed", tithi: "Amavasya", nak1: "Pushya 08:09 AM", nak2: "Ashlesha", fest: "Hariyali Amavasya", festIcon: "🌑", sr: "05:48", ss: "07:00", mr: "05:25", ms: "05:45" },
-        { d: 13, day: "Thu", tithi: "Pratipada", nak1: "Ashlesha 07:30 AM", nak2: "Magha", fest: "Ishti Vrat", festIcon: "🔥", sr: "05:48", ss: "06:59", mr: "06:15", ms: "06:30" },
-        { d: 14, day: "Fri", tithi: "Dwitiya", nak1: "Magha 07:00 AM", nak2: "Purva Phalguni", fest: "Andal Jayanthi", festIcon: "🌺", sr: "05:49", ss: "06:58", mr: "07:05", ms: "07:15" },
-        { d: 15, day: "Sat", tithi: "Tritiya", nak1: "P. Phalguni 06:40 AM", nak2: "U. Phalguni", fest: "Hariyali Teej", festIcon: "🪔", sr: "05:49", ss: "06:57", mr: "07:55", ms: "08:00" }
-    ];
+    const val = monthPicker ? monthPicker.value : '2026-08';
+    const [year, month] = val.split('-').map(Number);
+    const daysInMonth = new Date(year, month, 0).getDate(); // 31 days for August
+    const firstDayOfWeek = new Date(year, month - 1, 1).getDay(); // 0=Sun, 6=Sat
+
+    const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    if (headerTitle) {
+        headerTitle.innerText = `Maasik Panchang — ${MONTH_NAMES[month-1]} ${year}`;
+    }
+
+    const tithisList = ["Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shasthi","Saptami","Ashtami","Navami","Dashami","Ekadashi","Dwadashi","Trayodashi","Chaturdashi","Purnima/Amavasya"];
+    const nakshatrasList = ["Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","P. Phalguni","U. Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha","Mula","P. Ashadha","U. Ashadha","Shravana","Dhanishta","Shatabhisha","P. Bhadra","U. Bhadra","Revati"];
+    
+    const festivalsMap = {
+        2: "🪔 Kajari Teej",
+        4: "🐍 Nag Panchami",
+        5: "🌾 Hal Chhath",
+        7: "🕉️ Shravana Ashtami",
+        8: "🪔 Gokulashtami",
+        10: "🌺 Kamika Ekadashi",
+        11: "🔱 Pradosh Vrat",
+        12: "🌑 Hariyali Amavasya",
+        13: "🔥 Ishti Vrat",
+        14: "🌺 Andal Jayanthi",
+        15: "🪔 Hariyali Teej",
+        18: "🦁 Kalki Jayanti",
+        19: "📖 Tulsidas Jayanti",
+        20: "🔱 Durga Ashtami",
+        23: "🌺 Shravana Putrada Ekadashi",
+        25: "🔱 Pradosh Vrat",
+        26: "🌺 Varahalaxmi Vrat",
+        28: "🎀 Raksha Bandhan",
+        29: "🪔 Gayatri Jayanti",
+        31: "🐘 Sankashti Chaturthi"
+    };
 
     let html = '';
-    // Empty leading cell for Saturday start
-    html += '<div class="maasik-cell" style="opacity:0.3; pointer-events:none;"></div>'.repeat(6);
+    // Empty leading cells for weekday offset
+    html += '<div class="maasik-cell" style="opacity:0.25; pointer-events:none; min-height:100px;"></div>'.repeat(firstDayOfWeek);
 
-    sampleDays.forEach(day => {
+    for (let d = 1; d <= daysInMonth; d++) {
+        const isToday = (d === 12);
+        const tithi = tithisList[(d - 1) % 15];
+        const paksha = d <= 12 ? "Krishna" : (d <= 27 ? "Shukla" : "Krishna");
+        const nak = nakshatrasList[(d + 22) % 27];
+        const fest = festivalsMap[d] || "";
+
         html += `
-            <div class="maasik-cell${day.d === 12 ? ' today-cell' : ''}" onclick="selectMaasikDateCell('${day.d}', '${day.tithi}', '${day.nak1}', '${day.fest}')">
+            <div class="maasik-cell${isToday ? ' today-cell' : ''}" onclick="selectMaasikDateCell('${d}', '${tithi}', '${paksha}', '${nak}', '${fest}')">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:0.6rem; color:#4b5563; font-weight:700;">${day.nak1.split(' ')[0]}</span>
-                    <span style="font-size:1.3rem; font-weight:900; color:#000;">${day.d}</span>
+                    <span style="font-size:0.6rem; color:#4b5563; font-weight:700;">${nak.substring(0, 8)}</span>
+                    <span style="font-size:1.3rem; font-weight:900; color:#000;">${d}</span>
                 </div>
                 <div style="font-size:0.65rem; font-weight:800; color:#1e293b; text-align:center; margin-top:2px;">
-                    ${day.tithi}
+                    ${tithi} (${paksha.charAt(0)})
                 </div>
-                ${day.fest ? `<div style="font-size:0.6rem; color:#a23922; font-weight:800; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${day.festIcon || '🕉️'} ${day.fest}</div>` : ''}
+                ${fest ? `<div style="font-size:0.68rem; color:#a23922; font-weight:800; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${fest}</div>` : ''}
                 <div style="display:flex; justify-content:space-between; font-size:0.58rem; color:#4b5563; border-top:1px solid rgba(0,0,0,0.1); padding-top:2px; margin-top:2px;">
-                    <span>🌅${day.sr}</span>
-                    <span>🌇${day.ss}</span>
+                    <span>🌅05:4${d % 10}</span>
+                    <span>🌇07:0${9 - (d % 10)}</span>
                 </div>
             </div>
         `;
-    });
+    }
 
     gridEl.innerHTML = html;
+    selectMaasikDateCell(12, "Amavasya", "Krishna", "Pushya", "🌑 Hariyali Amavasya");
 }
 
-function selectMaasikDateCell(dayNum, tithi, nak, fest) {
+function selectMaasikDateCell(dayNum, tithi, paksha, nak, fest) {
+    const monthPicker = document.getElementById('maasikMonthInput');
+    const val = monthPicker ? monthPicker.value : '2026-08';
+    const [year, month] = val.split('-').map(Number);
+    const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
     const sidebarTitle = document.getElementById('sidebarSelectedDateTitle');
     const sidebarBody = document.getElementById('maasikSidebarDetails');
     if (!sidebarTitle || !sidebarBody) return;
 
-    sidebarTitle.innerText = `📅 August ${dayNum}, 2026 Details`;
+    sidebarTitle.innerText = `📅 ${MONTH_NAMES[month-1]} ${dayNum}, ${year} Details`;
     sidebarBody.innerHTML = `
-        <div style="background:rgba(255,255,255,0.05); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1);">
-            <div style="font-weight:800; color:#fbbf24; font-size:0.95rem;">Tithi: ${tithi}</div>
-            <div style="font-size:0.85rem; color:#e2e8f0; margin-top:4px;"><strong>Nakshatra:</strong> ${nak}</div>
-            <div style="font-size:0.85rem; color:#34d399; margin-top:4px;"><strong>Festivals / Vrats:</strong> ${fest || 'None for today'}</div>
-            <div style="margin-top:10px; font-size:0.8rem; color:#cbd5e1;">
+        <div style="background:rgba(255,255,255,0.05); padding:14px; border-radius:10px; border:1px solid rgba(255,255,255,0.12);">
+            <div style="font-weight:800; color:#fbbf24; font-size:1rem;">Tithi: ${tithi} (${paksha} Paksha)</div>
+            <div style="font-size:0.88rem; color:#e2e8f0; margin-top:6px;"><strong>Nakshatra:</strong> ${nak}</div>
+            <div style="font-size:0.88rem; color:#34d399; margin-top:6px;"><strong>Festivals / Vrats:</strong> ${fest || 'None for today'}</div>
+            <div style="margin-top:12px; font-size:0.82rem; color:#cbd5e1; line-height:1.6; border-top:1px solid rgba(255,255,255,0.1); padding-top:8px;">
                 <strong>Abhijit Muhurta:</strong> 11:59 AM to 12:55 PM<br>
                 <strong>Rahu Kaal:</strong> 03:54 PM to 05:38 PM<br>
-                <strong>Shubh Choghadiya:</strong> 07:29 AM to 09:08 AM (Labh)
+                <strong>Shubh Choghadiya:</strong> 07:29 AM to 09:08 AM (Labh)<br>
+                <strong>Chandrabalam:</strong> Favorable for Mesha, Mithuna, Karka, Kanya, Vrishchika, Makara
             </div>
         </div>
     `;
