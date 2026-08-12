@@ -108,6 +108,16 @@ if (!$conn) {
     // Force columns to LONGTEXT so large JSON engine payloads never get truncated
     @mysqli_query($conn, "ALTER TABLE users MODIFY COLUMN cached_kundali_json LONGTEXT;");
     @mysqli_query($conn, "ALTER TABLE users MODIFY COLUMN kundali_analytics LONGTEXT;");
+
+    // Migration: Copy last_log into created_at and drop last_log column once verified
+    @mysqli_query($conn, "UPDATE users SET created_at = last_log WHERE last_log IS NOT NULL AND last_log != ''");
+    $mig_check = @mysqli_query($conn, "SELECT COUNT(*) as unmigrated FROM users WHERE last_log IS NOT NULL AND last_log != '' AND created_at != last_log");
+    if ($mig_check) {
+        $row = mysqli_fetch_assoc($mig_check);
+        if (isset($row['unmigrated']) && intval($row['unmigrated']) == 0) {
+            @mysqli_query($conn, "ALTER TABLE users DROP COLUMN last_log");
+        }
+    }
 }
 
 function db_query($sql) {

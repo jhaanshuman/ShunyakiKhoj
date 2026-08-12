@@ -3,135 +3,152 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vedic Panchanga Guide & Calculation Mechanics — Dainik & Maasik Panchang | ShunyakiKhoj</title>
-<meta name="description" content="Comprehensive educational guide on Vedic Panchanga: Tithi, Vara, Nakshatra, Yoga, Karana, Drik Ganita astronomy, Lahiri Ayanamsha, Rahu Kaal, and Choghadiya calculations.">
-<meta name="keywords" content="panchang guide, tithi calculation, nakshatra math, rahu kaal formula, choghadiya timings, drik ganita, lahiri ayanamsha, abhijit muhurta">
+<title>Aaj Ka Panchang — Complete Dainik Panchang, Tithi, Nakshatra &amp; Muhurta | ShunyakiKhoj</title>
+<meta name="description" content="Real-time Dainik Panchang: Tithi, Nakshatra, Yoga, Karana, Vara, Rahu Kaal, Abhijit Muhurta, Shubh Choghadiya, Chandrabalam, Tarabalam, and Drik Ganita ephemeris calculations.">
+<meta name="keywords" content="aaj ka panchang, dainik panchang, today tithi, today nakshatra, rahu kaal today, abhijit muhurta, choghadiya timings, drik ganita, lahiri ayanamsha">
 <link rel="canonical" href="https://shunyakikhoj.co.in/panchang/">
 
 <!-- OpenGraph & Twitter -->
-<meta property="og:title" content="Vedic Panchanga Guide & Calculation Mechanics — ShunyakiKhoj">
-<meta property="og:description" content="Authoritative guide explaining Tithi, Vara, Nakshatra, Yoga, Karana, Drik Ganita astronomical observation, and Rahu Kaal calculations.">
-<meta property="og:type" content="article">
+<meta property="og:title" content="Aaj Ka Panchang — Complete Dainik Panchang &amp; Muhurta Engine">
+<meta property="og:description" content="High-precision Drik Ganita Dainik Panchang: Tithi, Nakshatra, Yoga, Karana, Rahu Kaal, Abhijit Muhurta, Chandrabalam, Tarabalam for any city worldwide.">
+<meta property="og:type" content="website">
 <meta property="og:url" content="https://shunyakikhoj.co.in/panchang/">
 <meta property="og:image" content="https://shunyakikhoj.co.in/logo.png">
 
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css?v=12.0.0">
+<script src="/nav.js?v=12.0.0" defer></script>
+<script src="/Static/js/landing_hydrator.js?v=9.0.0" defer></script>
+<script src="/Features/Astrology/vedic_data.js?v=2.2.0"></script>
+<script src="/Features/Astrology/vedic_database.js?v=2.2.0"></script>
+<script src="/Features/Astrology/astrology.js?v=4.0.0" defer></script>
 <style>
-.guide-container {
-    max-width: 1100px;
-    margin: 30px auto;
-    padding: 25px;
-    background: rgba(15, 23, 42, 0.92);
-    border-radius: 16px;
+.panchang-hub-container {
+    width: 100% !important;
+    max-width: 1320px !important;
+    margin: 15px auto !important;
+    padding: 0 12px !important;
+    box-sizing: border-box !important;
+}
+.guide-section-box {
+    margin-top: 35px;
+    background: rgba(15, 23, 42, 0.95);
     border: 1.5px solid rgba(245, 158, 11, 0.35);
+    border-radius: 16px;
+    padding: 30px;
     color: #f8fafc;
     box-shadow: 0 12px 35px rgba(0,0,0,0.5);
 }
-.guide-title {
-    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+.guide-title-text {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
     font-weight: 800;
     color: #f59e0b;
     border-bottom: 2px solid rgba(245, 158, 11, 0.3);
     padding-bottom: 12px;
     margin-bottom: 15px;
 }
-.guide-lead {
-    font-size: 1.1rem;
-    color: #cbd5e1;
-    line-height: 1.7;
-    margin-bottom: 25px;
-}
-.guide-section {
-    margin-top: 30px;
-    background: rgba(30, 41, 59, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 20px;
-}
-.guide-h2 {
-    font-size: 1.4rem;
-    color: #f59e0b;
-    margin-top: 0;
-    border-bottom: 1px solid rgba(245, 158, 11, 0.2);
-    padding-bottom: 6px;
-}
-.guide-p {
-    font-size: 0.95rem;
-    color: #e2e8f0;
-    line-height: 1.7;
-    margin-bottom: 15px;
-}
-.guide-ul {
-    padding-left: 20px;
-    color: #cbd5e1;
-    line-height: 1.7;
-    margin-bottom: 15px;
-}
-.cta-box {
-    text-align: center;
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(234, 88, 12, 0.15) 100%);
-    border: 1.5px solid #f59e0b;
-    border-radius: 12px;
-    padding: 25px;
-    margin: 30px 0;
-}
 </style>
 </head>
-<body class="theme-dark">
+<body class="theme-dark dark-theme">
 
-<div class="guide-container">
-    <h1 class="guide-title">☀️ Complete Guide to Vedic Panchanga & Astronomical Calculation</h1>
-    <p class="guide-lead">The <strong>Vedic Panchanga</strong> (पञ्चाङ्ग) is the traditional Hindu astronomical almanac that structures time based on real-time movements of the Sun and Moon. Meaning "five limbs," the Panchanga evaluates the energetic fabric of every moment through Tithi, Vara, Nakshatra, Yoga, and Karana. ShunyakiKhoj provides pre-rendered research and high-precision calculations powered by NASA JPL ephemeris algorithms.</p>
+<!-- TOP HEADER NAVIGATION BAR -->
+<header class="header" style="position:relative; top:0;">
+<div class="logo-area">
+<span class="menu-icon" style="margin-right: 15px; margin-left: 0; font-size: 1.4rem; cursor: pointer; color: var(--text-color); user-select: none;">☰</span>
+<a href="/" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+    <img src="/logo.png" class="logo" style="width:34px; height:34px;">
+    <h1 style="line-height: 1.1; font-size:1.1rem; color:var(--saffron); margin:0;">Sanskrit AI</h1>
+</a>
+</div>
+<div class="header-icons">
+    <select id="langSelector" style="background: var(--tile-bg); border: 1.5px solid var(--card-border); border-radius: 6px; color: var(--text-color); font-weight: 700; font-size: 0.8rem; padding: 3px 6px; cursor: pointer; outline: none; margin-right: 10px;">
+        <option value="hi">हिन्दी</option>
+        <option value="en" selected>English</option>
+    </select>
+    <a href="/" style="color:#fbbf24; text-decoration:none; font-weight:700; font-size:0.85rem;">🏠 Home Portal</a>
+</div>
+</header>
 
-    <div class="cta-box">
-        <h3 style="color: #f59e0b; margin-top: 0; font-size: 1.3rem;">🔮 Interactive Dainik &amp; Maasik Panchang Tool</h3>
-        <p style="color: #e2e8f0; margin-bottom: 15px;">Compute real-time Tithi, Nakshatra, Choghadiya, Rahu Kaal, and Shubh Muhurta for any city worldwide using Drik Ganita planetary observations.</p>
-        <a href="/landing.html?tab=panchang" class="ph-today-btn" style="text-decoration:none; background:#ea580c; border-color:#ea580c; color:#fff; padding: 12px 28px; font-size: 1.05rem;">Launch Live Panchang Calculator</a>
+<div class="panchang-hub-container">
+
+    <!-- 1. LIVE DAINIK PANCHANG TOP HEADER CARD -->
+    <div class="glass-card status-header-card" style="margin-bottom: 1.5rem; border: 2px solid #a23922; background: var(--card-bg); position: relative; padding: 14px 20px; width: 100% !important; box-sizing: border-box !important; overflow: visible !important; z-index: 99999 !important;">
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <div class="moon-phase-icon-container" style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; border: 1.5px solid #a23922; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;" id="headerMoonIcon">🌕</div>
+                <div>
+                    <h1 id="headerMonthTithi" style="margin: 0; font-size: 1.3rem; font-weight: 900; color: #000000 !important;">Dainik Panchang &amp; Vedic Almanac</h1>
+                    <p id="headerPakshaSamvat" style="margin: 2px 0 0 0; font-size: 0.82rem; color: #ffffff !important; font-weight: 600;">Shaka Samvat 1948 &amp; Vikram Samvat 2083 | Drik Ganita Mode</p>
+                </div>
+            </div>
+
+            <!-- Global City Location Searcher Input -->
+            <div style="display: flex; align-items: center; gap: 8px; position: relative; z-index: 999999 !important;">
+                <span style="font-size: 1.1rem; line-height: 1;">📍</span>
+                <input type="text" id="landingCitySearchInput" placeholder="Search city worldwide..." autocomplete="off" style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid #fbbf24; border-radius: 20px; color: #ffffff; font-weight: 800; font-size: 0.82rem; padding: 6px 14px; cursor: text; outline: none; width: 280px; max-width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+            </div>
+        </div>
     </div>
 
-    <section class="guide-section">
-        <h2 class="guide-h2">1. What is Panchanga? The Five Sacred Limbs</h2>
-        <p class="guide-p">In Sanatana Dharma, time is not merely a quantitative linear ticker; it is a qualitative wave governed by cosmic bodies. The five limbs (Angas) of Panchanga correspond to specific solar-lunar geometric relationships:</p>
-        <ul class="guide-ul">
-            <li><strong>Tithi (Lunar Day)</strong>: The time period during which the Moon advances 12 degrees ahead of the Sun. There are 30 Tithis in a lunar month (15 in Sukla Paksha / Waxing and 15 in Krishna Paksha / Waning).</li>
-            <li><strong>Vara (Solar Weekday)</strong>: The 7 solar days (Ravivara to Shanivara) governed sequentially by the 7 classical planets (Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn).</li>
-            <li><strong>Nakshatra (Lunar Mansion)</strong>: The exact stellar constellation occupied by the Moon, dividing the 360° ecliptic into 27 equal divisions of 13°20' each.</li>
-            <li><strong>Yoga (Sol-Lunar Combination)</strong>: Calculated by adding the celestial longitudes of the Sun and Moon, divided into 27 equal divisions of 13°20' (from Vishkumbha to Vaidhriti).</li>
-            <li><strong>Karana (Half Lunar Day)</strong>: Half of a Tithi (6° Moon-Sun elongation). There are 11 Karanas: 7 moveable (Bava, Balava, Kaulava, Taitila, Gara, Vanija, Vishti) and 4 fixed (Shakuni, Chatushpada, Naga, Kintughna).</li>
-        </ul>
-    </section>
+    <!-- 2. INTERACTIVE DAINIK PANCHANG DASHBOARD CONTAINER -->
+    <div id="panchangBody" style="width: 100%; box-sizing: border-box; margin-bottom: 30px;">
+        <!-- Hydrated dynamically by renderPanchang() in astrology.js -->
+        <div style="text-align: center; padding: 40px; color: #fbbf24; font-size: 1.1rem; font-weight: 700;">
+            🪔 Computing High-Precision Drik Ganita Panchang Calculations...
+        </div>
+    </div>
 
-    <section class="guide-section">
-        <h2 class="guide-h2">2. Drik Ganita vs. Surya Siddhanta Astronomy</h2>
-        <p class="guide-p">Historically, Panchanga calculations relied on mean planetary motion constants codified in classical texts like <em>Surya Siddhanta</em>. However, because planetary orbits are elliptical and subject to gravitational perturbations, calculated positions drifted from observed sky positions over centuries.</p>
-        <p class="guide-p">In modern times, scholars like Bal Gangadhar Tilak established <strong>Drik Ganita</strong> (observation-proven astronomy). ShunyakiKhoj utilizes the Swiss Ephemeris engine (developed from NASA JPL DE431 numerical integration) combined with <strong>Lahiri (Chitrapaksha) Ayanamsha</strong> (approx. 24°09' precession angle). This guarantees that festival dates, eclipses, and Tithi endings match exact physical sky observations anywhere on Earth.</p>
-    </section>
+    <!-- 3. EDUCATIONAL PANCHANGA MECHANICS GUIDE BELOW -->
+    <article class="guide-section-box">
+        <h2 class="guide-title-text">☀️ Complete Guide to Vedic Panchanga &amp; Astronomical Calculation</h2>
+        <p style="font-size: 1rem; color: #cbd5e1; line-height: 1.7;">The <strong>Vedic Panchanga</strong> (पञ्चाङ्ग) is the traditional Hindu astronomical almanac that structures time based on real-time movements of the Sun and Moon. Meaning "five limbs," the Panchanga evaluates the energetic fabric of every moment through Tithi, Vara, Nakshatra, Yoga, and Karana. ShunyakiKhoj provides pre-rendered research and high-precision calculations powered by NASA JPL ephemeris algorithms.</p>
 
-    <section class="guide-section">
-        <h2 class="guide-h2">3. Mathematical Formulas for Panchanga Elements</h2>
-        <p class="guide-p">For researchers and students of Vedic astronomy, the core formulas used in our computational engine are:</p>
-        <ul class="guide-ul">
-            <li><code>Tithi Index = floor(((Longitude_Moon - Longitude_Sun + 360) % 360) / 12) + 1</code></li>
-            <li><code>Nakshatra Index = floor((Longitude_Moon % 360) / 13.333333) + 1</code></li>
-            <li><code>Yoga Index = floor(((Longitude_Moon + Longitude_Sun) % 360) / 13.333333) + 1</code></li>
-            <li><code>Karana Index = floor(((Longitude_Moon - Longitude_Sun + 360) % 360) / 6) + 1</code></li>
-            <li><code>Rahu Kaal = Daytime / 8 * Weekday_Segment_Offset</code></li>
-        </ul>
-    </section>
+        <section style="margin-top: 25px;">
+            <h3 style="font-size: 1.3rem; color: #f59e0b; border-bottom: 1px solid rgba(245, 158, 11, 0.2); padding-bottom: 6px;">1. What is Panchanga? The Five Sacred Limbs</h3>
+            <ul style="padding-left: 20px; color: #e2e8f0; line-height: 1.7; font-size: 0.95rem;">
+                <li><strong>Tithi (Lunar Day)</strong>: The time period during which the Moon advances 12 degrees ahead of the Sun. There are 30 Tithis in a lunar month (15 in Sukla Paksha and 15 in Krishna Paksha).</li>
+                <li><strong>Vara (Solar Weekday)</strong>: The 7 solar days (Ravivara to Shanivara) governed sequentially by the 7 classical planets.</li>
+                <li><strong>Nakshatra (Lunar Mansion)</strong>: The exact stellar constellation occupied by the Moon, dividing the 360° ecliptic into 27 equal divisions of 13°20' each.</li>
+                <li><strong>Yoga (Sol-Lunar Combination)</strong>: Calculated by adding the celestial longitudes of the Sun and Moon, divided into 27 equal divisions of 13°20'.</li>
+                <li><strong>Karana (Half Lunar Day)</strong>: Half of a Tithi (6° Moon-Sun elongation). There are 11 Karanas (7 moveable, 4 fixed).</li>
+            </ul>
+        </section>
 
-    <section class="guide-section">
-        <h2 class="guide-h2">4. Rahu Kaal, Choghadiya and Auspicious Muhurtas</h2>
-        <p class="guide-p">Auspicious timing (Muhurta) selection requires identifying favorable windows while steering clear of unfavorable planetary shadow periods:</p>
-        <p class="guide-p"><strong>Rahu Kaal</strong>: An 90-minute daily window governed by Rahu. Important commercial transactions, travel, and religious rites are avoided during Rahu Kaal.</p>
-        <p class="guide-p"><strong>Abhijit Muhurta</strong>: The 8th Muhurta of the day (centered precisely around local Solar Noon). It is universally auspicious and neutralizes minor astrological doshas.</p>
-        <p class="guide-p"><strong>Choghadiya</strong>: Divides day and night into 7 recurring 1.5-hour windows (Amrit, Shubh, Labh, Chara, Roga, Kaal, Udveg). Amrit, Shubh, and Labh are favorable, while Roga, Kaal, and Udveg are avoided.</p>
-    </section>
+        <section style="margin-top: 25px;">
+            <h3 style="font-size: 1.3rem; color: #f59e0b; border-bottom: 1px solid rgba(245, 158, 11, 0.2); padding-bottom: 6px;">2. Drik Ganita vs. Surya Siddhanta Astronomy</h3>
+            <p style="font-size: 0.95rem; color: #e2e8f0; line-height: 1.7;">In modern times, scholars established <strong>Drik Ganita</strong> (observation-proven astronomy). ShunyakiKhoj utilizes the Swiss Ephemeris engine (developed from NASA JPL DE431 numerical integration) combined with <strong>Lahiri (Chitrapaksha) Ayanamsha</strong> (approx. 24°09' precession angle). This guarantees that festival dates, eclipses, and Tithi endings match exact physical sky observations anywhere on Earth.</p>
+        </section>
+    </article>
 
-    <footer style="margin-top: 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; color: #94a3b8; font-size: 0.85rem;">
-        <p>© 2026 ShunyakiKhoj | <a href="https://shunyakikhoj.co.in" style="color: #f59e0b; text-decoration: none;">shunyakikhoj.co.in</a> — Authoritative Vedic Astronomy &amp; Panchang Portal</p>
-        <p>Calculated using Drik Ganita &amp; Swiss Ephemeris · Editorial Direction by <strong>Anshuman Jha</strong></p>
-    </footer>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Automatically trigger full Dainik Panchang rendering on page load
+    setTimeout(() => {
+        if (typeof window.renderPanchang === 'function') {
+            const fallbackData = {
+                panchang: {
+                    tithi: "Amavasya",
+                    nakshatra: "Pushya",
+                    yoga: "Vyatipata",
+                    karana: "Chatushpada",
+                    vara: "Budhawara",
+                    sunrise: "05:49 AM",
+                    sunset: "07:03 PM",
+                    month: "Ashadha",
+                    paksha: "Krishna Paksha",
+                    tithis_list: [{ name: "Amavasya", end: "07:03 PM" }],
+                    nakshatras_list: [{ name: "Pushya", end: "08:09 AM" }],
+                    yogas_list: [{ name: "Vyatipata", end: "10:42 PM" }],
+                    karanas_list: [{ name: "Chatushpada", end: "07:03 PM" }]
+                },
+                regional: { samvat: "2083", shaka: "1948" }
+            };
+            window.renderPanchang('panchangBody', fallbackData.panchang, fallbackData.regional);
+        }
+    }, 400);
+});
+</script>
 
 </body>
 </html>
