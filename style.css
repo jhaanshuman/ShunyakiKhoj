@@ -5407,5 +5407,130 @@ p, body, button, input, select {
     }
 }
 
+/* ==========================================================================
+   DRIKPANCHANG-STYLE 5x3 GRID LANDING SYSTEM (v12.0.0)
+   ========================================================================== */
+.drik-landing-container {
+    width: 100%;
+    max-width: 1380px;
+    margin: 20px auto 40px;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+.drik-landing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 30px;
+}
+
+/* Mobile Responsiveness: Block Stacking Left > Center > Right */
+@media (max-width: 1024px) {
+    .drik-landing-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+}
+
+.drik-card {
+    background: rgba(15, 23, 42, 0.88) !important;
+    backdrop-filter: blur(16px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+    border: 1px solid rgba(251, 191, 36, 0.25) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5) !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.drik-card:hover {
+    border-color: rgba(251, 191, 36, 0.5) !important;
+    transform: translateY(-2px);
+}
+
+.drik-card-header {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.18), rgba(217, 119, 6, 0.15)) !important;
+    border-bottom: 1px solid rgba(251, 191, 36, 0.2) !important;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.drik-card-title {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: #fbbf24 !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.drik-card-body {
+    padding: 12px 14px;
+    flex: 1;
+    color: #e2e8f0;
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.drik-card-footer {
+    padding: 8px 14px;
+    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: right;
+}
+
+.drik-more-link {
+    color: #fbbf24 !important;
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.2s ease;
+}
+
+.drik-more-link:hover {
+    color: #ffffff !important;
+    text-decoration: underline;
+}
+
+.drik-link-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.drik-link-list li {
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.drik-link-list li:last-child {
+    border-bottom: none;
+}
+
+.drik-link-list a {
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.drik-link-list a:hover {
+    color: #fbbf24 !important;
+    transform: translateX(3px);
+}
+
 
 

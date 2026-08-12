@@ -210,6 +210,7 @@ gtag('js', new Date());
 gtag('config','G-DZ2CM1SBWW');
 </script>
 <script src="/nav.js?v=12.0.0" defer></script>
+<script src="/Static/js/landing_hydrator.js?v=1.0.0" defer></script>
 <script src="/Features/Astrology/vedic_data.js?v=2.2.0"></script>
 <script src="/Features/Astrology/vedic_database.js?v=2.2.0"></script>
 <script src="/Static/data/wisdom_database.js?v=2.2.0" defer></script>
@@ -481,19 +482,266 @@ window.__h82AlnkH6D91__("WyJwdWItMTM0MjE4OTU3NDg1ODY3MiIsW251bGwsbnVsbCxudWxsLCJ
         Tooltip content.
     </div>
 
-    <!-- 7. Portal Welcome & Directory Grid -->
+    <!-- 7. DRIKPANCHANG 5x3 GRID LANDING SYSTEM (15 SECTIONS) -->
     <div id="homeWelcomeSection" style="display: block;">
-        <div class="homepage-three-column-grid">
-            <!-- Left Menu Sidebar NavBar -->
-            <aside class="left-ad-sidebar" id="leftMenuSidebar" style="padding: 15px; background: var(--card-bg); border: var(--card-border); border-radius: 8px; overflow-y: auto; max-height: calc(100vh - 150px); transition: all 0.3s ease;">
-                <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; text-align:center; margin-bottom:8px; font-weight:700; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 6px;">Navigation Menu</div>
-                <div class="drawer-content" id="sidebarAccordion" style="padding: 0;">
-                    <!-- Filled dynamically by JavaScript -->
+        <div class="drik-landing-container">
+            <div class="drik-landing-grid">
+                
+                <!-- ── ROW 1 ── -->
+                <!-- Section 1 (Left): Panchang for Today -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">⏰ Panchang for Today</h3>
+                    </div>
+                    <div class="drik-card-body" id="todayPanchangBox">
+                        <div style="color:#94a3b8;">Loading live Panchang data...</div>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/panchang/daily/" class="drik-more-link">MORE »</a>
+                    </div>
                 </div>
-            </aside>
-            
-            <!-- Center Content: Feature Showcase -->
-            <main class="center-feature-showcase" id="phalDeepikaChat">
+
+                <!-- Section 2 (Middle): Lagna Kundali -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">📜 Lagna Kundali</h3>
+                    </div>
+                    <div class="drik-card-body" id="todayLagnaChart">
+                        <div style="color:#94a3b8;">Rendering live Lagna chart...</div>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/kundli/generate/" class="drik-more-link">MORE »</a>
+                    </div>
+                </div>
+
+                <!-- Section 3 (Right): Upcoming Upavas & Festivals -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">🪔 Upcoming Upavas &amp; Festivals</h3>
+                    </div>
+                    <div class="drik-card-body" id="upcomingFestivalsList">
+                        <div style="color:#94a3b8;">Loading upcoming festival calendar...</div>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/festivals/" class="drik-more-link">MORE »</a>
+                    </div>
+                </div>
+
+                <!-- ── ROW 2 ── -->
+                <!-- Section 4 (Left): Upcoming Planetary Events -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">🪐 Upcoming Planetary Events</h3>
+                    </div>
+                    <div class="drik-card-body" id="planetaryEventsList">
+                        <div style="color:#94a3b8;">Calculating planetary transits...</div>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/planets/" class="drik-more-link">MORE »</a>
+                    </div>
+                </div>
+
+                <!-- Section 5 (Middle): Rashifal for Today -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">🦁 Rashifal for Today</h3>
+                    </div>
+                    <div class="drik-card-body" id="dailyRashifalList">
+                        <div style="color:#94a3b8;">Fetching daily horoscopes...</div>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/landing.html?tab=rashifal" class="drik-more-link">MORE »</a>
+                    </div>
+                </div>
+
+                <!-- Section 6 (Right): Vedic Time for New Delhi -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">⏱️ Vedic Time for New Delhi</h3>
+                    </div>
+                    <div class="drik-card-body" style="text-align:center;">
+                        <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">Ghati : Pal : Vipal</div>
+                        <div id="vedicClockDisplay" style="font-size:1.8rem; font-weight:800; color:#fbbf24; margin:6px 0;">38:27:57</div>
+                        <div style="font-size:0.72rem; color:#cbd5e1; margin-bottom:10px;">Sunrise 05:49 AM | Sunset 07:03 PM</div>
+                        <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">Gregorian Time</div>
+                        <div id="gregorianClockDisplay" style="font-size:1.3rem; font-weight:700; color:#ffffff;">22:05:34</div>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/panchang/hora/" class="drik-more-link">MORE »</a>
+                    </div>
+                </div>
+
+                <!-- ── ROW 3 ── -->
+                <!-- Section 7 (Left): Hindu Panchang & Calendars -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">📖 Hindu Panchang</h3>
+                    </div>
+                    <div class="drik-card-body">
+                        <ul class="drik-link-list">
+                            <li><a href="/panchang/">📜 Panchang, Bengali Panjika</a></li>
+                            <li><a href="/panchang/daily/">☀️ Tamil Panchangam</a></li>
+                            <li><a href="/panchang/monthly/">📆 Telugu Panchangam</a></li>
+                            <li><a href="/panchang/">🗓️ Malayalam Panchangam</a></li>
+                        </ul>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/panchang/" class="drik-more-link">MORE »</a>
+                    </div>
+                </div>
+
+                <!-- Section 8 (Middle): Muhurat -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">✨ Muhurat Finder</h3>
+                    </div>
+                    <div class="drik-card-body">
+                        <ul class="drik-link-list">
+                            <li><a href="/panchang/choghadiya/">⏱️ Choghadiya, Do Ghati, Hora</a></li>
+                            <li><a href="/muhurta/">💍 Vivah Muhurat, Property</a></li>
+                            <li><a href="/muhurta/">🚘 Vehicle Purchase, Griha Pravesh</a></li>
+                            <li><a href="/muhurta/">✨ Panchaka Rahita, Pancha Pakshi</a></li>
+                        </ul>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/muhurta/" class="drik-more-link">MORE »</a>
+                    </div>
+                </div>
+
+                <!-- Section 9 (Right): Major Festivals -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">🪔 Major Festivals</h3>
+                    </div>
+                    <div class="drik-card-body">
+                        <ul class="drik-link-list">
+                            <li><a href="/festivals/">🪔 Diwali, Rakhi, Shivaratri, Holi</a></li>
+                            <li><a href="/festivals/">🌺 Ganesha Chaturthi, Durga Puja</a></li>
+                            <li><a href="/festivals/">🌾 Navratri, Dussehra, Sankranti</a></li>
+                            <li><a href="/festivals/">🌙 Karwa Chauth, Janmashtami</a></li>
+                        </ul>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/festivals/" class="drik-more-link">MORE »</a>
+                    </div>
+                </div>
+
+                <!-- ── ROW 4 ── -->
+                <!-- Section 10 (Left): Jyotish Utilities -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">🔮 Jyotish Utilities</h3>
+                    </div>
+                    <div class="drik-card-body">
+                        <ul class="drik-link-list">
+                            <li><a href="/kundli/generate/">🧘 Gemstone, Rudraksha, Kundali</a></li>
+                            <li><a href="/kundli-matching/">💞 Horoscope Match, Prashna Kundali</a></li>
+                            <li><a href="/dasha-systems/">🌳 Kalasarpa Yoga, Rashi, Lagna</a></li>
+                            <li><a href="/divisional-charts/">📐 Birthstar, Baby Name Calculator</a></li>
+                        </ul>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/kundli/" class="drik-more-link">MORE »</a>
+                    </div>
+                </div>
+
+                <!-- Section 11 (Middle): Panchang Utilities -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">🛡️ Panchang Utilities</h3>
+                    </div>
+                    <div class="drik-card-body">
+                        <ul class="drik-link-list">
+                            <li><a href="/panchang/rahu-kalam/">🛡️ Rahu Kala, Panchak</a></li>
+                            <li><a href="/panchang/">⚡ Bhadra, Ganda Mool</a></li>
+                            <li><a href="/panchang/">🌅 Hindu Sunrise, Abhijit</a></li>
+                            <li><a href="/panchang/hora/">⌛ Shubha Horai Chakra, Nakshatra</a></li>
+                        </ul>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/panchang/" class="drik-more-link">MORE »</a>
+                    </div>
+                </div>
+
+                <!-- Section 12 (Right): Yoga in Astrology -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">☸️ Yoga in Astrology</h3>
+                    </div>
+                    <div class="drik-card-body">
+                        <ul class="drik-link-list">
+                            <li><a href="/landing.html?page=wisdom&category=yantra">⭐ Gurupushyamrut Yoga</a></li>
+                            <li><a href="/landing.html?page=wisdom&category=mantra">✨ Sarvarthasiddhi Yoga</a></li>
+                            <li><a href="/landing.html?page=wisdom&category=stotra">🌟 Dwipushkar Yoga</a></li>
+                            <li><a href="/landing.html?page=wisdom&category=puja">☀️ Ravi Pushya Yoga</a></li>
+                        </ul>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/landing.html?page=wisdom" class="drik-more-link">MORE »</a>
+                    </div>
+                </div>
+
+                <!-- ── ROW 5 ── -->
+                <!-- Section 13 (Left): Vrat and Upavas -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">🛐 Vrat and Upavas</h3>
+                    </div>
+                    <div class="drik-card-body">
+                        <ul class="drik-link-list">
+                            <li><a href="/vrat/">🌙 Sankashti Chaturthi</a></li>
+                            <li><a href="/vrat/">✨ Vinayaka Chaturthi, Ekadashi Dates</a></li>
+                            <li><a href="/vrat/">🪔 Dwadashi, Pradosham</a></li>
+                            <li><a href="/vrat/">🌕 Purnima Fasting Dates</a></li>
+                        </ul>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/vrat/" class="drik-more-link">MORE »</a>
+                    </div>
+                </div>
+
+                <!-- Section 14 (Middle): Vrat Katha -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">📜 Vrat Katha</h3>
+                    </div>
+                    <div class="drik-card-body">
+                        <ul class="drik-link-list">
+                            <li><a href="/landing.html?page=wisdom&category=vrat_katha">📖 Satyanarayana Vrat Katha</a></li>
+                            <li><a href="/landing.html?page=wisdom&category=vrat_katha">📜 Ekadashi Vrat Katha</a></li>
+                            <li><a href="/landing.html?page=wisdom&category=vrat_katha">🌙 Karwa Chauth Vrat Katha</a></li>
+                            <li><a href="/landing.html?page=wisdom&category=vrat_katha">🪔 Ahoi Ashtami Vrat Katha</a></li>
+                        </ul>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/landing.html?page=wisdom&category=vrat_katha" class="drik-more-link">MORE »</a>
+                    </div>
+                </div>
+
+                <!-- Section 15 (Right): Planetary Events & Astronomy -->
+                <div class="drik-card">
+                    <div class="drik-card-header">
+                        <h3 class="drik-card-title">🌌 Hindu Astronomy</h3>
+                    </div>
+                    <div class="drik-card-body">
+                        <ul class="drik-link-list">
+                            <li><a href="/planets/">🪐 Sidereal &amp; Tropical Zodiacs</a></li>
+                            <li><a href="/planets/">🔄 Planet Retrograde &amp; Combustion</a></li>
+                            <li><a href="/planets/">🌑 Solar Eclipse, Lunar Eclipse</a></li>
+                            <li><a href="/research/">📚 Vernal Equinox, Indian Seasons</a></li>
+                        </ul>
+                    </div>
+                    <div class="drik-card-footer">
+                        <a href="/planets/" class="drik-more-link">MORE »</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. ABOUT US & PHALDEEPIKA AI SHOWCASE SECTION (SPANNING 90% WIDTH BELOW ROW 5) -->
+    <main class="center-feature-showcase" id="phalDeepikaChat" style="max-width: 90% !important; margin: 30px auto !important;">
 
 
 
