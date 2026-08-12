@@ -67,6 +67,9 @@ function parseUrlPath(urlObj) {
             if (parts.length > 1) {
                 tab = parts[1];
             }
+        } else if (parts[0] === 'panchang') {
+            page = 'home';
+            tab = 'panchang';
         } else {
             page = parts[0];
             if (parts.length > 1) {
@@ -1602,9 +1605,9 @@ document.addEventListener('click', (e) => {
         
         if (parsedOrigin === localOrigin) {
             const path = parsed.pathname.toLowerCase();
-            // Exclude assets, robots, sitemap, auth, and list_events
+            // Exclude assets, robots, sitemap, auth, panchang directory, and list_events
             if (!path.includes('.') || path.endsWith('.html') || path.endsWith('.htm')) {
-                if (!path.includes('/api/') && !path.includes('/userlog/') && !path.includes('list_events.html')) {
+                if (!path.includes('/api/') && !path.includes('/userlog/') && !path.includes('/panchang/') && !path.includes('list_events.html')) {
                     isInternal = true;
                 }
             }

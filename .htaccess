@@ -5,5 +5,9 @@ RewriteBase /
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+# Route /panchang directly to /panchang/index.html
+RewriteRule ^panchang/?$ panchang/index.html [QSA,L]
+RewriteRule ^panchang/daily/?$ panchang/index.html [QSA,L]
+
 # Route /astrology/personal to /landing.html
 RewriteRule ^astrology/personal/?$ landing.html [QSA,L]
