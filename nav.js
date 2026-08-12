@@ -100,7 +100,7 @@ const DEFAULT_NAV_CONFIG = {
       "icon": "⭐",
       "items": [
         { "label": "Chat with Phaldeepika", "url": "/landing.html#phalDeepikaChat", "icon": "🕉️" },
-        { "label": "Dainik Panchang", "url": "/landing.html?tab=panchang", "icon": "☀️" },
+        { "label": "Dainik Panchang", "url": "/panchang/", "icon": "☀️" },
         { "label": "Maasik Panchang", "url": "/landing.html?tab=maasik", "icon": "📆" },
         { "label": "Free Janma Kundali", "url": "/kundli/generate/", "icon": "🧘" }
       ]
@@ -119,7 +119,7 @@ const DEFAULT_NAV_CONFIG = {
       "icon": "📅",
       "items": [
         { "label": "Panchang Hub & Guide", "url": "/panchang/", "icon": "📖" },
-        { "label": "Dainik Panchang", "url": "/landing.html?tab=panchang", "icon": "☀️" },
+        { "label": "Dainik Panchang", "url": "/panchang/", "icon": "☀️" },
         { "label": "Maasik Panchang", "url": "/landing.html?tab=maasik", "icon": "📆" },
         { "label": "Shubha Hora", "url": "/panchang/hora/", "icon": "⌛" },
         { "label": "Choghadiya", "url": "/panchang/choghadiya/", "icon": "⏱️" },

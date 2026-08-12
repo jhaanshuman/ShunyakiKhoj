@@ -125,8 +125,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Automatically trigger full Dainik Panchang rendering on page load
     setTimeout(() => {
-        if (typeof window.renderPanchang === 'function') {
-            const fallbackData = {
+            window.lastCalculatedData = {
                 panchang: {
                     tithi: "Amavasya",
                     nakshatra: "Pushya",
@@ -142,10 +141,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     yogas_list: [{ name: "Vyatipata", end: "10:42 PM" }],
                     karanas_list: [{ name: "Chatushpada", end: "07:03 PM" }]
                 },
+                panchang_extended: {
+                    brahma_muhurta: "04:11 AM to 04:52 AM",
+                    abhijit: "11:59 AM to 12:55 PM",
+                    godhuli: "07:20 PM to 07:40 PM",
+                    amrit_kalam: "10:01 PM to 11:27 PM",
+                    vijaya: "02:45 PM to 03:40 PM",
+                    nishita: "12:07 AM to 12:48 AM",
+                    rahu_kalam: "03:54 PM to 05:38 PM",
+                    yamaganda: "09:00 AM to 10:43 AM",
+                    gulikai_kalam: "12:27 PM to 02:10 PM",
+                    varjyam: "01:30 PM to 02:55 PM"
+                },
                 regional: { samvat: "2083", shaka: "1948" }
             };
-            window.renderPanchang('panchangBody', fallbackData.panchang, fallbackData.regional);
-        }
+            window.renderPanchang('panchangBody', window.lastCalculatedData.panchang, window.lastCalculatedData.regional);
     }, 400);
 });
 </script>
