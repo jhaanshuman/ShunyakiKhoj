@@ -5407,15 +5407,51 @@ p, body, button, input, select {
     }
 }
 
+/* Header Font Size & Height Reduction (by 3px) */
+.header {
+    padding: 6px 20px !important;
+    min-height: 48px !important;
+}
+
+.logo-area h1 {
+    font-size: 1.1rem !important;
+}
+
+.logo {
+    width: 34px !important;
+    height: 34px !important;
+}
+
 /* ==========================================================================
    DRIKPANCHANG-STYLE 5x3 GRID LANDING SYSTEM (v12.0.0)
    ========================================================================== */
-.drik-landing-container {
+.main-portal-container,
+#spaViewport,
+#homeWelcomeSection,
+.drik-landing-container,
+.glass-card.status-header-card,
+.center-feature-showcase,
+#phalDeepikaChat {
     width: 100% !important;
-    max-width: 100% !important;
-    margin: 15px 0 30px !important;
-    padding: 0 !important;
+    max-width: 1320px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
     box-sizing: border-box !important;
+}
+
+/* Soothing Compact Location Box & Full Text Alignment */
+#landingCitySearchInput {
+    background: rgba(15, 23, 42, 0.75) !important;
+    border: 1px solid rgba(251, 191, 36, 0.5) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    padding: 4px 10px !important;
+    width: 240px !important;
+    max-width: 100% !important;
+    outline: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
 .center-feature-showcase {

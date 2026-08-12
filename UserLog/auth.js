@@ -8,6 +8,26 @@
 (function (global) {
     'use strict';
 
+    // Global switchAuthTab function to toggle between Login and Register tabs
+    window.switchAuthTab = function(tab) {
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const btnLogin = document.getElementById('tabBtnLogin');
+        const btnRegister = document.getElementById('tabBtnRegister');
+
+        if (tab === 'login') {
+            if (loginForm) loginForm.style.display = 'block';
+            if (registerForm) registerForm.style.display = 'none';
+            if (btnLogin) { btnLogin.classList.add('active'); btnLogin.style.background='#ffffff'; btnLogin.style.color='#15803d'; }
+            if (btnRegister) { btnRegister.classList.remove('active'); btnRegister.style.background='transparent'; btnRegister.style.color='#475569'; }
+        } else {
+            if (loginForm) loginForm.style.display = 'none';
+            if (registerForm) registerForm.style.display = 'block';
+            if (btnRegister) { btnRegister.classList.add('active'); btnRegister.style.background='#ffffff'; btnRegister.style.color='#15803d'; }
+            if (btnLogin) { btnLogin.classList.remove('active'); btnLogin.style.background='transparent'; btnLogin.style.color='#475569'; }
+        }
+    };
+
     // Injected elements
     let settingsModal = null;
 
