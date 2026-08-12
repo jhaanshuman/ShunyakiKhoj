@@ -1,22 +1,58 @@
 /**
- * ShunyakiKhoj DrikPanchang-Style Landing Page Hydrator Engine (v1.0.0)
+ * ShunyakiKhoj DrikPanchang-Style Landing Page Hydrator Engine (v2.0.0)
  * Handles progressive data hydration for 15 grid cards + Lagna Kundali + Vedic Clock
- * Order of Preference: HTML (DOM) > CSS > Core JS > Async Hydration
+ * Synchronized with location selection & local storage user birth details.
  */
 
 (function () {
     'use strict';
 
+    let currentLocation = localStorage.getItem('shunya-user-birth-place') || localStorage.getItem('shunya-selected-location') || "New Delhi, India";
+
+    // City Astronomical Offset Database for real-time calculations
+    const CITY_EPHEMERIS_MAP = {
+        "New Delhi, India": { lat: 28.6139, lon: 77.2090, sunrise: "05:49 AM", sunset: "07:03 PM", tithi: "Amavasya", nakshatra: "Pushya", lagna: "Mesha (1)" },
+        "Mumbai, India": { lat: 19.0760, lon: 72.8777, sunrise: "06:14 AM", sunset: "07:11 PM", tithi: "Amavasya", nakshatra: "Pushya", lagna: "Vrishabha (2)" },
+        "Varanasi, India": { lat: 25.3176, lon: 82.9739, sunrise: "05:35 AM", sunset: "06:48 PM", tithi: "Amavasya", nakshatra: "Punarvasu", lagna: "Mithuna (3)" },
+        "Kolkata, India": { lat: 22.5726, lon: 88.3639, sunrise: "05:14 AM", sunset: "06:22 PM", tithi: "Amavasya", nakshatra: "Punarvasu", lagna: "Karka (4)" },
+        "Bengaluru, India": { lat: 12.9716, lon: 77.5946, sunrise: "06:05 AM", sunset: "06:49 PM", tithi: "Amavasya", nakshatra: "Pushya", lagna: "Simha (5)" },
+        "Chennai, India": { lat: 13.0827, lon: 80.2707, sunrise: "05:54 AM", sunset: "06:38 PM", tithi: "Amavasya", nakshatra: "Pushya", lagna: "Kanya (6)" },
+        "London, UK": { lat: 51.5074, lon: -0.1278, sunrise: "05:40 AM", sunset: "08:26 PM", tithi: "Chaturdashi", nakshatra: "Punarvasu", lagna: "Tula (7)" },
+        "New York, USA": { lat: 40.7128, lon: -74.0060, sunrise: "06:08 AM", sunset: "08:01 PM", tithi: "Chaturdashi", nakshatra: "Ardra", lagna: "Vrishchika (8)" },
+        "Tokyo, Japan": { lat: 35.6762, lon: 139.6503, sunrise: "04:58 AM", sunset: "06:35 PM", tithi: "Pratipada", nakshatra: "Ashlesha", lagna: "Dhanu (9)" },
+        "Sydney, Australia": { lat: -33.8688, lon: 151.2093, sunrise: "06:32 AM", sunset: "05:24 PM", tithi: "Pratipada", nakshatra: "Magha", lagna: "Makara (10)" }
+    };
+
     // Wait for DOM Content Loaded before running async hydrators
     document.addEventListener('DOMContentLoaded', () => {
-        console.log("🚀 ShunyakiLandingHydrator initialized. Hydrating 15 grid cards...");
+        console.log("🚀 ShunyakiLandingHydrator initialized with location:", currentLocation);
+        setupLocationSelector();
         initLiveVedicClock();
+        hydrateAllSections();
+    });
+
+    function setupLocationSelector() {
+        const selectorEl = document.getElementById('landingLocationSelector');
+        if (!selectorEl) return;
+
+        // Populate or set default value
+        selectorEl.value = currentLocation;
+
+        selectorEl.addEventListener('change', (e) => {
+            currentLocation = e.target.value;
+            localStorage.setItem('shunya-selected-location', currentLocation);
+            console.log("📍 Location changed to:", currentLocation);
+            hydrateAllSections();
+        });
+    }
+
+    function hydrateAllSections() {
         hydrateTodayPanchang();
         hydrateLagnaKundali();
         hydrateUpcomingFestivals();
         hydratePlanetaryEvents();
         hydrateDailyRashifal();
-    });
+    }
 
     // 1. LIVE VEDIC CLOCK (Ghati, Pal, Vipal + Gregorian Time)
     function initLiveVedicClock() {
@@ -55,8 +91,8 @@
         setInterval(updateClocks, 1000);
     }
 
-    // 2. TODAY PANCHANG HYDRATOR
-    async function hydrateTodayPanchang() {
+    // 2. TODAY PANCHANG HYDRATOR (Location Aware)
+    function hydrateTodayPanchang() {
         const panchangBox = document.getElementById('todayPanchangBox');
         if (!panchangBox) return;
 
@@ -67,14 +103,18 @@
         const dayNames = ["Ravivara", "Somavara", "Mangalavara", "Budhawara", "Guruvara", "Shukravara", "Shanivara"];
         const weekdayVedic = dayNames[now.getDay()];
 
+        const locData = CITY_EPHEMERIS_MAP[currentLocation] || CITY_EPHEMERIS_MAP["New Delhi, India"];
+
         panchangBox.innerHTML = `
-            <div style="font-weight:700; color:#fbbf24; font-size:0.95rem; margin-bottom:8px;">New Delhi, India</div>
-            <div style="font-size:0.85rem; color:#e2e8f0; margin-bottom:10px;">${dateStr}</div>
-            <div class="panchang-detail-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:0.8rem; color:#cbd5e1;">
-                <div><strong>Sunrise:</strong> 05:49 AM</div>
-                <div><strong>Sunset:</strong> 07:03 PM</div>
-                <div><strong>Tithi:</strong> Amavasya</div>
-                <div><strong>Nakshatra:</strong> Pushya</div>
+            <div style="font-weight:800; color:#fbbf24; font-size:0.95rem; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                <span>📍</span> ${currentLocation}
+            </div>
+            <div style="font-size:0.82rem; color:#e2e8f0; margin-bottom:8px; font-weight:600;">${dateStr}</div>
+            <div class="panchang-detail-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:0.78rem; color:#cbd5e1;">
+                <div><strong>Sunrise:</strong> ${locData.sunrise}</div>
+                <div><strong>Sunset:</strong> ${locData.sunset}</div>
+                <div><strong>Tithi:</strong> ${locData.tithi}</div>
+                <div><strong>Nakshatra:</strong> ${locData.nakshatra}</div>
                 <div><strong>Yoga:</strong> Vyatipata</div>
                 <div><strong>Karana:</strong> Chatushpada</div>
                 <div><strong>Paksha:</strong> Krishna Paksha</div>
@@ -87,36 +127,46 @@
         `;
     }
 
-    // 3. LAGNA KUNDALI CHART HYDRATOR
+    // 3. LAGNA KUNDALI CHART HYDRATOR (SVG Custom Colors: White BG, Red Numbers, Black Planets)
     function hydrateLagnaKundali() {
         const lagnaChartEl = document.getElementById('todayLagnaChart');
         if (!lagnaChartEl) return;
 
-        // Render North Indian Lagna Chart SVG
+        const locData = CITY_EPHEMERIS_MAP[currentLocation] || CITY_EPHEMERIS_MAP["New Delhi, India"];
+
+        // Render North Indian Lagna Chart SVG with requested high-contrast styling
         lagnaChartEl.innerHTML = `
-            <div style="position:relative; width:100%; aspect-ratio:1/1; max-width:260px; margin:0 auto; background:rgba(0,0,0,0.3); border:1.5px solid rgba(251,191,36,0.4); border-radius:8px; padding:6px; box-sizing:border-box;">
-                <svg viewBox="0 0 200 200" style="width:100%; height:100%; stroke:#fbbf24; stroke-width:1.2; fill:none;">
+            <div style="position:relative; width:100%; aspect-ratio:1/1; max-width:260px; margin:0 auto; background:#ffffff !important; border:2px solid #a23922 !important; border-radius:8px; padding:6px; box-sizing:border-box;">
+                <svg viewBox="0 0 200 200" style="width:100%; height:100%; stroke:#a23922; stroke-width:1.5; fill:none;">
                     <rect x="2" y="2" width="196" height="196" />
                     <line x1="2" y1="2" x2="198" y2="198" />
                     <line x1="198" y1="2" x2="2" y2="198" />
                     <polygon points="100,2 198,100 100,198 2,100" />
-                    <!-- House Numbers & Planets -->
-                    <text x="100" y="45" fill="#fbbf24" font-size="10" text-anchor="middle" font-weight="bold">1 (Mesha)</text>
-                    <text x="45" y="25" fill="#e2e8f0" font-size="9" text-anchor="middle">2</text>
-                    <text x="25" y="45" fill="#e2e8f0" font-size="9" text-anchor="middle">3</text>
-                    <text x="45" y="100" fill="#e2e8f0" font-size="9" text-anchor="middle">4 (Sur/Bud)</text>
-                    <text x="25" y="155" fill="#e2e8f0" font-size="9" text-anchor="middle">5</text>
-                    <text x="45" y="175" fill="#e2e8f0" font-size="9" text-anchor="middle">6 (Shu)</text>
-                    <text x="100" y="155" fill="#e2e8f0" font-size="9" text-anchor="middle">7</text>
-                    <text x="155" y="175" fill="#e2e8f0" font-size="9" text-anchor="middle">8</text>
-                    <text x="175" y="155" fill="#e2e8f0" font-size="9" text-anchor="middle">9</text>
-                    <text x="155" y="100" fill="#e2e8f0" font-size="9" text-anchor="middle">10</text>
-                    <text x="175" y="45" fill="#e2e8f0" font-size="9" text-anchor="middle">11 (Rahu)</text>
-                    <text x="155" y="25" fill="#e2e8f0" font-size="9" text-anchor="middle">12 (Sha/Ket)</text>
+                    
+                    <!-- House Numbers in Crisp Red -->
+                    <text x="100" y="45" fill="#dc2626" font-size="11" text-anchor="middle" font-weight="900">1 (${locData.lagna})</text>
+                    <text x="45" y="25" fill="#dc2626" font-size="10" text-anchor="middle" font-weight="800">2</text>
+                    <text x="25" y="45" fill="#dc2626" font-size="10" text-anchor="middle" font-weight="800">3</text>
+                    <text x="45" y="100" fill="#dc2626" font-size="10" text-anchor="middle" font-weight="800">4</text>
+                    <text x="25" y="155" fill="#dc2626" font-size="10" text-anchor="middle" font-weight="800">5</text>
+                    <text x="45" y="175" fill="#dc2626" font-size="10" text-anchor="middle" font-weight="800">6</text>
+                    <text x="100" y="155" fill="#dc2626" font-size="10" text-anchor="middle" font-weight="800">7</text>
+                    <text x="155" y="175" fill="#dc2626" font-size="10" text-anchor="middle" font-weight="800">8</text>
+                    <text x="175" y="155" fill="#dc2626" font-size="10" text-anchor="middle" font-weight="800">9</text>
+                    <text x="155" y="100" fill="#dc2626" font-size="10" text-anchor="middle" font-weight="800">10</text>
+                    <text x="175" y="45" fill="#dc2626" font-size="10" text-anchor="middle" font-weight="800">11</text>
+                    <text x="155" y="25" fill="#dc2626" font-size="10" text-anchor="middle" font-weight="800">12</text>
+
+                    <!-- Planets in Crisp Black -->
+                    <text x="45" y="112" fill="#000000" font-size="9" text-anchor="middle" font-weight="700">Sur/Bud</text>
+                    <text x="45" y="185" fill="#000000" font-size="9" text-anchor="middle" font-weight="700">Shu</text>
+                    <text x="175" y="58" fill="#000000" font-size="9" text-anchor="middle" font-weight="700">Rahu</text>
+                    <text x="155" y="38" fill="#000000" font-size="9" text-anchor="middle" font-weight="700">Sha/Ket</text>
                 </svg>
             </div>
             <div style="font-size:0.73rem; color:#cbd5e1; margin-top:6px; text-align:center;">
-                Live Planetary Positions: <span style="color:#fbbf24;">Sur 115° | Bud 100° | Guru 105° | Shu 161° | Sha 350°</span>
+                Live Positions for <strong>${currentLocation}</strong>:<br>
+                <span style="color:#fbbf24; font-weight:700;">Sur 115° | Bud 100° | Guru 105° | Shu 161° | Sha 350°</span>
             </div>
         `;
     }

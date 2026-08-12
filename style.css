@@ -5412,9 +5412,9 @@ p, body, button, input, select {
    ========================================================================== */
 .drik-landing-container {
     width: 100%;
-    max-width: 1380px;
-    margin: 20px auto 40px;
-    padding: 0 16px;
+    max-width: 98% !important;
+    margin: 15px auto 30px !important;
+    padding: 0 8px;
     box-sizing: border-box;
 }
 
