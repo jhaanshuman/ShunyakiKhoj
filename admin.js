@@ -46,6 +46,10 @@ function switchAdminTab(tabId) {
 
     if (activeBtn) activeBtn.classList.add('active');
     if (activeContent) activeContent.classList.add('active');
+
+    if (tabId.toLowerCase() === 'userdata') {
+        fetchAdminUserDataList();
+    }
 }
 
 // 3. ACCORDION TOGGLE

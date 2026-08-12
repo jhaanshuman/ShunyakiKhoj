@@ -92,7 +92,9 @@ if (!$conn) {
         "social_provider VARCHAR(50)",
         "cached_kundali_json LONGTEXT",
         "kundali_analytics LONGTEXT",
-        "last_log DATETIME DEFAULT CURRENT_TIMESTAMP"
+        "last_log DATETIME DEFAULT CURRENT_TIMESTAMP",
+        "last_login DATETIME DEFAULT CURRENT_TIMESTAMP",
+        "created_at DATETIME DEFAULT CURRENT_TIMESTAMP"
     ];
 
     foreach ($alter_cols as $col_def) {

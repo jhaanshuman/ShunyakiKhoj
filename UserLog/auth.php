@@ -169,22 +169,25 @@ if ($action === "login") {
 
 /* 3.b GET ALL USERS (FOR ADMIN USERDATA TAB) */
 if ($action === "get_all_users") {
-    $q = db_query("SELECT id, username, email, mobile, gender, created_at, last_login FROM users ORDER BY id DESC LIMIT 500");
+    $q = db_query("SELECT * FROM users ORDER BY id DESC LIMIT 500");
     $users = [];
     if ($q) {
         while ($r = db_fetch($q)) {
+            $last_login_time = !empty($r['last_login']) ? $r['last_login'] : (!empty($r['last_log']) ? $r['last_log'] : 'Never');
+            $created_time = !empty($r['created_at']) ? $r['created_at'] : 'N/A';
+
             $users[] = [
                 "id"         => $r['id'],
                 "username"   => $r['username'],
                 "email"      => $r['email'] ?? 'N/A',
                 "mobile"     => $r['mobile'] ?? 'N/A',
                 "gender"     => $r['gender'] ?? 'N/A',
-                "created_at" => $r['created_at'] ?? 'N/A',
-                "last_login" => $r['last_login'] ?? 'Never'
+                "created_at" => $created_time,
+                "last_login" => $last_login_time
             ];
         }
     }
-    echo json_encode(["success" => true, "users" => $users]);
+    echo json_encode(["success" => true, "users" => $users, "count" => count($users)]);
     exit;
 }
 

@@ -1,10 +1,9 @@
 /**
- * ShunyakiKhoj DrikPanchang-Style Landing Page Hydrator Engine (v7.0.0)
+ * ShunyakiKhoj DrikPanchang-Style Landing Page Hydrator Engine (v8.0.0)
  * Handles progressive data hydration for 15 grid cards + Lagna Kundali + Vedic Clock
  * Synchronized with Geo-Synced Global Location Search (geocomplete.js / Nominatim API)
- * Lagna Kundali: Clean thin fonts (font-weight: normal; font-weight: 400).
- * Dynamic Realtime City Sync: Instantly updates Panchang & Lagna Kundali positions.
- * Profile Birthplace Integration: Defaults to logged-in user's place of birth.
+ * Initial Load Splash Modal: Fast 2.5-second message cycling (auto-close at 8s).
+ * Realtime Location Hydration: Instant sync for city name & ephemeris data.
  */
 
 (function () {
@@ -43,7 +42,7 @@
         hydrateAllSections();
     });
 
-    // 0. INITIAL PAGE LOAD SPLASH MODAL (8-Second Message Cycle)
+    // 0. INITIAL PAGE LOAD SPLASH MODAL (Fast 2.5s Cycle, Auto-close at 8s)
     function initInitialLoadSplashModal() {
         const splashModal = document.getElementById('initialLoadSplashModal');
         const msgEl = document.getElementById('splashCycleMessage');
@@ -54,8 +53,8 @@
             "✨ Calculating Sidereal Planetary Longitudes & House Positions...",
             "🪔 Computing Drik Ganita Tithi, Nakshatra, Yoga & Karana...",
             "📜 Rendering North Indian Lagna Kundali & Planet Placement...",
-            "🌟 Synchronizing Daily Rashifals & Panchang Utilities Database...",
-            "🕉️ Preparing Complete ShunyakiKhoj Vedic Almanac Experience..."
+            "🌟 Synchronizing Daily Rashifals & Panchang Utilities...",
+            "🕉️ Calculations Complete! Opening ShunyakiKhoj Portal..."
         ];
 
         let msgIdx = 0;
@@ -64,31 +63,31 @@
         window.closeInitialLoadSplash = function() {
             if (splashModal) {
                 splashModal.style.opacity = '0';
-                setTimeout(() => { splashModal.style.display = 'none'; }, 600);
+                setTimeout(() => { splashModal.style.display = 'none'; }, 500);
             }
         };
 
         const interval = setInterval(() => {
-            msgIdx = (msgIdx + 1) % loadingMessages.length;
-            progress += 20;
+            msgIdx++;
+            progress += 25;
 
-            if (msgEl) {
+            if (msgIdx < loadingMessages.length && msgEl) {
                 msgEl.style.opacity = '0';
                 setTimeout(() => {
                     msgEl.innerText = loadingMessages[msgIdx];
                     msgEl.style.opacity = '1';
-                }, 400);
+                }, 200);
             }
 
             if (progressBar) {
-                progressBar.style.width = `${progress}%`;
+                progressBar.style.width = `${Math.min(100, progress)}%`;
             }
 
-            if (progress >= 100) {
+            if (progress >= 100 || msgIdx >= loadingMessages.length) {
                 clearInterval(interval);
-                setTimeout(() => { window.closeInitialLoadSplash(); }, 1200);
+                setTimeout(() => { window.closeInitialLoadSplash(); }, 800);
             }
-        }, 8000); // 8 seconds per message
+        }, 2000); // 2 seconds per engaging message
     }
 
     function setupGeoSyncedCitySearch() {
