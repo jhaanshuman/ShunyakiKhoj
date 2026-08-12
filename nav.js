@@ -663,6 +663,7 @@ function renderDrawerContent(accordionContainer, menuItems) {
             }
         }
 
+        group.appendChild(trigger);
         group.appendChild(content);
         accordionContainer.appendChild(group);
 
