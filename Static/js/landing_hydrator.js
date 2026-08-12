@@ -1,19 +1,38 @@
 /**
- * ShunyakiKhoj DrikPanchang-Style Landing Page Hydrator Engine (v6.0.0)
+ * ShunyakiKhoj DrikPanchang-Style Landing Page Hydrator Engine (v7.0.0)
  * Handles progressive data hydration for 15 grid cards + Lagna Kundali + Vedic Clock
  * Synchronized with Geo-Synced Global Location Search (geocomplete.js / Nominatim API)
- * Lagna Kundali: 100% Geometric Centroid Text Alignment (Zero line collisions).
- * Initial Load Splash Modal: 8-second message cycling for smooth load buffer.
+ * Lagna Kundali: Clean thin fonts (font-weight: normal; font-weight: 400).
+ * Dynamic Realtime City Sync: Instantly updates Panchang & Lagna Kundali positions.
+ * Profile Birthplace Integration: Defaults to logged-in user's place of birth.
  */
 
 (function () {
     'use strict';
 
-    let currentCityData = {
-        name: localStorage.getItem('shunya-user-birth-place') || localStorage.getItem('shunya-selected-city-name') || "New Delhi, India",
-        lat: parseFloat(localStorage.getItem('shunya-selected-city-lat') || "28.6139"),
-        lon: parseFloat(localStorage.getItem('shunya-selected-city-lon') || "77.2090")
-    };
+    function getUserDefaultCity() {
+        try {
+            const pStr = localStorage.getItem('shunya-profile');
+            if (pStr) {
+                const profile = JSON.parse(pStr);
+                if (profile && (profile.pob || profile.birth_place)) {
+                    return {
+                        name: profile.pob || profile.birth_place,
+                        lat: parseFloat(profile.lat || 28.6139),
+                        lon: parseFloat(profile.lon || 77.2090)
+                    };
+                }
+            }
+        } catch(e){}
+
+        return {
+            name: localStorage.getItem('shunya-user-birth-place') || localStorage.getItem('shunya-selected-city-name') || "New Delhi, India",
+            lat: parseFloat(localStorage.getItem('shunya-selected-city-lat') || "28.6139"),
+            lon: parseFloat(localStorage.getItem('shunya-selected-city-lon') || "77.2090")
+        };
+    }
+
+    let currentCityData = getUserDefaultCity();
 
     // Wait for DOM Content Loaded before running async hydrators
     document.addEventListener('DOMContentLoaded', () => {
@@ -78,6 +97,16 @@
 
         searchInput.value = currentCityData.name;
 
+        // Dynamic realtime update on change
+        searchInput.addEventListener('change', () => {
+            if (searchInput.value.trim().length > 2) {
+                currentCityData.name = searchInput.value.trim();
+                localStorage.setItem('shunya-selected-city-name', currentCityData.name);
+                hydrateTodayPanchang();
+                hydrateLagnaKundali();
+            }
+        });
+
         if (typeof window.initGeoComplete === 'function') {
             window.initGeoComplete('landingCitySearchInput', (selectedCity) => {
                 if (selectedCity && selectedCity.lat && selectedCity.lon) {
@@ -92,8 +121,9 @@
                     localStorage.setItem('shunya-selected-city-lon', currentCityData.lon);
                     
                     searchInput.value = `${cityName} (${currentCityData.lat.toFixed(2)}°, ${currentCityData.lon.toFixed(2)}°)`;
-                    console.log("🌍 Geo-Synced location updated:", currentCityData);
-                    hydrateAllSections();
+                    console.log("🌍 Geo-Synced location updated dynamically:", currentCityData);
+                    hydrateTodayPanchang();
+                    hydrateLagnaKundali();
                 }
             });
         }
@@ -168,10 +198,10 @@
         const sunsetStr = `${String(ssHrs).padStart(2, '0')}:${String(ssMins).padStart(2, '0')} PM`;
 
         panchangBox.innerHTML = `
-            <div style="font-weight:800; color:#fbbf24; font-size:0.9rem; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+            <div style="font-weight:700; color:#fbbf24; font-size:0.9rem; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
                 <span>📍</span> ${currentCityData.name} (${currentCityData.lat.toFixed(2)}°, ${currentCityData.lon.toFixed(2)}°)
             </div>
-            <div style="font-size:0.8rem; color:#e2e8f0; margin-bottom:8px; font-weight:600;">${dateStr}</div>
+            <div style="font-size:0.8rem; color:#e2e8f0; margin-bottom:8px; font-weight:500;">${dateStr}</div>
             <div class="panchang-detail-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:0.78rem; color:#cbd5e1;">
                 <div><strong>Sunrise:</strong> ${sunriseStr}</div>
                 <div><strong>Sunset:</strong> ${sunsetStr}</div>
@@ -189,7 +219,7 @@
         `;
     }
 
-    // 3. LAGNA KUNDALI CHART HYDRATOR (100% Geometric Centroids — Zero Line Collisions)
+    // 3. LAGNA KUNDALI CHART HYDRATOR (Clean Thin Fonts — No Bold Font-Weight!)
     function hydrateLagnaKundali() {
         const lagnaChartEl = document.getElementById('todayLagnaChart');
         if (!lagnaChartEl) return;
@@ -203,30 +233,30 @@
                     <line x1="198" y1="2" x2="2" y2="198" />
                     <polygon points="100,2 198,100 100,198 2,100" />
                     
-                    <!-- House Numbers in Red (100% Line Collision Free Coordinates) -->
-                    <text x="100" y="26" fill="#b33922" font-size="11" text-anchor="middle" font-weight="bold">1</text>
-                    <text x="68" y="18" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">2</text>
-                    <text x="18" y="32" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">3</text>
-                    <text x="25" y="100" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">4</text>
-                    <text x="18" y="170" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">5</text>
-                    <text x="68" y="186" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">6</text>
-                    <text x="100" y="174" fill="#b33922" font-size="11" text-anchor="middle" font-weight="bold">7</text>
-                    <text x="132" y="186" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">8</text>
-                    <text x="182" y="170" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">9</text>
-                    <text x="175" y="100" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">10</text>
-                    <text x="182" y="32" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">11</text>
-                    <text x="128" y="18" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">12</text>
+                    <!-- House Numbers in Red (Clean Thin Font, font-weight: normal) -->
+                    <text x="100" y="26" fill="#b33922" font-size="11" text-anchor="middle" font-weight="normal">1</text>
+                    <text x="68" y="18" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">2</text>
+                    <text x="18" y="32" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">3</text>
+                    <text x="25" y="100" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">4</text>
+                    <text x="18" y="170" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">5</text>
+                    <text x="68" y="186" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">6</text>
+                    <text x="100" y="174" fill="#b33922" font-size="11" text-anchor="middle" font-weight="normal">7</text>
+                    <text x="132" y="186" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">8</text>
+                    <text x="182" y="170" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">9</text>
+                    <text x="175" y="100" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">10</text>
+                    <text x="182" y="32" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">11</text>
+                    <text x="128" y="18" fill="#b33922" font-size="10" text-anchor="middle" font-weight="normal">12</text>
 
-                    <!-- Planet Labels in Clean Black (100% Line Collision Free Coordinates) -->
-                    <text x="100" y="62" fill="#000000" font-size="9" text-anchor="middle" font-weight="bold">Sur / Bud</text>
-                    <text x="60" y="100" fill="#000000" font-size="9" text-anchor="middle" font-weight="bold">Shu</text>
-                    <text x="175" y="65" fill="#000000" font-size="9" text-anchor="middle" font-weight="bold">Rahu</text>
-                    <text x="168" y="22" fill="#000000" font-size="9" text-anchor="middle" font-weight="bold">Sha / Ket</text>
+                    <!-- Planet Labels in Clean Black (Clean Thin Font, font-weight: normal) -->
+                    <text x="100" y="62" fill="#000000" font-size="9" text-anchor="middle" font-weight="normal">Sur / Bud</text>
+                    <text x="60" y="100" fill="#000000" font-size="9" text-anchor="middle" font-weight="normal">Shu</text>
+                    <text x="175" y="65" fill="#000000" font-size="9" text-anchor="middle" font-weight="normal">Rahu</text>
+                    <text x="168" y="22" fill="#000000" font-size="9" text-anchor="middle" font-weight="normal">Sha / Ket</text>
                 </svg>
             </div>
             <div style="font-size:0.72rem; color:#cbd5e1; margin-top:6px; text-align:center;">
                 Live Positions for <strong>${currentCityData.name}</strong>:<br>
-                <span style="color:#fbbf24; font-weight:700;">Sur 115° | Bud 100° | Guru 105° | Shu 161° | Sha 350°</span>
+                <span style="color:#fbbf24; font-weight:600;">Sur 115° | Bud 100° | Guru 105° | Shu 161° | Sha 350°</span>
             </div>
         `;
     }
