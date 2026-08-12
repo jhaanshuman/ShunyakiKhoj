@@ -43,6 +43,7 @@
             <!-- Tab Navigation Bar -->
             <nav class="admin-tab-bar">
                 <button class="admin-tab-btn active" onclick="switchAdminTab('webpage')">🎨 Webpage</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('userdata')">👥 UserData</button>
                 <button class="admin-tab-btn" onclick="switchAdminTab('seo')">🔍 SEO</button>
                 <button class="admin-tab-btn" onclick="switchAdminTab('adsense')">📢 AdSense</button>
                 <button class="admin-tab-btn" onclick="switchAdminTab('features')">⚡ Features</button>
@@ -198,6 +199,34 @@
                         </div>
                         <div style="margin-top:12px; padding:10px; background:rgba(16,185,129,0.1); border:1px solid #10b981; border-radius:6px; font-size:0.78rem;">
                             <strong style="color:#34d399;">Policy Check Passed:</strong> All active pages feature rich content with zero under-construction blocks.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 1.b: REAL-TIME USER DATA -->
+            <div id="tabUserdata" class="admin-tab-content">
+                <div class="admin-accordion-group">
+                    <div class="admin-accordion-header">
+                        <span>👥 Registered User Database &amp; Last Login Live Tracker</span>
+                        <button class="btn-admin" style="font-size:0.75rem; padding:4px 8px;" onclick="fetchAdminUserDataList()">🔄 Refresh Users</button>
+                    </div>
+                    <div class="admin-accordion-body" style="padding:10px;">
+                        <div id="adminUserDataContainer" style="overflow-x:auto;">
+                            <table style="width:100%; border-collapse:collapse; font-size:0.78rem; color:#f8fafc; text-align:left;">
+                                <thead>
+                                    <tr style="background:rgba(255,255,255,0.08); border-bottom:1px solid rgba(255,255,255,0.2);">
+                                        <th style="padding:6px;">ID</th>
+                                        <th style="padding:6px;">Username</th>
+                                        <th style="padding:6px;">Email</th>
+                                        <th style="padding:6px;">Mobile</th>
+                                        <th style="padding:6px;">Last Login Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminUserTableBody">
+                                    <tr><td colspan="5" style="padding:10px; text-align:center; color:#94a3b8;">Click Refresh Users to load database...</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

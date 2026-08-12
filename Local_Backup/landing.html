@@ -210,7 +210,7 @@ gtag('js', new Date());
 gtag('config','G-DZ2CM1SBWW');
 </script>
 <script src="/nav.js?v=12.0.0" defer></script>
-<script src="/Static/js/landing_hydrator.js?v=6.0.0" defer></script>
+<script src="/Static/js/landing_hydrator.js?v=5.0.0" defer></script>
 <script src="/Features/Astrology/vedic_data.js?v=2.2.0"></script>
 <script src="/Features/Astrology/vedic_database.js?v=2.2.0"></script>
 <script src="/Static/data/wisdom_database.js?v=2.2.0" defer></script>
@@ -319,10 +319,11 @@ window.__h82AlnkH6D91__("WyJwdWItMTM0MjE4OTU3NDg1ODY3MiIsW251bGwsbnVsbCxudWxsLCJ
                 </div>
             </div>
 
-            <!-- Center-Center Geo-Synced Global Location Searcher (Un-Clipped Overflow, Max Space) -->
-            <div style="display: flex; align-items: center; gap: 6px; background: rgba(15, 23, 42, 0.75); border: 1.5px solid #fbbf24; border-radius: 20px; padding: 4px 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.4); position: relative; z-index: 999999 !important;">
+            <!-- Center-Center Geo-Synced Global Location Searcher (Un-Clipped Overflow) -->
+            <div style="display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.6); border: 1.5px solid #fbbf24; border-radius: 20px; padding: 4px 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.4); position: relative; z-index: 999999 !important;">
                 <span style="font-size: 0.95rem;">📍</span>
-                <input type="text" id="landingCitySearchInput" placeholder="Search city worldwide..." autocomplete="off" style="background: transparent; border: none; color: #ffffff; font-weight: 800; font-size: 0.82rem; cursor: text; outline: none; width: 260px; max-width: 100%;">
+                <label for="landingCitySearchInput" style="font-size: 0.75rem; font-weight: 800; color: #fbbf24; text-transform: uppercase;">Location:</label>
+                <input type="text" id="landingCitySearchInput" placeholder="Search city worldwide..." autocomplete="off" style="background: transparent; border: none; color: #ffffff; font-weight: 800; font-size: 0.82rem; cursor: text; outline: none; width: 200px;">
             </div>
 
             <div style="text-align: right; min-width: 110px;">
@@ -1348,27 +1349,6 @@ window.showKundaliReadyToast = showKundaliReadyToast;
         <span class="mobile-bottom-icon">☰</span>
         <span>Menu</span>
     </button>
-</div>
-
-<!-- INITIAL PAGE LOAD CENTER-CENTER SPLASH MODAL (8-Second Message Cycling) -->
-<div id="initialLoadSplashModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(11, 15, 25, 0.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 9999999; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.6s ease;">
-    <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 2px solid #fbbf24; border-radius: 16px; padding: 30px 25px; width: 90%; max-width: 440px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 30px rgba(251,191,36,0.2);">
-        <div style="font-size: 2.8rem; margin-bottom: 10px; animation: pulse 1.8s infinite ease-in-out;">🪔</div>
-        <h3 style="margin: 0 0 6px 0; color: #fbbf24; font-size: 1.2rem; font-weight: 900;">ShunyakiKhoj Vedic Engine</h3>
-        <p style="margin: 0 0 16px 0; color: #e2e8f0; font-size: 0.8rem; font-weight: 600;">Initializing High-Precision Swiss Ephemeris &amp; Drik Ganita Calculations...</p>
-        
-        <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(251,191,36,0.3); border-radius: 10px; padding: 14px; margin-bottom: 18px; min-height: 54px; display: flex; align-items: center; justify-content: center;">
-            <div id="splashCycleMessage" style="color: #ffffff; font-size: 0.85rem; font-weight: 700; line-height: 1.4; transition: opacity 0.4s ease;">
-                ✨ Calculating Sidereal Planetary Longitudes &amp; House Positions...
-            </div>
-        </div>
-
-        <div style="width: 100%; background: rgba(255,255,255,0.1); height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 16px;">
-            <div id="splashProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #ff9933, #fbbf24); transition: width 0.5s linear;"></div>
-        </div>
-
-        <button id="btnSkipSplash" onclick="closeInitialLoadSplash()" style="background: transparent; border: 1px solid #94a3b8; color: #cbd5e1; font-size: 0.75rem; font-weight: 700; padding: 5px 14px; border-radius: 12px; cursor: pointer;">Enter Portal Directly ➔</button>
-    </div>
 </div>
 
 <!-- Vercel Analytics -->

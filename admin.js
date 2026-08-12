@@ -535,3 +535,36 @@ function rgbToHex(rgbStr) {
     if (!match || match.length < 3) return '#ffffff';
     return "#" + ((1 << 24) + (parseInt(match[0]) << 16) + (parseInt(match[1]) << 8) + parseInt(match[2])).toString(16).slice(1);
 }
+
+// 9. FETCH USER DATA LIST FROM PHP FOR ADMIN USERDATA TAB
+function fetchAdminUserDataList() {
+    const tbody = document.getElementById('adminUserTableBody');
+    if (!tbody) return;
+
+    tbody.innerHTML = `<tr><td colspan="5" style="padding:10px; text-align:center; color:#fbbf24;">Loading real-time user database from PHP...</td></tr>`;
+
+    fetch('/UserLog/auth.php?action=get_all_users')
+        .then(res => res.json())
+        .then(data => {
+            if (data.success && Array.isArray(data.users)) {
+                if (data.users.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="padding:10px; text-align:center; color:#94a3b8;">No registered users found in MySQL database.</td></tr>`;
+                    return;
+                }
+                tbody.innerHTML = data.users.map(u => `
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <td style="padding:6px; font-weight:800; color:#fbbf24;">${u.id}</td>
+                        <td style="padding:6px; font-weight:700; color:#ffffff;">${u.username}</td>
+                        <td style="padding:6px; color:#cbd5e1;">${u.email}</td>
+                        <td style="padding:6px; color:#cbd5e1;">${u.mobile}</td>
+                        <td style="padding:6px; font-weight:700; color:#34d399;">${u.last_login}</td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = `<tr><td colspan="5" style="padding:10px; text-align:center; color:#ef4444;">Failed to fetch users: ${data.error || 'Unknown error'}</td></tr>`;
+            }
+        })
+        .catch(err => {
+            tbody.innerHTML = `<tr><td colspan="5" style="padding:10px; text-align:center; color:#ef4444;">API Connection Error: ${err.message}</td></tr>`;
+        });
+}

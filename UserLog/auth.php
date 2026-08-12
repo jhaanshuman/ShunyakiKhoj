@@ -136,6 +136,9 @@ if ($action === "login") {
                   ($row['password_hash'] === $password);
 
     if ($pwd_matched) {
+        // Update last_login timestamp in MySQL database
+        db_query("UPDATE users SET last_login = NOW() WHERE id = " . intval($row['id']));
+
         $_SESSION['user_id'] = $row['id'];
         $_SESSION['username'] = $row['username'];
         $_SESSION['profile'] = [
@@ -161,6 +164,27 @@ if ($action === "login") {
     } else {
         echo json_encode(["success" => false, "error" => "Invalid Credentials. Incorrect Password."]);
     }
+    exit;
+}
+
+/* 3.b GET ALL USERS (FOR ADMIN USERDATA TAB) */
+if ($action === "get_all_users") {
+    $q = db_query("SELECT id, username, email, mobile, gender, created_at, last_login FROM users ORDER BY id DESC LIMIT 500");
+    $users = [];
+    if ($q) {
+        while ($r = db_fetch($q)) {
+            $users[] = [
+                "id"         => $r['id'],
+                "username"   => $r['username'],
+                "email"      => $r['email'] ?? 'N/A',
+                "mobile"     => $r['mobile'] ?? 'N/A',
+                "gender"     => $r['gender'] ?? 'N/A',
+                "created_at" => $r['created_at'] ?? 'N/A',
+                "last_login" => $r['last_login'] ?? 'Never'
+            ];
+        }
+    }
+    echo json_encode(["success" => true, "users" => $users]);
     exit;
 }
 

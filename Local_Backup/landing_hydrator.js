@@ -1,9 +1,8 @@
 /**
- * ShunyakiKhoj DrikPanchang-Style Landing Page Hydrator Engine (v6.0.0)
+ * ShunyakiKhoj DrikPanchang-Style Landing Page Hydrator Engine (v5.0.0)
  * Handles progressive data hydration for 15 grid cards + Lagna Kundali + Vedic Clock
  * Synchronized with Geo-Synced Global Location Search (geocomplete.js / Nominatim API)
  * Lagna Kundali: 100% Geometric Centroid Text Alignment (Zero line collisions).
- * Initial Load Splash Modal: 8-second message cycling for smooth load buffer.
  */
 
 (function () {
@@ -18,59 +17,10 @@
     // Wait for DOM Content Loaded before running async hydrators
     document.addEventListener('DOMContentLoaded', () => {
         console.log("🚀 ShunyakiLandingHydrator initialized with city:", currentCityData.name);
-        initInitialLoadSplashModal();
         setupGeoSyncedCitySearch();
         initLiveVedicClock();
         hydrateAllSections();
     });
-
-    // 0. INITIAL PAGE LOAD SPLASH MODAL (8-Second Message Cycle)
-    function initInitialLoadSplashModal() {
-        const splashModal = document.getElementById('initialLoadSplashModal');
-        const msgEl = document.getElementById('splashCycleMessage');
-        const progressBar = document.getElementById('splashProgressBar');
-        if (!splashModal || !msgEl) return;
-
-        const loadingMessages = [
-            "✨ Calculating Sidereal Planetary Longitudes & House Positions...",
-            "🪔 Computing Drik Ganita Tithi, Nakshatra, Yoga & Karana...",
-            "📜 Rendering North Indian Lagna Kundali & Planet Placement...",
-            "🌟 Synchronizing Daily Rashifals & Panchang Utilities Database...",
-            "🕉️ Preparing Complete ShunyakiKhoj Vedic Almanac Experience..."
-        ];
-
-        let msgIdx = 0;
-        let progress = 0;
-
-        window.closeInitialLoadSplash = function() {
-            if (splashModal) {
-                splashModal.style.opacity = '0';
-                setTimeout(() => { splashModal.style.display = 'none'; }, 600);
-            }
-        };
-
-        const interval = setInterval(() => {
-            msgIdx = (msgIdx + 1) % loadingMessages.length;
-            progress += 20;
-
-            if (msgEl) {
-                msgEl.style.opacity = '0';
-                setTimeout(() => {
-                    msgEl.innerText = loadingMessages[msgIdx];
-                    msgEl.style.opacity = '1';
-                }, 400);
-            }
-
-            if (progressBar) {
-                progressBar.style.width = `${progress}%`;
-            }
-
-            if (progress >= 100) {
-                clearInterval(interval);
-                setTimeout(() => { window.closeInitialLoadSplash(); }, 1200);
-            }
-        }, 8000); // 8 seconds per message
-    }
 
     function setupGeoSyncedCitySearch() {
         const searchInput = document.getElementById('landingCitySearchInput');
@@ -203,25 +153,25 @@
                     <line x1="198" y1="2" x2="2" y2="198" />
                     <polygon points="100,2 198,100 100,198 2,100" />
                     
-                    <!-- House Numbers in Red (100% Line Collision Free Coordinates) -->
+                    <!-- House Numbers in Red (Geometric Centroids) -->
                     <text x="100" y="26" fill="#b33922" font-size="11" text-anchor="middle" font-weight="bold">1</text>
-                    <text x="68" y="18" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">2</text>
-                    <text x="18" y="32" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">3</text>
-                    <text x="25" y="100" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">4</text>
-                    <text x="18" y="170" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">5</text>
-                    <text x="68" y="186" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">6</text>
-                    <text x="100" y="174" fill="#b33922" font-size="11" text-anchor="middle" font-weight="bold">7</text>
-                    <text x="132" y="186" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">8</text>
-                    <text x="182" y="170" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">9</text>
-                    <text x="175" y="100" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">10</text>
-                    <text x="182" y="32" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">11</text>
-                    <text x="128" y="18" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">12</text>
+                    <text x="50" y="20" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">2</text>
+                    <text x="20" y="50" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">3</text>
+                    <text x="26" y="100" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">4</text>
+                    <text x="20" y="150" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">5</text>
+                    <text x="50" y="182" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">6</text>
+                    <text x="100" y="176" fill="#b33922" font-size="11" text-anchor="middle" font-weight="bold">7</text>
+                    <text x="150" y="182" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">8</text>
+                    <text x="180" y="150" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">9</text>
+                    <text x="174" y="100" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">10</text>
+                    <text x="180" y="50" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">11</text>
+                    <text x="150" y="20" fill="#b33922" font-size="10" text-anchor="middle" font-weight="bold">12</text>
 
-                    <!-- Planet Labels in Clean Black (100% Line Collision Free Coordinates) -->
-                    <text x="100" y="62" fill="#000000" font-size="9" text-anchor="middle" font-weight="bold">Sur / Bud</text>
+                    <!-- Planet Labels in Clean Black (Inside House Centroids — Zero Line Collisions) -->
+                    <text x="100" y="60" fill="#000000" font-size="9" text-anchor="middle" font-weight="bold">Sur / Bud</text>
                     <text x="60" y="100" fill="#000000" font-size="9" text-anchor="middle" font-weight="bold">Shu</text>
-                    <text x="175" y="65" fill="#000000" font-size="9" text-anchor="middle" font-weight="bold">Rahu</text>
-                    <text x="168" y="22" fill="#000000" font-size="9" text-anchor="middle" font-weight="bold">Sha / Ket</text>
+                    <text x="162" y="72" fill="#000000" font-size="9" text-anchor="middle" font-weight="bold">Rahu</text>
+                    <text x="160" y="45" fill="#000000" font-size="9" text-anchor="middle" font-weight="bold">Sha / Ket</text>
                 </svg>
             </div>
             <div style="font-size:0.72rem; color:#cbd5e1; margin-top:6px; text-align:center;">
