@@ -103,8 +103,8 @@ const DEFAULT_NAV_CONFIG = {
       "icon": "⭐",
       "items": [
         { "label": "Chat with Phaldeepika", "url": "/landing.html#phalDeepikaChat", "icon": "🕉️" },
-        { "label": "Dainik Panchang", "url": "/panchang/", "icon": "☀️" },
-        { "label": "Maasik Panchang", "url": "/landing.html?tab=maasik", "icon": "📆" },
+        { "label": "Dainik Panchang", "url": "/panchang/index.html", "icon": "☀️" },
+        { "label": "Maasik Panchang", "url": "/panchang/monthly/index.html", "icon": "📆" },
         { "label": "Free Janma Kundali", "url": "/kundli/generate/", "icon": "🧘" }
       ]
     },
@@ -121,9 +121,9 @@ const DEFAULT_NAV_CONFIG = {
       "type": "dropdown",
       "icon": "📅",
       "items": [
-        { "label": "Panchang Hub & Guide", "url": "/panchang/", "icon": "📖" },
-        { "label": "Dainik Panchang", "url": "/panchang/", "icon": "☀️" },
-        { "label": "Maasik Panchang", "url": "/landing.html?tab=maasik", "icon": "📆" },
+        { "label": "Panchang Hub & Guide", "url": "/panchang/index.html", "icon": "📖" },
+        { "label": "Dainik Panchang", "url": "/panchang/index.html", "icon": "☀️" },
+        { "label": "Maasik Panchang", "url": "/panchang/monthly/index.html", "icon": "📆" },
         { "label": "Shubha Hora", "url": "/panchang/hora/", "icon": "⌛" },
         { "label": "Choghadiya", "url": "/panchang/choghadiya/", "icon": "⏱️" },
         { "label": "Rahu Kaal & Timings", "url": "/panchang/rahu-kalam/", "icon": "🛡️" }
@@ -1607,7 +1607,7 @@ document.addEventListener('click', (e) => {
             const path = parsed.pathname.toLowerCase();
             // Exclude assets, robots, sitemap, auth, panchang directory, and list_events
             if (!path.includes('.') || path.endsWith('.html') || path.endsWith('.htm')) {
-                if (!path.includes('/api/') && !path.includes('/userlog/') && !path.includes('/panchang/') && !path.includes('list_events.html')) {
+                if (!path.includes('/api/') && !path.includes('/userlog/') && !path.includes('/panchang') && !path.includes('list_events.html')) {
                     isInternal = true;
                 }
             }

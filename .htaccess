@@ -9,5 +9,9 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 RewriteRule ^panchang/?$ panchang/index.html [QSA,L]
 RewriteRule ^panchang/daily/?$ panchang/index.html [QSA,L]
 
+# Route /panchang/monthly to /panchang/monthly/index.html
+RewriteRule ^panchang/monthly/?$ panchang/monthly/index.html [QSA,L]
+RewriteRule ^maasik/?$ panchang/monthly/index.html [QSA,L]
+
 # Route /astrology/personal to /landing.html
 RewriteRule ^astrology/personal/?$ landing.html [QSA,L]

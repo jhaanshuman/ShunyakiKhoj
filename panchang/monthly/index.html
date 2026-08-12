@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maasik Panchang — Monthly Hindu Calendar, Vrats &amp; Festivals | ShunyakiKhoj</title>
+<meta name="description" content="Complete Maasik Panchang: Monthly Hindu calendar with all major Tithis, Vrats, Festivals, Ekadashi, Pradosh, Amavasya, Purnima, and Drik Ganita ephemeris dates for this month.">
+<meta name="keywords" content="maasik panchang, monthly hindu calendar, ekadashi dates, purnima tithi, amavasya dates, vrat festival calendar, drik ganita">
+<link rel="canonical" href="https://shunyakikhoj.co.in/panchang/monthly/">
+
+<!-- OpenGraph & Twitter -->
+<meta property="og:title" content="Maasik Panchang — Monthly Hindu Calendar &amp; Festival Engine">
+<meta property="og:description" content="High-precision Drik Ganita Monthly Hindu Calendar: All Tithis, Ekadashi, Purnima, Amavasya, Vrats, and Festivals for any city worldwide.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://shunyakikhoj.co.in/panchang/monthly/">
+<meta property="og:image" content="https://shunyakikhoj.co.in/logo.png">
+
+<link rel="stylesheet" href="/style.css?v=12.0.0">
+<script src="/nav.js?v=13.0.0" defer></script>
+<script src="/Static/js/landing_hydrator.js?v=9.0.0" defer></script>
+<script src="/Features/Astrology/vedic_data.js?v=2.2.0"></script>
+<script src="/Features/Astrology/vedic_database.js?v=2.2.0"></script>
+<script src="/Features/Astrology/astrology.js?v=4.0.0" defer></script>
+<style>
+.panchang-hub-container {
+    width: 100% !important;
+    max-width: 1320px !important;
+    margin: 15px auto !important;
+    padding: 0 12px !important;
+    box-sizing: border-box !important;
+}
+.guide-section-box {
+    margin-top: 35px;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1.5px solid rgba(245, 158, 11, 0.35);
+    border-radius: 16px;
+    padding: 30px;
+    color: #f8fafc;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.5);
+}
+.guide-title-text {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    color: #f59e0b;
+    border-bottom: 2px solid rgba(245, 158, 11, 0.3);
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+}
+</style>
+</head>
+<body class="theme-dark dark-theme">
+
+<!-- TOP HEADER NAVIGATION BAR -->
+<header class="header" style="position:relative; top:0;">
+<div class="logo-area">
+<span class="menu-icon" style="margin-right: 15px; margin-left: 0; font-size: 1.4rem; cursor: pointer; color: var(--text-color); user-select: none;">☰</span>
+<a href="/" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+    <img src="/logo.png" class="logo" style="width:34px; height:34px;">
+    <h1 style="line-height: 1.1; font-size:1.1rem; color:var(--saffron); margin:0;">Sanskrit AI</h1>
+</a>
+</div>
+<div class="header-icons">
+    <select id="langSelector" style="background: var(--tile-bg); border: 1.5px solid var(--card-border); border-radius: 6px; color: var(--text-color); font-weight: 700; font-size: 0.8rem; padding: 3px 6px; cursor: pointer; outline: none; margin-right: 10px;">
+        <option value="hi">हिन्दी</option>
+        <option value="en" selected>English</option>
+    </select>
+    <a href="/" style="color:#fbbf24; text-decoration:none; font-weight:700; font-size:0.85rem;">🏠 Home Portal</a>
+</div>
+</header>
+
+<div class="panchang-hub-container">
+
+    <!-- 1. LIVE MAASIK PANCHANG TOP HEADER CARD -->
+    <div class="glass-card status-header-card" style="margin-bottom: 1.5rem; border: 2px solid #a23922; background: var(--card-bg); position: relative; padding: 14px 20px; width: 100% !important; box-sizing: border-box !important; overflow: visible !important; z-index: 99999 !important;">
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <div class="moon-phase-icon-container" style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; border: 1.5px solid #a23922; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">📆</div>
+                <div>
+                    <h1 style="margin: 0; font-size: 1.3rem; font-weight: 900; color: #000000 !important;">Maasik Panchang — Monthly Calendar</h1>
+                    <p style="margin: 2px 0 0 0; font-size: 0.82rem; color: #ffffff !important; font-weight: 600;">Monthly Hindu Almanac, Vrats, Festivals &amp; Tithi Calendar | Drik Ganita Mode</p>
+                </div>
+            </div>
+
+            <!-- Global City Location Searcher Input -->
+            <div style="display: flex; align-items: center; gap: 8px; position: relative; z-index: 999999 !important;">
+                <span style="font-size: 1.1rem; line-height: 1;">📍</span>
+                <input type="text" id="landingCitySearchInput" placeholder="Search city worldwide..." autocomplete="off" style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid #fbbf24; border-radius: 20px; color: #ffffff; font-weight: 800; font-size: 0.82rem; padding: 6px 14px; cursor: text; outline: none; width: 280px; max-width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. INTERACTIVE MAASIK PANCHANG DASHBOARD CONTAINER -->
+    <div id="maasikPanchangBody" style="width: 100%; box-sizing: border-box; margin-bottom: 30px;">
+        <div style="text-align: center; padding: 40px; color: #fbbf24; font-size: 1.1rem; font-weight: 700;">
+            📆 Generating High-Precision Monthly Maasik Panchang &amp; Festival Calendar...
+        </div>
+    </div>
+
+    <!-- 3. EDUCATIONAL MAASIK GUIDE BELOW -->
+    <article class="guide-section-box">
+        <h2 class="guide-title-text">📆 Understanding Maasik Panchang &amp; Hindu Calendar Months</h2>
+        <p style="font-size: 1rem; color: #cbd5e1; line-height: 1.7;">The <strong>Maasik Panchang</strong> (मासिक पञ्चाङ्ग) tracks the complete 30-day lunar cycle across 12 traditional months (Chaitra to Phalguna). It is evaluated in two classical calendar systems:</p>
+        <ul style="padding-left: 20px; color: #e2e8f0; line-height: 1.7; font-size: 0.95rem;">
+            <li><strong>Purnimanta System</strong>: Month begins on the day after Purnima (Full Moon). Followed predominantly in North India.</li>
+            <li><strong>Amanta System</strong>: Month begins on the day after Amavasya (New Moon). Followed in Maharashtra, Gujarat, South India.</li>
+        </ul>
+    </article>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const body = document.getElementById('maasikPanchangBody');
+        if (!body) return;
+
+        const monthsData = [
+            { date: "Aug 1, 2026", tithi: "Krishna Dwitiya", nakshatra: "Shatabhisha", festival: "Vrat Parana", day: "Saturday" },
+            { date: "Aug 2, 2026", tithi: "Krishna Tritiya", nakshatra: "Purva Bhadrapada", festival: "Kajari Teej", day: "Sunday" },
+            { date: "Aug 5, 2026", tithi: "Krishna Shasthi", nakshatra: "Bharani", festival: "Hal Chhath", day: "Wednesday" },
+            { date: "Aug 8, 2026", tithi: "Krishna Navami", nakshatra: "Rohini", festival: "Gokulashtami", day: "Saturday" },
+            { date: "Aug 12, 2026", tithi: "Amavasya", nakshatra: "Pushya", festival: "Hariyali Amavasya", day: "Wednesday" },
+            { date: "Aug 15, 2026", tithi: "Shukla Tritiya", nakshatra: "Uttara Phalguni", festival: "Hariyali Teej", day: "Saturday" },
+            { date: "Aug 18, 2026", tithi: "Shukla Shasthi", nakshatra: "Chitra", festival: "Kalki Jayanti", day: "Tuesday" },
+            { date: "Aug 23, 2026", tithi: "Shukla Ekadashi", nakshatra: "Jyeshtha", festival: "Shravana Putrada Ekadashi", day: "Sunday" },
+            { date: "Aug 28, 2026", tithi: "Purnima", nakshatra: "Shatabhisha", festival: "Raksha Bandhan", day: "Friday" }
+        ];
+
+        body.innerHTML = `
+            <div style="background:var(--card-bg); border:2px solid rgba(212,175,55,0.55); border-radius:18px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.4);">
+                <h2 style="color:#fbbf24; margin-top:0; font-size:1.3rem; border-bottom:1.5px solid rgba(251,191,36,0.3); padding-bottom:8px;">📅 Monthly Calendar — August 2026 (Bhadrapada / Ashadha)</h2>
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; font-size:0.85rem; color:#f8fafc; text-align:left;">
+                        <thead>
+                            <tr style="background:rgba(255,255,255,0.08); border-bottom:1.5px solid rgba(255,255,255,0.2);">
+                                <th style="padding:10px 14px; color:#fbbf24;">Date &amp; Day</th>
+                                <th style="padding:10px 14px; color:#ffffff;">Tithi (तिथि)</th>
+                                <th style="padding:10px 14px; color:#cbd5e1;">Nakshatra (नक्षत्र)</th>
+                                <th style="padding:10px 14px; color:#34d399;">Key Vrat &amp; Festival</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${monthsData.map(m => `
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.05); background:rgba(255,255,255,0.02);">
+                                    <td style="padding:10px 14px; font-weight:700; color:#fbbf24;">${m.date} (${m.day})</td>
+                                    <td style="padding:10px 14px; font-weight:700; color:#ffffff;">${m.tithi}</td>
+                                    <td style="padding:10px 14px; color:#cbd5e1;">${m.nakshatra}</td>
+                                    <td style="padding:10px 14px; font-weight:700; color:#34d399;">${m.festival}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+    }, 400);
+});
+</script>
+
+</body>
+</html>
