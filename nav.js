@@ -102,10 +102,10 @@ const DEFAULT_NAV_CONFIG = {
       "type": "dropdown",
       "icon": "⭐",
       "items": [
-        { "label": "Chat with Phaldeepika", "url": "/landing.html#phalDeepikaChat", "icon": "🕉️" },
+        { "label": "Chat with Phaldeepika", "url": "/phaldeepika/index.html", "icon": "🕉️" },
         { "label": "Dainik Panchang", "url": "/panchang/index.html", "icon": "☀️" },
         { "label": "Maasik Panchang", "url": "/panchang/monthly/index.html", "icon": "📆" },
-        { "label": "Free Janma Kundali", "url": "/kundli/generate/", "icon": "🧘" }
+        { "label": "Free Janma Kundali", "url": "/kundli/index.html", "icon": "🧘" }
       ]
     },
     {
@@ -113,7 +113,8 @@ const DEFAULT_NAV_CONFIG = {
       "type": "dropdown",
       "icon": "🕉️",
       "items": [
-        { "label": "Chat with Phaldeepika", "url": "/landing.html#phalDeepikaChat", "icon": "🤖" }
+        { "label": "Chat with Phaldeepika", "url": "/phaldeepika/index.html", "icon": "🤖" },
+        { "label": "Spiritual Wisdom", "url": "/wisdom/index.html", "icon": "🕉️" }
       ]
     },
     {

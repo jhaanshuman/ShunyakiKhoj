@@ -17,5 +17,11 @@ RewriteRule ^maasik/?$ panchang/monthly/index.html [QSA,L]
 RewriteRule ^kundli/?$ kundli/index.html [QSA,L]
 RewriteRule ^kundli/generate/?$ kundli/index.html [QSA,L]
 
+# Route /phaldeepika to /phaldeepika/index.html
+RewriteRule ^phaldeepika/?$ phaldeepika/index.html [QSA,L]
+
+# Route /wisdom to /wisdom/index.html
+RewriteRule ^wisdom/?$ wisdom/index.html [QSA,L]
+
 # Route /astrology/personal to /landing.html
 RewriteRule ^astrology/personal/?$ landing.html [QSA,L]

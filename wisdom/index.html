@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Spiritual Wisdom Hub — Sanatana Dharma, Vedas, Puranas &amp; Upanishads | ShunyakiKhoj</title>
+<meta name="description" content="Explore Sanatana Dharma's Spiritual Wisdom: Interactive library covering Vedas, Upanishads, Bhagavad Gita, Darshanas, Puranas, Jyotisha, Yoga Sutras, and Festival mechanics.">
+<meta name="keywords" content="spiritual wisdom, sanatana dharma, vedas, upanishads, bhagavad gita, puranas, yoga sutras, jyotisha">
+<link rel="canonical" href="https://shunyakikhoj.co.in/wisdom/">
+
+<!-- OpenGraph & Twitter -->
+<meta property="og:title" content="Spiritual Wisdom Hub — Sanatana Dharma Knowledge Repository">
+<meta property="og:description" content="Authentic knowledge repository for Sanatana Dharma: Vedas, Upanishads, Bhagavad Gita, Darshanas, and Vedic Philosophy.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://shunyakikhoj.co.in/wisdom/">
+<meta property="og:image" content="https://shunyakikhoj.co.in/logo.png">
+
+<link rel="stylesheet" href="/style.css?v=12.0.0">
+<script src="/nav.js?v=13.0.0" defer></script>
+<script src="/Static/js/landing_hydrator.js?v=9.0.0" defer></script>
+<script src="/Static/data/wisdom_database.js?v=2.5.0"></script>
+<style>
+.wisdom-hub-container {
+    width: 100% !important;
+    max-width: 1320px !important;
+    margin: 10px auto !important;
+    padding: 0 10px !important;
+    box-sizing: border-box !important;
+}
+.wisdom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+.wisdom-card {
+    background: var(--card-bg);
+    border: 2px solid rgba(212,175,55,0.5);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    cursor: pointer;
+    transition: transform 0.25s, border-color 0.25s;
+    box-sizing: border-box;
+}
+.wisdom-card:hover {
+    transform: translateY(-4px);
+    border-color: #fbbf24;
+}
+.guide-section-box {
+    margin-top: 30px;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1.5px solid rgba(245, 158, 11, 0.35);
+    border-radius: 16px;
+    padding: 20px;
+    color: #f8fafc;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.5);
+}
+.guide-title-text {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 800;
+    color: #f59e0b;
+    border-bottom: 2px solid rgba(245, 158, 11, 0.3);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+}
+.wisdom-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999999;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
+}
+.wisdom-modal-overlay.active {
+    display: flex !important;
+}
+.wisdom-modal-card {
+    background: #0f172a;
+    border: 2px solid #fbbf24;
+    border-radius: 18px;
+    padding: 20px;
+    width: 100%;
+    max-width: 550px;
+    max-height: 85vh;
+    overflow-y: auto;
+    color: #f8fafc;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.8);
+    position: relative;
+}
+</style>
+</head>
+<body class="theme-dark dark-theme">
+
+<!-- TOP HEADER NAVIGATION BAR -->
+<header class="header" style="position:relative; top:0;">
+<div class="logo-area">
+<span class="menu-icon" style="margin-right: 15px; margin-left: 0; font-size: 1.4rem; cursor: pointer; color: var(--text-color); user-select: none;">☰</span>
+<a href="/" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+    <img src="/logo.png" class="logo" style="width:34px; height:34px;">
+    <h1 style="line-height: 1.1; font-size:1.1rem; color:var(--saffron); margin:0;">Sanskrit AI</h1>
+</a>
+</div>
+<div class="header-icons">
+    <select id="langSelector" style="background: var(--tile-bg); border: 1.5px solid var(--card-border); border-radius: 6px; color: var(--text-color); font-weight: 700; font-size: 0.8rem; padding: 3px 6px; cursor: pointer; outline: none; margin-right: 10px;">
+        <option value="hi">हिन्दी</option>
+        <option value="en" selected>English</option>
+    </select>
+    <a href="/" style="color:#fbbf24; text-decoration:none; font-weight:700; font-size:0.85rem;">🏠 Home Portal</a>
+</div>
+</header>
+
+<div class="wisdom-hub-container">
+
+    <!-- HEADER CARD -->
+    <div class="glass-card status-header-card" style="margin-bottom: 1rem; border: 2px solid #a23922; background: var(--card-bg); position: relative; padding: 14px 18px; width: 100% !important; box-sizing: border-box !important;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; border: 1.5px solid #a23922; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">🕉️</div>
+            <div>
+                <h1 style="margin: 0; font-size: clamp(1.2rem, 2.8vw, 1.4rem); font-weight: 900; color: #000000 !important;">Spiritual Wisdom Repository</h1>
+                <p style="margin: 2px 0 0 0; font-size: 0.82rem; color: #ffffff !important; font-weight: 600;">Authentic Sanatana Dharma Teachings, Vedas, Puranas &amp; Darshanas</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- WISDOM CATEGORY CARDS GRID -->
+    <div id="wisdomGrid" class="wisdom-grid">
+        <div style="grid-column: span 3; text-align: center; color: #fbbf24; padding: 30px;">
+            ⏳ Hydrating Wisdom Database Repository...
+        </div>
+    </div>
+
+    <!-- EDUCATIONAL GUIDE -->
+    <article class="guide-section-box">
+        <h2 class="guide-title-text">🪔 The Foundations of Sanatana Dharma</h2>
+        <p style="font-size: 0.95rem; color: #cbd5e1; line-height: 1.7;">Sanatana Dharma (The Eternal Way) is built upon four fundamental Vedas (Rigveda, Samaveda, Yajurveda, Atharvaveda), 108 Upanishads exploring Brahman and Atman, 18 Mahapuranas detailing cosmos and avatars, and the 6 Darshanas (philosophical systems including Vedanta and Yoga).</p>
+    </article>
+
+</div>
+
+<!-- WISDOM ITEM MODAL -->
+<div id="wisdomModalOverlay" class="wisdom-modal-overlay">
+    <div class="wisdom-modal-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #fbbf24; padding-bottom: 8px; margin-bottom: 12px;">
+            <h3 id="wisdomModalTitle" style="margin: 0; color: #fbbf24; font-size: 1.1rem; font-weight: 800;">🕉️ Wisdom Topic</h3>
+            <button onclick="closeWisdomModal()" style="background: #ef4444; border: none; color: #ffffff; width: 28px; height: 28px; border-radius: 50%; font-weight: 900; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">✖</button>
+        </div>
+        <div id="wisdomModalBody" style="font-size: 0.88rem; color: #f8fafc; line-height: 1.65;">
+            <!-- Hydrated dynamically -->
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    renderWisdomCategories();
+});
+
+function renderWisdomCategories() {
+    const grid = document.getElementById('wisdomGrid');
+    if (!grid) return;
+
+    const db = window.WisdomDatabase || {};
+    let html = '';
+
+    for (const catKey in db) {
+        const cat = db[catKey];
+        const itemCount = (cat.items && cat.items.length) ? cat.items.length : 0;
+        html += `
+            <div class="wisdom-card" onclick="openWisdomCategory('${catKey}')">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div style="font-size:2rem; width:46px; height:46px; border-radius:50%; background:rgba(245,158,11,0.15); display:flex; align-items:center; justify-content:center;">${cat.icon || '🕉️'}</div>
+                    <div>
+                        <h3 style="margin:0; color:#fbbf24; font-size:1.05rem; font-weight:800;">${cat.name}</h3>
+                        <span style="font-size:0.75rem; color:#34d399; font-weight:700;">${itemCount} Sacred Verses &amp; Topics</span>
+                    </div>
+                </div>
+                <p style="margin:10px 0 0 0; font-size:0.82rem; color:#cbd5e1; line-height:1.5;">${cat.description}</p>
+            </div>
+        `;
+    }
+
+    grid.innerHTML = html;
+}
+
+function openWisdomCategory(catKey) {
+    const db = window.WisdomDatabase || {};
+    const cat = db[catKey];
+    if (!cat || !cat.items) return;
+
+    const titleEl = document.getElementById('wisdomModalTitle');
+    const bodyEl = document.getElementById('wisdomModalBody');
+    const overlay = document.getElementById('wisdomModalOverlay');
+
+    if (!titleEl || !bodyEl || !overlay) return;
+
+    titleEl.innerText = `${cat.icon} ${cat.name}`;
+
+    let itemsHTML = `<p style="color:#cbd5e1; margin-bottom:12px;">${cat.description}</p>`;
+    cat.items.slice(0, 10).forEach(item => {
+        itemsHTML += `
+            <div style="background:rgba(255,255,255,0.05); padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); margin-bottom:10px;">
+                <h4 style="margin:0; color:#fbbf24; font-size:0.95rem;">${item.name}</h4>
+                <p style="margin:4px 0 0 0; font-size:0.82rem; color:#e2e8f0;">${item.description}</p>
+                ${item.belief ? `<div style="font-size:0.78rem; color:#34d399; margin-top:4px;"><strong>Spiritual Benefit:</strong> ${item.belief}</div>` : ''}
+            </div>
+        `;
+    });
+
+    bodyEl.innerHTML = itemsHTML;
+    overlay.classList.add('active');
+}
+
+function closeWisdomModal() {
+    const overlay = document.getElementById('wisdomModalOverlay');
+    if (overlay) overlay.classList.remove('active');
+}
+</script>
+
+</body>
+</html>
