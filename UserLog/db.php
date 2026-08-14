@@ -43,7 +43,8 @@ if (!$conn) {
             login_mode TEXT DEFAULT 'email',
             social_provider TEXT,
             cached_kundali_json TEXT,
-            last_log DATETIME DEFAULT CURRENT_TIMESTAMP
+            last_login DATETIME DEFAULT CURRENT_TIMESTAMP,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )");
 
         $conn->exec("CREATE TABLE IF NOT EXISTS UserChart (
@@ -91,7 +92,8 @@ if (!$conn) {
         social_provider VARCHAR(50),
         cached_kundali_json LONGTEXT,
         kundali_analytics LONGTEXT,
-        last_log DATETIME DEFAULT CURRENT_TIMESTAMP
+        last_login DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
     @mysqli_query($conn, $mysql_users_table);
@@ -111,7 +113,6 @@ if (!$conn) {
         "social_provider VARCHAR(50)",
         "cached_kundali_json LONGTEXT",
         "kundali_analytics LONGTEXT",
-        "last_log DATETIME DEFAULT CURRENT_TIMESTAMP",
         "last_login DATETIME DEFAULT CURRENT_TIMESTAMP",
         "created_at DATETIME DEFAULT CURRENT_TIMESTAMP"
     ];
@@ -128,12 +129,6 @@ if (!$conn) {
     @mysqli_query($conn, "ALTER TABLE users MODIFY COLUMN cached_kundali_json LONGTEXT;");
     @mysqli_query($conn, "ALTER TABLE users MODIFY COLUMN kundali_analytics LONGTEXT;");
 
-    // Migration: Copy last_log into created_at and drop last_log column once verified
-    @mysqli_query($conn, "UPDATE users SET created_at = last_log WHERE last_log IS NOT NULL AND last_log != ''");
-    $mig_check = @mysqli_query($conn, "SELECT COUNT(*) as unmigrated FROM users WHERE last_log IS NOT NULL AND last_log != '' AND created_at != last_log");
-    if ($mig_check) {
-        $row = mysqli_fetch_assoc($mig_check);
-        if (isset($row['unmigrated']) && intval($row['unmigrated']) == 0) {
     // Auto-create MySQL UserChart table for pre-computed PhalaDeepika engine facts
     $mysql_user_chart_table = "CREATE TABLE IF NOT EXISTS UserChart (
         id INT AUTO_INCREMENT PRIMARY KEY,

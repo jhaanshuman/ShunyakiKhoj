@@ -135,9 +135,10 @@ if ($action === "login") {
                   ($row['password_hash'] === hash('sha256', $password)) ||
                   ($row['password_hash'] === $password);
 
-    if ($pwd_matched) {
-        // Update last_login timestamp in MySQL database
-        db_query("UPDATE users SET last_login = NOW() WHERE id = " . intval($row['id']));
+        // Update last_login timestamp in database (MySQL / SQLite compatible)
+        global $db_type;
+        $now_str = ($db_type === 'sqlite') ? "datetime('now')" : "NOW()";
+        db_query("UPDATE users SET last_login = $now_str WHERE id = " . intval($row['id']));
 
         $_SESSION['user_id'] = $row['id'];
         $_SESSION['username'] = $row['username'];
