@@ -530,6 +530,107 @@ if ($action === "visitor_count") {
     exit;
 }
 
+/* GET USER CHART DATA */
+if ($action === "get_user_chart") {
+    $username = db_escape(trim($_POST['username'] ?? $_GET['username'] ?? $_SESSION['username'] ?? ''));
+    if (empty($username)) {
+        echo json_encode(["status" => "error", "message" => "Username is required."]);
+        exit;
+    }
+
+    $u_res = db_query("SELECT id, username, dob, tob, pob, lat, lon, gender FROM users WHERE username = '$username'");
+    $u_row = $u_res ? db_fetch($u_res) : null;
+
+    if (!$u_row) {
+        echo json_encode(["status" => "error", "message" => "User not found."]);
+        exit;
+    }
+
+    $user_id = intval($u_row['id']);
+    $c_res = db_query("SELECT * FROM UserChart WHERE user_id = $user_id OR username = '$username'");
+    $c_row = $c_res ? db_fetch($c_res) : null;
+
+    echo json_encode([
+        "status" => "success",
+        "user_details" => [
+            "id" => $user_id,
+            "username" => $u_row['username'],
+            "dob" => $u_row['dob'],
+            "tob" => $u_row['tob'],
+            "pob" => $u_row['pob'],
+            "lat" => $u_row['lat'],
+            "lon" => $u_row['lon'],
+            "gender" => $u_row['gender']
+        ],
+        "has_cached_chart" => !empty($c_row),
+        "user_chart" => $c_row ? [
+            "astro_core" => json_decode($c_row['astro_core_json'] ?? '{}', true),
+            "kundli_fact" => json_decode($c_row['kundli_fact_json'] ?? '{}', true),
+            "varga" => json_decode($c_row['varga_json'] ?? '{}', true),
+            "yoga" => json_decode($c_row['yoga_json'] ?? '{}', true),
+            "dasa" => json_decode($c_row['dasa_json'] ?? '{}', true),
+            "gochar" => json_decode($c_row['gochar_json'] ?? '{}', true),
+            "ashtakavarga" => json_decode($c_row['ashtakavarga_json'] ?? '{}', true),
+            "shadbala" => json_decode($c_row['shadbala_json'] ?? '{}', true),
+            "rule_matches" => json_decode($c_row['rule_matches_json'] ?? '{}', true),
+            "phala_predictions" => json_decode($c_row['phala_predictions_json'] ?? '{}', true),
+            "updated_at" => $c_row['updated_at'] ?? ''
+        ] : null
+    ]);
+    exit;
+}
+
+/* SAVE USER CHART DATA */
+if ($action === "save_user_chart") {
+    $username = db_escape(trim($_POST['username'] ?? $json_data['username'] ?? ''));
+    $user_id = intval($_POST['user_id'] ?? $json_data['user_id'] ?? 0);
+    
+    if (empty($username)) {
+        echo json_encode(["status" => "error", "message" => "Username is required."]);
+        exit;
+    }
+
+    if ($user_id <= 0) {
+        $u_res = db_query("SELECT id FROM users WHERE username = '$username'");
+        $u_row = $u_res ? db_fetch($u_res) : null;
+        if ($u_row) $user_id = intval($u_row['id']);
+    }
+
+    $astro_core = db_escape(json_encode($_POST['astro_core'] ?? $json_data['astro_core'] ?? []));
+    $kundli_fact = db_escape(json_encode($_POST['kundli_fact'] ?? $json_data['kundli_fact'] ?? []));
+    $varga = db_escape(json_encode($_POST['varga'] ?? $json_data['varga'] ?? []));
+    $yoga = db_escape(json_encode($_POST['yoga'] ?? $json_data['yoga'] ?? []));
+    $dasa = db_escape(json_encode($_POST['dasa'] ?? $json_data['dasa'] ?? []));
+    $gochar = db_escape(json_encode($_POST['gochar'] ?? $json_data['gochar'] ?? []));
+    $ashtakavarga = db_escape(json_encode($_POST['ashtakavarga'] ?? $json_data['ashtakavarga'] ?? []));
+    $shadbala = db_escape(json_encode($_POST['shadbala'] ?? $json_data['shadbala'] ?? []));
+    $rule_matches = db_escape(json_encode($_POST['rule_matches'] ?? $json_data['rule_matches'] ?? []));
+    $phala_predictions = db_escape(json_encode($_POST['phala_predictions'] ?? $json_data['phala_predictions'] ?? []));
+
+    $check = db_query("SELECT id FROM UserChart WHERE user_id = $user_id OR username = '$username'");
+    if ($check && db_fetch($check)) {
+        $sql = "UPDATE UserChart SET 
+            astro_core_json = '$astro_core',
+            kundli_fact_json = '$kundli_fact',
+            varga_json = '$varga',
+            yoga_json = '$yoga',
+            dasa_json = '$dasa',
+            gochar_json = '$gochar',
+            ashtakavarga_json = '$ashtakavarga',
+            shadbala_json = '$shadbala',
+            rule_matches_json = '$rule_matches',
+            phala_predictions_json = '$phala_predictions'
+            WHERE user_id = $user_id OR username = '$username'";
+    } else {
+        $sql = "INSERT INTO UserChart (user_id, username, astro_core_json, kundli_fact_json, varga_json, yoga_json, dasa_json, gochar_json, ashtakavarga_json, shadbala_json, rule_matches_json, phala_predictions_json)
+            VALUES ($user_id, '$username', '$astro_core', '$kundli_fact', '$varga', '$yoga', '$dasa', '$gochar', '$ashtakavarga', '$shadbala', '$rule_matches', '$phala_predictions')";
+    }
+
+    db_query($sql);
+    echo json_encode(["status" => "success", "message" => "UserChart pre-computed data saved successfully."]);
+    exit;
+}
+
 /* LOGOUT */
 if ($action === "logout") {
     session_destroy();

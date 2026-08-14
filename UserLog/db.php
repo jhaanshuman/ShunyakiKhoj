@@ -46,7 +46,26 @@ if (!$conn) {
             last_log DATETIME DEFAULT CURRENT_TIMESTAMP
         )");
 
-        // Table for SQLite offline support (if needed)
+        $conn->exec("CREATE TABLE IF NOT EXISTS UserChart (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER UNIQUE NOT NULL,
+            username TEXT NOT NULL,
+            astro_core_json TEXT,
+            kundli_fact_json TEXT,
+            varga_json TEXT,
+            yoga_json TEXT,
+            dasa_json TEXT,
+            gochar_json TEXT,
+            ashtakavarga_json TEXT,
+            sudarshana_json TEXT,
+            shadbala_json TEXT,
+            avastha_json TEXT,
+            arudha_json TEXT,
+            rule_matches_json TEXT,
+            event_correlation_json TEXT,
+            phala_predictions_json TEXT,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )");
     } catch (Exception $e) {
         // Fallback: Continue operating with session/localStorage support
         $db_type = 'offline';
@@ -115,9 +134,28 @@ if (!$conn) {
     if ($mig_check) {
         $row = mysqli_fetch_assoc($mig_check);
         if (isset($row['unmigrated']) && intval($row['unmigrated']) == 0) {
-            @mysqli_query($conn, "ALTER TABLE users DROP COLUMN last_log");
-        }
-    }
+    // Auto-create MySQL UserChart table for pre-computed PhalaDeepika engine facts
+    $mysql_user_chart_table = "CREATE TABLE IF NOT EXISTS UserChart (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT UNIQUE NOT NULL,
+        username VARCHAR(100) NOT NULL,
+        astro_core_json LONGTEXT,
+        kundli_fact_json LONGTEXT,
+        varga_json LONGTEXT,
+        yoga_json LONGTEXT,
+        dasa_json LONGTEXT,
+        gochar_json LONGTEXT,
+        ashtakavarga_json LONGTEXT,
+        sudarshana_json LONGTEXT,
+        shadbala_json LONGTEXT,
+        avastha_json LONGTEXT,
+        arudha_json LONGTEXT,
+        rule_matches_json LONGTEXT,
+        event_correlation_json LONGTEXT,
+        phala_predictions_json LONGTEXT,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+    @mysqli_query($conn, $mysql_user_chart_table);
 }
 
 function db_query($sql) {
